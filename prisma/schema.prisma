@@ -1,0 +1,217 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Server {
+  id                 Int      @id @default(autoincrement())
+  activeEvent        Event?   @relation(fields: [activeEventId], references: [id])
+  activeEventId      Int?     @map("eventId")
+  activeMatch        Match?   @relation(fields: [activeMatchId], references: [id])
+  activeMatchId      Int?
+  lastRed1Heartbeat  DateTime
+  lastRed2Heartbeat  DateTime
+  lastRed3Heartbeat  DateTime
+  lastBlue1Heartbeat DateTime
+  lastBlue2Heartbeat DateTime
+  lastBlue3Heartbeat DateTime
+}
+
+model Scouter {
+  id        Int         @id @default(autoincrement())
+  name      String      @unique
+  TeamScore TeamScore[]
+}
+
+model Event {
+  id         Int      @id @default(autoincrement())
+  code       String   @unique
+  teams      Team[]
+  weekNumber Int
+  startDate  DateTime
+  matches    Match[]
+  servers    Server[]
+}
+
+model Team {
+  id           Int         @id @default(autoincrement())
+  number       Int         @unique
+  name         String
+  location     String
+  events       Event[]
+  red1Matches  Match[]     @relation("Red1Team")
+  red2Matches  Match[]     @relation("Red2Team")
+  red3Matches  Match[]     @relation("Red3Team")
+  blue1Matches Match[]     @relation("Blue1Team")
+  blue2Matches Match[]     @relation("Blue2Team")
+  blue3Matches Match[]     @relation("Blue3Team")
+  teamScores   TeamScore[]
+}
+
+model Match {
+  id        Int    @id @default(autoincrement())
+  key       String @unique
+  name      String
+  number    Int
+  event     Event  @relation(fields: [eventCode], references: [code])
+  eventCode String
+
+  startTime DateTime?
+
+  presetPiece1 GamePiece?
+  presetPiece2 GamePiece?
+  presetPiece3 GamePiece?
+  presetPiece4 GamePiece?
+
+  red1TeamId Int
+  red2TeamId Int
+  red3TeamId Int
+  red1Team   Team @relation("Red1Team", fields: [red1TeamId], references: [id])
+  red2Team   Team @relation("Red2Team", fields: [red2TeamId], references: [id])
+  red3Team   Team @relation("Red3Team", fields: [red3TeamId], references: [id])
+
+  blue1TeamId Int
+  blue2TeamId Int
+  blue3TeamId Int
+  blue1Team   Team @relation("Blue1Team", fields: [blue1TeamId], references: [id])
+  blue2Team   Team @relation("Blue2Team", fields: [blue2TeamId], references: [id])
+  blue3Team   Team @relation("Blue3Team", fields: [blue3TeamId], references: [id])
+
+  red1TeamScoreId Int       @unique
+  red2TeamScoreId Int       @unique
+  red3TeamScoreId Int       @unique
+  red1TeamScore   TeamScore @relation("Red1TeamScore", fields: [red1TeamScoreId], references: [id])
+  red2TeamScore   TeamScore @relation("Red2TeamScore", fields: [red2TeamScoreId], references: [id])
+  red3TeamScore   TeamScore @relation("Red3TeamScore", fields: [red3TeamScoreId], references: [id])
+
+  blue1TeamScoreId Int       @unique
+  blue2TeamScoreId Int       @unique
+  blue3TeamScoreId Int       @unique
+  blue1TeamScore   TeamScore @relation("Blue1TeamScore", fields: [blue1TeamScoreId], references: [id])
+  blue2TeamScore   TeamScore @relation("Blue2TeamScore", fields: [blue2TeamScoreId], references: [id])
+  blue3TeamScore   TeamScore @relation("Blue3TeamScore", fields: [blue3TeamScoreId], references: [id])
+
+  Server Server[]
+
+  @@unique([name, eventCode])
+}
+
+model TeamScore {
+  id     Int  @id @default(autoincrement())
+  teamId Int
+  team   Team @relation(fields: [teamId], references: [id])
+
+  preloadPiece          GamePiece?
+  autoStartingZone      AutoStartingZone?
+  autoScoringEvents     AutoScoringEvent[]
+  teleopScoringEvents   TeleopScoringEvent[]
+  chargeStationAttempts ChargeStationAttempt[]
+  incapSegments         IncapSegment[]
+
+  driverSkillRating    Int?
+  defensePlayedAgainst Int?
+
+  scouter   Scouter? @relation(fields: [scouterId], references: [id])
+  scouterId Int?
+
+  red1Match  Match? @relation("Red1TeamScore")
+  red2Match  Match? @relation("Red2TeamScore")
+  red3Match  Match? @relation("Red3TeamScore")
+  blue1Match Match? @relation("Blue1TeamScore")
+  blue2Match Match? @relation("Blue2TeamScore")
+  blue3Match Match? @relation("Blue3TeamScore")
+}
+
+model AutoScoringEvent {
+  id              Int              @id @default(autoincrement())
+  intakeType      IntakeType
+  gamePiece       GamePiece
+  scoringPosition ScoringPosition?
+  failed          Boolean          @default(false)
+  timestampScored Decimal
+
+  teamScoreId Int
+  teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
+}
+
+model TeleopScoringEvent {
+  id                Int              @id @default(autoincrement())
+  intakeLocation    IntakeLocation
+  gamePiece         GamePiece
+  scoringPosition   ScoringPosition?
+  dropped           Boolean          @default(false)
+  failed            Boolean          @default(false)
+  timestampPickedUp Decimal
+  timestampScored   Decimal
+
+  teamScoreId Int
+  teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
+}
+
+model ChargeStationAttempt {
+  id               Int                      @id @default(autoincrement())
+  segment          Segment
+  timestampStarted Decimal
+  timestampEnded   Decimal
+  numberRobots     Int
+  interaction      ChargeStationInteraction
+
+  teamScoreId Int
+  teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
+}
+
+model IncapSegment {
+  id               Int       @id @default(autoincrement())
+  timestampStarted Decimal
+  timestampEnded   Decimal
+  full             Boolean
+  teamScoreId      Int
+  TeamScore        TeamScore @relation(fields: [teamScoreId], references: [id])
+}
+
+enum AutoStartingZone {
+  ONE
+  TWO
+  THREE
+}
+
+enum IntakeLocation {
+  GROUND
+  CHUTE
+  SHELF
+}
+
+enum IntakeType {
+  PRELOAD
+  PRESET
+}
+
+enum GamePiece {
+  CONE
+  CUBE
+}
+
+enum ScoringPosition {
+  HIGH
+  MID
+  HYBRID
+}
+
+enum ChargeStationInteraction {
+  BALANCED
+  DOCKED
+  ATTEMPTED
+}
+
+enum Segment {
+  AUTO
+  TELEOP
+}
