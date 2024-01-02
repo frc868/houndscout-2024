@@ -1,0 +1,99 @@
+.th-red {
+  background-color: #ff3131;
+}
+
+.th-red-light {
+  background-color: #ff7d7d;
+}
+
+.th-blue {
+  background-color: #5271ff;
+}
+
+.th-blue-light {
+  background-color: #9eb0ff;
+}
+
+.th-gray {
+  background-color: #545454;
+}
+
+.th-gold {
+  background-color: goldenrod;
+}
+
+.th-gold-text {
+  color: goldenrod;
+}
+
+.form-range::-moz-range-track {
+  background-color: #ccc;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  background-color: #ccc;
+}
+
+.state-button {
+  width: 300px;
+  height: auto;
+  border: none;
+}
+
+.submit-button {
+  width: 250px;
+  height: 60px;
+  border: none;
+}
+
+.state-button.prematch-button {
+  background-color: #ff914d;
+}
+
+.state-button.auto-button {
+  background-color: #ff3131;
+}
+
+.state-button.teleop-button {
+  background-color: #5271ff;
+}
+
+.state-button.postmatch-button {
+  background-color: #00bf63;
+}
+
+.secondary-button {
+  width: 200px;
+  height: auto;
+}
+
+.charge-selector {
+  --bs-list-group-border-width: 3px;
+}
+
+.driver-skill-selector {
+  --bs-list-group-border-width: 3px;
+  --bs-list-group-border-color: #9caaaf;
+  /* --bs-list-group-border-color: rgb(206, 212, 218); */
+}
+
+.intake-cone-selected {
+  background-color: #f7e8ac;
+}
+
+.intake-cube-selected {
+  background-color: #bb99ff;
+}
+
+.grow {
+  transition: all 0.1s ease-in-out;
+}
+
+.grow:hover {
+  transform: scale(1.05);
+}
+
+.grow:active {
+  transition: all 0.1s ease-in-out;
+  transform: scale(1.1);
+}
