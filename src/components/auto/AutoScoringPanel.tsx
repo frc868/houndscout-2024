@@ -5,9 +5,10 @@ import FailButton from "../mini/FailButton";
 
 interface Props {
   active: boolean;
-  handleClick: (selection: "HIGH" | "MID" | "HYBRID" | "FAILED") => void;
+  handleClick: (selection: "SPEAKER" | "AMP" | "FAILED") => void;
 }
 
+//If we have time, maybe add some keyboard shortcuts. That's what the parentheses are for.
 export default function AutoScoringPanel({ active, handleClick }: Props) {
   return (
     <div className="d-flex flex-column align-items-center">
@@ -17,32 +18,24 @@ export default function AutoScoringPanel({ active, handleClick }: Props) {
         <Col className="mx-2">
           <ScoreButton
             className="mb-3"
-            name="High"
+            name="Speaker (S)"
             active={active}
             handleClick={() => {
-              handleClick("HIGH");
+              handleClick("SPEAKER");
             }}
-          />
-          <ScoreButton
-            className="my-3"
-            name="Mid"
-            active={active}
-            handleClick={() => {
-              handleClick("MID");
-            }}
-          />
+          />   
           <ScoreButton
             className="mt-3"
-            name="Hybrid"
+            name="Amp (A)"
             active={active}
             handleClick={() => {
-              handleClick("HYBRID");
+              handleClick("AMP");
             }}
           />
         </Col>
         <Col className="d-flex align-items-center mx-2">
           <FailButton
-            name="Failed"
+            name="Failed (X)"
             active={active}
             handleClick={() => {
               handleClick("FAILED");
