@@ -1,3 +1,6 @@
+//This file needs significant changes to fit the stage mechanics, such as the trap, harmony, spotlight, and general hanging.
+//Some of this stuff may be omitted for time purposes.
+
 /* eslint-disable @next/next/no-img-element */
 import { Col, ListGroup, Row } from "react-bootstrap";
 import ScoreButton from "../mini/ScoreButton";
