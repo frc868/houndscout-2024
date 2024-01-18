@@ -1,14 +1,12 @@
 "use client";
 
-import PreloadSelector from "@/components/prematch/PreloadSelector";
-import PresetSelector from "@/components/prematch/PresetSelector";
 import StartButton from "@/components/prematch/StartButton";
 import StartingPositionSelector from "@/components/prematch/StartingZoneSelector";
 import {
   setAutoStartingZone,
   setAutoStartingZoneAsync,
-  setPreloadPieceAsync,
-  setPresetPiecesAsync,
+  // setPreloadPieceAsync,
+  // setPresetPiecesAsync,
 } from "@/redux/scoresSlice";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import { useEffect, useState } from "react";
@@ -22,8 +20,8 @@ export default function PrematchContent() {
 
   // initializes API data with
   useEffect(() => {
-    dispatch(setPresetPiecesAsync({ pieces: scores.presetPieces }));
-    dispatch(setPreloadPieceAsync({ piece: scores.preloadPiece }));
+    // dispatch(setPresetPiecesAsync({ pieces: scores.presetPieces }));
+    // dispatch(setPreloadPieceAsync({ piece: scores.preloadPiece }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -53,22 +51,11 @@ export default function PrematchContent() {
           />
         </Col>
         <Col md={3}>
-          <PresetSelector
-            selected={scores.presetPieces}
-            handleSelection={async (pieces) => {
-              dispatch(setPresetPiecesAsync({ pieces }));
-            }}
-          />
+          
         </Col>
         <Col md={3} className="d-flex justify-content-left">
           <div className="d-flex justify-content-center align-items-left flex-column">
-            <PreloadSelector
-              className="mb-5"
-              selected={scores.preloadPiece}
-              handleSelection={async (piece) => {
-                dispatch(setPreloadPieceAsync({ piece }));
-              }}
-            />
+            
             <StartButton enabled={false} handleClick={() => {}} />
           </div>
         </Col>
