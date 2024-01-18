@@ -26,9 +26,8 @@ export const sendAutoEvent = createAsyncThunk(
   "scores/sendAutoEvent",
   async (
     data: {
-      intakeType: "PRELOAD" | "PRESET";
-      gamePiece: "CONE" | "CUBE";
-      scoringPosition?: "HIGH" | "MID" | "HYBRID";
+      // intakeType: "PRELOAD" | "PRESET";
+      scoringPosition?: "SPEAKER" | "AMP";
       failed: boolean;
     },
     { getState }
@@ -46,9 +45,8 @@ export const sendTeleopEvent = createAsyncThunk(
   "scores/sendAutoEvent",
   async (
     data: {
-      intakeLocation: "GROUND" | "CHUTE" | "SHELF";
-      gamePiece: "CONE" | "CUBE";
-      scoringPosition?: "HIGH" | "MID" | "HYBRID";
+      intakeLocation: "GROUND" | "SOURCE";
+      scoringPosition?: "SPEAKER" | "AMP";
       dropped?: boolean;
       failed?: boolean;
     },
@@ -66,8 +64,8 @@ export const sendTeleopEvent = createAsyncThunk(
 );
 
 const initialState: Scores = {
-  presetPieces: ["CONE", "CONE", "CONE", "CONE"],
-  preloadPiece: "CONE",
+
+  // preloadPiece: "CONE",
   autoStartingZone: undefined,
 };
 
@@ -75,22 +73,8 @@ export const scoresSlice = createSlice({
   name: "applicationData",
   initialState: initialState,
   reducers: {
-    setPresetPieces: (
-      state,
-      action: PayloadAction<{
-        pieces: ("CONE" | "CUBE")[];
-      }>
-    ) => {
-      state.presetPieces = action.payload.pieces;
-    },
-    setPreloadPiece: (
-      state,
-      action: PayloadAction<{
-        piece: "CONE" | "CUBE";
-      }>
-    ) => {
-      state.preloadPiece = action.payload.piece;
-    },
+    
+    
     setAutoStartingZone: (
       state,
       action: PayloadAction<{
