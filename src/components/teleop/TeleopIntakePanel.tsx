@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import { GamePiece, IntakeLocation } from "@prisma/client";
+import { IntakeLocation } from "@prisma/client";
 import IntakeGroup from "../mini/IntakeGroup";
 
 interface Props {
-  selected: [GamePiece, IntakeLocation] | null;
-  handleSelection: (selection: [GamePiece, IntakeLocation]) => void;
+  selected: IntakeLocation | null;
+  handleSelection: (selection: IntakeLocation) => void;
 }
 
 export default function TeleopIntakePanel({
@@ -18,56 +18,24 @@ export default function TeleopIntakePanel({
       <div className="d-flex justify-content-center flex-column">
         <IntakeGroup
           className="mb-2"
-          name="Shelf"
-          coneSelected={
+          name="Source"
+          selected={
             selected?.toString() ===
-            [GamePiece.CONE, IntakeLocation.SHELF].toString()
+            IntakeLocation.SOURCE.toString()
           }
-          handleConeSelection={() =>
-            handleSelection([GamePiece.CONE, IntakeLocation.SHELF])
-          }
-          cubeSelected={
-            selected?.toString() ===
-            [GamePiece.CUBE, IntakeLocation.SHELF].toString()
-          }
-          handleCubeSelection={() =>
-            handleSelection([GamePiece.CUBE, IntakeLocation.SHELF])
+          handleSelection={() =>
+            handleSelection(IntakeLocation.SOURCE)
           }
         />
         <IntakeGroup
           className="my-2"
-          name="Chute"
-          coneSelected={
-            selected?.toString() ===
-            [GamePiece.CONE, IntakeLocation.CHUTE].toString()
-          }
-          handleConeSelection={() =>
-            handleSelection([GamePiece.CONE, IntakeLocation.CHUTE])
-          }
-          cubeSelected={
-            selected?.toString() ===
-            [GamePiece.CUBE, IntakeLocation.CHUTE].toString()
-          }
-          handleCubeSelection={() =>
-            handleSelection([GamePiece.CUBE, IntakeLocation.CHUTE])
-          }
-        />
-        <IntakeGroup
-          className="mt-2"
           name="Ground"
-          coneSelected={
+          selected={
             selected?.toString() ===
-            [GamePiece.CONE, IntakeLocation.GROUND].toString()
+            IntakeLocation.GROUND.toString()
           }
-          handleConeSelection={() =>
-            handleSelection([GamePiece.CONE, IntakeLocation.GROUND])
-          }
-          cubeSelected={
-            selected?.toString() ===
-            [GamePiece.CUBE, IntakeLocation.GROUND].toString()
-          }
-          handleCubeSelection={() =>
-            handleSelection([GamePiece.CUBE, IntakeLocation.GROUND])
+          handleSelection={() =>
+            handleSelection(IntakeLocation.GROUND)
           }
         />
       </div>
