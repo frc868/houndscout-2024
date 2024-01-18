@@ -4,13 +4,12 @@ import { Col, Row } from "react-bootstrap";
 interface Props {
   selected: number | null;
   handleSelection: (selection: number) => void;
-  presets: ("CONE" | "CUBE")[];
 }
 
+//We could probably just divide intakes into the loading station and the field.
 export default function AutoIntakePanel({
   selected,
   handleSelection,
-  presets,
 }: Props) {
   return (
     <div className="d-flex flex-column align-items-center">
@@ -19,25 +18,7 @@ export default function AutoIntakePanel({
       <Row>
         <Col className="me-5">
           <div className="d-flex flex-column align-items-center">
-            {presets.map((item, idx) => (
-              <div
-                key={idx}
-                className={`my-1 grow d-flex justify-content-center align-items-center rounded-4 ${
-                  selected === idx
-                    ? `intake-${item.toLowerCase()}-selected`
-                    : ""
-                }`}
-                style={{ width: "90px", height: "90px" }}
-                onMouseDown={() => handleSelection(idx)}
-              >
-                <img
-                  className="mx-auto my-2"
-                  alt=""
-                  src={`/assets/${item.toLowerCase()}.png`}
-                  width={65}
-                />
-              </div>
-            ))}
+            
           </div>
         </Col>
         <Col>
