@@ -7,7 +7,7 @@ import TeleopIntakePanel from "@/components/teleop/TeleopIntakePanel";
 import TeleopScoringPanel from "@/components/teleop/TeleopScoringPanel";
 import { sendAutoEvent, sendTeleopEvent } from "@/redux/scoresSlice";
 import { AppDispatch, ReduxState } from "@/redux/store";
-import { GamePiece, IntakeLocation, ScoringPosition } from "@prisma/client";
+import { IntakeLocation, ScoringPosition } from "@prisma/client";
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,11 +19,11 @@ export default function TeleopContent() {
   >(null);
 
   const [intakeSelection, setIntakeSelection] = useState<
-    [GamePiece, IntakeLocation] | null
+    IntakeLocation | null
   >(null);
   const [activeSide, setActiveSide] = useState("intaking");
 
-  const handleIntakeSelection = (selection: [GamePiece, IntakeLocation]) => {
+  const handleIntakeSelection = (selection: IntakeLocation) => {
     setIntakeSelection(selection);
     setActiveSide("scoring");
   };
@@ -33,7 +33,6 @@ export default function TeleopContent() {
   ) => {
     const event = {
       intakeLocation: intakeSelection?.[1] as IntakeLocation,
-      gamePiece: intakeSelection?.[0] as GamePiece,
       ...(selection === "failed"
         ? { failed: true }
         : selection === "dropped"
