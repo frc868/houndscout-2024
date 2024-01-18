@@ -14,9 +14,6 @@ import { sendAutoEvent } from "@/redux/scoresSlice";
 export default function AutoContent() {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
-  const [chargeStationSelection, setChargeStationSelection] = useState<
-    "balanced" | "docked" | "failed" | null
-  >(null);
 
   const [selected, setSelected] = useState<number | null>(null);
   const [activeSide, setActiveSide] = useState("intake");
@@ -27,7 +24,7 @@ export default function AutoContent() {
   };
 
   const handleScoringSelection = async (
-    selection: "HIGH" | "MID" | "HYBRID" | "FAILED"
+    selection: "SPEAKER" | "AMP" | "FAILED"
   ) => {
     const event = {
       intakeType: "PRESET" as "PRELOAD" | "PRESET",
@@ -48,7 +45,6 @@ export default function AutoContent() {
       <Row className="my-5 d-flex justify-content-center">
         <Col className="d-flex justify-content-end pe-5 me-5" md={5}>
           <AutoIntakePanel
-            presets={scores.presetPieces}
             selected={selected}
             handleSelection={handleIntakeSelection}
           />
@@ -66,10 +62,7 @@ export default function AutoContent() {
           <div className="d-flex flex-column">
             <ChargeButton className="my-2" />
             <IncapButton className="mt-2 mb-5" />
-            <AutoChargeSelector
-              selected={chargeStationSelection}
-              handleSelection={setChargeStationSelection}
-            />
+            
           </div>
         </Col>
       </Row>
