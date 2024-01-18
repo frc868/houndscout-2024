@@ -161,7 +161,7 @@ model StageScoringAttempt {
   timestampStarted Decimal
   timestampEnded   Decimal
   numberRobots     Int
-  interaction      ChargeStationInteraction
+  interaction      StageInteraction
 
   teamScoreId Int
   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
@@ -184,8 +184,7 @@ enum AutoStartingZone {
 
 enum IntakeLocation {
   GROUND
-  CHUTE
-  SHELF
+  SOURCE
 }
 
 enum IntakeType {
@@ -199,12 +198,12 @@ enum GamePiece {
 }
 
 enum ScoringPosition {
-  HIGH
-  MID
-  HYBRID
+  SPEAKER
+  AMP
 }
 
-enum ChargeStationInteraction {
+enum StageInteraction {
+  //Needs adjustments
   BALANCED
   DOCKED
   ATTEMPTED
