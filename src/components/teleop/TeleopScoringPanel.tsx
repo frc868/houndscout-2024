@@ -18,21 +18,15 @@ export default function TeleopScoringPanel({ active, handleClick }: Props) {
         <Col className="mx-2">
           <ScoreButton
             className="mb-3"
-            name="High"
+            name="Speaker (S)"
             active={active}
-            handleClick={() => handleClick(ScoringPosition.HIGH)}
+            handleClick={() => handleClick(ScoringPosition.SPEAKEr)}
           />
           <ScoreButton
             className="my-3"
-            name="Mid"
+            name="Amp (A)"
             active={active}
-            handleClick={() => handleClick(ScoringPosition.MID)}
-          />
-          <ScoreButton
-            className="mt-3"
-            name="Hybrid"
-            active={active}
-            handleClick={() => handleClick(ScoringPosition.HYBRID)}
+            handleClick={() => handleClick(ScoringPosition.AMP)}
           />
         </Col>
         <Col className="d-flex flex-column justify-content-center mx-2">
