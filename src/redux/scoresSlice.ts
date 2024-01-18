@@ -3,45 +3,9 @@ import axios from "axios";
 import { ReduxState } from "./store";
 
 export interface Scores {
-  presetPieces: ("CONE" | "CUBE")[];
-  preloadPiece: "CONE" | "CUBE";
   autoStartingZone?: number;
 }
 
-export const setPresetPiecesAsync = createAsyncThunk(
-  "scores/setPresetPiecesAsync",
-  async (
-    { pieces }: { pieces: ("CONE" | "CUBE")[] },
-    { dispatch, getState }
-  ) => {
-    const state = getState() as ReduxState;
-    const mainData = state.mainData;
-    dispatch(setPresetPieces({ pieces }));
-    const res = await axios.patch(
-      `/api/v1/events/${mainData.activeEventCode}/matches/${mainData.activeMatchName}`,
-      {
-        presetPiece1: pieces[0],
-        presetPiece2: pieces[1],
-        presetPiece3: pieces[2],
-        presetPiece4: pieces[3],
-      }
-    );
-  }
-);
-export const setPreloadPieceAsync = createAsyncThunk(
-  "scores/setPreloadPieceAsync",
-  async ({ piece }: { piece: "CONE" | "CUBE" }, { dispatch, getState }) => {
-    const state = getState() as ReduxState;
-    const mainData = state.mainData;
-    dispatch(setPreloadPiece({ piece }));
-    const res = await axios.patch(
-      `/api/v1/events/${mainData.activeEventCode}/matches/${mainData.activeMatchName}/scores/${mainData.station}`,
-      {
-        preloadPiece: piece,
-      }
-    );
-  }
-);
 export const setAutoStartingZoneAsync = createAsyncThunk(
   "scores/setAutoStartingZoneAsync",
   async ({ zone }: { zone: number }, { dispatch, getState }) => {
@@ -57,6 +21,7 @@ export const setAutoStartingZoneAsync = createAsyncThunk(
   }
 );
 
+//still need to adjust.
 export const sendAutoEvent = createAsyncThunk(
   "scores/sendAutoEvent",
   async (
