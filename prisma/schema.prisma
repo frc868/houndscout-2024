@@ -113,7 +113,7 @@ model TeamScore {
   autoStartingZone      AutoStartingZone?
   autoScoringEvents     AutoScoringEvent[]
   teleopScoringEvents   TeleopScoringEvent[]
-  chargeStationAttempts ChargeStationAttempt[]
+  stageScoringAttempts  StageScoringAttempt[]
   incapSegments         IncapSegment[]
 
   driverSkillRating    Int?
@@ -133,7 +133,6 @@ model TeamScore {
 model AutoScoringEvent {
   id              Int              @id @default(autoincrement())
   intakeType      IntakeType
-  gamePiece       GamePiece
   scoringPosition ScoringPosition?
   failed          Boolean          @default(false)
   timestampScored Decimal
@@ -145,7 +144,6 @@ model AutoScoringEvent {
 model TeleopScoringEvent {
   id                Int              @id @default(autoincrement())
   intakeLocation    IntakeLocation
-  gamePiece         GamePiece
   scoringPosition   ScoringPosition?
   dropped           Boolean          @default(false)
   failed            Boolean          @default(false)
@@ -156,7 +154,8 @@ model TeleopScoringEvent {
   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
 }
 
-model ChargeStationAttempt {
+model StageScoringAttempt {
+//check later
   id               Int                      @id @default(autoincrement())
   segment          Segment
   timestampStarted Decimal
