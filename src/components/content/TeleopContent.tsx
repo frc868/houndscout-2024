@@ -2,7 +2,7 @@
 
 import ChargeButton from "@/components/mini/ChargeButton";
 import IncapButton from "@/components/mini/IncapButton";
-import TeleopChargeSelector from "@/components/teleop/TeleopChargeSelector";
+import TeleopStagePanel from "@/components/teleop/TeleopStagePanel";
 import TeleopIntakePanel from "@/components/teleop/TeleopIntakePanel";
 import TeleopScoringPanel from "@/components/teleop/TeleopScoringPanel";
 import { sendAutoEvent, sendTeleopEvent } from "@/redux/scoresSlice";
@@ -14,7 +14,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 export default function TeleopContent() {
   const dispatch = useDispatch<AppDispatch>();
-  const [chargeStationSelection, setChargeStationSelection] = useState<
+  const [stageSelection, setStageSelection] = useState<
+    "balanced" | "docked" | "failed" | null
+  >(null);
+
+  const [methodSelection, setMethodSelection] = useState<
     "balanced" | "docked" | "failed" | null
   >(null);
 
@@ -65,9 +69,11 @@ export default function TeleopContent() {
           <div className="d-flex flex-column">
             <ChargeButton className="my-2" />
             <IncapButton className="mt-2 mb-5" />
-            <TeleopChargeSelector
-              selected={chargeStationSelection}
-              handleSelection={setChargeStationSelection}
+            <TeleopStagePanel
+              stage={stageSelection}
+              handleStage={setStageSelection}
+              method={methodSelection}
+              handleMethod={setMethodSelection}
             />
           </div>
         </Col>
