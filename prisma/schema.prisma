@@ -109,7 +109,6 @@ model TeamScore {
   teamId Int
   team   Team @relation(fields: [teamId], references: [id])
 
-  preloadPiece          GamePiece?
   autoStartingZone      AutoStartingZone?
   autoScoringEvents     AutoScoringEvent[]
   teleopScoringEvents   TeleopScoringEvent[]
@@ -203,10 +202,10 @@ enum ScoringPosition {
 }
 
 enum StageInteraction {
-  //Needs adjustments
-  BALANCED
-  DOCKED
-  ATTEMPTED
+  PARKED
+  ONSTAGE
+  HARMONY
+  TRAP
 }
 
 enum Segment {
