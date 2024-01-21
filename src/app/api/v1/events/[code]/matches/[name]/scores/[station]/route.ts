@@ -19,7 +19,7 @@ export async function GET(
           include: {
             autoScoringEvents: true,
             teleopScoringEvents: true,
-            chargeStationAttempts: true,
+            stageScoringAttempts: true,
             incapSegments: true,
           },
         },
@@ -51,7 +51,6 @@ export async function PATCH(
       data: {
         [`${params.station}TeamScore`]: {
           update: {
-            preloadPiece: data.preloadPiece,
             driverSkillRating: data.driverSkillRating,
             defensePlayedAgainst: data.defensePlayedAgainst,
             autoStartingZone: data.autoStartingZone,
