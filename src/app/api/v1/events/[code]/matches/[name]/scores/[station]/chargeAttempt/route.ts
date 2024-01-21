@@ -15,7 +15,7 @@ export async function POST(
       data: {
         [`${params.station}TeamScore`]: {
           update: {
-            chargeStationAttempts: {
+            stageScoringAttempts: {
               create: {
                 segment: data.segment,
                 timestampScored: data.timestampScored,
@@ -30,7 +30,7 @@ export async function POST(
       include: {
         [`${params.station}TeamScore`]: {
           include: {
-            chargeStationAttempts: true,
+            stageScoringAttempts: true,
           },
         },
       },
