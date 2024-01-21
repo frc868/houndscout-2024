@@ -5,21 +5,22 @@ export async function POST(
   req: Request,
   { params }: { params: { station: string } }
 ) {
-  let server;
+  const data = await req.json();
+
+  let heartbeat;
   try {
-    server = await prisma.server.update({
+    heartbeat = await prisma.heartbeat.update({
       where: {
-        id: 1,
+        station: params.station,
       },
       data: {
-        [`last${params.station[0].toUpperCase()}${params.station.slice(
-          1
-        )}Heartbeat`]: new Date(),
+        time: new Date(),
+        section: data.section,
       },
     });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ ok: false }, { status: 400 });
   }
-  return NextResponse.json({ server, ok: true });
+  return NextResponse.json({ heartbeat, ok: true });
 }

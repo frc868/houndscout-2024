@@ -12,17 +12,22 @@ datasource db {
 }
 
 model Server {
-  id                 Int      @id @default(autoincrement())
-  activeEvent        Event?   @relation(fields: [activeEventId], references: [id])
-  activeEventId      Int?     @map("eventId")
-  activeMatch        Match?   @relation(fields: [activeMatchId], references: [id])
-  activeMatchId      Int?
-  lastRed1Heartbeat  DateTime
-  lastRed2Heartbeat  DateTime
-  lastRed3Heartbeat  DateTime
-  lastBlue1Heartbeat DateTime
-  lastBlue2Heartbeat DateTime
-  lastBlue3Heartbeat DateTime
+  id            Int         @id @default(autoincrement())
+  activeEvent   Event?      @relation(fields: [activeEventId], references: [id])
+  activeEventId Int?        @map("eventId")
+  activeMatch   Match?      @relation(fields: [activeMatchId], references: [id])
+  activeMatchId Int?
+  heartbeats    Heartbeat[]
+}
+
+model Heartbeat {
+  id      Int      @id @default(autoincrement())
+  station String   @unique
+  time    DateTime
+  section String
+
+  server   Server @relation(fields: [serverId], references: [id])
+  serverId Int
 }
 
 model Scouter {

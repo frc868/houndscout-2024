@@ -25,12 +25,15 @@ interface Props {
 export default function Client({ id }: Props) {
   const mainData = useSelector((state: ReduxState) => state.mainData);
   const dispatch = useDispatch<AppDispatch>();
+  const [tab, setTab] = useState<"auto" | "prematch" | "teleop" | "postmatch">(
+    "prematch"
+  );
 
   useEffect(() => {
     const interval = setInterval(async () => {
       await dispatch(getActiveEventAsync());
       await dispatch(getActiveMatchAsync());
-      await dispatch(sendHeartbeatAsync({ station: id }));
+      await dispatch(sendHeartbeatAsync({ station: id, section: tab }));
       await dispatch(setStation({ station: id }));
 
       if (mainData.activeEventCode && mainData.activeMatchName) {
@@ -51,11 +54,7 @@ export default function Client({ id }: Props) {
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [dispatch, mainData.activeEventCode, mainData.activeMatchName, id]);
-
-  const [tab, setTab] = useState<"auto" | "prematch" | "teleop" | "postmatch">(
-    "prematch"
-  );
+  }, [dispatch, mainData.activeEventCode, mainData.activeMatchName, id, tab]);
 
   const ready =
     mainData.scouter.name &&

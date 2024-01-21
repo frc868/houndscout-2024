@@ -75,8 +75,8 @@ export const getScouterAsync = createAsyncThunk(
 );
 export const sendHeartbeatAsync = createAsyncThunk(
   "mainData/sendHeartbeatAsync",
-  async ({ station }: { station: string }) => {
-    await axios.post(`/api/v1/heartbeat/${station}`);
+  async ({ station, section }: { station: string; section: string }) => {
+    await axios.post(`/api/v1/heartbeat/${station}`, { section });
   }
 );
 

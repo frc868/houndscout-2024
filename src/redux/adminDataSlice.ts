@@ -4,18 +4,22 @@ import axios from "axios";
 export interface Match {
   name: string;
   number: number;
-  red1TeamNumber: number;
-  red2TeamNumber: number;
-  red3TeamNumber: number;
-  blue1TeamNumber: number;
-  blue2TeamNumber: number;
-  blue3TeamNumber: number;
-  red1Scouter?: Scouter;
-  red2Scouter?: Scouter;
-  red3Scouter?: Scouter;
-  blue1Scouter?: Scouter;
-  blue2Scouter?: Scouter;
-  blue3Scouter?: Scouter;
+  teamNumbers: {
+    red1: number;
+    red2: number;
+    red3: number;
+    blue1: number;
+    blue2: number;
+    blue3: number;
+  };
+  scouters: {
+    red1: Scouter;
+    red2: Scouter;
+    red3: Scouter;
+    blue1: Scouter;
+    blue2: Scouter;
+    blue3: Scouter;
+  };
 }
 
 export interface Scouter {
@@ -23,13 +27,9 @@ export interface Scouter {
   name: string;
 }
 
-export interface HeartbeatData {
-  lastRed1Heartbeat: Date;
-  lastRed2Heartbeat: Date;
-  lastRed3Heartbeat: Date;
-  lastBlue1Heartbeat: Date;
-  lastBlue2Heartbeat: Date;
-  lastBlue3Heartbeat: Date;
+export interface Heartbeat {
+  time: number;
+  section: string;
 }
 
 export interface AdminData {
@@ -38,7 +38,14 @@ export interface AdminData {
   matchesStatus: "idle" | "waiting" | "succeeded" | "failed";
   scoutersStatus: "idle" | "waiting" | "succeeded" | "failed";
   error?: string;
-  heartbeats: HeartbeatData;
+  heartbeats: {
+    red1: Heartbeat;
+    red2: Heartbeat;
+    red3: Heartbeat;
+    blue1: Heartbeat;
+    blue2: Heartbeat;
+    blue3: Heartbeat;
+  };
 }
 
 export const getMatchesAsync = createAsyncThunk(
@@ -76,7 +83,7 @@ export const getHeartbeatsAsync = createAsyncThunk(
   "adminData/getHeartbeats",
   async () => {
     const res = await axios.get("/api/v1/heartbeat");
-    return res.data;
+    return res.data.heartbeats;
   }
 );
 
@@ -109,12 +116,12 @@ const initialState: AdminData = {
   scoutersStatus: "idle",
   error: undefined,
   heartbeats: {
-    lastRed1Heartbeat: new Date(),
-    lastRed2Heartbeat: new Date(),
-    lastRed3Heartbeat: new Date(),
-    lastBlue1Heartbeat: new Date(),
-    lastBlue2Heartbeat: new Date(),
-    lastBlue3Heartbeat: new Date(),
+    red1: { time: Date.now(), section: "" },
+    red2: { time: Date.now(), section: "" },
+    red3: { time: Date.now(), section: "" },
+    blue1: { time: Date.now(), section: "" },
+    blue2: { time: Date.now(), section: "" },
+    blue3: { time: Date.now(), section: "" },
   },
 };
 
@@ -149,18 +156,22 @@ export const mainData = createSlice({
               return {
                 name: item.name,
                 number: item.number,
-                red1TeamNumber: item.red1Team.number,
-                red2TeamNumber: item.red2Team.number,
-                red3TeamNumber: item.red3Team.number,
-                blue1TeamNumber: item.blue1Team.number,
-                blue2TeamNumber: item.blue2Team.number,
-                blue3TeamNumber: item.blue3Team.number,
-                red1Scouter: item.red1TeamScore.scouter,
-                red2Scouter: item.red2TeamScore.scouter,
-                red3Scouter: item.red3TeamScore.scouter,
-                blue1Scouter: item.blue1TeamScore.scouter,
-                blue2Scouter: item.blue2TeamScore.scouter,
-                blue3Scouter: item.blue3TeamScore.scouter,
+                teamNumbers: {
+                  red1: item.red1Team.number,
+                  red2: item.red2Team.number,
+                  red3: item.red3Team.number,
+                  blue1: item.blue1Team.number,
+                  blue2: item.blue2Team.number,
+                  blue3: item.blue3Team.number,
+                },
+                scouters: {
+                  red1: item.red1TeamScore.scouter,
+                  red2: item.red2TeamScore.scouter,
+                  red3: item.red3TeamScore.scouter,
+                  blue1: item.blue1TeamScore.scouter,
+                  blue2: item.blue2TeamScore.scouter,
+                  blue3: item.blue3TeamScore.scouter,
+                },
               };
             }
           );
@@ -197,24 +208,30 @@ export const mainData = createSlice({
     builder.addCase(getHeartbeatsAsync.fulfilled, (state, action) => {
       if (action.payload !== null) {
         console.log(action.payload);
-        state.heartbeats.lastRed1Heartbeat = new Date(
-          action.payload.lastRed1Heartbeat
-        );
-        state.heartbeats.lastRed2Heartbeat = new Date(
-          action.payload.lastRed2Heartbeat
-        );
-        state.heartbeats.lastRed3Heartbeat = new Date(
-          action.payload.lastRed3Heartbeat
-        );
-        state.heartbeats.lastBlue1Heartbeat = new Date(
-          action.payload.lastBlue1Heartbeat
-        );
-        state.heartbeats.lastBlue2Heartbeat = new Date(
-          action.payload.lastBlue2Heartbeat
-        );
-        state.heartbeats.lastBlue3Heartbeat = new Date(
-          action.payload.lastBlue3Heartbeat
-        );
+        state.heartbeats.red1 = {
+          time: new Date(action.payload.red1.time).getTime(),
+          section: action.payload.red1.section,
+        };
+        state.heartbeats.red2 = {
+          time: new Date(action.payload.red2.time).getTime(),
+          section: action.payload.red2.section,
+        };
+        state.heartbeats.red3 = {
+          time: new Date(action.payload.red3.time).getTime(),
+          section: action.payload.red3.section,
+        };
+        state.heartbeats.blue1 = {
+          time: new Date(action.payload.blue1.time).getTime(),
+          section: action.payload.blue1.section,
+        };
+        state.heartbeats.blue2 = {
+          time: new Date(action.payload.blue2.time).getTime(),
+          section: action.payload.blue2.section,
+        };
+        state.heartbeats.blue3 = {
+          time: new Date(action.payload.blue3.time).getTime(),
+          section: action.payload.blue3.section,
+        };
       }
     });
   },

@@ -1,23 +1,21 @@
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
-  let server;
+  let heartbeats;
   try {
-    server = await prisma.server.findUnique({
-      where: {
-        id: 1,
-      },
-    });
+    heartbeats = await prisma.heartbeat.findMany();
   } catch {
     return NextResponse.json({ ok: false }, { status: 400 });
   }
   return NextResponse.json({
-    lastRed1Heartbeat: server?.lastRed1Heartbeat,
-    lastRed2Heartbeat: server?.lastRed2Heartbeat,
-    lastRed3Heartbeat: server?.lastRed3Heartbeat,
-    lastBlue1Heartbeat: server?.lastBlue1Heartbeat,
-    lastBlue2Heartbeat: server?.lastBlue2Heartbeat,
-    lastBlue3Heartbeat: server?.lastBlue3Heartbeat,
+    heartbeats: {
+      red1: heartbeats.find((h) => h.station === "red1"),
+      red2: heartbeats.find((h) => h.station === "red2"),
+      red3: heartbeats.find((h) => h.station === "red3"),
+      blue1: heartbeats.find((h) => h.station === "blue1"),
+      blue2: heartbeats.find((h) => h.station === "blue2"),
+      blue3: heartbeats.find((h) => h.station === "blue3"),
+    },
     ok: true,
   });
 }

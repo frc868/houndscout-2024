@@ -18,8 +18,8 @@ import {
   setMatchScouterAsync,
 } from "@/redux/adminDataSlice";
 import MatchSchedule from "@/components/admin/MatchSchedule";
-import { Row } from "react-bootstrap";
-import ScouterStatus from "@/components/admin/ScouterStatus";
+import { Col, Container, Row } from "react-bootstrap";
+import Activity from "@/components/admin/ScouterStatus";
 
 export default function Admin() {
   const mainData = useSelector((state: ReduxState) => state.mainData);
@@ -44,12 +44,16 @@ export default function Admin() {
   const ready =
     mainData.activeEventCode && mainData.activeMatchName && adminData.matches;
 
+  const activeMatch = adminData.matches?.filter(
+    (match) => match.name === mainData.activeMatchName
+  )[0] as Match;
+
   return (
     <>
       <AdminStatusBar
         eventCode={mainData.activeEventCode}
         matchName={mainData.activeMatchName}
-        isConnected={true}
+        isConnected={false}
       />
       {!ready && (
         <div className="vh-100 d-flex justify-content-center mt-5">
@@ -58,9 +62,15 @@ export default function Admin() {
       )}
 
       {ready && (
-        <>
+        <Container>
           <Row className="my-4">
-            <ScouterStatus heartbeats={adminData.heartbeats} />
+            <Col md={5}>
+              <Activity
+                scouters={activeMatch.scouters}
+                heartbeats={adminData.heartbeats}
+              />
+            </Col>
+            <Col></Col>
           </Row>
           <Row>
             <MatchSchedule
@@ -87,7 +97,7 @@ export default function Admin() {
               }}
             />
           </Row>
-        </>
+        </Container>
       )}
     </>
   );

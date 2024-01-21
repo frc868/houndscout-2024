@@ -50,10 +50,10 @@ export default function MatchSchedule({
                   Match {match.number}
                 </td>
                 <td className="px-2 table-danger">
-                  {match.red1TeamNumber}{" "}
+                  {match.teamNumbers.red1}{" "}
                   <ScoutersDropdown
                     active={match.name === activeMatchName}
-                    activeScouter={match.red1Scouter?.name || "Not Assigned"}
+                    activeScouter={match.scouters.red1?.name || "Not Assigned"}
                     scouters={scouters}
                     handleScouterSelect={(id) =>
                       handleScouterSelect(match.name, "red1", id)
@@ -61,10 +61,10 @@ export default function MatchSchedule({
                   />
                 </td>
                 <td className="px-2 table-danger">
-                  {match.red2TeamNumber}{" "}
+                  {match.teamNumbers.red2}{" "}
                   <ScoutersDropdown
                     active={match.name === activeMatchName}
-                    activeScouter={match.red2Scouter?.name || "Not Assigned"}
+                    activeScouter={match.scouters.red2?.name || "Not Assigned"}
                     scouters={scouters}
                     handleScouterSelect={(id) =>
                       handleScouterSelect(match.name, "red2", id)
@@ -72,10 +72,10 @@ export default function MatchSchedule({
                   />
                 </td>
                 <td className="px-2 table-danger">
-                  {match.red3TeamNumber}{" "}
+                  {match.teamNumbers.red3}{" "}
                   <ScoutersDropdown
                     active={match.name === activeMatchName}
-                    activeScouter={match.red3Scouter?.name || "Not Assigned"}
+                    activeScouter={match.scouters.red3?.name || "Not Assigned"}
                     scouters={scouters}
                     handleScouterSelect={(id) =>
                       handleScouterSelect(match.name, "red3", id)
@@ -83,10 +83,10 @@ export default function MatchSchedule({
                   />
                 </td>
                 <td className="px-2 table-primary">
-                  {match.blue1TeamNumber}{" "}
+                  {match.teamNumbers.blue1}{" "}
                   <ScoutersDropdown
                     active={match.name === activeMatchName}
-                    activeScouter={match.blue1Scouter?.name || "Not Assigned"}
+                    activeScouter={match.scouters.blue1?.name || "Not Assigned"}
                     scouters={scouters}
                     handleScouterSelect={(id) =>
                       handleScouterSelect(match.name, "blue1", id)
@@ -94,10 +94,10 @@ export default function MatchSchedule({
                   />
                 </td>
                 <td className="px-2 table-primary">
-                  {match.blue2TeamNumber}{" "}
+                  {match.teamNumbers.blue2}{" "}
                   <ScoutersDropdown
                     active={match.name === activeMatchName}
-                    activeScouter={match.blue2Scouter?.name || "Not Assigned"}
+                    activeScouter={match.scouters.blue2?.name || "Not Assigned"}
                     scouters={scouters}
                     handleScouterSelect={(id) =>
                       handleScouterSelect(match.name, "blue2", id)
@@ -105,10 +105,10 @@ export default function MatchSchedule({
                   />
                 </td>
                 <td className="px-2 table-primary">
-                  {match.blue3TeamNumber}{" "}
+                  {match.teamNumbers.blue3}{" "}
                   <ScoutersDropdown
                     active={match.name === activeMatchName}
-                    activeScouter={match.blue3Scouter?.name || "Not Assigned"}
+                    activeScouter={match.scouters.blue3?.name || "Not Assigned"}
                     scouters={scouters}
                     handleScouterSelect={(id) =>
                       handleScouterSelect(match.name, "blue3", id)
