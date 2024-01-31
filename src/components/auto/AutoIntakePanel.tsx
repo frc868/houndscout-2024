@@ -17,6 +17,14 @@ export default function AutoIntakePanel({
       <h1 className="text-center mb-3">Intake</h1>
 
       <Row>
+        <Col>
+          <img
+            className="mx-auto my-2"
+            alt=""
+            src={`/assets/speaker.png`}
+            width={200}
+          />
+        </Col>
         <Col className="me-5">
           <div className="d-flex flex-column align-items-center">
             {presets.map((item, idx) => (
@@ -33,20 +41,12 @@ export default function AutoIntakePanel({
                 <img
                   className="mx-auto my-2"
                   alt=""
-                  src={`/assets/${item.toLowerCase()}.png`}
+                  src={`/assets/ring.jpeg`}
                   width={65}
                 />
               </div>
             ))}
           </div>
-        </Col>
-        <Col>
-          <img
-            className="mx-auto my-2"
-            alt=""
-            src={`/assets/blueAuto.png`}
-            width={200}
-          />
         </Col>
       </Row>
     </div>

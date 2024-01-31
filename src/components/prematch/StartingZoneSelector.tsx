@@ -17,17 +17,18 @@ export default function StartingZoneSelector({
         <div className="d-flex flex-column">
           <h1 className="text-center mb-3">Starting Position</h1>
           <img
-            className="mx-auto"
+            className="ml-auto my-auto"
             alt=""
-            src={"/assets/blueStart.png"}
-            width={400}
+            src={"/assets/speaker.png"}
+            width={150}
+            height={300}
           />
         </div>
         <div
           style={{
             position: "absolute",
-            top: "102px",
-            left: "137px",
+            top: "75px",
+            left: "125px",
           }}
         >
           <Button
@@ -42,7 +43,7 @@ export default function StartingZoneSelector({
         <div
           style={{
             position: "absolute",
-            top: "230px",
+            top: "200px",
             left: "200px",
           }}
         >
@@ -58,8 +59,8 @@ export default function StartingZoneSelector({
         <div
           style={{
             position: "absolute",
-            top: "358px",
-            left: "195px",
+            top: "325px",
+            left: "125px",
           }}
         >
           <Button

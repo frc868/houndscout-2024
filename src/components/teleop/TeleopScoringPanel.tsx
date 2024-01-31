@@ -18,19 +18,19 @@ export default function TeleopScoringPanel({ active, handleClick }: Props) {
         <Col className="mx-2">
           <ScoreButton
             className="mb-3"
-            name="High"
+            name="Speaker"
             active={active}
             handleClick={() => handleClick(ScoringPosition.HIGH)}
           />
-          <ScoreButton
+          {/* <ScoreButton
             className="my-3"
             name="Mid"
             active={active}
             handleClick={() => handleClick(ScoringPosition.MID)}
-          />
+          /> */}
           <ScoreButton
             className="mt-3"
-            name="Hybrid"
+            name="Amp"
             active={active}
             handleClick={() => handleClick(ScoringPosition.HYBRID)}
           />

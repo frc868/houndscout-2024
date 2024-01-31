@@ -44,7 +44,7 @@ export default function PrematchContent() {
         </Col>
       </Row>
       <Row className="my-5">
-        <Col className="d-flex justify-content-end" md={5}>
+        <Col className="d-flex justify-content-end" md={6}>
           <StartingPositionSelector
             selected={scores.autoStartingZone}
             handleSelection={async (zone) => {
@@ -52,25 +52,25 @@ export default function PrematchContent() {
             }}
           />
         </Col>
-        <Col md={3}>
+        {/* <Col md={3}>
           <PresetSelector
             selected={scores.presetPieces}
             handleSelection={async (pieces) => {
               dispatch(setPresetPiecesAsync({ pieces }));
             }}
           />
-        </Col>
-        <Col md={3} className="d-flex justify-content-left">
-          <div className="d-flex justify-content-center align-items-left flex-column">
-            <PreloadSelector
+        </Col> */}
+        <Col md={6} className="d-flex justify-content-left">
+          {/* <div className="d-flex justify-content-center align-items-left flex-column"> */}
+            {/* <PreloadSelector
               className="mb-5"
               selected={scores.preloadPiece}
               handleSelection={async (piece) => {
                 dispatch(setPreloadPieceAsync({ piece }));
               }}
-            />
+            /> */}
             <StartButton enabled={false} handleClick={() => {}} />
-          </div>
+          {/* </div> */}
         </Col>
       </Row>
     </>

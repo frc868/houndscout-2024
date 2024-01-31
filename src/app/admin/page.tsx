@@ -41,8 +41,8 @@ export default function Admin() {
     return () => clearInterval(interval);
   }, [dispatch, mainData.activeEventCode, mainData.activeMatchName]);
 
-  const ready =
-    mainData.activeEventCode && mainData.activeMatchName && adminData.matches;
+  const ready = true; //this is just a bypass so we can actually work on the project.
+    // mainData.activeEventCode && mainData.activeMatchName && adminData.matches;
 
   const activeMatch = adminData.matches?.filter(
     (match) => match.name === mainData.activeMatchName

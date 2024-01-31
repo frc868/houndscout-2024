@@ -17,29 +17,30 @@ export default function AutoScoringPanel({ active, handleClick }: Props) {
         <Col className="mx-2">
           <ScoreButton
             className="mb-3"
-            name="High"
+            name="Speaker"
             active={active}
             handleClick={() => {
               handleClick("HIGH");
             }}
           />
-          <ScoreButton
+          {/* <ScoreButton
             className="my-3"
-            name="Mid"
+            name=""
             active={active}
             handleClick={() => {
               handleClick("MID");
             }}
-          />
+          /> */}
           <ScoreButton
             className="mt-3"
-            name="Hybrid"
+            name="Amp"
             active={active}
             handleClick={() => {
               handleClick("HYBRID");
             }}
           />
         </Col>
+        {/* maybe put divider here */}
         <Col className="d-flex align-items-center mx-2">
           <FailButton
             name="Failed"

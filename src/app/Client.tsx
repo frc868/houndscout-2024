@@ -56,10 +56,10 @@ export default function Client({ id }: Props) {
     return () => clearInterval(interval);
   }, [dispatch, mainData.activeEventCode, mainData.activeMatchName, id, tab]);
 
-  const ready =
-    mainData.scouter.name &&
-    mainData.activeTeamNumber &&
-    mainData.activeMatchName;
+  const ready = true; //bypassing data checks
+    // mainData.scouter.name &&
+    // mainData.activeTeamNumber &&
+    // mainData.activeMatchName;
 
   return (
     <>
