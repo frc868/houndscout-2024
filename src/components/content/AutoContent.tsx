@@ -46,17 +46,17 @@ export default function AutoContent() {
   return (
     <>
       <Row className="my-5 d-flex justify-content-center">
-        <Col className="d-flex justify-content-end pe-5 me-5" md={5}>
+        <Col className="d-flex justify-content-end" md={2}>
+          <AutoScoringPanel
+            active={activeSide === "scoring"}
+            handleClick={handleScoringSelection}
+          />
+        </Col>
+        <Col className="d-flex justify-content-center pe-5 me-5" md={5}>
           <AutoIntakePanel
             presets={scores.presetPieces}
             selected={selected}
             handleSelection={handleIntakeSelection}
-          />
-        </Col>
-        <Col className="d-flex justify-content-center" md={2}>
-          <AutoScoringPanel
-            active={activeSide === "scoring"}
-            handleClick={handleScoringSelection}
           />
         </Col>
         <Col

@@ -18,57 +18,26 @@ export default function TeleopIntakePanel({
       <div className="d-flex justify-content-center flex-column">
         <IntakeGroup
           className="mb-2"
-          name="Shelf"
-          coneSelected={
+          name="Source"
+          selected={
             selected?.toString() ===
             [GamePiece.CONE, IntakeLocation.SHELF].toString()
           }
-          handleConeSelection={() =>
+          handleSelection={() =>
             handleSelection([GamePiece.CONE, IntakeLocation.SHELF])
-          }
-          cubeSelected={
-            selected?.toString() ===
-            [GamePiece.CUBE, IntakeLocation.SHELF].toString()
-          }
-          handleCubeSelection={() =>
-            handleSelection([GamePiece.CUBE, IntakeLocation.SHELF])
-          }
-        />
-        <IntakeGroup
-          className="my-2"
-          name="Chute"
-          coneSelected={
-            selected?.toString() ===
-            [GamePiece.CONE, IntakeLocation.CHUTE].toString()
-          }
-          handleConeSelection={() =>
-            handleSelection([GamePiece.CONE, IntakeLocation.CHUTE])
-          }
-          cubeSelected={
-            selected?.toString() ===
-            [GamePiece.CUBE, IntakeLocation.CHUTE].toString()
-          }
-          handleCubeSelection={() =>
-            handleSelection([GamePiece.CUBE, IntakeLocation.CHUTE])
           }
         />
         <IntakeGroup
           className="mt-2"
-          name="Ground"
-          coneSelected={
+          name="Field"
+          selected={
             selected?.toString() ===
             [GamePiece.CONE, IntakeLocation.GROUND].toString()
           }
-          handleConeSelection={() =>
+          handleSelection={() =>
             handleSelection([GamePiece.CONE, IntakeLocation.GROUND])
           }
-          cubeSelected={
-            selected?.toString() ===
-            [GamePiece.CUBE, IntakeLocation.GROUND].toString()
-          }
-          handleCubeSelection={() =>
-            handleSelection([GamePiece.CUBE, IntakeLocation.GROUND])
-          }
+        />
         />
       </div>
     </div>
