@@ -66,10 +66,10 @@ export default function AutoContent() {
           <div className="d-flex flex-column">
             <ChargeButton className="my-2" />
             <IncapButton className="mt-2 mb-5" />
-            <AutoChargeSelector
+            {/* <AutoChargeSelector
               selected={chargeStationSelection}
               handleSelection={setChargeStationSelection}
-            />
+            /> */}
           </div>
         </Col>
       </Row>
