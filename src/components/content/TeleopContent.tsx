@@ -50,7 +50,7 @@ export default function TeleopContent() {
   return (
     <>
       <Row className="my-5">
-        <Col className="d-flex justify-content-end" md={4}>
+        <Col className="d-flex justify-content-end" md={3}>
           <TeleopIntakePanel
             selected={intakeSelection}
             handleSelection={handleIntakeSelection}
@@ -62,7 +62,7 @@ export default function TeleopContent() {
             handleClick={handleScoringSelection}
           />
         </Col>
-        <Col className="d-flex justify-content-start" md={4}>
+        <Col className="d-flex justify-content-start" md={5}>
           <div className="d-flex flex-column">
             <ChargeButton className="my-2" />
             <IncapButton className="mt-2 mb-5" />
