@@ -12,7 +12,14 @@ import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function TeleopContent() {
+interface Props {
+  incap: true | false;
+  setIncap: (
+    selection: true | false
+  ) => void;
+  }
+
+export default function TeleopContent({incap, setIncap}: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const [stageLocationSelection, setStageLocationSelection] = useState<
     "left" | "center" | "right" | null
@@ -55,7 +62,7 @@ export default function TeleopContent() {
 
   return (
     <>
-      <Row className="my-5">
+      <Row className="my-3">
         <Col className="d-flex justify-content-end" md={3}>
           <TeleopIntakePanel
             selected={intakeSelection}
@@ -70,7 +77,6 @@ export default function TeleopContent() {
         </Col>
         <Col className="d-flex justify-content-start" md={5}>
           <div className="d-flex flex-column">
-            <IncapButton className="mt-2 mb-5" />
             <TeleopChargeSelector
               location={stageLocationSelection}
               handleLocation={setStageLocationSelection}
@@ -82,6 +88,7 @@ export default function TeleopContent() {
           </div>
         </Col>
       </Row>
+      <IncapButton className="mt-2" active={incap} handleClick={setIncap} />
     </>
   );
 }
