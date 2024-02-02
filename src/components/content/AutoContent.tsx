@@ -11,12 +11,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import { sendAutoEvent } from "@/redux/scoresSlice";
 
-export default function AutoContent() {
+interface Props {
+  incap: true | false;
+  setIncap: (
+    selection: true | false
+  ) => void;
+  }
+
+export default function AutoContent({incap, setIncap}: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
-  const [chargeStationSelection, setChargeStationSelection] = useState<
-    "balanced" | "docked" | "failed" | null
-  >(null);
+
 
   const [selected, setSelected] = useState<number | null>(null);
   const [activeSide, setActiveSide] = useState("intake");
@@ -45,15 +50,15 @@ export default function AutoContent() {
 
   return (
     <>
-      <Row className="my-5 d-flex justify-content-center">
-      <Col className="d-flex justify-content-end pe-5 me-5" md={5}>
+      <Row className="my-4 d-flex justify-content-center">
+      <Col className="d-flex justify-content-end" md={4}>
           <AutoIntakePanel
             presets={scores.presetPieces}
             selected={selected}
             handleSelection={handleIntakeSelection}
           />
         </Col>
-        <Col className="d-flex justify-content-center" md={3}>
+        <Col className="d-flex justify-content-center" md={4}>
           <AutoScoringPanel
             active={activeSide === "scoring"}
             handleClick={handleScoringSelection}
@@ -64,7 +69,7 @@ export default function AutoContent() {
           md={3}
         >
           <div className="d-flex flex-column">
-            <IncapButton className="mt-2 mb-5" />
+            <IncapButton className="mt-2 mb-5" active={incap} handleClick={setIncap} />
           </div>
         </Col>
       </Row>

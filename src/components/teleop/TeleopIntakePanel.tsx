@@ -13,11 +13,11 @@ export default function TeleopIntakePanel({
 }: Props) {
   return (
     <div className="d-flex flex-column align-items-center">
-      <h1 className="text-center mb-3">Intake</h1>
+      <h1 className="text-center mb-2">Intake</h1>
 
       <div className="d-flex justify-content-center flex-column">
         <IntakeGroup
-          className="mb-2"
+          className="mb-1"
           name="Source"
           selected={
             selected?.toString() ===
@@ -28,7 +28,7 @@ export default function TeleopIntakePanel({
           }
         />
         <IntakeGroup
-          className="mt-2"
+          className="mt-1"
           name="Field"
           selected={
             selected?.toString() ===
@@ -37,7 +37,6 @@ export default function TeleopIntakePanel({
           handleSelection={() =>
             handleSelection([GamePiece.CONE, IntakeLocation.GROUND])
           }
-        />
         />
       </div>
     </div>

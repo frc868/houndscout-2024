@@ -17,6 +17,7 @@ import {
   sendHeartbeatAsync,
   setStation,
 } from "@/redux/mainDataSlice";
+import IncapButton from "@/components/mini/IncapButton";
 
 interface Props {
   id: "red1" | "red2" | "red3" | "blue1" | "blue2" | "blue3";
@@ -28,6 +29,7 @@ export default function Client({ id }: Props) {
   const [tab, setTab] = useState<"auto" | "prematch" | "teleop" | "postmatch">(
     "prematch"
   );
+  const [incap, setIncap] = useState<true | false>(false);
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -57,9 +59,7 @@ export default function Client({ id }: Props) {
   }, [dispatch, mainData.activeEventCode, mainData.activeMatchName, id, tab]);
 
   const ready = true; //bypassing data checks
-    // mainData.scouter.name &&
-    // mainData.activeTeamNumber &&
-    // mainData.activeMatchName;
+    // mainData.scouter.name && mainData.activeTeamNumber && mainData.activeMatchName;
 
   return (
     <>
@@ -76,8 +76,8 @@ export default function Client({ id }: Props) {
       )}
       {ready && <SectionSelector selected={tab} handleSelection={setTab} />}
       {ready && tab === "prematch" && <PrematchContent />}
-      {ready && tab === "auto" && <AutoContent />}
-      {ready && tab === "teleop" && <TeleopContent />}
+      {ready && tab === "auto" && <AutoContent incap={incap} setIncap={setIncap} />}
+      {ready && tab === "teleop" && <TeleopContent  incap={incap} setIncap={setIncap} />}
       {ready && tab === "postmatch" && <PostmatchContent />}
     </>
   );

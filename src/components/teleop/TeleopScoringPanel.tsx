@@ -12,24 +12,18 @@ interface Props {
 export default function TeleopScoringPanel({ active, handleClick }: Props) {
   return (
     <div className="d-flex flex-column align-items-center">
-      <h1 className="text-center mb-3">Scoring</h1>
+      <h1 className="text-center mb-2">Scoring</h1>
 
       <Row>
         <Col className="mx-2">
           <ScoreButton
-            className="mb-3"
+            className="mb-2"
             name="Speaker"
             active={active}
             handleClick={() => handleClick(ScoringPosition.HIGH)}
           />
-          {/* <ScoreButton
-            className="my-3"
-            name="Mid"
-            active={active}
-            handleClick={() => handleClick(ScoringPosition.MID)}
-          /> */}
           <ScoreButton
-            className="mt-3"
+            className="mt-2"
             name="Amp"
             active={active}
             handleClick={() => handleClick(ScoringPosition.HYBRID)}
@@ -37,13 +31,13 @@ export default function TeleopScoringPanel({ active, handleClick }: Props) {
         </Col>
         <Col className="d-flex flex-column justify-content-center mx-2">
           <FailButton
-            className="mb-3"
+            className="mb-2"
             name="Failed"
             active={active}
             handleClick={() => handleClick("failed")}
           />
           <FailButton
-            className="mt-3"
+            className="mt-2"
             name="Dropped"
             active={active}
             handleClick={() => handleClick("dropped")}

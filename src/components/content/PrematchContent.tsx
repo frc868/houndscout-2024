@@ -31,20 +31,16 @@ export default function PrematchContent() {
     <>
       <Row className="my-5 d-flex justify-content-center">
         <Col
-          md={2}
-          className={`pt-3 pb-2 px-2 rounded-4 bg-${
+          md={3}
+          className={`rounded-4 d-flex justify-content-center align-items-center bg-${
             mainData.station?.includes("red") ? "danger" : "primary"
           }-subtle`}
         >
           <h1 className="text-center">
-            {mainData.station?.includes("red") ? "Red" : "Blue"}{" "}
-            {mainData.station?.[mainData.station?.length - 1]}
+            {mainData.station?.includes("red") ? "Red" : "Blue"} {mainData.station?.[mainData.station?.length - 1]} Team {mainData.activeTeamNumber}
           </h1>
-          <h1 className="text-center">Team {mainData.activeTeamNumber}</h1>
         </Col>
-      </Row>
-      <Row className="my-5">
-        <Col className="d-flex justify-content-end" md={6}>
+        <Col className="d-flex justify-content-center" md={5}>
           <StartingPositionSelector
             selected={scores.autoStartingZone}
             handleSelection={async (zone) => {
@@ -52,25 +48,8 @@ export default function PrematchContent() {
             }}
           />
         </Col>
-        {/* <Col md={3}>
-          <PresetSelector
-            selected={scores.presetPieces}
-            handleSelection={async (pieces) => {
-              dispatch(setPresetPiecesAsync({ pieces }));
-            }}
-          />
-        </Col> */}
-        <Col md={6} className="d-flex justify-content-left">
-          {/* <div className="d-flex justify-content-center align-items-left flex-column"> */}
-            {/* <PreloadSelector
-              className="mb-5"
-              selected={scores.preloadPiece}
-              handleSelection={async (piece) => {
-                dispatch(setPreloadPieceAsync({ piece }));
-              }}
-            /> */}
+        <Col md={3} className="d-flex justify-content-start  align-items-center">
             <StartButton enabled={false} handleClick={() => {}} />
-          {/* </div> */}
         </Col>
       </Row>
     </>

@@ -31,8 +31,8 @@ export default function TeleopChargeSelector({
       <h1 className="text-center">Stage</h1>
       <Row className="d-flex justify-content-center">
         <Col className="d-flex">
-          <p>Location:</p>
-          <ListGroup className="charge-selector text-center w-30 fs-6">
+          <h6>Location:</h6>
+          <ListGroup className="charge-selector text-center w-30 fs-10">
             <ListGroup.Item
               action
               active={location === null}
@@ -65,8 +65,8 @@ export default function TeleopChargeSelector({
         </Col>
 
         <Col className="d-flex">
-          <p>Harmony:</p>
-          <ListGroup className="charge-selector text-center w-40 fs-6">
+          <h6>Harmony:</h6>
+          <ListGroup className="charge-selector text-center w-40 fs-10">
             <ListGroup.Item
               action
               active={harmony === null}
@@ -106,8 +106,8 @@ export default function TeleopChargeSelector({
         </Col>
 
         <Col className="d-flex">
-          <p>Trap Score:</p>
-          <ListGroup className="charge-selector text-center w-30 fs-6">
+          <h6>Trap Score:</h6>
+          <ListGroup className="charge-selector text-center w-30 fs-10">
             <ListGroup.Item
               action
               active={trap === null}

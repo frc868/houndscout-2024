@@ -14,15 +14,15 @@ export default function AutoIntakePanel({
 }: Props) {
   return (
     <div className="d-flex flex-column align-items-center">
-      <h1 className="text-center mb-3">Intake</h1>
+      <h1 className="text-center mb-1">Intake</h1>
 
       <Row>
         <Col>
           <img
-            className="mx-auto my-2"
+            className="mx-auto my-1"
             alt=""
             src={`/assets/speaker.png`}
-            width={160}
+            width={150}
           />
         </Col>
         <Col className="me-5">
@@ -35,14 +35,14 @@ export default function AutoIntakePanel({
                     ? `intake-${item.toLowerCase()}-selected`
                     : ""
                 }`}
-                style={{ width: "125px", height: "125px" }}
+                style={{ width: "100px", height: "120px" }}
                 onMouseDown={() => handleSelection(idx)}
               >
                 <img
-                  className="mx-auto my-2"
+                  className="mx-auto my-1"
                   alt=""
                   src={`/assets/ring.jpeg`}
-                  width={65}
+                  width={60}
                 />
               </div>
             ))}

@@ -4,7 +4,7 @@ import { Button } from "react-bootstrap";
 
 interface Props {
   active: boolean;
-  handleClick: () => void;
+  handleClick: (selection: true | false) => void;
   className?: string;
 }
 
@@ -14,7 +14,7 @@ export default function IncapButton({ active, handleClick, className }: Props) {
       <Button
         className="secondary-button fs-5 rounded-4 fw-bold"
         variant="danger"
-        onClick={handleClick}
+        onClick={()=>handleClick(!active)}
       >
         {!active ? "Start" : "End"} Incap
       </Button>
