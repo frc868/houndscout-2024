@@ -23,7 +23,6 @@ export const setPresetPiecesAsync = createAsyncThunk(
         presetPiece1: pieces[0],
         presetPiece2: pieces[1],
         presetPiece3: pieces[2],
-        presetPiece4: pieces[3],
       }
     );
   }
@@ -62,7 +61,7 @@ export const sendAutoEvent = createAsyncThunk(
   async (
     data: {
       intakeType: "PRELOAD" | "PRESET";
-      gamePiece: "CONE" | "CUBE";
+      // gamePiece: "CONE" | "CUBE";
       scoringPosition?: "HIGH" | "MID" | "HYBRID";
       failed: boolean;
     },
@@ -82,7 +81,7 @@ export const sendTeleopEvent = createAsyncThunk(
   async (
     data: {
       intakeLocation: "GROUND" | "CHUTE" | "SHELF";
-      gamePiece: "CONE" | "CUBE";
+      // gamePiece: "CONE" | "CUBE";
       scoringPosition?: "HIGH" | "MID" | "HYBRID";
       dropped?: boolean;
       failed?: boolean;
@@ -101,7 +100,7 @@ export const sendTeleopEvent = createAsyncThunk(
 );
 
 const initialState: Scores = {
-  presetPieces: ["CONE", "CONE", "CONE", "CONE"],
+  presetPieces: ["CONE", "CONE", "CONE"],
   preloadPiece: "CONE",
   autoStartingZone: undefined,
 };

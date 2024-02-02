@@ -14,8 +14,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 export default function TeleopContent() {
   const dispatch = useDispatch<AppDispatch>();
-  const [chargeStationSelection, setChargeStationSelection] = useState<
-    "balanced" | "docked" | "failed" | null
+  const [stageLocationSelection, setStageLocationSelection] = useState<
+    "left" | "center" | "right" | null
+  >(null);
+  const [stageHarmonySelection, setStageHarmonySelection] = useState<
+  "failed" | "zero" | "one" | "two" | null
+  >(null);
+  const [stageTrapSelection, setStageTrapSelection] = useState<
+  "failed" | "success" | null
   >(null);
 
   const [intakeSelection, setIntakeSelection] = useState<
@@ -64,11 +70,14 @@ export default function TeleopContent() {
         </Col>
         <Col className="d-flex justify-content-start" md={5}>
           <div className="d-flex flex-column">
-            <ChargeButton className="my-2" />
             <IncapButton className="mt-2 mb-5" />
             <TeleopChargeSelector
-              selected={chargeStationSelection}
-              handleSelection={setChargeStationSelection}
+              location={stageLocationSelection}
+              handleLocation={setStageLocationSelection}
+              harmony={stageHarmonySelection}
+              handleHarmony={setStageHarmonySelection}
+              trap={stageTrapSelection}
+              handleTrap={setStageTrapSelection}
             />
           </div>
         </Col>

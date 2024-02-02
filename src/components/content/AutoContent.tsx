@@ -46,30 +46,25 @@ export default function AutoContent() {
   return (
     <>
       <Row className="my-5 d-flex justify-content-center">
-        <Col className="d-flex justify-content-end" md={2}>
-          <AutoScoringPanel
-            active={activeSide === "scoring"}
-            handleClick={handleScoringSelection}
-          />
-        </Col>
-        <Col className="d-flex justify-content-center pe-5 me-5" md={5}>
+      <Col className="d-flex justify-content-end pe-5 me-5" md={5}>
           <AutoIntakePanel
             presets={scores.presetPieces}
             selected={selected}
             handleSelection={handleIntakeSelection}
           />
         </Col>
+        <Col className="d-flex justify-content-center" md={3}>
+          <AutoScoringPanel
+            active={activeSide === "scoring"}
+            handleClick={handleScoringSelection}
+          />
+        </Col>
         <Col
-          className="d-flex align-items-center justify-content-start ms-5 ps-5"
-          md={4}
+          className="d-flex align-items-center justify-content-start ps-5"
+          md={3}
         >
           <div className="d-flex flex-column">
-            <ChargeButton className="my-2" />
             <IncapButton className="mt-2 mb-5" />
-            {/* <AutoChargeSelector
-              selected={chargeStationSelection}
-              handleSelection={setChargeStationSelection}
-            /> */}
           </div>
         </Col>
       </Row>
