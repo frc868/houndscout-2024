@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import { GamePiece, IntakeLocation } from "@prisma/client";
+import { IntakeLocation } from "@prisma/client";
 import IntakeGroup from "../mini/IntakeGroup";
 
 interface Props {
-  selected: [GamePiece, IntakeLocation] | null;
-  handleSelection: (selection: [GamePiece, IntakeLocation]) => void;
+  selected: IntakeLocation | null;
+  handleSelection: (selection: IntakeLocation) => void;
 }
 
 export default function TeleopIntakePanel({
@@ -21,21 +21,21 @@ export default function TeleopIntakePanel({
           name="Source"
           selected={
             selected?.toString() ===
-            [GamePiece.CONE, IntakeLocation.SHELF].toString()
+            IntakeLocation.SOURCE.toString()
           }
           handleSelection={() =>
-            handleSelection([GamePiece.CONE, IntakeLocation.SHELF])
+            handleSelection(IntakeLocation.SOURCE)
           }
         />
         <IntakeGroup
           className="mt-1"
-          name="Field"
+          name="Ground"
           selected={
             selected?.toString() ===
-            [GamePiece.CONE, IntakeLocation.GROUND].toString()
+            IntakeLocation.GROUND.toString()
           }
           handleSelection={() =>
-            handleSelection([GamePiece.CONE, IntakeLocation.GROUND])
+            handleSelection(IntakeLocation.GROUND)
           }
         />
       </div>

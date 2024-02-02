@@ -5,7 +5,7 @@ import FailButton from "../mini/FailButton";
 
 interface Props {
   active: boolean;
-  handleClick: (selection: "HIGH" | "MID" | "HYBRID" | "FAILED") => void;
+  handleClick: (selection: "SPEAKER" | "AMP" | "FAILED") => void;
 }
 
 export default function AutoScoringPanel({ active, handleClick }: Props) {
@@ -20,27 +20,18 @@ export default function AutoScoringPanel({ active, handleClick }: Props) {
             name="Speaker"
             active={active}
             handleClick={() => {
-              handleClick("HIGH");
+              handleClick("SPEAKER");
             }}
           />
-          {/* <ScoreButton
-            className="my-3"
-            name=""
-            active={active}
-            handleClick={() => {
-              handleClick("MID");
-            }}
-          /> */}
           <ScoreButton
             className="mt-3"
             name="Amp"
             active={active}
             handleClick={() => {
-              handleClick("HYBRID");
+              handleClick("AMP");
             }}
           />
         </Col>
-        {/* maybe put divider here */}
         <Col className="d-flex align-items-center mx-2">
           <FailButton
             name="Failed"

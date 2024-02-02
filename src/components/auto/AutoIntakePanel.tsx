@@ -4,7 +4,7 @@ import { Col, Row } from "react-bootstrap";
 interface Props {
   selected: number | null;
   handleSelection: (selection: number) => void;
-  presets: ("CONE" | "CUBE")[];
+  presets: string[];
 }
 
 export default function AutoIntakePanel({

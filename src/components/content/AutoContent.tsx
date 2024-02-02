@@ -32,7 +32,7 @@ export default function AutoContent({incap, setIncap}: Props) {
   };
 
   const handleScoringSelection = async (
-    selection: "HIGH" | "MID" | "HYBRID" | "FAILED"
+    selection: "SPEAKER" | "AMP" | "FAILED"
   ) => {
     const event = {
       intakeType: "PRESET" as "PRELOAD" | "PRESET",

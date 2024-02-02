@@ -61,8 +61,7 @@ export const sendAutoEvent = createAsyncThunk(
   async (
     data: {
       intakeType: "PRELOAD" | "PRESET";
-      // gamePiece: "CONE" | "CUBE";
-      scoringPosition?: "HIGH" | "MID" | "HYBRID";
+      scoringPosition?: "SPEAKER" | "AMP";
       failed: boolean;
     },
     { getState }
@@ -80,9 +79,8 @@ export const sendTeleopEvent = createAsyncThunk(
   "scores/sendAutoEvent",
   async (
     data: {
-      intakeLocation: "GROUND" | "CHUTE" | "SHELF";
-      // gamePiece: "CONE" | "CUBE";
-      scoringPosition?: "HIGH" | "MID" | "HYBRID";
+      intakeLocation: "GROUND" | "SOURCE";
+      scoringPosition?: "SPEAKER" | "AMP";
       dropped?: boolean;
       failed?: boolean;
     },
