@@ -3,20 +3,19 @@
 import { Button } from "react-bootstrap";
 
 interface Props {
-  active: boolean;
-  handleClick: (selection: true | false) => void;
+  handleClick: () => void;
   className?: string;
 }
 
-export default function IncapButton({ active, handleClick, className }: Props) {
+export default function UndoButton({ handleClick, className }: Props) {
   return (
     <div className={`${className || ""}`}>
       <Button
         className="secondary-button fs-5 rounded-4 fw-bold"
         variant="danger"
-        onClick={()=>handleClick(!active)}
+        onClick={()=>handleClick()}
       >
-        {!active ? "Start" : "End"} Incap
+        Undo
       </Button>
     </div>
   );

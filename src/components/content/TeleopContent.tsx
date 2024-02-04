@@ -5,7 +5,7 @@ import IncapButton from "@/components/mini/IncapButton";
 import TeleopChargeSelector from "@/components/teleop/TeleopChargeSelector";
 import TeleopIntakePanel from "@/components/teleop/TeleopIntakePanel";
 import TeleopScoringPanel from "@/components/teleop/TeleopScoringPanel";
-import { sendAutoEvent, sendTeleopEvent } from "@/redux/scoresSlice";
+import { sendTeleopEvent } from "@/redux/scoresSlice";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import {  IntakeLocation, ScoringPosition } from "@prisma/client";
 import { useState } from "react";

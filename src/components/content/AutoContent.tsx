@@ -1,8 +1,7 @@
 "use client";
 
-import ChargeButton from "@/components/mini/ChargeButton";
+import UndoButton from "@/components/mini/UndoButton";
 import IncapButton from "@/components/mini/IncapButton";
-import AutoChargeSelector from "@/components/auto/AutoChargeSelector";
 import AutoIntakePanel from "@/components/auto/AutoIntakePanel";
 import AutoScoringPanel from "@/components/auto/AutoScoringPanel";
 import { useState } from "react";
@@ -16,9 +15,9 @@ interface Props {
   setIncap: (
     selection: true | false
   ) => void;
-  }
+}
 
-export default function AutoContent({incap, setIncap}: Props) {
+export default function AutoContent({ incap, setIncap }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
 
@@ -32,14 +31,12 @@ export default function AutoContent({incap, setIncap}: Props) {
   };
 
   const handleScoringSelection = async (
-    selection: "SPEAKER" | "AMP" | "FAILED"
+    selection: "SPEAKER" | "AMP" | "", outcome: "FAIL" | "DROP" | "PICKUPFAIL" | "SUCCESS"
   ) => {
     const event = {
       intakeType: "PRESET" as "PRELOAD" | "PRESET",
-      gamePiece: scores.presetPieces[Number(selected)],
-      ...(selection === "FAILED"
-        ? { failed: true }
-        : { scoringPosition: selection, failed: false }),
+      scoringPosition: selection,
+      failed: outcome !== "SUCCESS",
     };
 
     await dispatch(sendAutoEvent(event));
@@ -51,27 +48,23 @@ export default function AutoContent({incap, setIncap}: Props) {
   return (
     <>
       <Row className="my-4 d-flex justify-content-center">
-      <Col className="d-flex justify-content-end" md={4}>
+        <Col className="d-flex justify-content-center" md={6}>
           <AutoIntakePanel
             presets={scores.presetPieces}
             selected={selected}
             handleSelection={handleIntakeSelection}
           />
         </Col>
-        <Col className="d-flex justify-content-center" md={4}>
+        <Col className="d-flex flex-column align-items-stretch" md={5}>
           <AutoScoringPanel
             active={activeSide === "scoring"}
             handleClick={handleScoringSelection}
           />
         </Col>
-        <Col
-          className="d-flex align-items-center justify-content-start ps-5"
-          md={3}
-        >
-          <div className="d-flex flex-column">
-            <IncapButton className="mt-2 mb-5" active={incap} handleClick={setIncap} />
-          </div>
-        </Col>
+      </Row>
+      <Row className="d-flex justify-content-between">
+            <UndoButton className="mr-5 w-25" handleClick={()=>{}} />
+            <IncapButton className="ml-5 w-25" active={incap} handleClick={setIncap} />
       </Row>
     </>
   );

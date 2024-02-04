@@ -61,7 +61,7 @@ export const sendAutoEvent = createAsyncThunk(
   async (
     data: {
       intakeType: "PRELOAD" | "PRESET";
-      scoringPosition?: "SPEAKER" | "AMP";
+      scoringPosition?: "SPEAKER" | "AMP" | "";
       failed: boolean;
     },
     { getState }
@@ -76,7 +76,7 @@ export const sendAutoEvent = createAsyncThunk(
   }
 );
 export const sendTeleopEvent = createAsyncThunk(
-  "scores/sendAutoEvent",
+  "scores/sendTeleopEvent",
   async (
     data: {
       intakeLocation: "GROUND" | "SOURCE";

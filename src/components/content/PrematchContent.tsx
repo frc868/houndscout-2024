@@ -30,17 +30,7 @@ export default function PrematchContent() {
   return (
     <>
       <Row className="my-5 d-flex justify-content-center">
-        <Col
-          md={3}
-          className={`rounded-4 d-flex justify-content-center align-items-center bg-${
-            mainData.station?.includes("red") ? "danger" : "primary"
-          }-subtle`}
-        >
-          <h1 className="text-center">
-            {mainData.station?.includes("red") ? "Red" : "Blue"} {mainData.station?.[mainData.station?.length - 1]} Team {mainData.activeTeamNumber}
-          </h1>
-        </Col>
-        <Col className="d-flex justify-content-center" md={5}>
+        <Col className="d-flex justify-content-end" md={6}>
           <StartingPositionSelector
             selected={scores.autoStartingZone}
             handleSelection={async (zone) => {
@@ -48,8 +38,15 @@ export default function PrematchContent() {
             }}
           />
         </Col>
-        <Col md={3} className="d-flex justify-content-start  align-items-center">
-            <StartButton enabled={false} handleClick={() => {}} />
+        <Col md={4} className="justifty-content-center align-items-center">
+          <Row className={`my-5 rounded-4 d-flex justify-content-end align-items-center bg-${mainData.station?.includes("red") ? "danger" : "primary"}-subtle`}>
+            <h1 className="text-center">
+              {mainData.station?.includes("red") ? "Red" : "Blue"} {mainData.station?.[mainData.station?.length - 1]} Team {mainData.activeTeamNumber}
+            </h1>
+          </Row>
+          <Row className=" my-5 d-flex justify-content-center align-items-center">
+            <StartButton enabled={false} handleClick={() => { }} />
+          </Row>
         </Col>
       </Row>
     </>
