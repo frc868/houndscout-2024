@@ -3,8 +3,8 @@ import { IntakeLocation } from "@prisma/client";
 import IntakeGroup from "../mini/IntakeGroup";
 
 interface Props {
-  selected: IntakeLocation | null;
-  handleSelection: (selection: IntakeLocation) => void;
+  selected: "GROUND" | "SOURCE" | "";
+  handleSelection: (selection: "GROUND" | "SOURCE" | "") => void;
 }
 
 export default function TeleopIntakePanel({
@@ -20,22 +20,20 @@ export default function TeleopIntakePanel({
           className="mb-1"
           name="Source"
           selected={
-            selected?.toString() ===
-            IntakeLocation.SOURCE.toString()
+            selected === "SOURCE"
           }
           handleSelection={() =>
-            handleSelection(IntakeLocation.SOURCE)
+            handleSelection("SOURCE")
           }
         />
         <IntakeGroup
           className="mt-1"
           name="Ground"
           selected={
-            selected?.toString() ===
-            IntakeLocation.GROUND.toString()
+            selected === "GROUND"
           }
           handleSelection={() =>
-            handleSelection(IntakeLocation.GROUND)
+            handleSelection("GROUND")
           }
         />
       </div>

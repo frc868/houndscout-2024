@@ -4,7 +4,7 @@ import { Button } from "react-bootstrap";
 
 interface Props {
   active: boolean;
-  handleClick: () => void;
+  handleClick: (selection: true | false) => void;
   className?: string;
 }
 
@@ -18,9 +18,9 @@ export default function ChargeButton({
       <Button
         className="secondary-button fs-5 rounded-4 fw-bold"
         variant="primary"
-        onClick={handleClick}
+        onClick={()=>handleClick(!active)}
       >
-        {!active ? "Start" : "Cancel"} Charge
+        {!active ? "Start" : "Cancel"} Climb Attempt
       </Button>
     </div>
   );

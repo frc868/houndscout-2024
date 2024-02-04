@@ -79,9 +79,8 @@ export const sendTeleopEvent = createAsyncThunk(
   "scores/sendTeleopEvent",
   async (
     data: {
-      intakeLocation: "GROUND" | "SOURCE";
-      scoringPosition?: "SPEAKER" | "AMP";
-      dropped?: boolean;
+      intakeLocation: "GROUND" | "SOURCE" | "";
+      scoringPosition?: "SPEAKER" | "AMP" | "";
       failed?: boolean;
     },
     { getState }

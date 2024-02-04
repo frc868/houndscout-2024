@@ -17,7 +17,6 @@ import {
   sendHeartbeatAsync,
   setStation,
 } from "@/redux/mainDataSlice";
-import IncapButton from "@/components/mini/IncapButton";
 
 interface Props {
   id: "red1" | "red2" | "red3" | "blue1" | "blue2" | "blue3";

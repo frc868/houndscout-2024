@@ -1,99 +1,89 @@
 /* eslint-disable @next/next/no-img-element */
 import { Col, ListGroup, Row } from "react-bootstrap";
-import ScoreButton from "../mini/ScoreButton";
+import ToggleBox from "@/components/mini/ToggleBox";
+import { useState } from "react";
+import ChargeButton from "../mini/ChargeButton";
 import FailButton from "../mini/FailButton";
 
 interface Props {
-  location: "left" | "center" | "right" | null;
-  handleLocation: (
-    selection: "left" | "center" | "right" | null
+  outcome: "failed" | "climbed" | null;
+  handleOutcome: (
+    selection: "failed" | "climbed" | null
   ) => void;
   harmony: "failed" | "zero" | "one" | "two" | null;
   handleHarmony: (
     selection: "failed" | "zero" | "one" | "two" | null
   ) => void;
-  trap: "failed" | "success" | null;
+  trap: true | false;
   handleTrap: (
-    selection: "failed" | "success" | null
+    selection: true | false
+  ) => void;
+  spotlit: true | false;
+  handleSpotlit: (
+    selection: true | false
   ) => void;
 }
 
 export default function TeleopChargeSelector({
-  location,
-  handleLocation,
+  outcome,
+  handleOutcome,
   harmony,
   handleHarmony,
   trap,
   handleTrap,
+  spotlit,
+  handleSpotlit,
 }: Props) {
+  const [charge, setCharge] = useState<true | false>(false);
+
   return (
     <div className="d-flex flex-column align-items-center">
       <h1 className="text-center">Stage</h1>
       <Row className="d-flex justify-content-center">
+        <ChargeButton className="ml-5 w-25" active={charge} handleClick={setCharge} />
         <Col className="d-flex">
           <h6>Location:</h6>
           <ListGroup className="charge-selector text-center w-30 fs-10">
             <ListGroup.Item
               action
-              active={location === null}
-              onMouseDown={() => handleLocation(null)}
+              active={outcome === "failed"}
+              onMouseDown={() => handleOutcome("failed")}
             >
-              Not at Stage
+              Failed
             </ListGroup.Item>
             <ListGroup.Item
               action
-              active={location === "left"}
-              onMouseDown={() => handleLocation("left")}
+              active={outcome === "climbed"}
+              onMouseDown={() => handleOutcome("climbed")}
             >
-              Stage Left
-            </ListGroup.Item>
-            <ListGroup.Item
-              action
-              active={location === "center"}
-              onMouseDown={() => handleLocation("center")}
-            >
-              Center Stage
-            </ListGroup.Item>
-            <ListGroup.Item
-              action
-              active={location === "right"}
-              onMouseDown={() => handleLocation("right")}
-            >
-              Stage Right
+              Climbed
             </ListGroup.Item>
           </ListGroup>
         </Col>
 
         <Col className="d-flex">
-          <h6>Harmony:</h6>
-          <ListGroup className="charge-selector text-center w-40 fs-10">
-            <ListGroup.Item
-              action
-              active={harmony === null}
-              onMouseDown={() => handleHarmony(null)}
-            >
-              Parked
-            </ListGroup.Item>
+          <h6># Other Robots</h6>
+          <ListGroup horizontal className="charge-selector text-center w-40 fs-10">
             <ListGroup.Item
               action
               active={harmony === "zero"}
               onMouseDown={() => handleHarmony("zero")}
             >
-              No Others
+              0
             </ListGroup.Item>
             <ListGroup.Item
               action
               active={harmony === "one"}
               onMouseDown={() => handleHarmony("one")}
             >
-              1 Other
+              1
             </ListGroup.Item>
             <ListGroup.Item
               action
               active={harmony === "two"}
               onMouseDown={() => handleHarmony("two")}
             >
-              2 Others
+              2
             </ListGroup.Item>
             <ListGroup.Item
               action
@@ -105,32 +95,22 @@ export default function TeleopChargeSelector({
           </ListGroup>
         </Col>
 
-        <Col className="d-flex">
-          <h6>Trap Score:</h6>
-          <ListGroup className="charge-selector text-center w-30 fs-10">
-            <ListGroup.Item
-              action
-              active={trap === null}
-              onMouseDown={() => handleTrap(null)}
-            >
-              No Attempt
-            </ListGroup.Item>
-            <ListGroup.Item
-              action
-              active={trap === "failed"}
-              onMouseDown={() => handleTrap("failed")}
-            >
-              Failed
-            </ListGroup.Item>
-            <ListGroup.Item
-              action
-              active={trap === "success"}
-              onMouseDown={() => handleTrap("success")}
-            >
-              Sucessful
-            </ListGroup.Item>
-          </ListGroup>
-        </Col>
+        <ToggleBox
+          name="Scored in Trap"
+          enabled={trap}
+          handleClick={() =>
+            handleTrap(!trap)
+          }
+        />
+
+        <ToggleBox
+          name="Spotlit"
+          enabled={spotlit}
+          handleClick={() =>
+            handleTrap(!spotlit)
+          }
+        />
+
       </Row>
     </div>
   );

@@ -3,7 +3,7 @@
 import CommentsBox from "@/components/postmatch/CommentsBox";
 import DriverSkillSelector from "@/components/postmatch/DriverSkillSelector";
 import SubmitButton from "@/components/postmatch/SubmitButton";
-import ToggleBox from "@/components/postmatch/ToggleBox";
+import ToggleBox from "@/components/mini/ToggleBox";
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 
