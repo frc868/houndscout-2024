@@ -39,8 +39,10 @@ export default function TeleopChargeSelector({
   return (
     <div className="d-flex flex-column align-items-center">
       <h1 className="text-center">Stage</h1>
-      <Row className="d-flex justify-content-center">
+      <Row className="d-flex justify-content-center my-2">
         <ChargeButton className="ml-5 w-25" active={charge} handleClick={setCharge} />
+      </Row>
+      <Row className="d-flex justify-content-center my-3">
         <Col className="d-flex">
           <h6>Location:</h6>
           <ListGroup className="charge-selector text-center w-30 fs-10">
@@ -60,10 +62,11 @@ export default function TeleopChargeSelector({
             </ListGroup.Item>
           </ListGroup>
         </Col>
-
-        <Col className="d-flex">
+      </Row>
+      <Row className="d-flex flex-direction-row flex-nowrap row-no-gutters justify-content-center">
+        <Col sm className="d-flex">
           <h6># Other Robots</h6>
-          <ListGroup horizontal className="charge-selector text-center w-40 fs-10">
+          <ListGroup horizontal className="charge-selector d-flex text-center w-30 fs-10">
             <ListGroup.Item
               action
               active={harmony === "zero"}
@@ -85,32 +88,27 @@ export default function TeleopChargeSelector({
             >
               2
             </ListGroup.Item>
-            <ListGroup.Item
-              action
-              active={harmony === "failed"}
-              onMouseDown={() => handleHarmony("failed")}
-            >
-              Failed
-            </ListGroup.Item>
           </ListGroup>
         </Col>
+        <Col xs>
+          <ToggleBox
+            name="Scored in Trap"
+            enabled={trap}
+            handleClick={() =>
+              handleTrap(!trap)
+            }
+          />
+        </Col>
 
-        <ToggleBox
-          name="Scored in Trap"
-          enabled={trap}
-          handleClick={() =>
-            handleTrap(!trap)
-          }
-        />
-
-        <ToggleBox
-          name="Spotlit"
-          enabled={spotlit}
-          handleClick={() =>
-            handleTrap(!spotlit)
-          }
-        />
-
+        <Col xs>
+          <ToggleBox
+            name="Spotlit"
+            enabled={spotlit}
+            handleClick={() =>
+              handleTrap(!spotlit)
+            }
+          />
+        </Col>
       </Row>
     </div>
   );
