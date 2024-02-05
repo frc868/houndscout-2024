@@ -13,7 +13,7 @@ export default function CommentsBox({
 }: Props) {
   return (
     <div className={`d-flex align-items-center flex-column ${className || ""}`}>
-      <h1 className="text-center">Comments</h1>
+      <h3 className="text-center">Comments</h3>
       <Form className="w-100 mb-3">
         <Form.Group controlId="comments">
           <Form.Control

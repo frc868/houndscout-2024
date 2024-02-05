@@ -15,15 +15,17 @@ interface Props {
   setIncap: (
     selection: true | false
   ) => void;
+  activeSide: "intaking" | "scoring";
+  setActiveSide: (
+    selection: "intaking" | "scoring"
+  ) => void;
 }
 
-export default function AutoContent({ incap, setIncap }: Props) {
+export default function AutoContent({ incap, setIncap, activeSide, setActiveSide }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
 
-
   const [selected, setSelected] = useState<number | null>(null);
-  const [activeSide, setActiveSide] = useState("intake");
 
   const handleIntakeSelection = (selection: number) => {
     setSelected(selection);

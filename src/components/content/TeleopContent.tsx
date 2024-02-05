@@ -1,6 +1,6 @@
 "use client";
 
-import ChargeButton from "@/components/mini/ChargeButton";
+import ChargeButton from "@/components/teleop/ChargeButton";
 import UndoButton from "@/components/mini/UndoButton";
 import IncapButton from "@/components/mini/IncapButton";
 import TeleopChargeSelector from "@/components/teleop/TeleopChargeSelector";
@@ -18,9 +18,13 @@ interface Props {
   setIncap: (
     selection: true | false
   ) => void;
+  activeSide: "intaking" | "scoring";
+  setActiveSide: (
+    selection: "intaking" | "scoring"
+  ) => void;
   }
 
-export default function TeleopContent({incap, setIncap}: Props) {
+export default function TeleopContent({incap, setIncap, activeSide, setActiveSide}: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const [stageOutcomeSelection, setStageOutcomeSelection] = useState<
   "failed" | "climbed" | null
@@ -34,7 +38,6 @@ export default function TeleopContent({incap, setIncap}: Props) {
   const [intakeSelection, setIntakeSelection] = useState<
     "GROUND" | "SOURCE" | ""
   >("");
-  const [activeSide, setActiveSide] = useState("intaking");
 
   const handleIntakeSelection = (selection: "GROUND" | "SOURCE" | "") => {
     setIntakeSelection(selection);

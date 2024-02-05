@@ -22,7 +22,7 @@ export default function AutoIntakePanel({
             className="mx-auto my-1"
             alt=""
             src={`/assets/speaker.png`}
-            width={150}
+            width={135}
           />
         </Col>
         <Col className="me-5">
@@ -35,7 +35,7 @@ export default function AutoIntakePanel({
                     ? `intake-${item.toLowerCase()}-selected`
                     : ""
                 }`}
-                style={{ width: "100px", height: "120px" }}
+                style={{ width: "90px", height: "100px" }}
                 onMouseDown={() => handleSelection(idx)}
               >
                 <img

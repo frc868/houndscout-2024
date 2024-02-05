@@ -2,7 +2,7 @@
 import { Col, ListGroup, Row } from "react-bootstrap";
 import ToggleBox from "@/components/mini/ToggleBox";
 import { useState } from "react";
-import ChargeButton from "../mini/ChargeButton";
+import ChargeButton from "./ChargeButton";
 import FailButton from "../mini/FailButton";
 
 interface Props {
@@ -105,7 +105,7 @@ export default function TeleopChargeSelector({
             name="Spotlit"
             enabled={spotlit}
             handleClick={() =>
-              handleTrap(!spotlit)
+              handleSpotlit(!spotlit)
             }
           />
         </Col>

@@ -14,6 +14,7 @@ export default function SectionSelector({ selected, handleSelection }: Props) {
         <Button
           key={item}
           variant="secondary"
+          style={{ backgroundColor: "#00008b" }}
           className={`state-button fs-4 rounded-4 fw-bold ${
             selected === item && `${item}-button`
           }`}

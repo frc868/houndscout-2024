@@ -29,6 +29,7 @@ export default function Client({ id }: Props) {
     "prematch"
   );
   const [incap, setIncap] = useState<true | false>(false);
+  const [activeSide, setActiveSide] = useState<"intaking" | "scoring">("intaking");
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -75,8 +76,8 @@ export default function Client({ id }: Props) {
       )}
       {ready && <SectionSelector selected={tab} handleSelection={setTab} />}
       {ready && tab === "prematch" && <PrematchContent />}
-      {ready && tab === "auto" && <AutoContent incap={incap} setIncap={setIncap} />}
-      {ready && tab === "teleop" && <TeleopContent  incap={incap} setIncap={setIncap} />}
+      {ready && tab === "auto" && <AutoContent incap={incap} setIncap={setIncap} activeSide={activeSide} setActiveSide={setActiveSide} />}
+      {ready && tab === "teleop" && <TeleopContent  incap={incap} setIncap={setIncap} activeSide={activeSide} setActiveSide={setActiveSide} />}
       {ready && tab === "postmatch" && <PostmatchContent />}
     </>
   );
