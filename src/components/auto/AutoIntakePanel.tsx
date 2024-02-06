@@ -43,10 +43,9 @@ export default function AutoIntakePanel({
           <img
             className="mx-auto my-1"
             alt=""
-            src={mainData.station?.includes("red")?`/assets/speaker.png`:`/assets/speaker.png`}
+            src={mainData.station?.includes("red")?`/assets/redSpeaker.png`:`/assets/blueSpeaker.png`}
             width={125}
           />
-          {/* When the red speaker is ready replace the first img option here with it. */}
         </Col>
         <Col className="me-3">
           <div className="d-flex flex-column align-items-center">

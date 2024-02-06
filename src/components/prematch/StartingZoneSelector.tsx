@@ -21,17 +21,16 @@ export default function StartingZoneSelector({
           <img
             className="ml-auto my-auto"
             alt=""
-            src={mainData.station?.includes("red") ? `/assets/speaker.png` : `/assets/speaker.png`}
+            src={mainData.station?.includes("red") ? `/assets/redSpeaker.png` : `/assets/blueSpeaker.png`}
             width={150}
             height={300}
           />
-          {/* When the red speaker is ready replace the first img option here with it. */}
         </div>
         <div
           style={mainData.station?.includes("red") ? {
             position: "absolute",
             top: "75px",
-            right: "125px",
+            right: "275px",
           } : {
             position: "absolute",
             top: "75px",
@@ -51,7 +50,7 @@ export default function StartingZoneSelector({
           style={mainData.station?.includes("red") ? {
             position: "absolute",
             top: "200px",
-            right: "200px",
+            right: "350px",
           } : {
             position: "absolute",
             top: "200px",
@@ -71,7 +70,7 @@ export default function StartingZoneSelector({
           style={mainData.station?.includes("red") ? {
             position: "absolute",
             top: "325px",
-            right: "125px",
+            right: "275px",
           } : {
             position: "absolute",
             top: "325px",
