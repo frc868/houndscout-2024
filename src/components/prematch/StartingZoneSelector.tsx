@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 import { Button } from "react-bootstrap";
-
+import { useSelector } from "react-redux";
+import { ReduxState } from "@/redux/store";
 interface Props {
   selected: number | undefined;
   handleSelection: (selected: number) => void;
@@ -11,6 +12,7 @@ export default function StartingZoneSelector({
   selected,
   handleSelection,
 }: Props) {
+  const mainData = useSelector((state: ReduxState) => state.mainData);
   return (
     <div className="d-flex justify-content-center">
       <div className="position-relative">
@@ -19,13 +21,18 @@ export default function StartingZoneSelector({
           <img
             className="ml-auto my-auto"
             alt=""
-            src={"/assets/speaker.png"}
+            src={mainData.station?.includes("red") ? `/assets/speaker.png` : `/assets/speaker.png`}
             width={150}
             height={300}
           />
+          {/* When the red speaker is ready replace the first img option here with it. */}
         </div>
         <div
-          style={{
+          style={mainData.station?.includes("red") ? {
+            position: "absolute",
+            top: "75px",
+            right: "125px",
+          } : {
             position: "absolute",
             top: "75px",
             left: "125px",
@@ -41,7 +48,11 @@ export default function StartingZoneSelector({
           </Button>
         </div>
         <div
-          style={{
+          style={mainData.station?.includes("red") ? {
+            position: "absolute",
+            top: "200px",
+            right: "200px",
+          } : {
             position: "absolute",
             top: "200px",
             left: "200px",
@@ -57,7 +68,11 @@ export default function StartingZoneSelector({
           </Button>
         </div>
         <div
-          style={{
+          style={mainData.station?.includes("red") ? {
+            position: "absolute",
+            top: "325px",
+            right: "125px",
+          } : {
             position: "absolute",
             top: "325px",
             left: "125px",
