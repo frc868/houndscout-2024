@@ -20,7 +20,7 @@ export default function IntakeGroup({
       <div className="d-flex justify-content-center">
         <div
           className={`mx-2 grow d-flex justify-content-center align-items-center rounded-4 ${
-            selected ? `intake-cone-selected` : ""
+            selected ? `intake-ring-selected` : ""
           }`}
           style={{ width: "90px", height: "90px" }}
           onMouseDown={handleSelection}

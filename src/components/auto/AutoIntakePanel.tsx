@@ -79,14 +79,14 @@ export default function AutoIntakePanel({
                     ? `intake-${item.toLowerCase()}-selected`
                     : ""
                   }`}
-                style={{ width: "90px", height: "70px" }}
+                style={{ width: "70px", height: "60px" }}
                 onMouseDown={() => handleSelection(idx)}
               >
                 <img
                   className="mx-auto my-1"
                   alt=""
                   src={`/assets/ring.jpeg`}
-                  width={60}
+                  width={50}
                 />
               </div>
             ))}
