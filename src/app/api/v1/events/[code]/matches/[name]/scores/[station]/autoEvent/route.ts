@@ -18,7 +18,6 @@ export async function POST(
             autoScoringEvents: {
               create: {
                 intakeType: data.intakeType,
-                gamePiece: data.gamePiece,
                 scoringPosition: data.scoringPosition || undefined,
                 failed: data.failed || false,
                 timestampScored: data.timestampScored,

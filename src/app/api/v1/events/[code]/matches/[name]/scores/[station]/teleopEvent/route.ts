@@ -18,7 +18,6 @@ export async function POST(
             teleopScoringEvents: {
               create: {
                 intakeLocation: data.intakeLocation,
-                gamePiece: data.gamePiece,
                 scoringPosition: data.scoringPosition || undefined,
                 failed: data.failed || false,
                 dropped: data.dropped || false,
