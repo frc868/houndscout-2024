@@ -1,3 +1,7 @@
+body {
+  background-color: #fafad2;
+}
+
 .th-red {
   background-color: #ff3131;
 }
@@ -46,6 +50,10 @@
   border: none;
 }
 
+.state-button{
+  background-color: #00008b;
+}
+
 .state-button.prematch-button {
   background-color: #ff914d;
 }
@@ -77,12 +85,8 @@
   /* --bs-list-group-border-color: rgb(206, 212, 218); */
 }
 
-.intake-cone-selected {
-  background-color: #f7e8ac;
-}
-
-.intake-cube-selected {
-  background-color: #bb99ff;
+.intake-ring-selected {
+  background-color: #ffd0aa;
 }
 
 .grow {

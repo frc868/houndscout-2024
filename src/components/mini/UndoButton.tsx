@@ -3,24 +3,19 @@
 import { Button } from "react-bootstrap";
 
 interface Props {
-  active: boolean;
   handleClick: () => void;
   className?: string;
 }
 
-export default function ChargeButton({
-  active,
-  handleClick,
-  className,
-}: Props) {
+export default function UndoButton({ handleClick, className }: Props) {
   return (
-    <div className={`d-flex justify-content-center ${className || ""}`}>
+    <div className={`${className || ""}`}>
       <Button
         className="secondary-button fs-5 rounded-4 fw-bold"
-        variant="primary"
-        onClick={handleClick}
+        variant="danger"
+        onClick={()=>handleClick()}
       >
-        {!active ? "Start" : "Cancel"} Charge
+        Undo
       </Button>
     </div>
   );

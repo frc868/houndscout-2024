@@ -3,15 +3,15 @@ import axios from "axios";
 import { ReduxState } from "./store";
 
 export interface Scores {
-  presetPieces: ("CONE" | "CUBE")[];
-  preloadPiece: "CONE" | "CUBE";
+  presetPieces: ("RING" | "")[];
+  preloadPiece: "RING" | "";
   autoStartingZone?: number;
 }
 
 export const setPresetPiecesAsync = createAsyncThunk(
   "scores/setPresetPiecesAsync",
   async (
-    { pieces }: { pieces: ("CONE" | "CUBE")[] },
+    { pieces }: { pieces: ("RING" | "")[] },
     { dispatch, getState }
   ) => {
     const state = getState() as ReduxState;
@@ -23,14 +23,13 @@ export const setPresetPiecesAsync = createAsyncThunk(
         presetPiece1: pieces[0],
         presetPiece2: pieces[1],
         presetPiece3: pieces[2],
-        presetPiece4: pieces[3],
       }
     );
   }
 );
 export const setPreloadPieceAsync = createAsyncThunk(
   "scores/setPreloadPieceAsync",
-  async ({ piece }: { piece: "CONE" | "CUBE" }, { dispatch, getState }) => {
+  async ({ piece }: { piece: "RING" | "" }, { dispatch, getState }) => {
     const state = getState() as ReduxState;
     const mainData = state.mainData;
     dispatch(setPreloadPiece({ piece }));
@@ -62,8 +61,7 @@ export const sendAutoEvent = createAsyncThunk(
   async (
     data: {
       intakeType: "PRELOAD" | "PRESET";
-      gamePiece: "CONE" | "CUBE";
-      scoringPosition?: "HIGH" | "MID" | "HYBRID";
+      scoringPosition?: "SPEAKER" | "AMP" | "";
       failed: boolean;
     },
     { getState }
@@ -78,13 +76,11 @@ export const sendAutoEvent = createAsyncThunk(
   }
 );
 export const sendTeleopEvent = createAsyncThunk(
-  "scores/sendAutoEvent",
+  "scores/sendTeleopEvent",
   async (
     data: {
-      intakeLocation: "GROUND" | "CHUTE" | "SHELF";
-      gamePiece: "CONE" | "CUBE";
-      scoringPosition?: "HIGH" | "MID" | "HYBRID";
-      dropped?: boolean;
+      intakeLocation: "GROUND" | "SOURCE" | "PRELOAD" | "PRESET" | "";
+      scoringPosition?: "SPEAKER" | "AMP" | "";
       failed?: boolean;
     },
     { getState }
@@ -101,8 +97,8 @@ export const sendTeleopEvent = createAsyncThunk(
 );
 
 const initialState: Scores = {
-  presetPieces: ["CONE", "CONE", "CONE", "CONE"],
-  preloadPiece: "CONE",
+  presetPieces: ["RING", "RING", "RING"],
+  preloadPiece: "RING",
   autoStartingZone: undefined,
 };
 
@@ -113,7 +109,7 @@ export const scoresSlice = createSlice({
     setPresetPieces: (
       state,
       action: PayloadAction<{
-        pieces: ("CONE" | "CUBE")[];
+        pieces: ("RING" | "")[];
       }>
     ) => {
       state.presetPieces = action.payload.pieces;
@@ -121,7 +117,7 @@ export const scoresSlice = createSlice({
     setPreloadPiece: (
       state,
       action: PayloadAction<{
-        piece: "CONE" | "CUBE";
+        piece: "RING" | "";
       }>
     ) => {
       state.preloadPiece = action.payload.piece;

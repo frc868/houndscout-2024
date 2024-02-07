@@ -1,3 +1,5 @@
+//Should not be necessary
+
 /* eslint-disable @next/next/no-img-element */
 import { Col, ListGroup, Row } from "react-bootstrap";
 import ScoreButton from "../mini/ScoreButton";

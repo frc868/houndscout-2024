@@ -13,7 +13,7 @@ export default function ToggleBox({
 }: Props) {
   return (
     <div className={`d-flex align-items-center flex-column ${className || ""}`}>
-      <h1 className="text-center">{name}</h1>
+      <h6 className="text-center">{name}</h6>
 
       <div
         className={`d-flex justify-content-center align-items-center rounded-4 mt-3 ${

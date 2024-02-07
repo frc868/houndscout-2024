@@ -1,77 +1,97 @@
 "use client";
 
-import ChargeButton from "@/components/mini/ChargeButton";
+import ChargeButton from "@/components/teleop/ChargeButton";
+import UndoButton from "@/components/mini/UndoButton";
 import IncapButton from "@/components/mini/IncapButton";
 import TeleopChargeSelector from "@/components/teleop/TeleopChargeSelector";
 import TeleopIntakePanel from "@/components/teleop/TeleopIntakePanel";
 import TeleopScoringPanel from "@/components/teleop/TeleopScoringPanel";
-import { sendAutoEvent, sendTeleopEvent } from "@/redux/scoresSlice";
+import { sendTeleopEvent } from "@/redux/scoresSlice";
 import { AppDispatch, ReduxState } from "@/redux/store";
-import { GamePiece, IntakeLocation, ScoringPosition } from "@prisma/client";
+import {  IntakeLocation, ScoringPosition } from "@prisma/client";
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function TeleopContent() {
+interface Props {
+  incap: true | false;
+  setIncap: (
+    selection: true | false
+  ) => void;
+  activeSide: "intaking" | "scoring";
+  setActiveSide: (
+    selection: "intaking" | "scoring"
+  ) => void;
+  }
+
+export default function TeleopContent({incap, setIncap, activeSide, setActiveSide}: Props) {
   const dispatch = useDispatch<AppDispatch>();
-  const [chargeStationSelection, setChargeStationSelection] = useState<
-    "balanced" | "docked" | "failed" | null
+  const [stageOutcomeSelection, setStageOutcomeSelection] = useState<
+  "failed" | "climbed" | null
   >(null);
+  const [stageHarmonySelection, setStageHarmonySelection] = useState<
+  "failed" | "zero" | "one" | "two" | null
+  >(null);
+  const [stageTrapSelection, setStageTrapSelection] = useState<boolean>(false);
+  const [stageSpotlitSelection, setStageSpotlitSelection] = useState<boolean>(false);
 
   const [intakeSelection, setIntakeSelection] = useState<
-    [GamePiece, IntakeLocation] | null
-  >(null);
-  const [activeSide, setActiveSide] = useState("intaking");
+    "GROUND" | "SOURCE" | ""
+  >("");
 
-  const handleIntakeSelection = (selection: [GamePiece, IntakeLocation]) => {
+  const handleIntakeSelection = (selection: "GROUND" | "SOURCE" | "") => {
     setIntakeSelection(selection);
     setActiveSide("scoring");
   };
 
   const handleScoringSelection = async (
-    selection: ScoringPosition | "dropped" | "failed"
+    selection: "SPEAKER" | "AMP" | "", outcome: "FAIL" | "DROP" | "SUCCESS"
   ) => {
     const event = {
-      intakeLocation: intakeSelection?.[1] as IntakeLocation,
-      gamePiece: intakeSelection?.[0] as GamePiece,
-      ...(selection === "failed"
-        ? { failed: true }
-        : selection === "dropped"
-        ? { dropped: true }
-        : { scoringPosition: selection, failed: false }),
+      intakeLocation: intakeSelection,
+      scoringPosition: selection,
+      failed: outcome !== "SUCCESS",
     };
 
     await dispatch(sendTeleopEvent(event));
 
-    setIntakeSelection(null);
+    setIntakeSelection("");
     setActiveSide("intaking");
   };
 
   return (
     <>
-      <Row className="my-5">
-        <Col className="d-flex justify-content-end" md={4}>
+      <Row className="my-3">
+        <Col className="d-flex justify-content-end" md={2}>
           <TeleopIntakePanel
             selected={intakeSelection}
             handleSelection={handleIntakeSelection}
           />
         </Col>
-        <Col className="d-flex justify-content-center" md={4}>
+        <Col className="d-flex flex-column align-items-stretch" md={5}>
           <TeleopScoringPanel
             active={activeSide === "scoring"}
             handleClick={handleScoringSelection}
           />
         </Col>
-        <Col className="d-flex justify-content-start" md={4}>
+        <Col className="d-flex justify-content-start" md={5}>
           <div className="d-flex flex-column">
-            <ChargeButton className="my-2" />
-            <IncapButton className="mt-2 mb-5" />
             <TeleopChargeSelector
-              selected={chargeStationSelection}
-              handleSelection={setChargeStationSelection}
+              outcome={stageOutcomeSelection}
+              handleOutcome={setStageOutcomeSelection}
+              harmony={stageHarmonySelection}
+              handleHarmony={setStageHarmonySelection}
+              trap={stageTrapSelection}
+              handleTrap={setStageTrapSelection}
+              spotlit={stageSpotlitSelection}
+              handleSpotlit={setStageSpotlitSelection}
             />
           </div>
         </Col>
+      </Row>
+      <Row className="d-flex justify-content-between">
+            <UndoButton className="mr-5 w-25" handleClick={()=>{}} />
+            <IncapButton className="ml-5 w-25" active={incap} handleClick={setIncap} />
       </Row>
     </>
   );

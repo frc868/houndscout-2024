@@ -28,6 +28,8 @@ export default function Client({ id }: Props) {
   const [tab, setTab] = useState<"auto" | "prematch" | "teleop" | "postmatch">(
     "prematch"
   );
+  const [incap, setIncap] = useState<true | false>(false);
+  const [activeSide, setActiveSide] = useState<"intaking" | "scoring">("intaking");
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -56,10 +58,8 @@ export default function Client({ id }: Props) {
     return () => clearInterval(interval);
   }, [dispatch, mainData.activeEventCode, mainData.activeMatchName, id, tab]);
 
-  const ready =
-    mainData.scouter.name &&
-    mainData.activeTeamNumber &&
-    mainData.activeMatchName;
+  const ready = true; //bypassing data checks
+    // mainData.scouter.name && mainData.activeTeamNumber && mainData.activeMatchName;
 
   return (
     <>
@@ -76,8 +76,8 @@ export default function Client({ id }: Props) {
       )}
       {ready && <SectionSelector selected={tab} handleSelection={setTab} />}
       {ready && tab === "prematch" && <PrematchContent />}
-      {ready && tab === "auto" && <AutoContent />}
-      {ready && tab === "teleop" && <TeleopContent />}
+      {ready && tab === "auto" && <AutoContent incap={incap} setIncap={setIncap} activeSide={activeSide} setActiveSide={setActiveSide} />}
+      {ready && tab === "teleop" && <TeleopContent  incap={incap} setIncap={setIncap} activeSide={activeSide} setActiveSide={setActiveSide} />}
       {ready && tab === "postmatch" && <PostmatchContent />}
     </>
   );

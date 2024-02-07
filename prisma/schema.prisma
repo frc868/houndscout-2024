@@ -1,3 +1,5 @@
+// npx prisma migrate dev to push database changes to postgres
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -71,10 +73,12 @@ model Match {
 
   startTime DateTime?
 
-  presetPiece1 GamePiece?
-  presetPiece2 GamePiece?
-  presetPiece3 GamePiece?
-  presetPiece4 GamePiece?
+  redPreset1 String
+  redPreset2 String
+  redPreset3 String
+  bluePreset1 String
+  bluePreset2 String
+  bluePreset3 String
 
   red1TeamId Int
   red2TeamId Int
@@ -114,7 +118,6 @@ model TeamScore {
   teamId Int
   team   Team @relation(fields: [teamId], references: [id])
 
-  preloadPiece          GamePiece?
   autoStartingZone      AutoStartingZone?
   autoScoringEvents     AutoScoringEvent[]
   teleopScoringEvents   TeleopScoringEvent[]
@@ -138,7 +141,6 @@ model TeamScore {
 model AutoScoringEvent {
   id              Int              @id @default(autoincrement())
   intakeType      IntakeType
-  gamePiece       GamePiece
   scoringPosition ScoringPosition?
   failed          Boolean          @default(false)
   timestampScored Decimal
@@ -150,7 +152,6 @@ model AutoScoringEvent {
 model TeleopScoringEvent {
   id                Int              @id @default(autoincrement())
   intakeLocation    IntakeLocation
-  gamePiece         GamePiece
   scoringPosition   ScoringPosition?
   dropped           Boolean          @default(false)
   failed            Boolean          @default(false)
@@ -167,7 +168,9 @@ model ChargeStationAttempt {
   timestampStarted Decimal
   timestampEnded   Decimal
   numberRobots     Int
-  interaction      ChargeStationInteraction
+  area             StageInteractionArea
+  harmony          StageInteractionHarmony
+  trap             StageInteractionTrap
 
   teamScoreId Int
   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
@@ -190,8 +193,7 @@ enum AutoStartingZone {
 
 enum IntakeLocation {
   GROUND
-  CHUTE
-  SHELF
+  SOURCE
 }
 
 enum IntakeType {
@@ -199,21 +201,28 @@ enum IntakeType {
   PRESET
 }
 
-enum GamePiece {
-  CONE
-  CUBE
-}
-
 enum ScoringPosition {
-  HIGH
-  MID
-  HYBRID
+  SPEAKER
+  AMP
 }
 
-enum ChargeStationInteraction {
-  BALANCED
-  DOCKED
+enum StageInteractionArea {
+  LEFT
+  RIGHT
+  CENTER
+  NONE
+}
+
+enum StageInteractionHarmony {
+  PARK
+  NONE
+  ONE
+  TWO
+}
+
+enum StageInteractionTrap {
   ATTEMPTED
+  SUCCESS
 }
 
 enum Segment {

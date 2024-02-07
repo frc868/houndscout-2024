@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 import { Button } from "react-bootstrap";
-
+import { useSelector } from "react-redux";
+import { ReduxState } from "@/redux/store";
 interface Props {
   selected: number | undefined;
   handleSelection: (selected: number) => void;
@@ -11,23 +12,29 @@ export default function StartingZoneSelector({
   selected,
   handleSelection,
 }: Props) {
+  const mainData = useSelector((state: ReduxState) => state.mainData);
   return (
     <div className="d-flex justify-content-center">
       <div className="position-relative">
         <div className="d-flex flex-column">
           <h1 className="text-center mb-3">Starting Position</h1>
           <img
-            className="mx-auto"
+            className="ml-auto my-auto"
             alt=""
-            src={"/assets/blueStart.png"}
-            width={400}
+            src={mainData.station?.includes("red") ? `/assets/redSpeaker.png` : `/assets/blueSpeaker.png`}
+            width={150}
+            height={300}
           />
         </div>
         <div
-          style={{
+          style={mainData.station?.includes("red") ? {
             position: "absolute",
-            top: "102px",
-            left: "137px",
+            top: "75px",
+            right: "275px",
+          } : {
+            position: "absolute",
+            top: "75px",
+            left: "125px",
           }}
         >
           <Button
@@ -40,9 +47,13 @@ export default function StartingZoneSelector({
           </Button>
         </div>
         <div
-          style={{
+          style={mainData.station?.includes("red") ? {
             position: "absolute",
-            top: "230px",
+            top: "200px",
+            right: "350px",
+          } : {
+            position: "absolute",
+            top: "200px",
             left: "200px",
           }}
         >
@@ -56,10 +67,14 @@ export default function StartingZoneSelector({
           </Button>
         </div>
         <div
-          style={{
+          style={mainData.station?.includes("red") ? {
             position: "absolute",
-            top: "358px",
-            left: "195px",
+            top: "325px",
+            right: "275px",
+          } : {
+            position: "absolute",
+            top: "325px",
+            left: "125px",
           }}
         >
           <Button

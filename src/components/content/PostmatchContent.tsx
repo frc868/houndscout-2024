@@ -3,7 +3,7 @@
 import CommentsBox from "@/components/postmatch/CommentsBox";
 import DriverSkillSelector from "@/components/postmatch/DriverSkillSelector";
 import SubmitButton from "@/components/postmatch/SubmitButton";
-import ToggleBox from "@/components/postmatch/ToggleBox";
+import ToggleBox from "@/components/mini/ToggleBox";
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 
@@ -15,9 +15,11 @@ export default function PostmatchContent() {
   const [underHeavyDefense, setUnderHeavyDefense] = useState(false);
   const [comments, setComments] = useState("");
 
+
+
   return (
     <>
-      <Row className="my-5">
+      <Row className="my-4">
         <Col className="d-flex justify-content-end" md={4}>
           <DriverSkillSelector
             selected={driverSkillSelection as number}
@@ -50,7 +52,7 @@ export default function PostmatchContent() {
       </Row>
       <Row className="d-flex justify-content-center mt-5">
         <Col md={3}>
-          <SubmitButton />
+          <SubmitButton handleClick={()=>console.log("done")} />
         </Col>
       </Row>
     </>

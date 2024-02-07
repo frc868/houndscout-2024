@@ -2,19 +2,15 @@
 
 interface Props {
   name: string;
-  coneSelected: boolean;
-  cubeSelected: boolean;
-  handleConeSelection: () => void;
-  handleCubeSelection: () => void;
+  selected: boolean;
+  handleSelection: () => void;
   className?: string;
 }
 
 export default function IntakeGroup({
   name,
-  coneSelected,
-  cubeSelected,
-  handleConeSelection,
-  handleCubeSelection,
+  selected,
+  handleSelection,
   className,
 }: Props) {
   return (
@@ -24,22 +20,14 @@ export default function IntakeGroup({
       <div className="d-flex justify-content-center">
         <div
           className={`mx-2 grow d-flex justify-content-center align-items-center rounded-4 ${
-            coneSelected ? `intake-cone-selected` : ""
+            selected ? `intake-ring-selected` : ""
           }`}
           style={{ width: "90px", height: "90px" }}
-          onMouseDown={handleConeSelection}
+          onMouseDown={handleSelection}
         >
-          <img className="" alt="" src={`/assets/cone.png`} width={65} />
+          <img className="" alt="" src={`/assets/ring.jpeg`} width={65} />
         </div>
-        <div
-          className={`mx-2 grow d-flex justify-content-center align-items-center rounded-4 ${
-            cubeSelected ? `intake-cube-selected` : ""
-          }`}
-          style={{ width: "90px", height: "90px" }}
-          onMouseDown={handleCubeSelection}
-        >
-          <img className="" alt="" src={`/assets/cube.png`} width={65} />
-        </div>
+        
       </div>
     </div>
   );

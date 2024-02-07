@@ -11,7 +11,7 @@ interface Props {
 export default function AutoScoringPanel({ selected, handleSelection }: Props) {
   return (
     <div className="d-flex flex-column align-items-center">
-      <h1 className="text-center">Driver Skill</h1>
+      <h5 className="text-center">Driver Skill</h5>
 
       <ListGroup horizontal className="mt-3 fs-4 ">
         {[1, 2, 3, 4, 5].map((item, idx) => (

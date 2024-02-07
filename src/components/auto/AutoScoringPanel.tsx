@@ -1,53 +1,59 @@
 /* eslint-disable @next/next/no-img-element */
 import { Col, Row } from "react-bootstrap";
-import ScoreButton from "../mini/ScoreButton";
+import ScoreGroup from "../mini/ScoreGroup";
 import FailButton from "../mini/FailButton";
 
 interface Props {
   active: boolean;
-  handleClick: (selection: "HIGH" | "MID" | "HYBRID" | "FAILED") => void;
+  handleClick: (selection: "SPEAKER" | "AMP" | "", outcome: "FAIL" | "DROP" | "PICKUPFAIL" | "SUCCESS") => void;
 }
 
 export default function AutoScoringPanel({ active, handleClick }: Props) {
   return (
-    <div className="d-flex flex-column align-items-center">
-      <h1 className="text-center mb-3">Scoring</h1>
-
-      <Row>
-        <Col className="mx-2">
-          <ScoreButton
-            className="mb-3"
-            name="High"
-            active={active}
-            handleClick={() => {
-              handleClick("HIGH");
+    <div className="d-flex flex-column align-items-stretch">
+      <h1 className="text-center">Scoring</h1>
+      <Row className="d-flex flex-row justify-content-center">
+        <Col className="align-items-center d-flex flex-column mr-3">
+          <ScoreGroup
+            className="mx-5 mb-3"
+            name="Speaker"
+            successActive={active}
+            handleSuccess={() => {
+              handleClick("SPEAKER", "SUCCESS");
+            }}
+            failActive={active}
+            handleFail={() => {
+              handleClick("SPEAKER", "FAIL");
             }}
           />
-          <ScoreButton
-            className="my-3"
-            name="Mid"
-            active={active}
-            handleClick={() => {
-              handleClick("MID");
+          <ScoreGroup
+            className="mx-5 mt-3"
+            name="Amp"
+            successActive={active}
+            handleSuccess={() => {
+              handleClick("AMP", "SUCCESS");
             }}
-          />
-          <ScoreButton
-            className="mt-3"
-            name="Hybrid"
-            active={active}
-            handleClick={() => {
-              handleClick("HYBRID");
+            failActive={active}
+            handleFail={() => {
+              handleClick("AMP", "FAIL");
             }}
           />
         </Col>
-        <Col className="d-flex align-items-center mx-2">
-          <FailButton
-            name="Failed"
-            active={active}
-            handleClick={() => {
-              handleClick("FAILED");
-            }}
-          />
+        <Col className="align-items-center d-flex flex-column ml-2">
+          <div className="mb-3  justify-content-center align-items-center">
+            <h5 className="text-center">Dropped</h5>
+            <FailButton
+              active={active}
+              handleClick={() => handleClick("", "DROP")}
+            />
+          </div>
+          <div className="mt-3 justify-content-center align-items-center">
+            <h5 className="text-center">Not Picked Up</h5>
+            <FailButton
+              active={active}
+              handleClick={() => handleClick("", "PICKUPFAIL")}
+            />
+          </div>
         </Col>
       </Row>
     </div>
