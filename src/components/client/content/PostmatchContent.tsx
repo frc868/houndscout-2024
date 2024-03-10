@@ -1,9 +1,9 @@
 "use client";
 
-import CommentsBox from "@/components/postmatch/CommentsBox";
-import DriverSkillSelector from "@/components/postmatch/DriverSkillSelector";
-import SubmitButton from "@/components/postmatch/SubmitButton";
-import ToggleBox from "@/components/postmatch/ToggleBox";
+import CommentsBox from "@/components/client/postmatch/CommentsBox";
+import DriverSkillSelector from "@/components/client/postmatch/DriverSkillSelector";
+import SubmitButton from "@/components/client/postmatch/SubmitButton";
+import ToggleBox from "@/components/client/postmatch/ToggleBox";
 import { sendPostMatchData } from "@/redux/scoresSlice";
 import { AppDispatch } from "@/redux/store";
 import { useState } from "react";

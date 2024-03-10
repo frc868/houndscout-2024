@@ -1,13 +1,13 @@
 "use client";
 
-import TeleopIntakePanel from "@/components/teleop/TeleopIntakePanel";
-import TeleopScoringPanel from "@/components/teleop/TeleopScoringPanel";
+import TeleopIntakePanel from "@/components/client/teleop/TeleopIntakePanel";
+import TeleopScoringPanel from "@/components/client/teleop/TeleopScoringPanel";
 import { AppDispatch } from "@/redux/store";
 import { ClimbType, IntakeLocation, ScoringLocation } from "@prisma/client";
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import TeleopStagePanel from "@/components/teleop/TeleopStagePanel";
+import TeleopStagePanel from "@/components/client/teleop/TeleopStagePanel";
 import { sendTeleopEvent } from "@/redux/scoresSlice";
 import MiniToggleBox from "../mini/MiniToggleBox";
 

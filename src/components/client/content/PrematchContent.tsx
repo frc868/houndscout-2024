@@ -1,6 +1,6 @@
 "use client";
 
-import StartingPositionSelector from "@/components/prematch/StartingZoneSelector";
+import StartingPositionSelector from "@/components/client/prematch/StartingZoneSelector";
 import { Alliance } from "@/lib/enums";
 import { setAutoStartingZoneAsync } from "@/redux/scoresSlice";
 import { AppDispatch, ReduxState } from "@/redux/store";

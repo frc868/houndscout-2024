@@ -1,7 +1,7 @@
 "use client";
 
-import AutoIntakePanel from "@/components/auto/AutoIntakePanel";
-import AutoScoringPanel from "@/components/auto/AutoScoringPanel";
+import AutoIntakePanel from "@/components/client/auto/AutoIntakePanel";
+import AutoScoringPanel from "@/components/client/auto/AutoScoringPanel";
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";

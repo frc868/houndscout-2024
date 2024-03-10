@@ -1,12 +1,12 @@
 "use client";
 
-import SectionSelector from "@/components/common/SectionSelector";
-import StatusBar from "@/components/common/StatusBar";
+import SectionSelector from "@/components/client/common/SectionSelector";
+import StatusBar from "@/components/client/common/StatusBar";
 import { useEffect, useState } from "react";
-import AutoContent from "@/components/content/AutoContent";
-import PostmatchContent from "@/components/content/PostmatchContent";
-import TeleopContent from "@/components/content/TeleopContent";
-import PrematchContent from "@/components/content/PrematchContent";
+import AutoContent from "@/components/client/content/AutoContent";
+import PostmatchContent from "@/components/client/content/PostmatchContent";
+import TeleopContent from "@/components/client/content/TeleopContent";
+import PrematchContent from "@/components/client/content/PrematchContent";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import {
