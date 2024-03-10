@@ -18,13 +18,14 @@ model Server {
   activeMatch   Match?      @relation(fields: [activeMatchId], references: [id])
   activeMatchId Int?
   heartbeats    Heartbeat[]
+  blueOnLeft    Boolean
 }
 
 model Heartbeat {
   id      Int      @id @default(autoincrement())
-  station String   @unique
+  station Station  @unique @default(RED1)
   time    DateTime
-  section String
+  section Section  @default(AUTO)
 
   server   Server @relation(fields: [serverId], references: [id])
   serverId Int
@@ -71,11 +72,6 @@ model Match {
 
   startTime DateTime?
 
-  presetPiece1 GamePiece?
-  presetPiece2 GamePiece?
-  presetPiece3 GamePiece?
-  presetPiece4 GamePiece?
-
   red1TeamId Int
   red2TeamId Int
   red3TeamId Int
@@ -114,15 +110,18 @@ model TeamScore {
   teamId Int
   team   Team @relation(fields: [teamId], references: [id])
 
-  preloadPiece          GamePiece?
-  autoStartingZone      AutoStartingZone?
-  autoScoringEvents     AutoScoringEvent[]
-  teleopScoringEvents   TeleopScoringEvent[]
-  chargeStationAttempts ChargeStationAttempt[]
-  incapSegments         IncapSegment[]
+  preloaded           Boolean              @default(true)
+  leftStartingZone    Boolean              @default(false)
+  autoStartingZone    AutoStartingZone?
+  autoScoringEvents   AutoScoringEvent[]
+  teleopScoringEvents TeleopScoringEvent[]
+  stageAttempts       StageAttempt[]
+  incapSegments       IncapSegment[]
 
-  driverSkillRating    Int?
-  defensePlayedAgainst Int?
+  driverSkillRating Int?
+  playedDefense     Boolean?
+  underDefense      Boolean?
+  comments          String?
 
   scouter   Scouter? @relation(fields: [scouterId], references: [id])
   scouterId Int?
@@ -136,12 +135,14 @@ model TeamScore {
 }
 
 model AutoScoringEvent {
-  id              Int              @id @default(autoincrement())
-  intakeType      IntakeType
-  gamePiece       GamePiece
-  scoringPosition ScoringPosition?
-  failed          Boolean          @default(false)
-  timestampScored Decimal
+  id                Int              @id @default(autoincrement())
+  gamePiece         AutoGamePiece
+  scoringLocation   ScoringLocation?
+  noNote            Boolean          @default(false)
+  missed            Boolean          @default(false)
+  failedScoring     Boolean          @default(false)
+  timestampPickedUp Decimal
+  timestampScored   Decimal
 
   teamScoreId Int
   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
@@ -150,10 +151,9 @@ model AutoScoringEvent {
 model TeleopScoringEvent {
   id                Int              @id @default(autoincrement())
   intakeLocation    IntakeLocation
-  gamePiece         GamePiece
-  scoringPosition   ScoringPosition?
+  scoringLocation   ScoringLocation?
   dropped           Boolean          @default(false)
-  failed            Boolean          @default(false)
+  failedScoring     Boolean          @default(false)
   timestampPickedUp Decimal
   timestampScored   Decimal
 
@@ -161,13 +161,13 @@ model TeleopScoringEvent {
   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
 }
 
-model ChargeStationAttempt {
-  id               Int                      @id @default(autoincrement())
-  segment          Segment
-  timestampStarted Decimal
-  timestampEnded   Decimal
-  numberRobots     Int
-  interaction      ChargeStationInteraction
+model StageAttempt {
+  id                  Int       @id @default(autoincrement())
+  climbType           ClimbType
+  timestampStarted    Decimal
+  numberRobotsOnChain Int
+  scoredInTrap        Boolean
+  spotlit             Boolean
 
   teamScoreId Int
   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
@@ -188,35 +188,46 @@ enum AutoStartingZone {
   THREE
 }
 
+enum AutoGamePiece {
+  PRELOAD
+  CENTER1
+  CENTER2
+  CENTER3
+  CENTER4
+  CENTER5
+  CLOSE1
+  CLOSE2
+  CLOSE3
+}
+
 enum IntakeLocation {
   GROUND
-  CHUTE
-  SHELF
+  SOURCE
 }
 
-enum IntakeType {
-  PRELOAD
-  PRESET
+enum ScoringLocation {
+  SPEAKER
+  AMP
 }
 
-enum GamePiece {
-  CONE
-  CUBE
+enum ClimbType {
+  FAILED
+  PARKED
+  CLIMBED
 }
 
-enum ScoringPosition {
-  HIGH
-  MID
-  HYBRID
-}
-
-enum ChargeStationInteraction {
-  BALANCED
-  DOCKED
-  ATTEMPTED
-}
-
-enum Segment {
+enum Section {
+  PREMATCH
   AUTO
   TELEOP
+  POSTMATCH
+}
+
+enum Station {
+  RED1
+  RED2
+  RED3
+  BLUE1
+  BLUE2
+  BLUE3
 }
