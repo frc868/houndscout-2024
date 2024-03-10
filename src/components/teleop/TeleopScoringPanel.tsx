@@ -1,52 +1,70 @@
-/* eslint-disable @next/next/no-img-element */
 import { Col, Row } from "react-bootstrap";
 import ScoreButton from "../mini/ScoreButton";
 import FailButton from "../mini/FailButton";
-import { ScoringPosition } from "@prisma/client";
+import { ScoringLocation } from "@prisma/client";
 
 interface Props {
   active: boolean;
-  handleClick: (selection: ScoringPosition | "dropped" | "failed") => void;
+  handleSelection: (
+    location?: ScoringLocation,
+    failed?: boolean,
+    dropped?: boolean
+  ) => void;
 }
 
-export default function TeleopScoringPanel({ active, handleClick }: Props) {
+export default function TeleopScoringPanel({ active, handleSelection }: Props) {
   return (
     <div className="d-flex flex-column align-items-center">
-      <h1 className="text-center mb-3">Scoring</h1>
-
+      <h1 className="text-center mb-1">Scoring</h1>
       <Row>
-        <Col className="mx-2">
-          <ScoreButton
-            className="mb-3"
-            name="High"
-            active={active}
-            handleClick={() => handleClick(ScoringPosition.HIGH)}
-          />
-          <ScoreButton
-            className="my-3"
-            name="Mid"
-            active={active}
-            handleClick={() => handleClick(ScoringPosition.MID)}
-          />
-          <ScoreButton
-            className="mt-3"
-            name="Hybrid"
-            active={active}
-            handleClick={() => handleClick(ScoringPosition.HYBRID)}
-          />
+        <Col>
+          <div className="d-flex flex-column my-3">
+            <h3 className="text-center">Speaker</h3>
+            <div className="d-flex justify-content-center">
+              <ScoreButton
+                className="mx-3 my-2"
+                active={active}
+                handleClick={() => {
+                  handleSelection(ScoringLocation.SPEAKER);
+                }}
+              />
+              <FailButton
+                className="mx-3 my-2"
+                active={active}
+                handleClick={() => {
+                  handleSelection(ScoringLocation.SPEAKER, true);
+                }}
+              />
+            </div>
+          </div>
+          <div className="d-flex flex-column my-3">
+            <h3 className="text-center">Amp</h3>
+            <div className="d-flex justify-content-center">
+              <ScoreButton
+                className="mx-3 my-2"
+                active={active}
+                handleClick={() => {
+                  handleSelection(ScoringLocation.AMP);
+                }}
+              />
+              <FailButton
+                className="mx-3 my-2"
+                active={active}
+                handleClick={() => {
+                  handleSelection(ScoringLocation.AMP, true);
+                }}
+              />
+            </div>
+          </div>
         </Col>
-        <Col className="d-flex flex-column justify-content-center mx-2">
+        <Col className="d-flex flex-column justify-content-center align-items-center my-3">
+          <h3 className="text-center">Dropped</h3>
           <FailButton
-            className="mb-3"
-            name="Failed"
+            className="mx-3 my-2"
             active={active}
-            handleClick={() => handleClick("failed")}
-          />
-          <FailButton
-            className="mt-3"
-            name="Dropped"
-            active={active}
-            handleClick={() => handleClick("dropped")}
+            handleClick={() => {
+              handleSelection(undefined, false, true);
+            }}
           />
         </Col>
       </Row>

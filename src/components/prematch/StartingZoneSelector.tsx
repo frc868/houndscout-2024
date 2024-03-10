@@ -1,13 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
-import Image from "next/image";
+import { Alliance } from "@/lib/enums";
+import { AutoStartingZone } from "@prisma/client";
 import { Button } from "react-bootstrap";
 
 interface Props {
-  selected: number | undefined;
-  handleSelection: (selected: number) => void;
+  alliance: Alliance;
+  blueOnLeft: boolean;
+  selected: AutoStartingZone | undefined;
+  handleSelection: (selected: AutoStartingZone) => void;
 }
 
 export default function StartingZoneSelector({
+  alliance,
+  blueOnLeft,
   selected,
   handleSelection,
 }: Props) {
@@ -19,56 +24,131 @@ export default function StartingZoneSelector({
           <img
             className="mx-auto"
             alt=""
-            src={"/assets/blueStart.png"}
+            src={
+              alliance === Alliance.BLUE
+                ? blueOnLeft
+                  ? "/assets/blue_auto_left.png"
+                  : "/assets/blue_auto_right.png"
+                : blueOnLeft
+                ? "/assets/red_auto_right.png"
+                : "/assets/red_auto_left.png"
+            }
             width={400}
           />
+          {}
         </div>
         <div
-          style={{
-            position: "absolute",
-            top: "102px",
-            left: "137px",
-          }}
+          style={
+            alliance === Alliance.BLUE
+              ? blueOnLeft
+                ? {
+                    position: "absolute",
+                    top: "120px",
+                    left: "55px",
+                  }
+                : {
+                    position: "absolute",
+                    top: "450px",
+                    left: "295px",
+                  }
+              : blueOnLeft
+              ? {
+                  position: "absolute",
+                  top: "120px",
+                  left: "295px",
+                }
+              : {
+                  position: "absolute",
+                  top: "450px",
+                  left: "55px",
+                }
+          }
         >
           <Button
-            variant={selected == 3 ? "primary" : "secondary"}
+            variant={
+              selected === AutoStartingZone.ONE ? "primary" : "secondary"
+            }
             className="fw-bold"
-            style={{ width: "70px" }}
-            onMouseDown={() => handleSelection(3)}
+            style={{ width: "50px" }}
+            onMouseDown={() => handleSelection(AutoStartingZone.ONE)}
           >
-            3
+            1
           </Button>
         </div>
         <div
-          style={{
-            position: "absolute",
-            top: "230px",
-            left: "200px",
-          }}
+          style={
+            alliance === Alliance.BLUE
+              ? blueOnLeft
+                ? {
+                    position: "absolute",
+                    top: "208px",
+                    left: "85px",
+                  }
+                : {
+                    position: "absolute",
+                    top: "372px",
+                    left: "275px",
+                  }
+              : blueOnLeft
+              ? {
+                  position: "absolute",
+                  top: "203px",
+                  left: "274px",
+                }
+              : {
+                  position: "absolute",
+                  top: "372px",
+                  left: "87px",
+                }
+          }
         >
           <Button
-            variant={selected == 2 ? "primary" : "secondary"}
+            variant={
+              selected === AutoStartingZone.TWO ? "primary" : "secondary"
+            }
             className="fw-bold"
-            style={{ width: "70px" }}
-            onMouseDown={() => handleSelection(2)}
+            style={{ width: "40px" }}
+            onMouseDown={() => handleSelection(AutoStartingZone.TWO)}
           >
             2
           </Button>
         </div>
         <div
-          style={{
-            position: "absolute",
-            top: "358px",
-            left: "195px",
-          }}
+          style={
+            alliance === Alliance.BLUE
+              ? blueOnLeft
+                ? {
+                    position: "absolute",
+                    top: "350px",
+                    left: "55px",
+                  }
+                : {
+                    position: "absolute",
+                    top: "220px",
+                    left: "295px",
+                  }
+              : blueOnLeft
+              ? {
+                  position: "absolute",
+                  top: "350px",
+                  left: "295px",
+                }
+              : {
+                  position: "absolute",
+                  top: "220px",
+                  left: "55px",
+                }
+          }
         >
           <Button
-            variant={selected == 1 ? "primary" : "secondary"}
+            variant={
+              selected == AutoStartingZone.THREE ? "primary" : "secondary"
+            }
             className="fw-bold"
-            style={{ width: "70px" }}
-            onMouseDown={() => handleSelection(1)}
+            style={{ width: "50px" }}
+            onMouseDown={() => handleSelection(AutoStartingZone.THREE)}
           >
-            1
+            3
           </Button>
         </div>
       </div>

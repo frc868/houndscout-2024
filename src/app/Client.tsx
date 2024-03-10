@@ -17,44 +17,49 @@ import {
   sendHeartbeatAsync,
   setStation,
 } from "@/redux/mainDataSlice";
+import { Section, Station } from "@prisma/client";
 
 interface Props {
-  id: "red1" | "red2" | "red3" | "blue1" | "blue2" | "blue3";
+  station: Station;
 }
 
-export default function Client({ id }: Props) {
+export default function Client({ station }: Props) {
   const mainData = useSelector((state: ReduxState) => state.mainData);
   const dispatch = useDispatch<AppDispatch>();
-  const [tab, setTab] = useState<"auto" | "prematch" | "teleop" | "postmatch">(
-    "prematch"
-  );
+  const [tab, setTab] = useState<Section>(Section.PREMATCH);
 
   useEffect(() => {
     const interval = setInterval(async () => {
       await dispatch(getActiveEventAsync());
       await dispatch(getActiveMatchAsync());
-      await dispatch(sendHeartbeatAsync({ station: id, section: tab }));
-      await dispatch(setStation({ station: id }));
+      await dispatch(sendHeartbeatAsync({ station, section: tab }));
+      await dispatch(setStation({ station }));
 
       if (mainData.activeEventCode && mainData.activeMatchName) {
         await dispatch(
           getActiveTeamNumberAsync({
             eventCode: mainData.activeEventCode,
             matchName: mainData.activeMatchName,
-            station: id,
+            station: station,
           })
         );
         await dispatch(
           getScouterAsync({
             eventCode: mainData.activeEventCode,
             matchName: mainData.activeMatchName,
-            station: id,
+            station: station,
           })
         );
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [dispatch, mainData.activeEventCode, mainData.activeMatchName, id, tab]);
+  }, [
+    dispatch,
+    mainData.activeEventCode,
+    mainData.activeMatchName,
+    station,
+    tab,
+  ]);
 
   const ready =
     mainData.scouter.name &&
@@ -75,10 +80,10 @@ export default function Client({ id }: Props) {
         </div>
       )}
       {ready && <SectionSelector selected={tab} handleSelection={setTab} />}
-      {ready && tab === "prematch" && <PrematchContent />}
-      {ready && tab === "auto" && <AutoContent />}
-      {ready && tab === "teleop" && <TeleopContent />}
-      {ready && tab === "postmatch" && <PostmatchContent />}
+      {ready && tab === Section.PREMATCH && <PrematchContent />}
+      {ready && tab === Section.AUTO && <AutoContent />}
+      {ready && tab === Section.TELEOP && <TeleopContent />}
+      {ready && tab === Section.POSTMATCH && <PostmatchContent />}
     </>
   );
 }

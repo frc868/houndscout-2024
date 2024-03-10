@@ -67,18 +67,6 @@ export async function PATCH(
   if (data.startTime) {
     updateData.startTime = data.startTime;
   }
-  if (data.presetPiece1) {
-    updateData.presetPiece1 = data.presetPiece1;
-  }
-  if (data.presetPiece2) {
-    updateData.presetPiece2 = data.presetPiece2;
-  }
-  if (data.presetPiece3) {
-    updateData.presetPiece3 = data.presetPiece3;
-  }
-  if (data.presetPiece4) {
-    updateData.presetPiece4 = data.presetPiece4;
-  }
 
   let match;
   try {

@@ -1,76 +1,84 @@
 "use client";
 
-import ChargeButton from "@/components/mini/ChargeButton";
-import IncapButton from "@/components/mini/IncapButton";
-import TeleopChargeSelector from "@/components/teleop/TeleopChargeSelector";
 import TeleopIntakePanel from "@/components/teleop/TeleopIntakePanel";
 import TeleopScoringPanel from "@/components/teleop/TeleopScoringPanel";
-import { sendAutoEvent, sendTeleopEvent } from "@/redux/scoresSlice";
-import { AppDispatch, ReduxState } from "@/redux/store";
-import { GamePiece, IntakeLocation, ScoringPosition } from "@prisma/client";
+import { AppDispatch } from "@/redux/store";
+import { ClimbType, IntakeLocation, ScoringLocation } from "@prisma/client";
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import TeleopStagePanel from "@/components/teleop/TeleopStagePanel";
+import { sendTeleopEvent } from "@/redux/scoresSlice";
+import MiniToggleBox from "../mini/MiniToggleBox";
 
 export default function TeleopContent() {
   const dispatch = useDispatch<AppDispatch>();
-  const [chargeStationSelection, setChargeStationSelection] = useState<
-    "balanced" | "docked" | "failed" | null
-  >(null);
 
-  const [intakeSelection, setIntakeSelection] = useState<
-    [GamePiece, IntakeLocation] | null
-  >(null);
+  const [intakeLocation, setIntakeLocation] = useState<
+    IntakeLocation | undefined
+  >(undefined);
   const [activeSide, setActiveSide] = useState("intaking");
 
-  const handleIntakeSelection = (selection: [GamePiece, IntakeLocation]) => {
-    setIntakeSelection(selection);
+  const [climbActive, setClimbActive] = useState(false);
+  const [climbType, setClimbType] = useState<ClimbType | undefined>(undefined);
+  const [numRobots, setNumRobots] = useState<number | undefined>(undefined);
+  const [scoredInTrap, setScoredInTrap] = useState(false);
+  const [spotlit, setSpotlit] = useState(false);
+
+  const handleIntakeSelection = (selection: IntakeLocation) => {
+    setIntakeLocation(selection);
     setActiveSide("scoring");
   };
 
   const handleScoringSelection = async (
-    selection: ScoringPosition | "dropped" | "failed"
+    location?: ScoringLocation,
+    failed?: boolean,
+    dropped?: boolean
   ) => {
-    const event = {
-      intakeLocation: intakeSelection?.[1] as IntakeLocation,
-      gamePiece: intakeSelection?.[0] as GamePiece,
-      ...(selection === "failed"
-        ? { failed: true }
-        : selection === "dropped"
-        ? { dropped: true }
-        : { scoringPosition: selection, failed: false }),
-    };
+    if (activeSide == "scoring") {
+      const event = {
+        intakeLocation: intakeLocation as IntakeLocation,
+        scoringLocation: location,
+        failed,
+        dropped,
+      };
 
-    await dispatch(sendTeleopEvent(event));
+      await dispatch(sendTeleopEvent(event));
 
-    setIntakeSelection(null);
-    setActiveSide("intaking");
+      setIntakeLocation(undefined);
+      setActiveSide("intaking");
+    }
   };
 
   return (
     <>
+      <Row></Row>
       <Row className="my-5">
-        <Col className="d-flex justify-content-end" md={4}>
+        <Col className="d-flex justify-content-end" md={3}>
           <TeleopIntakePanel
-            selected={intakeSelection}
+            selected={intakeLocation}
             handleSelection={handleIntakeSelection}
           />
         </Col>
-        <Col className="d-flex justify-content-center" md={4}>
+        <Col className="d-flex justify-content-end" md={4}>
           <TeleopScoringPanel
             active={activeSide === "scoring"}
-            handleClick={handleScoringSelection}
+            handleSelection={handleScoringSelection}
           />
         </Col>
-        <Col className="d-flex justify-content-start" md={4}>
-          <div className="d-flex flex-column">
-            <ChargeButton className="my-2" />
-            <IncapButton className="mt-2 mb-5" />
-            <TeleopChargeSelector
-              selected={chargeStationSelection}
-              handleSelection={setChargeStationSelection}
-            />
-          </div>
+        <Col className="d-flex justify-content-start ms-5" md={4}>
+          <TeleopStagePanel
+            active={climbActive}
+            climbType={climbType}
+            numRobots={numRobots}
+            scoredInTrap={scoredInTrap}
+            spotlit={spotlit}
+            handleStart={() => setClimbActive((old) => !old)}
+            handleClimbTypeSelection={setClimbType}
+            handleNumRobotsSelection={setNumRobots}
+            handleScoredInTrapSelection={setScoredInTrap}
+            handleSpotlitSelection={setSpotlit}
+          />
         </Col>
       </Row>
     </>

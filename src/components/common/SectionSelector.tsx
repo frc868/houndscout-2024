@@ -1,27 +1,28 @@
-import { Button, Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
+import { Section } from "@prisma/client";
+import { Button } from "react-bootstrap";
 
 interface Props {
-  selected: "prematch" | "auto" | "teleop" | "postmatch";
-  handleSelection: (
-    selection: "prematch" | "auto" | "teleop" | "postmatch"
-  ) => void;
+  selected: Section;
+  handleSelection: (selection: Section) => void;
 }
 
 export default function SectionSelector({ selected, handleSelection }: Props) {
   return (
     <div className="d-flex justify-content-evenly mx-5 my-4">
-      {["prematch", "auto", "teleop", "postmatch"].map((item) => (
-        <Button
-          key={item}
-          variant="secondary"
-          className={`state-button fs-4 rounded-4 fw-bold ${
-            selected === item && `${item}-button`
-          }`}
-          onClick={() => handleSelection(item as any)}
-        >
-          {item.toUpperCase()}
-        </Button>
-      ))}
+      {[Section.PREMATCH, Section.AUTO, Section.TELEOP, Section.POSTMATCH].map(
+        (item) => (
+          <Button
+            key={item}
+            variant="secondary"
+            className={`state-button fs-4 rounded-4 fw-bold ${
+              selected === item && `${item.toLowerCase()}-button`
+            }`}
+            onClick={() => handleSelection(item)}
+          >
+            {item.toUpperCase()}
+          </Button>
+        )
+      )}
     </div>
   );
 }

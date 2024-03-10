@@ -1,76 +1,75 @@
 "use client";
 
-import ChargeButton from "@/components/mini/ChargeButton";
-import IncapButton from "@/components/mini/IncapButton";
-import AutoChargeSelector from "@/components/auto/AutoChargeSelector";
 import AutoIntakePanel from "@/components/auto/AutoIntakePanel";
 import AutoScoringPanel from "@/components/auto/AutoScoringPanel";
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
-import { sendAutoEvent } from "@/redux/scoresSlice";
+import { sendAutoEvent, setLeftStartingZoneAsync } from "@/redux/scoresSlice";
+import { AutoGamePiece, ScoringLocation } from "@prisma/client";
 
 export default function AutoContent() {
   const dispatch = useDispatch<AppDispatch>();
+  const mainData = useSelector((state: ReduxState) => state.mainData);
   const scores = useSelector((state: ReduxState) => state.scores);
-  const [chargeStationSelection, setChargeStationSelection] = useState<
-    "balanced" | "docked" | "failed" | null
-  >(null);
 
-  const [selected, setSelected] = useState<number | null>(null);
-  const [activeSide, setActiveSide] = useState("intake");
+  const [selectedGamePiece, setSelectedGamePiece] =
+    useState<AutoGamePiece | null>(AutoGamePiece.PRELOAD);
+  const [activeSide, setActiveSide] = useState("scoring");
 
-  const handleIntakeSelection = (selection: number) => {
-    setSelected(selection);
+  const handleIntakeSelection = (selection: AutoGamePiece) => {
+    setSelectedGamePiece(selection);
     setActiveSide("scoring");
   };
 
   const handleScoringSelection = async (
-    selection: "HIGH" | "MID" | "HYBRID" | "FAILED"
+    scoringLocation?: ScoringLocation,
+    failedScoring?: boolean,
+    noNote?: boolean,
+    missed?: boolean
   ) => {
-    const event = {
-      intakeType: "PRESET" as "PRELOAD" | "PRESET",
-      gamePiece: scores.presetPieces[Number(selected)],
-      ...(selection === "FAILED"
-        ? { failed: true }
-        : { scoringPosition: selection, failed: false }),
-    };
+    if (activeSide == "scoring") {
+      const event = {
+        gamePiece: selectedGamePiece as AutoGamePiece,
+        scoringLocation,
+        failedScoring: failedScoring || false,
+        noNote: noNote || false,
+        missed: missed || false,
+      };
 
-    await dispatch(sendAutoEvent(event));
+      await dispatch(sendAutoEvent(event));
 
-    setSelected(null);
-    setActiveSide("intaking");
+      setSelectedGamePiece(null);
+      setActiveSide("intaking");
+    }
   };
 
   return (
     <>
       <Row className="my-5 d-flex justify-content-center">
-        <Col className="d-flex justify-content-end pe-5 me-5" md={5}>
+        <Col className="d-flex justify-content-end pe-5" md={6}>
           <AutoIntakePanel
-            presets={scores.presetPieces}
-            selected={selected}
+            alliance={mainData.alliance}
+            blueOnLeft={mainData.blueOnLeft}
+            selected={selectedGamePiece}
+            usedGamePieces={scores.usedGamePieces}
             handleSelection={handleIntakeSelection}
           />
         </Col>
-        <Col className="d-flex justify-content-center" md={2}>
+        <Col className="d-flex align-items-start flex-column" md={5}>
           <AutoScoringPanel
             active={activeSide === "scoring"}
-            handleClick={handleScoringSelection}
+            handleSelection={handleScoringSelection}
+            leftStartingZoneEnabled={scores.leftStartingZone}
+            handleLeftStartingZoneClick={() =>
+              dispatch(
+                setLeftStartingZoneAsync({
+                  leftStartingZone: !scores.leftStartingZone,
+                })
+              )
+            }
           />
-        </Col>
-        <Col
-          className="d-flex align-items-center justify-content-start ms-5 ps-5"
-          md={4}
-        >
-          <div className="d-flex flex-column">
-            <ChargeButton className="my-2" />
-            <IncapButton className="mt-2 mb-5" />
-            <AutoChargeSelector
-              selected={chargeStationSelection}
-              handleSelection={setChargeStationSelection}
-            />
-          </div>
         </Col>
       </Row>
     </>

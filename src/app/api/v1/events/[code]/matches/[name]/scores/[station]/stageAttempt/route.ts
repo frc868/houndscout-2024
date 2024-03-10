@@ -15,13 +15,12 @@ export async function POST(
       data: {
         [`${params.station}TeamScore`]: {
           update: {
-            chargeStationAttempts: {
+            stageAttempts: {
               create: {
-                segment: data.segment,
-                timestampScored: data.timestampScored,
-                timestampEnded: data.timestampEnded,
-                numberRobots: data.numberRobots,
-                interaction: data.interaction,
+                timestampStarted: data.timestampStarted,
+                numberRobotsOnChain: data.numberRobotsOnChain,
+                scoredInTrap: data.scoredInTrap,
+                spotlit: data.spotlit,
               },
             },
           },

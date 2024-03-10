@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { Station } from "@prisma/client";
 
 export async function POST(
   req: Request,
@@ -11,7 +12,7 @@ export async function POST(
   try {
     heartbeat = await prisma.heartbeat.update({
       where: {
-        station: params.station,
+        station: params.station.toUpperCase() as Station,
       },
       data: {
         time: new Date(),

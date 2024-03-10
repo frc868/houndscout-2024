@@ -1,8 +1,12 @@
+import { Alliance } from "@/lib/enums";
+import { Section, Station } from "@prisma/client";
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export interface MainData {
-  station?: "red1" | "red2" | "red3" | "blue1" | "blue2" | "blue3";
+  station?: Station;
+  alliance: Alliance;
+  blueOnLeft: boolean;
   lastHeartbeat: number;
   activeEventCode?: string;
   activeMatchName?: string;
@@ -51,7 +55,7 @@ export const getActiveTeamNumberAsync = createAsyncThunk(
       `/api/v1/events/${eventCode}/matches/${matchName}`
     );
     const data = res.data;
-    return data.match?.[`${station}Team`]?.number;
+    return data.match?.[`${station.toLowerCase()}Team`]?.number;
   }
 );
 
@@ -67,7 +71,7 @@ export const getScouterAsync = createAsyncThunk(
     station: string;
   }) => {
     const res = await axios.get(
-      `/api/v1/events/${eventCode}/matches/${matchName}/scouters/${station}`
+      `/api/v1/events/${eventCode}/matches/${matchName}/scouters/${station.toLowerCase()}`
     );
     const data = res.data;
     return data.scouter;
@@ -75,13 +79,15 @@ export const getScouterAsync = createAsyncThunk(
 );
 export const sendHeartbeatAsync = createAsyncThunk(
   "mainData/sendHeartbeatAsync",
-  async ({ station, section }: { station: string; section: string }) => {
-    await axios.post(`/api/v1/heartbeat/${station}`, { section });
+  async ({ station, section }: { station: Station; section: Section }) => {
+    await axios.post(`/api/v1/heartbeat/${station.toLowerCase()}`, { section });
   }
 );
 
 const initialState: MainData = {
   station: undefined,
+  alliance: Alliance.BLUE,
+  blueOnLeft: true,
   lastHeartbeat: 0,
   activeEventCode: undefined,
   activeMatchName: undefined,
@@ -104,10 +110,13 @@ export const mainData = createSlice({
     setStation: (
       state,
       action: PayloadAction<{
-        station: "red1" | "red2" | "red3" | "blue1" | "blue2" | "blue3";
+        station: Station;
       }>
     ) => {
       state.station = action.payload.station;
+      state.alliance = action.payload.station.includes("RED")
+        ? Alliance.RED
+        : Alliance.BLUE;
     },
   },
   extraReducers: (builder) => {

@@ -19,7 +19,7 @@ import {
 } from "@/redux/adminDataSlice";
 import MatchSchedule from "@/components/admin/MatchSchedule";
 import { Col, Container, Row } from "react-bootstrap";
-import Activity from "@/components/admin/ScouterStatus";
+import Activity from "@/components/admin/Activity";
 
 export default function Admin() {
   const mainData = useSelector((state: ReduxState) => state.mainData);

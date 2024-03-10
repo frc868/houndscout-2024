@@ -6,12 +6,12 @@ import { BounceLoader } from "react-spinners";
 
 interface Props {
   scouters: {
-    red1: Scouter;
-    red2: Scouter;
-    red3: Scouter;
-    blue1: Scouter;
-    blue2: Scouter;
-    blue3: Scouter;
+    red1?: Scouter;
+    red2?: Scouter;
+    red3?: Scouter;
+    blue1?: Scouter;
+    blue2?: Scouter;
+    blue3?: Scouter;
   };
   heartbeats: {
     red1: Heartbeat;
@@ -29,22 +29,34 @@ export default function Activity({ scouters, heartbeats }: Props) {
       <h1 className="text-center mb-3">Activity</h1>
       <ListGroup className="w-100">
         {[
-          { name: "Red 1", scouter: scouters.red1, heartbeat: heartbeats.red1 },
-          { name: "Red 2", scouter: scouters.red2, heartbeat: heartbeats.red2 },
-          { name: "Red 3", scouter: scouters.red3, heartbeat: heartbeats.red3 },
+          {
+            name: "Red 1",
+            scouter: scouters.red1 || { name: "Unassigned", id: -1 },
+            heartbeat: heartbeats.red1,
+          },
+          {
+            name: "Red 2",
+            scouter: scouters.red2 || { name: "Unassigned", id: -1 },
+            heartbeat: heartbeats.red2,
+          },
+          {
+            name: "Red 3",
+            scouter: scouters.red3 || { name: "Unassigned", id: -1 },
+            heartbeat: heartbeats.red3,
+          },
           {
             name: "Blue 1",
-            scouter: scouters.blue1,
+            scouter: scouters.blue1 || { name: "Unassigned", id: -1 },
             heartbeat: heartbeats.blue1,
           },
           {
             name: "Blue 2",
-            scouter: scouters.blue2,
+            scouter: scouters.blue2 || { name: "Unassigned", id: -1 },
             heartbeat: heartbeats.blue2,
           },
           {
             name: "Blue 3",
-            scouter: scouters.blue3,
+            scouter: scouters.blue3 || { name: "Unassigned", id: -1 },
             heartbeat: heartbeats.blue3,
           },
         ].map(

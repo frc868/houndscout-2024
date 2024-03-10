@@ -10,17 +10,19 @@ export async function POST(
   try {
     match = await prisma.match.update({
       where: {
-        name_eventCode: { number: params.number, eventCode: params.code },
+        name_eventCode: { name: params.name, eventCode: params.code },
       },
       data: {
         [`${params.station}TeamScore`]: {
           update: {
             autoScoringEvents: {
               create: {
-                intakeType: data.intakeType,
                 gamePiece: data.gamePiece,
-                scoringPosition: data.scoringPosition || undefined,
-                failed: data.failed || false,
+                scoringLocation: data.scoringLocation || undefined,
+                noNote: data.noNote || false,
+                missed: data.missed || false,
+                failedScoring: data.failedScoring || false,
+                timestampPickedUp: data.timestampPickedUp,
                 timestampScored: data.timestampScored,
               },
             },

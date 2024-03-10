@@ -1,57 +1,81 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { ReduxState } from "./store";
+import {
+  AutoGamePiece,
+  AutoStartingZone,
+  IntakeLocation,
+  ScoringLocation,
+} from "@prisma/client";
 
 export interface Scores {
-  presetPieces: ("CONE" | "CUBE")[];
-  preloadPiece: "CONE" | "CUBE";
-  autoStartingZone?: number;
+  autoStartingZone?: AutoStartingZone;
+  usedGamePieces: AutoGamePiece[];
+  leftStartingZone: boolean;
 }
 
-export const setPresetPiecesAsync = createAsyncThunk(
-  "scores/setPresetPiecesAsync",
-  async (
-    { pieces }: { pieces: ("CONE" | "CUBE")[] },
-    { dispatch, getState }
-  ) => {
-    const state = getState() as ReduxState;
-    const mainData = state.mainData;
-    dispatch(setPresetPieces({ pieces }));
-    const res = await axios.patch(
-      `/api/v1/events/${mainData.activeEventCode}/matches/${mainData.activeMatchName}`,
-      {
-        presetPiece1: pieces[0],
-        presetPiece2: pieces[1],
-        presetPiece3: pieces[2],
-        presetPiece4: pieces[3],
-      }
-    );
-  }
-);
-export const setPreloadPieceAsync = createAsyncThunk(
-  "scores/setPreloadPieceAsync",
-  async ({ piece }: { piece: "CONE" | "CUBE" }, { dispatch, getState }) => {
-    const state = getState() as ReduxState;
-    const mainData = state.mainData;
-    dispatch(setPreloadPiece({ piece }));
-    const res = await axios.patch(
-      `/api/v1/events/${mainData.activeEventCode}/matches/${mainData.activeMatchName}/scores/${mainData.station}`,
-      {
-        preloadPiece: piece,
-      }
-    );
-  }
-);
 export const setAutoStartingZoneAsync = createAsyncThunk(
   "scores/setAutoStartingZoneAsync",
-  async ({ zone }: { zone: number }, { dispatch, getState }) => {
+  async ({ zone }: { zone: AutoStartingZone }, { dispatch, getState }) => {
     const state = getState() as ReduxState;
     const mainData = state.mainData;
     dispatch(setAutoStartingZone({ zone }));
     const res = await axios.patch(
-      `/api/v1/events/${mainData.activeEventCode}/matches/${mainData.activeMatchName}/scores/${mainData.station}`,
+      `/api/v1/events/${mainData.activeEventCode}/matches/${
+        mainData.activeMatchName
+      }/scores/${mainData.station?.toLowerCase()}`,
       {
-        autoStartingZone: ["ONE", "TWO", "THREE"][zone - 1],
+        autoStartingZone: zone,
+      }
+    );
+  }
+);
+export const setLeftStartingZoneAsync = createAsyncThunk(
+  "scores/setLeftStartingZoneAsync",
+  async (
+    { leftStartingZone }: { leftStartingZone: boolean },
+    { dispatch, getState }
+  ) => {
+    const state = getState() as ReduxState;
+    const mainData = state.mainData;
+    dispatch(setLeftStartingZone({ leftStartingZone }));
+    const res = await axios.patch(
+      `/api/v1/events/${mainData.activeEventCode}/matches/${
+        mainData.activeMatchName
+      }/scores/${mainData.station?.toLowerCase()}`,
+      {
+        leftStartingZone,
+      }
+    );
+  }
+);
+export const sendPostMatchData = createAsyncThunk(
+  "scores/sendPostMatchData",
+  async (
+    {
+      driverSkillRating,
+      playedDefense,
+      underDefense,
+      comments,
+    }: {
+      driverSkillRating: number;
+      playedDefense: boolean;
+      underDefense: boolean;
+      comments: string;
+    },
+    { dispatch, getState }
+  ) => {
+    const state = getState() as ReduxState;
+    const mainData = state.mainData;
+    const res = await axios.patch(
+      `/api/v1/events/${mainData.activeEventCode}/matches/${
+        mainData.activeMatchName
+      }/scores/${mainData.station?.toLowerCase()}`,
+      {
+        driverSkillRating,
+        playedDefense,
+        underDefense,
+        comments,
       }
     );
   }
@@ -61,31 +85,35 @@ export const sendAutoEvent = createAsyncThunk(
   "scores/sendAutoEvent",
   async (
     data: {
-      intakeType: "PRELOAD" | "PRESET";
-      gamePiece: "CONE" | "CUBE";
-      scoringPosition?: "HIGH" | "MID" | "HYBRID";
-      failed: boolean;
+      gamePiece: AutoGamePiece;
+      scoringLocation?: ScoringLocation;
+      failedScoring: boolean;
+      noNote: boolean;
+      missed: boolean;
     },
-    { getState }
+    { dispatch, getState }
   ) => {
     const state = getState() as ReduxState;
     const mainData = state.mainData;
+    (data as any).timestampPickedUp = 0;
     (data as any).timestampScored = 0;
+    dispatch(addAutoGamePiece({ gamePiece: data.gamePiece }));
     const res = await axios.post(
-      `/api/v1/events/${mainData.activeEventCode}/matches/${mainData.activeMatchName}/scores/${mainData.station}/autoEvent`,
+      `/api/v1/events/${mainData.activeEventCode}/matches/${
+        mainData.activeMatchName
+      }/scores/${mainData.station?.toLowerCase()}/autoEvent`,
       data
     );
   }
 );
 export const sendTeleopEvent = createAsyncThunk(
-  "scores/sendAutoEvent",
+  "scores/sendTeleopEvent",
   async (
     data: {
-      intakeLocation: "GROUND" | "CHUTE" | "SHELF";
-      gamePiece: "CONE" | "CUBE";
-      scoringPosition?: "HIGH" | "MID" | "HYBRID";
+      intakeLocation: IntakeLocation;
+      scoringLocation?: ScoringLocation;
       dropped?: boolean;
-      failed?: boolean;
+      failedScoring?: boolean;
     },
     { getState }
   ) => {
@@ -94,50 +122,52 @@ export const sendTeleopEvent = createAsyncThunk(
     (data as any).timestampPickedUp = 0;
     (data as any).timestampScored = 0;
     const res = await axios.post(
-      `/api/v1/events/${mainData.activeEventCode}/matches/${mainData.activeMatchName}/scores/${mainData.station}/teleopEvent`,
+      `/api/v1/events/${mainData.activeEventCode}/matches/${
+        mainData.activeMatchName
+      }/scores/${mainData.station?.toLowerCase()}/teleopEvent`,
       data
     );
   }
 );
 
 const initialState: Scores = {
-  presetPieces: ["CONE", "CONE", "CONE", "CONE"],
-  preloadPiece: "CONE",
   autoStartingZone: undefined,
+  leftStartingZone: false,
+  usedGamePieces: [],
 };
 
 export const scoresSlice = createSlice({
   name: "applicationData",
   initialState: initialState,
   reducers: {
-    setPresetPieces: (
-      state,
-      action: PayloadAction<{
-        pieces: ("CONE" | "CUBE")[];
-      }>
-    ) => {
-      state.presetPieces = action.payload.pieces;
-    },
-    setPreloadPiece: (
-      state,
-      action: PayloadAction<{
-        piece: "CONE" | "CUBE";
-      }>
-    ) => {
-      state.preloadPiece = action.payload.piece;
-    },
     setAutoStartingZone: (
       state,
       action: PayloadAction<{
-        zone: number;
+        zone: AutoStartingZone;
       }>
     ) => {
       state.autoStartingZone = action.payload.zone;
+    },
+    setLeftStartingZone: (
+      state,
+      action: PayloadAction<{
+        leftStartingZone: boolean;
+      }>
+    ) => {
+      state.leftStartingZone = action.payload.leftStartingZone;
+    },
+    addAutoGamePiece: (
+      state,
+      action: PayloadAction<{
+        gamePiece: AutoGamePiece;
+      }>
+    ) => {
+      state.usedGamePieces.push(action.payload.gamePiece);
     },
   },
   extraReducers: (builder) => {},
 });
 
-export const { setPresetPieces, setPreloadPiece, setAutoStartingZone } =
+export const { setAutoStartingZone, setLeftStartingZone, addAutoGamePiece } =
   scoresSlice.actions;
 export default scoresSlice.reducer;
