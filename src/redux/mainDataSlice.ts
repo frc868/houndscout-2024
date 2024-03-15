@@ -22,6 +22,21 @@ export interface MainData {
   error?: string;
 }
 
+export const getStationData = createAsyncThunk(
+  "mainData/getStationData",
+  async ({ station }: { station: Station }) => {
+    const res = await axios.get(
+      `/api/v1/server/stationData/${station.toLowerCase()}`
+    );
+    const data = res.data;
+    return {
+      eventCode: data.event?.code,
+      matchName: data.match?.name,
+      scouter: data.scouter,
+      teamNumber: data.match?.[`${station.toLowerCase()}Team`]?.number,
+    };
+  }
+);
 export const getActiveEventAsync = createAsyncThunk(
   "mainData/getActiveEvent",
   async () => {
@@ -120,6 +135,39 @@ export const mainData = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder
+      .addCase(getStationData.pending, (state) => {
+        state.eventStatus = "waiting";
+        state.matchStatus = "waiting";
+        state.teamNumberStatus = "waiting";
+        state.scouterStatus = "waiting";
+      })
+      .addCase(getStationData.fulfilled, (state, action) => {
+        if (action.payload !== null) {
+          state.activeEventCode = action.payload.eventCode;
+          state.activeMatchName = action.payload.matchName;
+          state.activeTeamNumber = action.payload.teamNumber;
+          state.scouter.id = action.payload.scouter.id;
+          state.scouter.name = action.payload.scouter.name;
+          state.eventStatus = "succeeded";
+          state.matchStatus = "succeeded";
+          state.teamNumberStatus = "succeeded";
+          state.scouterStatus = "succeeded";
+        } else {
+          state.eventStatus = "idle";
+          state.matchStatus = "idle";
+          state.teamNumberStatus = "idle";
+          state.scouterStatus = "idle";
+        }
+      })
+      .addCase(getStationData.rejected, (state, action) => {
+        state.eventStatus = "failed";
+        state.matchStatus = "failed";
+        state.teamNumberStatus = "failed";
+        state.scouterStatus = "failed";
+        state.error = action.error.message || "";
+      });
+
     builder
       .addCase(getActiveEventAsync.pending, (state) => {
         state.eventStatus = "waiting";

@@ -14,6 +14,7 @@ import {
   getActiveMatchAsync,
   getActiveTeamNumberAsync,
   getScouterAsync,
+  getStationData,
   sendHeartbeatAsync,
   setStation,
 } from "@/redux/mainDataSlice";
@@ -30,37 +31,20 @@ export default function Client({ station }: Props) {
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(async () => {
-      await dispatch(getActiveEventAsync());
-      await dispatch(getActiveMatchAsync());
-      await dispatch(sendHeartbeatAsync({ station, section: tab }));
+    const update = async () => {
       await dispatch(setStation({ station }));
-
-      if (mainData.activeEventCode && mainData.activeMatchName) {
-        await dispatch(
-          getActiveTeamNumberAsync({
-            eventCode: mainData.activeEventCode,
-            matchName: mainData.activeMatchName,
-            station: station,
-          })
-        );
-        await dispatch(
-          getScouterAsync({
-            eventCode: mainData.activeEventCode,
-            matchName: mainData.activeMatchName,
-            station: station,
-          })
-        );
-      }
-    }, 1000);
+      await dispatch(getStationData({ station }));
+      await dispatch(sendHeartbeatAsync({ station, section: tab }));
+    };
+    update();
+    const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
-  }, [
-    dispatch,
-    mainData.activeEventCode,
-    mainData.activeMatchName,
-    station,
-    tab,
-  ]);
+  }, [dispatch, station, tab]);
+
+  useEffect(() => {
+    setSubmitted(false);
+    setTab(Section.PREMATCH);
+  }, [mainData.activeMatchName]);
 
   const ready =
     mainData.scouter.name &&
