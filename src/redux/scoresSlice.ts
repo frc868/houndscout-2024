@@ -30,6 +30,63 @@ export const setAutoStartingZoneAsync = createAsyncThunk(
     );
   }
 );
+export const setAutoGamePiecesAsync = createAsyncThunk(
+  "scores/setAutoGamePieces",
+  async (
+    { autoGamePieces }: { autoGamePieces: AutoGamePiece[] },
+    { dispatch, getState }
+  ) => {
+    const state = getState() as ReduxState;
+    const mainData = state.mainData;
+    // dispatch(setAutoStartingZone({ zone }));
+    const res = await axios.patch(
+      `/api/v1/events/${mainData.activeEventCode}/matches/${
+        mainData.activeMatchName
+      }/scores/${mainData.station?.toLowerCase()}`,
+      {
+        autoGamePieces,
+      }
+    );
+  }
+);
+export const setMissingAutoGamePiecesAsync = createAsyncThunk(
+  "scores/setMissingAutoGamePieces",
+  async (
+    { missingAutoGamePieces }: { missingAutoGamePieces: AutoGamePiece[] },
+    { dispatch, getState }
+  ) => {
+    const state = getState() as ReduxState;
+    const mainData = state.mainData;
+    // dispatch(setAutoStartingZone({ zone }));
+    const res = await axios.patch(
+      `/api/v1/events/${mainData.activeEventCode}/matches/${
+        mainData.activeMatchName
+      }/scores/${mainData.station?.toLowerCase()}`,
+      {
+        missingAutoGamePieces,
+      }
+    );
+  }
+);
+export const setAutoGamePiecesScoredAsync = createAsyncThunk(
+  "scores/setAutoGamePiecesScored",
+  async (
+    { autoGamePiecesScored }: { autoGamePiecesScored: number },
+    { dispatch, getState }
+  ) => {
+    const state = getState() as ReduxState;
+    const mainData = state.mainData;
+    // dispatch(setAutoStartingZone({ zone }));
+    const res = await axios.patch(
+      `/api/v1/events/${mainData.activeEventCode}/matches/${
+        mainData.activeMatchName
+      }/scores/${mainData.station?.toLowerCase()}`,
+      {
+        autoGamePiecesScored,
+      }
+    );
+  }
+);
 export const setLeftStartingZoneAsync = createAsyncThunk(
   "scores/setLeftStartingZoneAsync",
   async (
@@ -81,31 +138,31 @@ export const sendPostMatchData = createAsyncThunk(
   }
 );
 
-export const sendAutoEvent = createAsyncThunk(
-  "scores/sendAutoEvent",
-  async (
-    data: {
-      gamePiece: AutoGamePiece;
-      scoringLocation?: ScoringLocation;
-      failedScoring: boolean;
-      noNote: boolean;
-      missed: boolean;
-    },
-    { dispatch, getState }
-  ) => {
-    const state = getState() as ReduxState;
-    const mainData = state.mainData;
-    (data as any).timestampPickedUp = 0;
-    (data as any).timestampScored = 0;
-    dispatch(addAutoGamePiece({ gamePiece: data.gamePiece }));
-    const res = await axios.post(
-      `/api/v1/events/${mainData.activeEventCode}/matches/${
-        mainData.activeMatchName
-      }/scores/${mainData.station?.toLowerCase()}/autoEvent`,
-      data
-    );
-  }
-);
+// export const sendAutoEvent = createAsyncThunk(
+//   "scores/sendAutoEvent",
+//   async (
+//     data: {
+//       gamePiece: AutoGamePiece;
+//       scoringLocation?: ScoringLocation;
+//       failedScoring: boolean;
+//       noNote: boolean;
+//       missed: boolean;
+//     },
+//     { dispatch, getState }
+//   ) => {
+//     const state = getState() as ReduxState;
+//     const mainData = state.mainData;
+//     (data as any).timestampPickedUp = 0;
+//     (data as any).timestampScored = 0;
+//     dispatch(addAutoGamePiece({ gamePiece: data.gamePiece }));
+//     const res = await axios.post(
+//       `/api/v1/events/${mainData.activeEventCode}/matches/${
+//         mainData.activeMatchName
+//       }/scores/${mainData.station?.toLowerCase()}/autoEvent`,
+//       data
+//     );
+//   }
+// );
 export const sendTeleopEvent = createAsyncThunk(
   "scores/sendTeleopEvent",
   async (

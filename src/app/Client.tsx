@@ -27,6 +27,7 @@ export default function Client({ station }: Props) {
   const mainData = useSelector((state: ReduxState) => state.mainData);
   const dispatch = useDispatch<AppDispatch>();
   const [tab, setTab] = useState<Section>(Section.PREMATCH);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -79,11 +80,32 @@ export default function Client({ station }: Props) {
           <h1>Waiting...</h1>
         </div>
       )}
-      {ready && <SectionSelector selected={tab} handleSelection={setTab} />}
-      {ready && tab === Section.PREMATCH && <PrematchContent />}
-      {ready && tab === Section.AUTO && <AutoContent />}
-      {ready && tab === Section.TELEOP && <TeleopContent />}
-      {ready && tab === Section.POSTMATCH && <PostmatchContent />}
+      <div
+        className={`${submitted && "bg-submitted"}`}
+        style={{
+          transition: "all 0.5s",
+          height: "calc(100vh - 56px)",
+        }}
+      >
+        {submitted ? (
+          <div className="d-flex justify-content-center align-items-center h-75 flex-column">
+            <h1 className="display-1 fw-bold">Submitted successfully!</h1>
+            <h1 className="mt-3">Waiting for next match...</h1>
+          </div>
+        ) : (
+          <div>
+            {ready && (
+              <SectionSelector selected={tab} handleSelection={setTab} />
+            )}
+            {ready && tab === Section.PREMATCH && <PrematchContent />}
+            {ready && tab === Section.AUTO && <AutoContent />}
+            {ready && tab === Section.TELEOP && <TeleopContent />}
+            {ready && tab === Section.POSTMATCH && (
+              <PostmatchContent handleSubmit={() => setSubmitted(true)} />
+            )}
+          </div>
+        )}
+      </div>
     </>
   );
 }

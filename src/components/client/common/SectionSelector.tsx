@@ -8,7 +8,7 @@ interface Props {
 
 export default function SectionSelector({ selected, handleSelection }: Props) {
   return (
-    <div className="d-flex justify-content-evenly mx-5 my-4">
+    <div className="d-flex justify-content-evenly mx-5 py-4">
       {[Section.PREMATCH, Section.AUTO, Section.TELEOP, Section.POSTMATCH].map(
         (item) => (
           <Button

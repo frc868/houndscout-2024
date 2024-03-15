@@ -110,13 +110,15 @@ model TeamScore {
   teamId Int
   team   Team @relation(fields: [teamId], references: [id])
 
-  preloaded           Boolean              @default(true)
-  leftStartingZone    Boolean              @default(false)
-  autoStartingZone    AutoStartingZone?
-  autoScoringEvents   AutoScoringEvent[]
-  teleopScoringEvents TeleopScoringEvent[]
-  stageAttempts       StageAttempt[]
-  incapSegments       IncapSegment[]
+  preloaded             Boolean              @default(true)
+  leftStartingZone      Boolean              @default(false)
+  autoStartingZone      AutoStartingZone?
+  autoGamePieces        AutoGamePiece[]
+  missingAutoGamePieces AutoGamePiece[]
+  autoGamePiecesScored  Int                  @default(0)
+  teleopScoringEvents   TeleopScoringEvent[]
+  stageAttempts         StageAttempt[]
+  incapSegments         IncapSegment[]
 
   driverSkillRating Int?
   playedDefense     Boolean?
@@ -126,12 +128,13 @@ model TeamScore {
   scouter   Scouter? @relation(fields: [scouterId], references: [id])
   scouterId Int?
 
-  red1Match  Match? @relation("Red1TeamScore")
-  red2Match  Match? @relation("Red2TeamScore")
-  red3Match  Match? @relation("Red3TeamScore")
-  blue1Match Match? @relation("Blue1TeamScore")
-  blue2Match Match? @relation("Blue2TeamScore")
-  blue3Match Match? @relation("Blue3TeamScore")
+  red1Match        Match?             @relation("Red1TeamScore")
+  red2Match        Match?             @relation("Red2TeamScore")
+  red3Match        Match?             @relation("Red3TeamScore")
+  blue1Match       Match?             @relation("Blue1TeamScore")
+  blue2Match       Match?             @relation("Blue2TeamScore")
+  blue3Match       Match?             @relation("Blue3TeamScore")
+  AutoScoringEvent AutoScoringEvent[]
 }
 
 model AutoScoringEvent {

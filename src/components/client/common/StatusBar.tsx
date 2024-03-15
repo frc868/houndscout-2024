@@ -27,7 +27,7 @@ export default function StatusBar({
         )}
       </Navbar.Text>
 
-      <Navbar.Brand>HoundScout v0.1</Navbar.Brand>
+      <Navbar.Brand className="font-monospace">HoundScout v2024.0</Navbar.Brand>
       <Navbar.Text className="justify-self-end text-end me-4 w-50">
         {isConnected ? (
           <>

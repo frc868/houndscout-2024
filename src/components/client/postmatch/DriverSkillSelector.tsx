@@ -17,7 +17,7 @@ export default function AutoScoringPanel({ selected, handleSelection }: Props) {
         {[1, 2, 3, 4, 5].map((item, idx) => (
           <ListGroup.Item
             key={item}
-            className={`driver-skill-selector px-3 py-2 ${
+            className={`driver-skill-selector px-3 py-2 border-0 ${
               !(selected === item) ? "bg-dark-subtle" : ""
             }`}
             active={selected === item}

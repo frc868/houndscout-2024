@@ -42,11 +42,10 @@ export default function TeleopContent() {
         failed,
         dropped,
       };
-
-      await dispatch(sendTeleopEvent(event));
-
       setIntakeLocation(undefined);
       setActiveSide("intaking");
+
+      await dispatch(sendTeleopEvent(event));
     }
   };
 

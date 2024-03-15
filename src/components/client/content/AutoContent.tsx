@@ -6,7 +6,12 @@ import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
-import { sendAutoEvent, setLeftStartingZoneAsync } from "@/redux/scoresSlice";
+import {
+  setAutoGamePiecesAsync,
+  setAutoGamePiecesScoredAsync,
+  setLeftStartingZoneAsync,
+  setMissingAutoGamePiecesAsync,
+} from "@/redux/scoresSlice";
 import { AutoGamePiece, ScoringLocation } from "@prisma/client";
 
 export default function AutoContent() {
@@ -14,52 +19,67 @@ export default function AutoContent() {
   const mainData = useSelector((state: ReduxState) => state.mainData);
   const scores = useSelector((state: ReduxState) => state.scores);
 
-  const [selectedGamePiece, setSelectedGamePiece] =
-    useState<AutoGamePiece | null>(AutoGamePiece.PRELOAD);
-  const [activeSide, setActiveSide] = useState("scoring");
+  const [selectedGamePieces, setSelectedGamePieces] = useState<AutoGamePiece[]>(
+    []
+  );
+  const [missingGamePieces, setMissingGamePieces] = useState<AutoGamePiece[]>(
+    []
+  );
+  const [numSelected, setNumSelected] = useState<number | undefined>(undefined);
 
-  const handleIntakeSelection = (selection: AutoGamePiece) => {
-    setSelectedGamePiece(selection);
-    setActiveSide("scoring");
+  const handleIntakeSelection = async (selection: AutoGamePiece) => {
+    if (
+      selectedGamePieces.includes(selection) &&
+      !missingGamePieces.includes(selection)
+    )
+      setMissingGamePieces((old) => [...old, selection]);
+    else if (
+      selectedGamePieces.includes(selection) &&
+      missingGamePieces.includes(selection)
+    ) {
+      setSelectedGamePieces((old) =>
+        old.filter((value) => value !== selection)
+      );
+      setMissingGamePieces((old) => old.filter((value) => value !== selection));
+    } else {
+      setSelectedGamePieces((old) => [...old, selection]);
+    }
+
+    await dispatch(
+      setAutoGamePiecesAsync({ autoGamePieces: selectedGamePieces })
+    );
+    await dispatch(
+      setMissingAutoGamePiecesAsync({
+        missingAutoGamePieces: missingGamePieces,
+      })
+    );
   };
 
-  const handleScoringSelection = async (
-    scoringLocation?: ScoringLocation,
-    failedScoring?: boolean,
-    noNote?: boolean,
-    missed?: boolean
-  ) => {
-    if (activeSide == "scoring") {
-      const event = {
-        gamePiece: selectedGamePiece as AutoGamePiece,
-        scoringLocation,
-        failedScoring: failedScoring || false,
-        noNote: noNote || false,
-        missed: missed || false,
-      };
-
-      await dispatch(sendAutoEvent(event));
-
-      setSelectedGamePiece(null);
-      setActiveSide("intaking");
-    }
+  const handleScoringSelection = async (numSelected: number) => {
+    setNumSelected(numSelected);
+    await dispatch(
+      setAutoGamePiecesScoredAsync({ autoGamePiecesScored: numSelected })
+    );
   };
 
   return (
     <>
       <Row className="my-5 d-flex justify-content-center">
-        <Col className="d-flex justify-content-end pe-5" md={6}>
+        <Col className="d-flex justify-content-center" md={5}>
           <AutoIntakePanel
             alliance={mainData.alliance}
             blueOnLeft={mainData.blueOnLeft}
-            selected={selectedGamePiece}
-            usedGamePieces={scores.usedGamePieces}
+            selected={selectedGamePieces}
+            missing={missingGamePieces}
             handleSelection={handleIntakeSelection}
           />
         </Col>
-        <Col className="d-flex align-items-start flex-column" md={5}>
+        <Col className="d-flex flex-column" md={4}>
           <AutoScoringPanel
-            active={activeSide === "scoring"}
+            numIntaked={
+              selectedGamePieces.length - missingGamePieces.length + 1
+            }
+            numSelected={numSelected === undefined ? -1 : numSelected}
             handleSelection={handleScoringSelection}
             leftStartingZoneEnabled={scores.leftStartingZone}
             handleLeftStartingZoneClick={() =>
