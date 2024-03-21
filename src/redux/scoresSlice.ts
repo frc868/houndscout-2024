@@ -137,6 +137,7 @@ export const sendPostMatchData = createAsyncThunk(
         playedDefense,
         underDefense,
         comments,
+        submitted: true,
       }
     );
   }
