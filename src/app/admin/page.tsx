@@ -18,8 +18,11 @@ import {
   setMatchScouterAsync,
 } from "@/redux/adminDataSlice";
 import MatchSchedule from "@/components/admin/MatchSchedule";
-import { Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import Activity from "@/components/admin/Activity";
+import Controls from "@/components/admin/Controls";
+import { Event } from "@prisma/client";
+import EventDetails from "@/components/admin/EventDetails";
 
 export default function Admin() {
   const mainData = useSelector((state: ReduxState) => state.mainData);
@@ -33,16 +36,16 @@ export default function Admin() {
       await dispatch(getScoutersAsync());
       await dispatch(getHeartbeatsAsync());
 
-      mainData.activeEventCode &&
+      mainData.activeEvent?.code &&
         (await dispatch(
-          getMatchesAsync({ eventCode: mainData.activeEventCode })
+          getMatchesAsync({ eventCode: mainData.activeEvent?.code })
         ));
     }, 1000);
     return () => clearInterval(interval);
-  }, [dispatch, mainData.activeEventCode, mainData.activeMatchName]);
+  }, [dispatch, mainData.activeEvent?.code, mainData.activeMatchName]);
 
   const ready =
-    mainData.activeEventCode && mainData.activeMatchName && adminData.matches;
+    mainData.activeEvent?.code && mainData.activeMatchName && adminData.matches;
 
   const activeMatch = adminData.matches?.filter(
     (match) => match.name === mainData.activeMatchName
@@ -51,7 +54,7 @@ export default function Admin() {
   return (
     <>
       <AdminStatusBar
-        eventCode={mainData.activeEventCode}
+        eventCode={mainData.activeEvent?.code}
         matchName={mainData.activeMatchName}
         isConnected={false}
       />
@@ -70,7 +73,23 @@ export default function Admin() {
                 heartbeats={adminData.heartbeats}
               />
             </Col>
-            <Col></Col>
+            <Col md={4}>
+              <EventDetails
+                // event={{
+                //   id: 1,
+                //   name: "2024 Indiana State Championship",
+                //   code: "2024incmp",
+                //   weekNumber: 6,
+                //   address: "1 Red Pride Drive",
+                //   startDate: new Date("2024-03-05"),
+                //   endDate: new Date("2024-01-01"),
+                // }}
+                event={mainData.activeEvent}
+              />
+            </Col>
+            <Col md={3}>
+              <Controls />
+            </Col>
           </Row>
           <Row>
             <MatchSchedule
@@ -79,7 +98,7 @@ export default function Admin() {
               handleMatchSelect={async (name) =>
                 await dispatch(
                   setActiveMatchAsync({
-                    eventCode: mainData.activeEventCode as string,
+                    eventCode: mainData.activeEvent?.code as string,
                     matchName: name,
                   })
                 )
@@ -88,7 +107,7 @@ export default function Admin() {
               handleScouterSelect={async (matchName, station, id) => {
                 await dispatch(
                   setMatchScouterAsync({
-                    eventCode: mainData.activeEventCode as string,
+                    eventCode: mainData.activeEvent?.code as string,
                     matchName,
                     station,
                     scouterId: id,

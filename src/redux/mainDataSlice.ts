@@ -1,5 +1,5 @@
 import { Alliance } from "@/lib/enums";
-import { Section, Station } from "@prisma/client";
+import { Event, Section, Station } from "@prisma/client";
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -8,7 +8,7 @@ export interface MainData {
   alliance: Alliance;
   blueOnLeft: boolean;
   lastHeartbeat: number;
-  activeEventCode?: string;
+  activeEvent?: Event;
   activeMatchName?: string;
   activeTeamNumber?: number;
   scouter: {
@@ -30,7 +30,7 @@ export const getStationData = createAsyncThunk(
     );
     const data = res.data;
     return {
-      eventCode: data.event?.code,
+      event: data.event,
       matchName: data.match?.name,
       scouter: data.scouter,
       teamNumber: data.match?.[`${station.toLowerCase()}Team`]?.number,
@@ -42,7 +42,7 @@ export const getActiveEventAsync = createAsyncThunk(
   async () => {
     const res = await axios.get(`/api/v1/server/event`);
     const data = res.data;
-    return data.event?.code;
+    return data.event;
   }
 );
 
@@ -104,7 +104,7 @@ const initialState: MainData = {
   alliance: Alliance.BLUE,
   blueOnLeft: true,
   lastHeartbeat: 0,
-  activeEventCode: undefined,
+  activeEvent: undefined,
   activeMatchName: undefined,
   activeTeamNumber: undefined,
   scouter: {
@@ -144,7 +144,7 @@ export const mainData = createSlice({
       })
       .addCase(getStationData.fulfilled, (state, action) => {
         if (action.payload !== null) {
-          state.activeEventCode = action.payload.eventCode;
+          state.activeEvent = action.payload.event;
           state.activeMatchName = action.payload.matchName;
           state.activeTeamNumber = action.payload.teamNumber;
           state.scouter.id = action.payload.scouter.id;
@@ -174,7 +174,13 @@ export const mainData = createSlice({
       })
       .addCase(getActiveEventAsync.fulfilled, (state, action) => {
         if (action.payload !== null) {
-          state.activeEventCode = action.payload;
+          state.activeEvent = action.payload;
+          (state.activeEvent as Event).startDate = new Date(
+            action.payload.startDate as string
+          );
+          (state.activeEvent as Event).endDate = new Date(
+            action.payload.endDate as string
+          );
           state.eventStatus = "succeeded";
         } else {
           state.eventStatus = "idle";

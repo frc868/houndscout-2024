@@ -49,7 +49,7 @@ export async function PATCH(
         name_eventCode: { name: params.name, eventCode: params.code },
       },
       data: {
-        [`${params.station}TeamScore`]: {
+        [`${params.station.toLowerCase()}TeamScore`]: {
           update: {
             preloaded: data.preloaded,
             leftStartingZone: data.leftStartingZone,
@@ -61,11 +61,15 @@ export async function PATCH(
             autoGamePieces: data.autoGamePieces,
             missingAutoGamePieces: data.missingAutoGamePieces,
             autoGamePiecesScored: data.autoGamePiecesScored,
+            climbType: data.climbType,
+            numberRobotsOnChain: data.numberRobotsOnChain,
+            scoredInTrap: data.scoredInTrap,
+            spotlit: data.spotlit,
           },
         },
       },
       include: {
-        [`${params.station}TeamScore`]: true,
+        [`${params.station.toLowerCase()}TeamScore`]: true,
       },
     });
   } catch (e) {

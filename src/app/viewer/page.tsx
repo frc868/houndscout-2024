@@ -1,66 +1,45 @@
 "use client";
 
-import SectionSelector from "@/components/client/common/SectionSelector";
-import StatusBar from "@/components/client/common/StatusBar";
 import { useEffect, useState } from "react";
-import AutoContent from "@/components/client/content/AutoContent";
-import PostmatchContent from "@/components/client/content/PostmatchContent";
-import TeleopContent from "@/components/client/content/TeleopContent";
-import PrematchContent from "@/components/client/content/PrematchContent";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
-import {
-  getActiveEventAsync,
-  getActiveMatchAsync,
-  getActiveTeamNumberAsync,
-  getScouterAsync,
-  sendHeartbeatAsync,
-  setStation,
-} from "@/redux/mainDataSlice";
-import { Section, Station } from "@prisma/client";
-import TopBar from "@/components/viewer/MenuBar";
+import { getActiveEventAsync } from "@/redux/mainDataSlice";
+import TopBar from "@/components/viewer/TopBar";
+import { ViewerTab } from "@/components/viewer/ViewerEnums";
+import MenuBar from "@/components/viewer/MenuBar";
+import { Col, Row } from "react-bootstrap";
+import HomeContent from "@/components/viewer/content/HomeContent";
+import RankingsContent from "@/components/viewer/content/RankingsContent";
+import { getRankingsAsync } from "@/redux/viewerDataSlice";
 
 export default function Viewer() {
-  const mainData = useSelector((state: ReduxState) => state.mainData);
+  const viewerData = useSelector((state: ReduxState) => state.viewerData);
   const dispatch = useDispatch<AppDispatch>();
-  const [tab, setTab] = useState<Section>(Section.PREMATCH);
+  const [tab, setTab] = useState<ViewerTab>(ViewerTab.HOME);
 
-  //   useEffect(() => {
-  //     const interval = setInterval(async () => {
-  //       await dispatch(getActiveEventAsync());
-  //       await dispatch(getActiveMatchAsync());
-  //       await dispatch(sendHeartbeatAsync({ station, section: tab }));
-  //       await dispatch(setStation({ station }));
-
-  //       if (mainData.activeEventCode && mainData.activeMatchName) {
-  //         await dispatch(
-  //           getActiveTeamNumberAsync({
-  //             eventCode: mainData.activeEventCode,
-  //             matchName: mainData.activeMatchName,
-  //             station: station,
-  //           })
-  //         );
-  //         await dispatch(
-  //           getScouterAsync({
-  //             eventCode: mainData.activeEventCode,
-  //             matchName: mainData.activeMatchName,
-  //             station: station,
-  //           })
-  //         );
-  //       }
-  //     }, 1000);
-  //     return () => clearInterval(interval);
-  //   }, [
-  //     dispatch,
-  //     mainData.activeEventCode,
-  //     mainData.activeMatchName,
-  //     station,
-  //     tab,
-  //   ]);
+  useEffect(() => {
+    async function update() {
+      await dispatch(getActiveEventAsync());
+      await dispatch(getRankingsAsync());
+    }
+    update();
+  }, [dispatch]);
 
   return (
     <>
-      <TopBar eventName="inpla" />
+      <div className="vw-100 vh-100 position-relative">
+        <div className="vw-100 vh-100 bg-secondary position-fixed z-n1"></div>
+        <TopBar eventName="2024inmis" />
+        <MenuBar selectedTab={tab} handleTabSelect={setTab} />
+        <Row style={{ paddingTop: "64px" }}>
+          <Col className="ps-0 pe-0" md={2}></Col>
+
+          <Col className="ps-0">
+            {tab === ViewerTab.HOME && <HomeContent />}
+            {tab === ViewerTab.RANKINGS && <RankingsContent />}
+          </Col>
+        </Row>
+      </div>
       {/* {!ready && (
         <div className="vh-100 d-flex justify-content-center mt-5">
           <h1>Waiting...</h1>

@@ -103,3 +103,7 @@
 .bg-submitted {
   background-color: #a6eecc;
 }
+
+.table.no-cellpadding td {
+  padding: 0;
+}

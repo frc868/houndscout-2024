@@ -38,13 +38,18 @@ model Scouter {
 }
 
 model Event {
-  id         Int      @id @default(autoincrement())
-  code       String   @unique
-  teams      Team[]
-  weekNumber Int
-  startDate  DateTime
-  matches    Match[]
-  servers    Server[]
+  id    Int    @id @default(autoincrement())
+  code  String @unique
+  teams Team[]
+
+  name       String?
+  address    String?
+  weekNumber Int?
+  startDate  DateTime?
+  endDate    DateTime?
+
+  matches Match[]
+  servers Server[]
 }
 
 model Team {
@@ -117,13 +122,20 @@ model TeamScore {
   missingAutoGamePieces AutoGamePiece[]
   autoGamePiecesScored  Int                  @default(0)
   teleopScoringEvents   TeleopScoringEvent[]
-  stageAttempts         StageAttempt[]
   incapSegments         IncapSegment[]
+
+  climbType             ClimbType?
+  timestampClimbStarted Decimal?
+  numberRobotsOnChain   Int?       @default(0)
+  scoredInTrap          Boolean?   @default(false)
+  spotlit               Boolean?   @default(false)
 
   driverSkillRating Int?
   playedDefense     Boolean?
   underDefense      Boolean?
   comments          String?
+
+  submitted Boolean @default(false)
 
   scouter   Scouter? @relation(fields: [scouterId], references: [id])
   scouterId Int?
@@ -135,6 +147,7 @@ model TeamScore {
   blue2Match       Match?             @relation("Blue2TeamScore")
   blue3Match       Match?             @relation("Blue3TeamScore")
   AutoScoringEvent AutoScoringEvent[]
+  StageAttempt     StageAttempt[]
 }
 
 model AutoScoringEvent {
@@ -165,12 +178,7 @@ model TeleopScoringEvent {
 }
 
 model StageAttempt {
-  id                  Int       @id @default(autoincrement())
-  climbType           ClimbType
-  timestampStarted    Decimal
-  numberRobotsOnChain Int
-  scoredInTrap        Boolean
-  spotlit             Boolean
+  id Int @id @default(autoincrement())
 
   teamScoreId Int
   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
@@ -214,7 +222,7 @@ enum ScoringLocation {
 }
 
 enum ClimbType {
-  FAILED
+  NONE
   PARKED
   CLIMBED
 }

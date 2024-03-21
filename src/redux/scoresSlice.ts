@@ -4,6 +4,7 @@ import { ReduxState } from "./store";
 import {
   AutoGamePiece,
   AutoStartingZone,
+  ClimbType,
   IntakeLocation,
   ScoringLocation,
 } from "@prisma/client";
@@ -12,6 +13,10 @@ export interface Scores {
   autoStartingZone?: AutoStartingZone;
   usedGamePieces: AutoGamePiece[];
   leftStartingZone: boolean;
+  climbType?: ClimbType;
+  numberRobotsOnChain?: number;
+  scoredInTrap: boolean;
+  spotlit: boolean;
 }
 
 export const setAutoStartingZoneAsync = createAsyncThunk(
@@ -21,7 +26,7 @@ export const setAutoStartingZoneAsync = createAsyncThunk(
     const mainData = state.mainData;
     dispatch(setAutoStartingZone({ zone }));
     const res = await axios.patch(
-      `/api/v1/events/${mainData.activeEventCode}/matches/${
+      `/api/v1/events/${mainData.activeEvent?.code}/matches/${
         mainData.activeMatchName
       }/scores/${mainData.station?.toLowerCase()}`,
       {
@@ -40,7 +45,7 @@ export const setAutoGamePiecesAsync = createAsyncThunk(
     const mainData = state.mainData;
     // dispatch(setAutoStartingZone({ zone }));
     const res = await axios.patch(
-      `/api/v1/events/${mainData.activeEventCode}/matches/${
+      `/api/v1/events/${mainData.activeEvent?.code}/matches/${
         mainData.activeMatchName
       }/scores/${mainData.station?.toLowerCase()}`,
       {
@@ -59,7 +64,7 @@ export const setMissingAutoGamePiecesAsync = createAsyncThunk(
     const mainData = state.mainData;
     // dispatch(setAutoStartingZone({ zone }));
     const res = await axios.patch(
-      `/api/v1/events/${mainData.activeEventCode}/matches/${
+      `/api/v1/events/${mainData.activeEvent?.code}/matches/${
         mainData.activeMatchName
       }/scores/${mainData.station?.toLowerCase()}`,
       {
@@ -76,9 +81,8 @@ export const setAutoGamePiecesScoredAsync = createAsyncThunk(
   ) => {
     const state = getState() as ReduxState;
     const mainData = state.mainData;
-    // dispatch(setAutoStartingZone({ zone }));
     const res = await axios.patch(
-      `/api/v1/events/${mainData.activeEventCode}/matches/${
+      `/api/v1/events/${mainData.activeEvent?.code}/matches/${
         mainData.activeMatchName
       }/scores/${mainData.station?.toLowerCase()}`,
       {
@@ -97,7 +101,7 @@ export const setLeftStartingZoneAsync = createAsyncThunk(
     const mainData = state.mainData;
     dispatch(setLeftStartingZone({ leftStartingZone }));
     const res = await axios.patch(
-      `/api/v1/events/${mainData.activeEventCode}/matches/${
+      `/api/v1/events/${mainData.activeEvent?.code}/matches/${
         mainData.activeMatchName
       }/scores/${mainData.station?.toLowerCase()}`,
       {
@@ -125,7 +129,7 @@ export const sendPostMatchData = createAsyncThunk(
     const state = getState() as ReduxState;
     const mainData = state.mainData;
     const res = await axios.patch(
-      `/api/v1/events/${mainData.activeEventCode}/matches/${
+      `/api/v1/events/${mainData.activeEvent?.code}/matches/${
         mainData.activeMatchName
       }/scores/${mainData.station?.toLowerCase()}`,
       {
@@ -138,31 +142,6 @@ export const sendPostMatchData = createAsyncThunk(
   }
 );
 
-// export const sendAutoEvent = createAsyncThunk(
-//   "scores/sendAutoEvent",
-//   async (
-//     data: {
-//       gamePiece: AutoGamePiece;
-//       scoringLocation?: ScoringLocation;
-//       failedScoring: boolean;
-//       noNote: boolean;
-//       missed: boolean;
-//     },
-//     { dispatch, getState }
-//   ) => {
-//     const state = getState() as ReduxState;
-//     const mainData = state.mainData;
-//     (data as any).timestampPickedUp = 0;
-//     (data as any).timestampScored = 0;
-//     dispatch(addAutoGamePiece({ gamePiece: data.gamePiece }));
-//     const res = await axios.post(
-//       `/api/v1/events/${mainData.activeEventCode}/matches/${
-//         mainData.activeMatchName
-//       }/scores/${mainData.station?.toLowerCase()}/autoEvent`,
-//       data
-//     );
-//   }
-// );
 export const sendTeleopEvent = createAsyncThunk(
   "scores/sendTeleopEvent",
   async (
@@ -179,10 +158,74 @@ export const sendTeleopEvent = createAsyncThunk(
     (data as any).timestampPickedUp = 0;
     (data as any).timestampScored = 0;
     const res = await axios.post(
-      `/api/v1/events/${mainData.activeEventCode}/matches/${
+      `/api/v1/events/${mainData.activeEvent?.code}/matches/${
         mainData.activeMatchName
       }/scores/${mainData.station?.toLowerCase()}/teleopEvent`,
       data
+    );
+  }
+);
+
+export const setClimbTypeAsync = createAsyncThunk(
+  "scores/setClimbType",
+  async ({ climbType }: { climbType: ClimbType }, { dispatch, getState }) => {
+    const state = getState() as ReduxState;
+    const mainData = state.mainData;
+    dispatch(setClimbType({ climbType }));
+    const res = await axios.patch(
+      `/api/v1/events/${mainData.activeEvent?.code}/matches/${
+        mainData.activeMatchName
+      }/scores/${mainData.station?.toLowerCase()}`,
+      { climbType }
+    );
+  }
+);
+
+export const setNumberRobotsOnChainAsync = createAsyncThunk(
+  "scores/setNumberRobots",
+  async (
+    { numberRobotsOnChain }: { numberRobotsOnChain: number },
+    { dispatch, getState }
+  ) => {
+    const state = getState() as ReduxState;
+    const mainData = state.mainData;
+    dispatch(setNumberRobotsOnChain({ numberRobotsOnChain }));
+    const res = await axios.patch(
+      `/api/v1/events/${mainData.activeEvent?.code}/matches/${
+        mainData.activeMatchName
+      }/scores/${mainData.station?.toLowerCase()}`,
+      { numberRobotsOnChain }
+    );
+  }
+);
+export const setScoredInTrapAsync = createAsyncThunk(
+  "scores/setScoredInTrap",
+  async (
+    { scoredInTrap }: { scoredInTrap: boolean },
+    { dispatch, getState }
+  ) => {
+    const state = getState() as ReduxState;
+    const mainData = state.mainData;
+    dispatch(setScoredInTrap({ scoredInTrap }));
+    const res = await axios.patch(
+      `/api/v1/events/${mainData.activeEvent?.code}/matches/${
+        mainData.activeMatchName
+      }/scores/${mainData.station?.toLowerCase()}`,
+      { scoredInTrap }
+    );
+  }
+);
+export const setSpotlitAsync = createAsyncThunk(
+  "scores/setSpotlit",
+  async ({ spotlit }: { spotlit: boolean }, { dispatch, getState }) => {
+    const state = getState() as ReduxState;
+    const mainData = state.mainData;
+    dispatch(setSpotlit({ spotlit }));
+    const res = await axios.patch(
+      `/api/v1/events/${mainData.activeEvent?.code}/matches/${
+        mainData.activeMatchName
+      }/scores/${mainData.station?.toLowerCase()}`,
+      { spotlit }
     );
   }
 );
@@ -191,6 +234,10 @@ const initialState: Scores = {
   autoStartingZone: undefined,
   leftStartingZone: false,
   usedGamePieces: [],
+  climbType: undefined,
+  numberRobotsOnChain: undefined,
+  scoredInTrap: false,
+  spotlit: false,
 };
 
 export const scoresSlice = createSlice({
@@ -221,10 +268,49 @@ export const scoresSlice = createSlice({
     ) => {
       state.usedGamePieces.push(action.payload.gamePiece);
     },
+    setClimbType: (
+      state,
+      action: PayloadAction<{
+        climbType: ClimbType;
+      }>
+    ) => {
+      state.climbType = action.payload.climbType;
+    },
+    setNumberRobotsOnChain: (
+      state,
+      action: PayloadAction<{
+        numberRobotsOnChain: number;
+      }>
+    ) => {
+      state.numberRobotsOnChain = action.payload.numberRobotsOnChain;
+    },
+    setScoredInTrap: (
+      state,
+      action: PayloadAction<{
+        scoredInTrap: boolean;
+      }>
+    ) => {
+      state.scoredInTrap = action.payload.scoredInTrap;
+    },
+    setSpotlit: (
+      state,
+      action: PayloadAction<{
+        spotlit: boolean;
+      }>
+    ) => {
+      state.spotlit = action.payload.spotlit;
+    },
   },
   extraReducers: (builder) => {},
 });
 
-export const { setAutoStartingZone, setLeftStartingZone, addAutoGamePiece } =
-  scoresSlice.actions;
+export const {
+  setAutoStartingZone,
+  setLeftStartingZone,
+  addAutoGamePiece,
+  setClimbType,
+  setNumberRobotsOnChain,
+  setScoredInTrap,
+  setSpotlit,
+} = scoresSlice.actions;
 export default scoresSlice.reducer;

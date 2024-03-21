@@ -207,7 +207,6 @@ export const mainData = createSlice({
       });
     builder.addCase(getHeartbeatsAsync.fulfilled, (state, action) => {
       if (action.payload !== null) {
-        console.log(action.payload);
         state.heartbeats.red1 = {
           time: new Date(action.payload.red1.time).getTime(),
           section: action.payload.red1.section,
