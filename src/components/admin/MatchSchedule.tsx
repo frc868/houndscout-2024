@@ -1,13 +1,18 @@
 /* eslint-disable react/display-name */
-import { Match, Scouter } from "@/redux/adminDataSlice";
-import React from "react";
+import { Match, Scouter, createMatchAsync } from "@/redux/adminDataSlice";
+import React, { useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import ScoutersDropdown from "./ScouterDropdown";
+import DeleteButton from "../client/common/DeleteButton";
+import MatchAddModal from "./MatchAddModal";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, ReduxState } from "@/redux/store";
 
 interface Props {
   matches: Match[];
   activeMatchName: string;
   handleMatchSelect: (name: string) => void;
+  handleMatchDelete: (name: string) => void;
   scouters: Scouter[];
   handleScouterSelect: (matchName: string, station: string, id: number) => void;
 }
@@ -16,13 +21,37 @@ export default function MatchSchedule({
   matches,
   activeMatchName,
   handleMatchSelect,
+  handleMatchDelete,
   scouters,
   handleScouterSelect,
 }: Props) {
+  const dispatch = useDispatch<AppDispatch>();
+  const mainData = useSelector((state: ReduxState) => state.mainData);
+  const [showMatchAdd, setShowMatchAdd] = useState(false);
+
   return (
     <div className="d-flex justify-content-center">
+      <MatchAddModal
+        show={showMatchAdd}
+        handleClose={() => setShowMatchAdd(false)}
+        handleSubmit={async (payload) => {
+          await dispatch(
+            createMatchAsync({
+              eventCode: mainData.activeEvent?.code as string,
+              ...payload,
+            })
+          );
+          setShowMatchAdd(false);
+        }}
+      ></MatchAddModal>
       <div className="d-flex flex-column">
         <h1 className="text-center mb-3">Match Schedule</h1>
+        <Button
+          className="w-25 mx-auto mb-3"
+          onClick={() => setShowMatchAdd(true)}
+        >
+          Create new match
+        </Button>
         <Table bordered className="border-secondary-subtle">
           <thead className="align-middle text-center">
             <tr>
@@ -132,17 +161,14 @@ export default function MatchSchedule({
                   >
                     Select
                   </Button>
-                  <Button
-                    size="sm"
-                    className="mt-1"
+                  <DeleteButton
                     variant={
                       match.name === activeMatchName
                         ? "danger"
                         : "outline-danger"
                     }
-                  >
-                    Delete
-                  </Button>
+                    handleDelete={() => handleMatchDelete(match.name)}
+                  />
                 </td>
               </tr>
             ))}

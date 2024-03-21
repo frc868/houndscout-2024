@@ -71,6 +71,38 @@ export const setActiveMatchAsync = createAsyncThunk(
     });
   }
 );
+export const createMatchAsync = createAsyncThunk(
+  "adminData/deleteMatch",
+  async (data: {
+    eventCode: string;
+    number: number;
+    red1: number;
+    red2: number;
+    red3: number;
+    blue1: number;
+    blue2: number;
+    blue3: number;
+  }) => {
+    await axios.post(`/api/v1/events/${data.eventCode}/matches`, {
+      key: `qm${data.number}`,
+      name: `Qualification Match ${data.number}`,
+      ...data,
+    });
+  }
+);
+
+export const deleteMatchAsync = createAsyncThunk(
+  "adminData/deleteMatch",
+  async ({
+    eventCode,
+    matchName,
+  }: {
+    eventCode: string;
+    matchName: string;
+  }) => {
+    await axios.delete(`/api/v1/events/${eventCode}/matches/${matchName}`);
+  }
+);
 
 export const getScoutersAsync = createAsyncThunk(
   "adminData/getScoutersAsync",

@@ -11,6 +11,7 @@ import AdminStatusBar from "@/components/admin/AdminStatusBar";
 import {
   Match,
   Scouter,
+  deleteMatchAsync,
   getHeartbeatsAsync,
   getMatchesAsync,
   getScoutersAsync,
@@ -67,29 +68,18 @@ export default function Admin() {
       {ready && (
         <Container>
           <Row className="my-4">
-            <Col md={5}>
+            <Col md={6}>
               <Activity
                 scouters={activeMatch?.scouters}
                 heartbeats={adminData.heartbeats}
               />
             </Col>
-            <Col md={4}>
-              <EventDetails
-                // event={{
-                //   id: 1,
-                //   name: "2024 Indiana State Championship",
-                //   code: "2024incmp",
-                //   weekNumber: 6,
-                //   address: "1 Red Pride Drive",
-                //   startDate: new Date("2024-03-05"),
-                //   endDate: new Date("2024-01-01"),
-                // }}
-                event={mainData.activeEvent}
-              />
+            <Col md={6}>
+              <EventDetails event={mainData.activeEvent as Event} />
             </Col>
-            <Col md={3}>
+            {/* <Col md={3}>
               <Controls />
-            </Col>
+            </Col> */}
           </Row>
           <Row>
             <MatchSchedule
@@ -98,6 +88,14 @@ export default function Admin() {
               handleMatchSelect={async (name) =>
                 await dispatch(
                   setActiveMatchAsync({
+                    eventCode: mainData.activeEvent?.code as string,
+                    matchName: name,
+                  })
+                )
+              }
+              handleMatchDelete={async (name) =>
+                await dispatch(
+                  deleteMatchAsync({
                     eventCode: mainData.activeEvent?.code as string,
                     matchName: name,
                   })
