@@ -2,27 +2,11 @@ import React, { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { ReduxState } from "@/redux/store";
 import { Table } from "react-bootstrap";
-
-interface Rankings {
-  team: string;
-  mobility: number;
-  autoSpeaker: number;
-  autoMisses: number;
-  combinedScoring: number;
-  speaker: number;
-  speakerMisses: number;
-  amp: number;
-  ampMisses: number;
-  climb: number;
-  ensemble: number;
-  trap: number;
-  incap: number;
-  defense: number;
-}
+import { Ranking } from "@/lib/enums";
 
 export default function RankingsContent() {
   const viewerData = useSelector((state: ReduxState) => state?.viewerData);
-  const [sortField, setSortField] = useState<string | null>(null);
+  const [sortField, setSortField] = useState<keyof Ranking | null>(null);
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
   // Sorting function
@@ -43,7 +27,7 @@ export default function RankingsContent() {
   // Calculate max values for coloring
   const maxValues = useMemo(() => {
     const maxes: Record<string, number> = {};
-    viewerData.rankings?.forEach((r: Rankings) => {
+    viewerData.rankings?.forEach((r: Ranking) => {
       Object.entries(r).forEach(([key, value]) => {
         if (typeof value === "number" && key !== "team") {
           maxes[key] = Math.max(maxes[key] || 0, value);
@@ -54,7 +38,7 @@ export default function RankingsContent() {
   }, [viewerData.rankings]);
 
   // Handler to sort by column
-  const handleSort = (field: string) => {
+  const handleSort = (field: keyof Ranking) => {
     if (field === sortField) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
@@ -111,7 +95,9 @@ export default function RankingsContent() {
               <th
                 key={header}
                 onClick={() =>
-                  handleSort(header.toLowerCase().replace(/ /g, ""))
+                  handleSort(
+                    header.toLowerCase().replace(/ /g, "") as keyof Ranking
+                  )
                 }
                 style={{ cursor: "pointer" }}
               >
