@@ -84,8 +84,8 @@ export const createMatchAsync = createAsyncThunk(
     blue3: number;
   }) => {
     await axios.post(`/api/v1/events/${data.eventCode}/matches`, {
-      key: `qm${data.number}`,
-      name: `Qualification Match ${data.number}`,
+      key: `${data.eventCode}_qm${data.number}`,
+      name: `qm${data.number}`,
       ...data,
     });
   }
