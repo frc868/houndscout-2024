@@ -49,7 +49,7 @@ export default function Admin() {
 
   const activeMatch = adminData.matches?.filter(
     (match) => match.name === mainData.activeMatchName
-  )[0] as Match;
+  )[0];
 
   return (
     <>
@@ -69,7 +69,7 @@ export default function Admin() {
           <Row className="my-4">
             <Col md={5}>
               <Activity
-                scouters={activeMatch.scouters}
+                scouters={activeMatch?.scouters}
                 heartbeats={adminData.heartbeats}
               />
             </Col>
