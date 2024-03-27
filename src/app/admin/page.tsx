@@ -67,18 +67,18 @@ export default function Admin() {
       {ready && (
         <Container>
           <Row className="my-4">
-            <Col md={6}>
+            <Col md={5}>
               <Activity
                 scouters={activeMatch?.scouters}
                 heartbeats={adminData.heartbeats}
               />
             </Col>
-            <Col md={6}>
+            <Col md={4}>
               <EventDetails event={mainData.activeEvent as Event} />
             </Col>
-            {/* <Col md={3}>
-              <Controls />
-            </Col> */}
+            <Col md={3}>
+              <Controls eventCode={mainData.activeEvent?.code as string} />
+            </Col>
           </Row>
           <Row>
             <MatchSchedule
