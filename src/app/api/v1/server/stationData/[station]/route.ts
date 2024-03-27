@@ -25,6 +25,7 @@ export async function GET(
     });
     return NextResponse.json({
       ok: true,
+      blueOnLeft: server?.blueOnLeft,
       event: server?.activeEvent,
       match: server?.activeMatch,
       scouter: (server?.activeMatch as any)?.[`${params.station}TeamScore`]

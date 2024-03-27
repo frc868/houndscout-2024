@@ -30,6 +30,7 @@ export const getStationData = createAsyncThunk(
     );
     const data = res.data;
     return {
+      blueOnLeft: data.blueOnLeft,
       event: data.event,
       matchName: data.match?.name,
       scouter: data.scouter,
@@ -144,6 +145,7 @@ export const mainData = createSlice({
       })
       .addCase(getStationData.fulfilled, (state, action) => {
         if (action.payload !== null) {
+          state.blueOnLeft = action.payload.blueOnLeft;
           state.activeEvent = action.payload.event;
           state.activeMatchName = action.payload.matchName;
           state.activeTeamNumber = action.payload.teamNumber;
