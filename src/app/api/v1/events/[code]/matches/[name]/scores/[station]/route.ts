@@ -65,6 +65,7 @@ export async function PATCH(
             numberRobotsOnChain: data.numberRobotsOnChain,
             scoredInTrap: data.scoredInTrap,
             spotlit: data.spotlit,
+            submitted: data.submitted,
           },
         },
       },
