@@ -44,7 +44,7 @@ export default function Controls({ eventCode }: Props) {
           </Button>
           <Button
             variant="secondary"
-            href={`/api/v1/events/2024inmis/statistics/all/csv`}
+            href={`/api/v1/events/${eventCode}/statistics/all/csv`}
             className="mb-2 mx-1"
           >
             Export CSV
