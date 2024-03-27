@@ -190,6 +190,10 @@ export async function GET(
         return rest;
       });
 
+    if (teamScoresWithDetails.length == 0) {
+      return NextResponse.json({ ok: false, message: "No match data." });
+    }
+
     const headers = Object.keys((teamScoresWithDetails as Object[])[0]).join(
       ","
     );
