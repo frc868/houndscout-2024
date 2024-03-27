@@ -56,7 +56,7 @@ export default function Admin() {
       <AdminStatusBar
         eventCode={mainData.activeEvent?.code}
         matchName={mainData.activeMatchName}
-        isConnected={false}
+        isConnected={true}
       />
       {!ready && (
         <div className="vh-100 d-flex justify-content-center mt-5">
