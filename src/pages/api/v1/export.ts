@@ -45,6 +45,10 @@ export default async function handler(
       // Stream the file to the client
       const readStream = fs.createReadStream(backupFilePath);
       readStream.pipe(res);
+      readStream.on("end", () => {
+        // Properly close the response once the stream ends
+        res.end();
+      });
     });
   } else {
     // Handle any non-GET requests
