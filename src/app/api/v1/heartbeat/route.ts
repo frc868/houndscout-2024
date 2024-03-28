@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma";
 export async function GET(req: Request) {
   try {
     const heartbeats = await prisma.heartbeat.findMany();
+    console.log(heartbeats);
     return NextResponse.json({
       heartbeats: {
         red1: heartbeats.find((h) => h.station === Station.RED1),
