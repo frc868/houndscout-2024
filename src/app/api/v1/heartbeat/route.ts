@@ -2,9 +2,9 @@ import { Station } from "@prisma/client";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-export async function GET(req: Request) {
-  await req.json();
+export const dynamic = "force-dynamic";
 
+export async function GET(req: Request) {
   try {
     const heartbeats = await prisma.heartbeat.findMany();
     return NextResponse.json({
