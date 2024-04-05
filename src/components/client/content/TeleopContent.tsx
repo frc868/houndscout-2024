@@ -17,7 +17,11 @@ import {
 } from "@/redux/scoresSlice";
 import MiniToggleBox from "../mini/MiniToggleBox";
 
-export default function TeleopContent() {
+interface Props {
+  show: boolean;
+}
+
+export default function TeleopContent({ show }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
   const [intakeLocation, setIntakeLocation] = useState<
@@ -50,7 +54,7 @@ export default function TeleopContent() {
   };
 
   return (
-    <>
+    <div className={`${!show && "d-none"}`}>
       <Row></Row>
       <Row className="my-5">
         <Col className="d-flex justify-content-end" md={3}>
@@ -88,6 +92,6 @@ export default function TeleopContent() {
           />
         </Col>
       </Row>
-    </>
+    </div>
   );
 }

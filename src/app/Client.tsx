@@ -81,11 +81,16 @@ export default function Client({ station }: Props) {
             {ready && (
               <SectionSelector selected={tab} handleSelection={setTab} />
             )}
-            {ready && tab === Section.PREMATCH && <PrematchContent />}
-            {ready && tab === Section.AUTO && <AutoContent />}
-            {ready && tab === Section.TELEOP && <TeleopContent />}
-            {ready && tab === Section.POSTMATCH && (
-              <PostmatchContent handleSubmit={() => setSubmitted(true)} />
+            {ready && (
+              <>
+                <PrematchContent show={tab === Section.PREMATCH} />
+                <AutoContent show={tab === Section.AUTO} />
+                <TeleopContent show={tab === Section.TELEOP} />
+                <PostmatchContent
+                  show={tab === Section.POSTMATCH}
+                  handleSubmit={() => setSubmitted(true)}
+                />
+              </>
             )}
           </div>
         )}

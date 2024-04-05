@@ -9,13 +9,17 @@ import { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
-export default function PrematchContent() {
+interface Props {
+  show: boolean;
+}
+
+export default function PrematchContent({ show }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
   const mainData = useSelector((state: ReduxState) => state.mainData);
 
   return (
-    <>
+    <div className={`${!show && "d-none"}`}>
       <Row className="my-5">
         <Col className="d-flex justify-content-end" md={6}>
           <StartingPositionSelector
@@ -43,6 +47,6 @@ export default function PrematchContent() {
           </div>
         </Col>
       </Row>
-    </>
+    </div>
   );
 }

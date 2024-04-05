@@ -14,7 +14,11 @@ import {
 } from "@/redux/scoresSlice";
 import { AutoGamePiece, ScoringLocation } from "@prisma/client";
 
-export default function AutoContent() {
+interface Props {
+  show: boolean;
+}
+
+export default function AutoContent({ show }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const mainData = useSelector((state: ReduxState) => state.mainData);
   const scores = useSelector((state: ReduxState) => state.scores);
@@ -63,7 +67,7 @@ export default function AutoContent() {
   };
 
   return (
-    <>
+    <div className={`${!show && "d-none"}`}>
       <Row className="my-5 d-flex justify-content-center">
         <Col className="d-flex justify-content-center" md={5}>
           <AutoIntakePanel
@@ -92,6 +96,6 @@ export default function AutoContent() {
           />
         </Col>
       </Row>
-    </>
+    </div>
   );
 }

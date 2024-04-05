@@ -11,10 +11,11 @@ import { Col, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 
 interface Props {
+  show: boolean;
   handleSubmit: () => void;
 }
 
-export default function PostmatchContent({ handleSubmit }: Props) {
+export default function PostmatchContent({ show, handleSubmit }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const [driverSkillRating, setDriverSkillRating] = useState<number | null>(
     null
@@ -24,58 +25,55 @@ export default function PostmatchContent({ handleSubmit }: Props) {
   const [comments, setComments] = useState("");
 
   return (
-    <>
-      <>
-        <Row className="my-5">
-          <Col className="d-flex justify-content-end" md={4}>
-            <DriverSkillSelector
-              selected={driverSkillRating as number}
-              handleSelection={setDriverSkillRating}
-            />
-          </Col>
-          <Col className="d-flex justify-content-center" md={4}>
-            <ToggleBox
-              name="Played Defense?"
-              enabled={playedDefense}
-              handleClick={() =>
-                setPlayedDefense((playedDefense) => !playedDefense)
-              }
-            />
-          </Col>
-          <Col className="d-flex justify-content-start" md={4}>
-            <ToggleBox
-              name="Under Heavy Defense?"
-              enabled={underHeavyDefense}
-              handleClick={() =>
-                setUnderHeavyDefense((underHeavyDefense) => !underHeavyDefense)
-              }
-            />
-          </Col>
-        </Row>
-        <Row className="d-flex justify-content-center">
-          <Col md={3}>
-            <CommentsBox contents={comments} handleChange={setComments} />
-          </Col>
-        </Row>
-        <Row className="d-flex justify-content-center mt-5">
-          <Col md={3}>
-            <SubmitButton
-              handleClick={async () => {
-                dispatch(
-                  sendPostMatchData({
-                    driverSkillRating: driverSkillRating as number,
-                    playedDefense,
-                    underDefense: underHeavyDefense,
-                    comments,
-                  })
-                );
-                handleSubmit();
-              }}
-            />
-          </Col>
-        </Row>
-      </>
-      {/* )} */}
-    </>
+    <div className={`${!show && "d-none"}`}>
+      <Row className="my-5">
+        <Col className="d-flex justify-content-end" md={4}>
+          <DriverSkillSelector
+            selected={driverSkillRating as number}
+            handleSelection={setDriverSkillRating}
+          />
+        </Col>
+        <Col className="d-flex justify-content-center" md={4}>
+          <ToggleBox
+            name="Played Defense?"
+            enabled={playedDefense}
+            handleClick={() =>
+              setPlayedDefense((playedDefense) => !playedDefense)
+            }
+          />
+        </Col>
+        <Col className="d-flex justify-content-start" md={4}>
+          <ToggleBox
+            name="Under Heavy Defense?"
+            enabled={underHeavyDefense}
+            handleClick={() =>
+              setUnderHeavyDefense((underHeavyDefense) => !underHeavyDefense)
+            }
+          />
+        </Col>
+      </Row>
+      <Row className="d-flex justify-content-center">
+        <Col md={3}>
+          <CommentsBox contents={comments} handleChange={setComments} />
+        </Col>
+      </Row>
+      <Row className="d-flex justify-content-center mt-5">
+        <Col md={3}>
+          <SubmitButton
+            handleClick={async () => {
+              dispatch(
+                sendPostMatchData({
+                  driverSkillRating: driverSkillRating as number,
+                  playedDefense,
+                  underDefense: underHeavyDefense,
+                  comments,
+                })
+              );
+              handleSubmit();
+            }}
+          />
+        </Col>
+      </Row>
+    </div>
   );
 }
