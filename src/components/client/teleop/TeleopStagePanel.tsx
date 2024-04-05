@@ -28,11 +28,11 @@ export default function TeleopStagePanel({
     <div className="d-flex flex-column align-items-center">
       <h1 className="text-center mb-3 w-100">Endgame</h1>
       <Row className="my-3">
-        <ListGroup className="stage-selector text-center fs-5">
+        <ListGroup className="stage-selector text-center fs-5 ">
           {[ClimbType.NONE, ClimbType.PARKED, ClimbType.CLIMBED].map((item) => (
             <ListGroup.Item
               key={item}
-              className={`px-3 py-2 ${
+              className={`px-3 py-2 border-0 ${
                 climbType !== item ? "bg-dark-subtle" : ""
               }`}
               active={climbType === item}
@@ -54,7 +54,7 @@ export default function TeleopStagePanel({
               {[0, 1, 2, 3].map((item) => (
                 <ListGroup.Item
                   key={item}
-                  className={`px-3 py-2 ${
+                  className={`px-3 py-2 border-0 ${
                     numRobots !== item ? "bg-dark-subtle" : ""
                   }`}
                   active={numRobots === item}
