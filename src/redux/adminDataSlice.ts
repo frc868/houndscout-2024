@@ -90,6 +90,15 @@ export const createMatchAsync = createAsyncThunk(
     });
   }
 );
+export const uploadTBADataAsync = createAsyncThunk(
+  "adminData/uploadTBADataAsync",
+  async (data: { eventCode: string; teams: string; matches: string }) => {
+    await axios.post(`/api/v1/events/${data.eventCode}/tbaseed/offline`, {
+      teams: data.teams,
+      matches: data.matches,
+    });
+  }
+);
 
 export const deleteMatchAsync = createAsyncThunk(
   "adminData/deleteMatch",
