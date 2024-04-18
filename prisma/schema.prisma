@@ -219,6 +219,7 @@ enum IntakeLocation {
 enum ScoringLocation {
   SPEAKER
   AMP
+  PASS
 }
 
 enum ClimbType {

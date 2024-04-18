@@ -154,12 +154,29 @@ export async function GET(
           return total + ampMissEvents;
         }, 0) / teamScores.length;
 
+      const pass =
+        teamScores.reduce((total, score) => {
+          const passEvents = score.teleopScoringEvents.filter(
+            (event) =>
+              event.scoringLocation === ScoringLocation.PASS && !event.dropped
+          ).length;
+          return total + passEvents;
+        }, 0) / teamScores.length;
+
+      // Amp Misses calculation
+      const passMisses =
+        teamScores.reduce((total, score) => {
+          const passMissEvents = score.teleopScoringEvents.filter(
+            (event) =>
+              event.scoringLocation === ScoringLocation.PASS && event.dropped
+          ).length;
+          return total + passMissEvents;
+        }, 0) / teamScores.length;
+
       // Climb calculation
       const climb =
-        (teamScores.filter((score) => score.climbType === ClimbType.CLIMBED)
-          .length /
-          teamScores.length) *
-        100;
+        teamScores.filter((score) => score.climbType === ClimbType.CLIMBED)
+          .length / teamScores.length;
 
       const ensemble =
         teamScores.reduce(
@@ -169,28 +186,26 @@ export async function GET(
 
       // Trap calculation
       const trap =
-        (teamScores.filter((score) => score.scoredInTrap).length /
-          teamScores.length) *
-        100;
+        teamScores.filter((score) => score.scoredInTrap).length /
+        teamScores.length;
 
       // Incap calculation
-      const incap =
-        teamScores.reduce((total, score) => {
-          const totalIncapTime = score.incapSegments.reduce(
-            (sum, segment) =>
-              sum +
-              (Number(segment.timestampEnded) -
-                Number(segment.timestampStarted)),
-            0
-          );
-          return total + totalIncapTime;
-        }, 0) / teamScores.length;
+      // const incap =
+      //   teamScores.reduce((total, score) => {
+      //     const totalIncapTime = score.incapSegments.reduce(
+      //       (sum, segment) =>
+      //         sum +
+      //         (Number(segment.timestampEnded) -
+      //           Number(segment.timestampStarted)),
+      //       0
+      //     );
+      //     return total + totalIncapTime;
+      //   }, 0) / teamScores.length;
 
       // Defense calculation
       const defense =
-        (teamScores.filter((score) => score.playedDefense).length /
-          teamScores.length) *
-        100;
+        teamScores.filter((score) => score.playedDefense).length /
+        teamScores.length;
 
       return {
         team: team.number,
@@ -201,10 +216,11 @@ export async function GET(
         speakerMisses,
         amp,
         ampMisses,
+        pass,
+        passMisses,
         climb,
         ensemble,
         trap,
-        incap,
         defense,
       };
     });

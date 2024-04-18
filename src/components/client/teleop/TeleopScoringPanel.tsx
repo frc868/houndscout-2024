@@ -56,6 +56,25 @@ export default function TeleopScoringPanel({ active, handleSelection }: Props) {
               />
             </div>
           </div>
+          <div className="d-flex flex-column my-3">
+            <h3 className="text-center">Pass</h3>
+            <div className="d-flex justify-content-center">
+              <ScoreButton
+                className="mx-3 my-2"
+                active={active}
+                handleClick={() => {
+                  handleSelection(ScoringLocation.PASS);
+                }}
+              />
+              <FailButton
+                className="mx-3 my-2"
+                active={active}
+                handleClick={() => {
+                  handleSelection(ScoringLocation.PASS, true);
+                }}
+              />
+            </div>
+          </div>
         </Col>
         <Col className="d-flex flex-column justify-content-center align-items-center my-3">
           <h3 className="text-center">Dropped</h3>

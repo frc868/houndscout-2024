@@ -15,6 +15,5 @@ export interface Ranking {
   climb: number;
   ensemble: number;
   trap: number;
-  incap: number;
   defense: number;
 }
