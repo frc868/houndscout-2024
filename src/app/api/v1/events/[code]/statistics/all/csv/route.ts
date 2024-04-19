@@ -172,6 +172,16 @@ export async function GET(
           (event) =>
             event.scoringLocation === ScoringLocation.AMP && event.failedScoring
         ).length,
+        pass: teamScore.teleopScoringEvents.filter(
+          (event) =>
+            event.scoringLocation === ScoringLocation.PASS &&
+            !event.failedScoring
+        ).length,
+        passMissed: teamScore.teleopScoringEvents.filter(
+          (event) =>
+            event.scoringLocation === ScoringLocation.PASS &&
+            event.failedScoring
+        ).length,
         dropped: teamScore.teleopScoringEvents.filter((event) => event.dropped)
           .length,
       }))
