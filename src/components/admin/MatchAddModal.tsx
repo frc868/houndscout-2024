@@ -48,7 +48,7 @@ export default function SignInModal({
           <Form.Group className="mb-3">
             <Form.Label>Match Number</Form.Label>
             <Form.Control
-              placeholder="1"
+              placeholder="e.g. 1"
               value={number}
               onChange={(e) => setNumber(e.target.value)}
             />
@@ -58,7 +58,8 @@ export default function SignInModal({
               <Form.Group className="mb-3">
                 <Form.Label>Red 1</Form.Label>
                 <Form.Control
-                  placeholder="0"
+                  className="bg-danger-subtle"
+                  placeholder="Team # (e.g. 868)"
                   value={red1}
                   onChange={(e) => setRed1(e.target.value)}
                 />
@@ -68,7 +69,8 @@ export default function SignInModal({
               <Form.Group className="mb-3">
                 <Form.Label>Red 2</Form.Label>
                 <Form.Control
-                  placeholder="0"
+                  className="bg-danger-subtle"
+                  placeholder="Team # (e.g. 868)"
                   value={red2}
                   onChange={(e) => setRed2(e.target.value)}
                 />
@@ -78,7 +80,8 @@ export default function SignInModal({
               <Form.Group className="mb-3">
                 <Form.Label>Red 3</Form.Label>
                 <Form.Control
-                  placeholder="0"
+                  className="bg-danger-subtle"
+                  placeholder="Team # (e.g. 868)"
                   value={red3}
                   onChange={(e) => setRed3(e.target.value)}
                 />
@@ -90,7 +93,8 @@ export default function SignInModal({
               <Form.Group className="mb-3">
                 <Form.Label>Blue 1</Form.Label>
                 <Form.Control
-                  placeholder="0"
+                  className="bg-primary-subtle"
+                  placeholder="Team # (e.g. 868)"
                   value={blue1}
                   onChange={(e) => setBlue1(e.target.value)}
                 />
@@ -100,7 +104,8 @@ export default function SignInModal({
               <Form.Group className="mb-3">
                 <Form.Label>Blue 2</Form.Label>
                 <Form.Control
-                  placeholder="0"
+                  className="bg-primary-subtle"
+                  placeholder="Team # (e.g. 868)"
                   value={blue2}
                   onChange={(e) => setBlue2(e.target.value)}
                 />
@@ -110,7 +115,8 @@ export default function SignInModal({
               <Form.Group className="mb-3">
                 <Form.Label>Blue 3</Form.Label>
                 <Form.Control
-                  placeholder="0"
+                  className="bg-primary-subtle"
+                  placeholder="Team # (e.g. 868)"
                   value={blue3}
                   onChange={(e) => setBlue3(e.target.value)}
                 />
@@ -121,8 +127,9 @@ export default function SignInModal({
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
+        <p>To do: Change the team numbers to dropdowns</p>
+        <Button variant="secondary" className="bg-danger" onClick={handleClose}>
+        Discard Changes
         </Button>
         <Button
           variant="primary"

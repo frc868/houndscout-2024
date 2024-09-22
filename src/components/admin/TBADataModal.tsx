@@ -33,7 +33,7 @@ export default function TBADataModal({
           <Form.Group className="mb-3">
             <Form.Label>Teams</Form.Label>
             <Form.Control
-              placeholder={`[{"city": "Carmel", "team_number": 868, "nickname": "TechHOUNDS"} ...]`}
+              placeholder={`e.g. [{"city": "Carmel", "team_number": 868, "nickname": "TechHOUNDS"}, ...]`}
               value={teams}
               as="textarea"
               onChange={(e) => setTeams(e.target.value)}
@@ -42,7 +42,7 @@ export default function TBADataModal({
           <Form.Group className="mb-3">
             <Form.Label>Matches</Form.Label>
             <Form.Control
-              placeholder={`[{"alliances": {"blue": {"team_keys": ["frc868", "frc1741", "frc1024"]}}} ...]`}
+              placeholder={`e.g. [{"alliances": {"blue": {"team_keys": ["frc868", "frc1741", "frc1024"]}}}, ...]`}
               value={matches}
               as="textarea"
               onChange={(e) => setMatches(e.target.value)}
@@ -52,8 +52,9 @@ export default function TBADataModal({
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Close
+        <p>To Do: Transfer all data related stuff to a separate page.</p>
+        <Button variant="secondary" className="bg-danger" onClick={handleClose}>
+          Discard Changes
         </Button>
         <Button
           variant="success"

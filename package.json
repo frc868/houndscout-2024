@@ -37,6 +37,7 @@
     "prism": "^1.0.0",
     "prisma": "^5.9.1",
     "prisma-erd-generator": "^1.11.1",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5"
   }
 }

@@ -46,10 +46,9 @@ export default function Client({ station }: Props) {
     setTab(Section.PREMATCH);
   }, [mainData.activeMatchName]);
 
-  const ready =
-    mainData.scouter.name &&
-    mainData.activeTeamNumber &&
-    mainData.activeMatchName;
+  const ready = mainData.scouter.name
+    // && mainData.activeTeamNumber &&
+    // mainData.activeMatchName;
 
   return (
     <>

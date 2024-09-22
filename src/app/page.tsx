@@ -78,14 +78,22 @@ export default function Home() {
       </Row>
       <Row>
         <h1 className="text-center mt-4">Lead Scouter</h1>
-        <Col className="d-flex justify-content-center">
+        <Col className="d-flex justify-content-center flex-column align-items-center">
           <Button
             className="mx-1 mt-2"
             size="lg"
             variant="secondary"
             href="/admin"
           >
-            Admin
+            Match Controls
+          </Button>
+          <Button
+            className="mx-1 mt-2"
+            size="lg"
+            variant="secondary"
+            href="/data"
+          >
+            Data Controls
           </Button>
         </Col>
       </Row>

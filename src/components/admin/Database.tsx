@@ -17,7 +17,7 @@ interface Props {
   handleScouterSelect: (matchName: string, station: string, id: number) => void;
 }
 
-export default function MatchSchedule({
+export default function Database({
   matches,
   activeMatchName,
   handleMatchSelect,
@@ -28,7 +28,8 @@ export default function MatchSchedule({
   const dispatch = useDispatch<AppDispatch>();
   const mainData = useSelector((state: ReduxState) => state.mainData);
   const [showMatchAdd, setShowMatchAdd] = useState(false);
-
+  
+// Probably just easier to go by team.
   return (
     <div className="d-flex justify-content-center">
       <MatchAddModal
@@ -45,7 +46,7 @@ export default function MatchSchedule({
         }}
       ></MatchAddModal>
       <div className="d-flex flex-column">
-        <h1 className="text-center mb-3">Match Schedule</h1>
+        <h1 className="text-center mb-3">Database (WIP)</h1>
         <Button
           className="w-25 mx-auto mb-3"
           onClick={() => setShowMatchAdd(true)}
@@ -80,69 +81,27 @@ export default function MatchSchedule({
                 </td>
                 <td className="px-2 table-danger">
                   {match.teamNumbers.red1}{" "}
-                  <ScoutersDropdown
-                    active={match.name === activeMatchName}
-                    activeScouter={match.scouters.red1?.name || "Not Assigned"}
-                    scouters={scouters}
-                    handleScouterSelect={(id) =>
-                      handleScouterSelect(match.name, "red1", id)
-                    }
-                  />
+                 
                 </td>
                 <td className="px-2 table-danger">
                   {match.teamNumbers.red2}{" "}
-                  <ScoutersDropdown
-                    active={match.name === activeMatchName}
-                    activeScouter={match.scouters.red2?.name || "Not Assigned"}
-                    scouters={scouters}
-                    handleScouterSelect={(id) =>
-                      handleScouterSelect(match.name, "red2", id)
-                    }
-                  />
+                  
                 </td>
                 <td className="px-2 table-danger">
                   {match.teamNumbers.red3}{" "}
-                  <ScoutersDropdown
-                    active={match.name === activeMatchName}
-                    activeScouter={match.scouters.red3?.name || "Not Assigned"}
-                    scouters={scouters}
-                    handleScouterSelect={(id) =>
-                      handleScouterSelect(match.name, "red3", id)
-                    }
-                  />
+                  
                 </td>
                 <td className="px-2 table-primary">
                   {match.teamNumbers.blue1}{" "}
-                  <ScoutersDropdown
-                    active={match.name === activeMatchName}
-                    activeScouter={match.scouters.blue1?.name || "Not Assigned"}
-                    scouters={scouters}
-                    handleScouterSelect={(id) =>
-                      handleScouterSelect(match.name, "blue1", id)
-                    }
-                  />
+                 
                 </td>
                 <td className="px-2 table-primary">
                   {match.teamNumbers.blue2}{" "}
-                  <ScoutersDropdown
-                    active={match.name === activeMatchName}
-                    activeScouter={match.scouters.blue2?.name || "Not Assigned"}
-                    scouters={scouters}
-                    handleScouterSelect={(id) =>
-                      handleScouterSelect(match.name, "blue2", id)
-                    }
-                  />
+                  
                 </td>
                 <td className="px-2 table-primary">
                   {match.teamNumbers.blue3}{" "}
-                  <ScoutersDropdown
-                    active={match.name === activeMatchName}
-                    activeScouter={match.scouters.blue3?.name || "Not Assigned"}
-                    scouters={scouters}
-                    handleScouterSelect={(id) =>
-                      handleScouterSelect(match.name, "blue3", id)
-                    }
-                  />
+                  
                 </td>
                 <td
                   className={`px-2 py-4 d-flex flex-column ${

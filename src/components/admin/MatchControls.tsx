@@ -39,7 +39,7 @@ export default function Controls({ eventCode }: Props) {
           </Button>
         </Col>
       </Row>
-      <Row className="">
+      {/* <Row className="">
         <Col>
           <Button
             variant="secondary"
@@ -79,7 +79,7 @@ export default function Controls({ eventCode }: Props) {
         onClick={() => setShowTBADataModal(true)}
       >
         Import TBA Data
-      </Button>
+      </Button> */}
       <Button variant="secondary" disabled className="mb-2">
         Generate Scouter Schedule
       </Button>
