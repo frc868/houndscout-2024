@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import { Match, Scouter, createMatchAsync } from "@/redux/adminDataSlice";
+import { Match, Scouter, Team, createMatchAsync } from "@/redux/adminDataSlice";
 import React, { useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import ScoutersDropdown from "./ScouterDropdown";
@@ -10,6 +10,7 @@ import { AppDispatch, ReduxState } from "@/redux/store";
 
 interface Props {
   matches: Match[];
+  teams: Team[];
   activeMatchName: string;
   handleMatchSelect: (name: string) => void;
   handleMatchDelete: (name: string) => void;
@@ -19,6 +20,7 @@ interface Props {
 
 export default function MatchSchedule({
   matches,
+  teams,
   activeMatchName,
   handleMatchSelect,
   handleMatchDelete,
@@ -33,6 +35,7 @@ export default function MatchSchedule({
     <div className="d-flex justify-content-center">
       <MatchAddModal
         show={showMatchAdd}
+        teams={teams}
         handleClose={() => setShowMatchAdd(false)}
         handleSubmit={async (payload) => {
           await dispatch(
@@ -48,7 +51,7 @@ export default function MatchSchedule({
         <h1 className="text-center mb-3">Match Schedule</h1>
         <Button
           className="w-25 mx-auto mb-3"
-          onClick={() => setShowMatchAdd(true)}
+          onClick={() => {console.log(teams); setShowMatchAdd(true);}}
         >
           Create new match
         </Button>
@@ -149,7 +152,6 @@ export default function MatchSchedule({
                     match.name === activeMatchName && "table-secondary"
                   }`}
                 >
-
                   <DeleteButton
                     variant={
                       match.name === activeMatchName

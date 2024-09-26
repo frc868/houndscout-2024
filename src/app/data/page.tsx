@@ -7,25 +7,29 @@ import {
   getActiveEventAsync,
   getActiveMatchAsync,
 } from "@/redux/mainDataSlice";
+import {
+  Scores
+} from "@/redux/scoresSlice";
 import AdminStatusBar from "@/components/admin/AdminStatusBar";
 import {
-  Match,
   Scouter,
+  Team,
   deleteMatchAsync,
-  getHeartbeatsAsync,
   getMatchesAsync,
   getScoutersAsync,
+  getTeamsAsync,
   setActiveMatchAsync,
   setMatchScouterAsync,
 } from "@/redux/adminDataSlice";
 import Database from "@/components/admin/Database";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row, Table } from "react-bootstrap";
 import Controls from "@/components/admin/DataControls";
-import { Event } from "@prisma/client";
+import { Event, AutoGamePiece, ClimbType} from "@prisma/client";
 
 export default function Data() {
   const mainData = useSelector((state: ReduxState) => state.mainData);
   const adminData = useSelector((state: ReduxState) => state.adminData);
+  const scores = useSelector((state: ReduxState) => state.scores);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -33,7 +37,6 @@ export default function Data() {
       await dispatch(getActiveEventAsync());
       await dispatch(getActiveMatchAsync());
       await dispatch(getScoutersAsync());
-      await dispatch(getHeartbeatsAsync());
 
       mainData.activeEvent?.code &&
         (await dispatch(
@@ -78,7 +81,7 @@ export default function Data() {
           <Row className="my-4">
             <Col md={8}>
               <Database
-                matches={adminData.matches as Match[]}
+                teams={adminData.teams as Team[]}
                 activeMatchName={mainData.activeMatchName as string}
                 handleMatchSelect={async (name) =>
                   await dispatch(

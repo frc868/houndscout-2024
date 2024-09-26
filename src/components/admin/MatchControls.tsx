@@ -39,47 +39,6 @@ export default function Controls({ eventCode }: Props) {
           </Button>
         </Col>
       </Row>
-      {/* <Row className="">
-        <Col>
-          <Button
-            variant="secondary"
-            href="/api/v1/export"
-            className="mb-2 mx-1"
-          >
-            Export Database
-          </Button>
-          <Button
-            variant="secondary"
-            href={`/api/v1/events/${eventCode}/statistics/all/csv`}
-            className="mb-2 mx-1"
-          >
-            Export Full CSV
-          </Button>
-        </Col>
-      </Row>
-      <Button
-        variant="secondary"
-        href={`/api/v1/events/${eventCode}/statistics/all`}
-        className="mb-2 mx-1"
-        target="_blank"
-      >
-        Export Full JSON
-      </Button>
-      <Button
-        variant="secondary"
-        href={`/api/v1/events/${eventCode}/statistics/rankings`}
-        className="mb-2 mx-1"
-        target="_blank"
-      >
-        Export Aggregate JSON
-      </Button>
-      <Button
-        variant="secondary"
-        className="mb-2"
-        onClick={() => setShowTBADataModal(true)}
-      >
-        Import TBA Data
-      </Button> */}
       <Button variant="secondary" disabled className="mb-2">
         Generate Scouter Schedule
       </Button>

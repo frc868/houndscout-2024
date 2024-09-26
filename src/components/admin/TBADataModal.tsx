@@ -52,7 +52,6 @@ export default function TBADataModal({
       </Modal.Body>
 
       <Modal.Footer>
-        <p>To Do: Transfer all data related stuff to a separate page.</p>
         <Button variant="secondary" className="bg-danger" onClick={handleClose}>
           Discard Changes
         </Button>

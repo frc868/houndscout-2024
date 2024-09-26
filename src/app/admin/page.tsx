@@ -11,10 +11,12 @@ import AdminStatusBar from "@/components/admin/AdminStatusBar";
 import {
   Match,
   Scouter,
+  Team,
   deleteMatchAsync,
   getHeartbeatsAsync,
   getMatchesAsync,
   getScoutersAsync,
+  getTeamsAsync,
   setActiveMatchAsync,
   setMatchScouterAsync,
 } from "@/redux/adminDataSlice";
@@ -36,6 +38,7 @@ export default function Admin() {
       await dispatch(getActiveMatchAsync());
       await dispatch(getScoutersAsync());
       await dispatch(getHeartbeatsAsync());
+      await dispatch(getTeamsAsync());
 
       mainData.activeEvent?.code &&
         (await dispatch(
@@ -96,6 +99,7 @@ export default function Admin() {
           <Row>
             <MatchSchedule
               matches={adminData.matches as Match[]}
+              teams={adminData.teams as Team[]}
               activeMatchName={mainData.activeMatchName as string}
               handleMatchSelect={async (name) =>
                 await dispatch(

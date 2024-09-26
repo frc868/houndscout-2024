@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
+import TeamDropdown from "./TeamDropdown";
+import { Team } from "@/redux/adminDataSlice";
 
 interface Props {
   show: boolean;
+  teams: Team[];
   handleClose: () => void;
   handleSubmit: ({
     number,
@@ -26,6 +29,7 @@ interface Props {
 
 export default function SignInModal({
   show,
+  teams,
   handleClose,
   handleSubmit,
 }: Props) {
@@ -57,33 +61,33 @@ export default function SignInModal({
             <Col>
               <Form.Group className="mb-3">
                 <Form.Label>Red 1</Form.Label>
-                <Form.Control
-                  className="bg-danger-subtle"
-                  placeholder="Team # (e.g. 868)"
-                  value={red1}
-                  onChange={(e) => setRed1(e.target.value)}
+                <TeamDropdown
+                  red={true}
+                  activeTeam={red1}
+                  teams={teams}
+                  handleTeamSelect={(number) => setRed1(number.toString())}
                 />
               </Form.Group>
             </Col>
             <Col>
               <Form.Group className="mb-3">
                 <Form.Label>Red 2</Form.Label>
-                <Form.Control
-                  className="bg-danger-subtle"
-                  placeholder="Team # (e.g. 868)"
-                  value={red2}
-                  onChange={(e) => setRed2(e.target.value)}
+                <TeamDropdown
+                  red={true}
+                  activeTeam={red2}
+                  teams={teams}
+                  handleTeamSelect={(number) => setRed2(number.toString())}
                 />
               </Form.Group>
             </Col>
             <Col>
               <Form.Group className="mb-3">
                 <Form.Label>Red 3</Form.Label>
-                <Form.Control
-                  className="bg-danger-subtle"
-                  placeholder="Team # (e.g. 868)"
-                  value={red3}
-                  onChange={(e) => setRed3(e.target.value)}
+                <TeamDropdown
+                  red={true}
+                  activeTeam={red3}
+                  teams={teams}
+                  handleTeamSelect={(number) => setRed3(number.toString())}
                 />
               </Form.Group>
             </Col>
@@ -92,33 +96,33 @@ export default function SignInModal({
             <Col>
               <Form.Group className="mb-3">
                 <Form.Label>Blue 1</Form.Label>
-                <Form.Control
-                  className="bg-primary-subtle"
-                  placeholder="Team # (e.g. 868)"
-                  value={blue1}
-                  onChange={(e) => setBlue1(e.target.value)}
+                <TeamDropdown
+                  red={false}
+                  activeTeam={blue1}
+                  teams={teams}
+                  handleTeamSelect={(number) => setBlue1(number.toString())}
                 />
               </Form.Group>
             </Col>
             <Col>
               <Form.Group className="mb-3">
                 <Form.Label>Blue 2</Form.Label>
-                <Form.Control
-                  className="bg-primary-subtle"
-                  placeholder="Team # (e.g. 868)"
-                  value={blue2}
-                  onChange={(e) => setBlue2(e.target.value)}
+                <TeamDropdown
+                  red={false}
+                  activeTeam={blue2}
+                  teams={teams}
+                  handleTeamSelect={(number) => setBlue2(number.toString())}
                 />
               </Form.Group>
             </Col>
             <Col>
               <Form.Group className="mb-3">
                 <Form.Label>Blue 3</Form.Label>
-                <Form.Control
-                  className="bg-primary-subtle"
-                  placeholder="Team # (e.g. 868)"
-                  value={blue3}
-                  onChange={(e) => setBlue3(e.target.value)}
+                <TeamDropdown
+                  red={false}
+                  activeTeam={blue3}
+                  teams={teams}
+                  handleTeamSelect={(number) => setBlue3(number.toString())}
                 />
               </Form.Group>
             </Col>
@@ -128,9 +132,6 @@ export default function SignInModal({
 
       <Modal.Footer>
         <p>To do: Change the team numbers to dropdowns</p>
-        <Button variant="secondary" className="bg-danger" onClick={handleClose}>
-        Discard Changes
-        </Button>
         <Button
           variant="primary"
           onClick={() =>
