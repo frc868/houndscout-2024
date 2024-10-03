@@ -13,11 +13,9 @@ import {
 import AdminStatusBar from "@/components/admin/AdminStatusBar";
 import {
   Scouter,
-  Team,
   deleteMatchAsync,
   getMatchesAsync,
   getScoutersAsync,
-  getTeamsAsync,
   setActiveMatchAsync,
   setMatchScouterAsync,
 } from "@/redux/adminDataSlice";
@@ -81,7 +79,6 @@ export default function Data() {
           <Row className="my-4">
             <Col md={8}>
               <Database
-                teams={adminData.teams as Team[]}
                 activeMatchName={mainData.activeMatchName as string}
                 handleMatchSelect={async (name) =>
                   await dispatch(

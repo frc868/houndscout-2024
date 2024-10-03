@@ -32,58 +32,9 @@ export interface Heartbeat {
   section: string;
 }
 
-export interface TeamScore {
-  startZone: StartZone;
-  autonPieces: AutoGamePiece[];
-  leftStart: boolean;
-  climb: ClimbType;
-  numOnChain: number;
-  trap: boolean;
-  spotlit: boolean;
-}
-export interface Team {
-  id: number;
-  number: number;
-  name: string;
-  location: string
-  events: Event[];
-  red1Matches: Match[];
-  red2Matches: Match[];
-  red3Matches: Match[];
-  blue1Matches: Match[];
-  blue2Matches: Match[];
-  blue3Matches: Match[];
-  teamScores: TeamScore[];
-}
-
-enum AutoGamePiece {
-  PRELOAD,
-  CENTER1,
-  CENTER2,
-  CENTER3,
-  CENTER4,
-  CENTER5,
-  CLOSE1,
-  CLOSE2,
-  CLOSE3
-}
-
-enum ClimbType {
-  NONE,
-  PARKED,
-  CLIMBED
-}
-
-enum StartZone {
-  ONE,
-  TWO,
-  THREE
-}
-
 export interface AdminData {
   matches?: Match[];
   scouters?: Scouter[];
-  teams?: Team[];
   matchesStatus: "idle" | "waiting" | "succeeded" | "failed";
   scoutersStatus: "idle" | "waiting" | "succeeded" | "failed";
   teamsStatus: "idle" | "waiting" | "succeeded" | "failed";
@@ -96,7 +47,6 @@ export interface AdminData {
     blue2: Heartbeat;
     blue3: Heartbeat;
   };
-  teamScores?: TeamScore[]//Got the Interface and enums set, need to fill this out.
 }
 
 export const getMatchesAsync = createAsyncThunk(
@@ -171,13 +121,7 @@ export const getScoutersAsync = createAsyncThunk(
     return res.data.scouters;
   }
 );
-export const getTeamsAsync = createAsyncThunk(
-  "adminData/getTeamsAsync",
-  async () => {
-    const res = await axios.get("/api/v1/teams");
-    return res.data.teams;
-  }
-);
+
 export const getHeartbeatsAsync = createAsyncThunk(
   "adminData/getHeartbeats",
   async () => {
@@ -213,7 +157,6 @@ const initialState: AdminData = {
   matchesStatus: "idle",
   scouters: undefined,
   scoutersStatus: "idle",
-  teams: undefined,
   teamsStatus: "idle",
   error: undefined,
   heartbeats: {
@@ -224,7 +167,6 @@ const initialState: AdminData = {
     blue2: { time: Date.now(), section: "" },
     blue3: { time: Date.now(), section: "" },
   },
-  teamScores: undefined,
 };
 
 export const mainData = createSlice({
@@ -304,24 +246,6 @@ export const mainData = createSlice({
       })
       .addCase(getScoutersAsync.rejected, (state, action) => {
         state.scoutersStatus = "failed";
-        state.error = action.error.message || "";
-      });
-    builder
-      .addCase(getTeamsAsync.pending, (state) => {
-        state.teamsStatus = "waiting";
-      })
-      .addCase(getTeamsAsync.fulfilled, (state, action) => {
-        if (action.payload !== null) {
-          state.teams = action.payload;
-          state.teams?.sort((a, b) => a.id - b.id);
-
-          state.teamsStatus = "succeeded";
-        } else {
-          state.teamsStatus = "idle";
-        }
-      })
-      .addCase(getTeamsAsync.rejected, (state, action) => {
-        state.teamsStatus = "failed";
         state.error = action.error.message || "";
       });
     builder.addCase(getHeartbeatsAsync.fulfilled, (state, action) => {

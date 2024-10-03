@@ -41,6 +41,14 @@ export default function SignInModal({
   const [blue2, setBlue2] = useState("");
   const [blue3, setBlue3] = useState("");
 
+  function clearState(){
+    setRed1("");
+    setRed2("");
+    setRed3("");
+    setBlue1("");
+    setBlue2("");
+    setBlue3("");
+  }
   return (
     <Modal centered show={show} size="lg" onHide={handleClose}>
       <Modal.Header closeButton>
@@ -135,15 +143,18 @@ export default function SignInModal({
         <Button
           variant="primary"
           onClick={() =>
-            handleSubmit({
-              number: Number(number),
-              red1: Number(red1),
-              red2: Number(red2),
-              red3: Number(red3),
-              blue1: Number(blue1),
-              blue2: Number(blue2),
-              blue3: Number(blue3),
-            })
+            {
+              clearState();
+              handleSubmit({
+                number: Number(number),
+                red1: Number(red1),
+                red2: Number(red2),
+                red3: Number(red3),
+                blue1: Number(blue1),
+                blue2: Number(blue2),
+                blue3: Number(blue3),
+              });
+            }
           }
         >
           Save changes

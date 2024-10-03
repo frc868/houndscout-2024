@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+//adminDataSlice/getTeamsAsync
 export async function GET(req: Request) {
   let teams;
   try {

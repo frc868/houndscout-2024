@@ -11,6 +11,7 @@ import {
 } from "@prisma/client";
 import { Ranking } from "@/lib/enums";
 
+//viewerDataSlive/getRankingsAsync
 export async function GET(
   req: Request,
   { params }: { params: { code: string } }
@@ -163,7 +164,7 @@ export async function GET(
           return total + passEvents;
         }, 0) / teamScores.length;
 
-      // Amp Misses calculation
+      // Pass Misses calculation
       const passMisses =
         teamScores.reduce((total, score) => {
           const passMissEvents = score.teleopScoringEvents.filter(

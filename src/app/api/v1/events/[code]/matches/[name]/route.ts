@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+//mainDataSlice/getActiveTeamNumberAsync
 export async function GET(
   req: Request,
   { params }: { params: { code: string; name: string } }
@@ -99,6 +100,7 @@ export async function PATCH(
   return NextResponse.json({ ok: true, match });
 }
 
+//adminDataSlice/deleteMatchAsync
 export async function DELETE(
   req: Request,
   { params }: { params: { code: string; name: string } }

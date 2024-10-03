@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+//mainDataSlice/getActiveEventAsync
 export async function GET(req: Request) {
   let event;
   try {

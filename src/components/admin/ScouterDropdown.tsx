@@ -17,7 +17,7 @@ export default function ScoutersDropdown({
 }: Props) {
   const [value, setValue] = useState("");
   return (
-    <Dropdown className="mt-1">
+    <Dropdown className="mt-1" style={{ width: '100%' }}>
       <Dropdown.Toggle
         variant={active ? "secondary" : "outline-secondary"}
         size="sm"

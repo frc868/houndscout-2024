@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+//adminDataSlice/getMatchesAsync
 export async function GET(
   req: Request,
   { params }: { params: { code: string } }
@@ -38,6 +39,7 @@ export async function GET(
   return NextResponse.json({ ok: true, matches: event.matches });
 }
 
+//adminDataSlice/createMatchAsync
 export async function POST(
   req: Request,
   { params }: { params: { code: string } }

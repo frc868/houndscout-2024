@@ -152,6 +152,7 @@ export default function MatchSchedule({
                     match.name === activeMatchName && "table-secondary"
                   }`}
                 >
+                  <Button className="bg-primary" size="sm">Select</Button>
                   <DeleteButton
                     variant={
                       match.name === activeMatchName

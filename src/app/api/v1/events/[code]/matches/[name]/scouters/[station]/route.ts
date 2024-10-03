@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+//mainDataSlice/getScouterAsync
 export async function GET(
   req: Request,
   { params }: { params: { code: string; name: string; station: string } }
@@ -35,6 +36,7 @@ export async function GET(
   });
 }
 
+//adminDataSlice/setMatchScouterAsync
 export async function POST(
   req: Request,
   { params }: { params: { code: string; name: string; station: string } }

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { Station } from "@prisma/client";
 
+//mainDataSlice/getStationData
 export async function GET(
   req: Request,
   { params }: { params: { station: string } }

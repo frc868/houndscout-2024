@@ -1,17 +1,13 @@
 /* eslint-disable react/display-name */
-import { Match, Scouter, Team, createMatchAsync } from "@/redux/adminDataSlice";
+import { Scouter } from "@/redux/adminDataSlice";
 import { Scores } from "@/redux/scoresSlice";
 import React, { useState } from "react";
 import { Button, Table } from "react-bootstrap";
-import ScoutersDropdown from "./ScouterDropdown";
-import DeleteButton from "../client/common/DeleteButton";
-import MatchAddModal from "./MatchAddModal";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import { Event } from "@prisma/client";
 
 interface Props {
-  teams: Team[];
   activeMatchName: string;
   handleMatchSelect: (name: string) => void;
   handleMatchDelete: (name: string) => void;
@@ -32,7 +28,6 @@ enum StartZone {
 }
 
 export default function Database({
-  teams,
   activeMatchName,
   handleMatchSelect,
   handleMatchDelete,
@@ -42,28 +37,26 @@ export default function Database({
   const dispatch = useDispatch<AppDispatch>();
   const mainData = useSelector((state: ReduxState) => state.mainData);
   //map arrays for teams, then map arrays for everything from teamScores
-  const dataArray:any[]=[]
-  async () => await teams.map((team:Team)=>{
-    dataArray.push({
-      number: team.number,
-      name: team.name,
-      total: team.teamScores.length,
-      startZone1: team.teamScores.map(score=>score.startZone).filter(item=>item===StartZone.ONE).length,
-      startZone2: team.teamScores.map(score=>score.startZone).filter(item=>item===StartZone.TWO).length,
-      startZone3: team.teamScores.map(score=>score.startZone).filter(item=>item===StartZone.THREE).length,
-      leftStart: team.teamScores.map(score=>score.leftStart).filter(item=>item===true).length,
-      climbNone: team.teamScores.map(score=>score.climb).filter(item=>item===ClimbType.NONE).length,
-      climbPark: team.teamScores.map(score=>score.climb).filter(item=>item===ClimbType.PARKED).length,
-      climbClimb: team.teamScores.map(score=>score.climb).filter(item=>item===ClimbType.CLIMBED).length,
-      numOnChain0: team.teamScores.map(score=>score.numOnChain).filter(item=>item===0).length,
-      numOnChain1: team.teamScores.map(score=>score.numOnChain).filter(item=>item===1).length,
-      numOnChain2: team.teamScores.map(score=>score.numOnChain).filter(item=>item===2).length,
-      numOnChain3: team.teamScores.map(score=>score.numOnChain).filter(item=>item===3).length,
-      trap: team.teamScores.map(score=>score.trap).filter(item=>item===true).length,
-      spotlit: team.teamScores.map(score=>score.spotlit).filter(item=>item===true).length
-    });
-  })
-// Probably just easier to go by team.
+  const [dataArray, setDataArray]:any[]=useState([{
+      number: 868,
+      name: "TechHOUNDS",
+      total: 8,
+      startZone1: 2,
+      startZone2: 3,
+      startZone3: 2,
+      leftStart: 8,
+      climbNone: 0,
+      climbPark: 3,
+      climbClimb: 5,
+      numOnChain0: 0,
+      numOnChain1: 7,
+      numOnChain2: 1,
+      numOnChain3: 0,
+      trap: 0,
+      spotlit: 1
+}]);
+ 
+// use ViewerDataSlice.
   return (
     <div className="d-flex justify-content-center">
       <div className="d-flex flex-column">
@@ -84,34 +77,51 @@ export default function Database({
           </thead>
           <tbody className="align-middle text-center">
             {/* Map score information based on teams */}
-            {dataArray.map((team) => (
+            {dataArray.map((team:{
+              number:number,
+              name:string,
+              total: number,
+              startZone1: number,
+              startZone2: number,
+              startZone3: number,
+              leftStart: number,
+              climbNone: number,
+              climbPark: number,
+              climbClimb: number,
+              numOnChain0: number,
+              numOnChain1: number,
+              numOnChain2: number,
+              numOnChain3: number,
+              trap: number,
+              spotlit: number,
+            }) => (
               <tr key={team.number}>
                 <td className=" table-secondary">
-                  Team {team.number}: {team.name}
+                  <p>Team {team.number}:<br />{team.name}</p>
                 </td>
                 <td className="px-2">
-                  {team.startZone1} (Zone 1)/{team.startZone2} (Zone 2)/{team.startZone3} (Zone 3)/{team.total} (Total)
+                  <p>{team.startZone1} (Zone 1)<br />{team.startZone2} (Zone 2)<br />{team.startZone3} (Zone 3)<br />{team.total} (Total)</p>
                 </td>
                 <td className="px-2">
-                  {team.leftStart}/{team.total} matches
+                  <p>{team.leftStart}/{team.total}<br />matches</p>
                 </td>
                 <td className="px-2">
-                  {team.climbNone} (None)/{team.climbPark} (Parked)/{team.climbClimb} (Climbed)/{team.total} (Total)
+                  <p>{team.climbNone} (None)<br />{team.climbPark} (Parked)<br />{team.climbClimb} (Climbed)<br />{team.total} (Total)</p>
                 </td>
                 <td className="px-2">
-                  {team.numOnChain0} (0 Bots)/{team.numOnChain1} (1 Bot)/{team.numOnChain2} (2 Bots)/{team.numOnChain3} (3 Bots)/{team.total} (Total)
+                  <p>{team.numOnChain0} (0 Bots)<br />{team.numOnChain1} (1 Bot)<br />{team.numOnChain2} (2 Bots)<br />{team.numOnChain3} (3 Bots)<br />{team.total} (Total)</p>
                 </td>
                 <td className="px-2">
-                  {team.trap}/{team.total} matches
+                  <p>{team.trap}/{team.total}<br />matches</p>
                 </td>
                 <td className="px-2">
-                  {team.spotlit}/{team.total} matches
+                  <p>{team.spotlit}/{team.total}<br />matches</p>
                 </td>
                 <td
                   className={"px-2 py-4 d-flex flex-column"}
                 >
                   <Button>
-                    Expand
+                    More Info
                   </Button>
                 </td>
               </tr>
