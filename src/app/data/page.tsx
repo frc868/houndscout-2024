@@ -19,15 +19,16 @@ import {
   setActiveMatchAsync,
   setMatchScouterAsync,
 } from "@/redux/adminDataSlice";
-import Database from "@/components/admin/Database";
+import { getRankingsAsync } from "@/redux/viewerDataSlice";
+import Database from "@/components/admin/data/Database";
 import { Button, Col, Container, Row, Table } from "react-bootstrap";
-import Controls from "@/components/admin/DataControls";
-import { Event, AutoGamePiece, ClimbType} from "@prisma/client";
+import Controls from "@/components/admin/data/DataControls";
+import { Ranking } from "@/lib/enums";
 
 export default function Data() {
   const mainData = useSelector((state: ReduxState) => state.mainData);
   const adminData = useSelector((state: ReduxState) => state.adminData);
-  const scores = useSelector((state: ReduxState) => state.scores);
+  const viewerData = useSelector((state: ReduxState) => state.viewerData);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -36,19 +37,18 @@ export default function Data() {
       await dispatch(getActiveMatchAsync());
       await dispatch(getScoutersAsync());
 
-      mainData.activeEvent?.code &&
-        (await dispatch(
-          getMatchesAsync({ eventCode: mainData.activeEvent?.code })
-        ));
+      mainData.activeEvent?.code && (
+        await dispatch(getMatchesAsync({ eventCode: mainData.activeEvent?.code }))        
+      );
+      mainData.activeEvent?.code && (
+        await dispatch(getRankingsAsync({ eventCode: mainData.activeEvent?.code }))  
+      );
+    
     }, 1000);
     return () => clearInterval(interval);
   }, [dispatch, mainData.activeEvent?.code, mainData.activeMatchName]);
 
-  const ready = mainData.activeEvent?.code && adminData.matches;
-
-  const activeMatch = adminData.matches?.filter(
-    (match) => match.name === mainData.activeMatchName
-  )[0];
+  const ready = mainData.activeEvent?.code && adminData.matches && viewerData.rankings;
 
   return (
     <>
@@ -69,7 +69,8 @@ export default function Data() {
             <li className="vh-1 d-flex justify-content-center mt-1">1. Create and fill in 6 Heartbeats, one for each station.</li>
             <li className="vh-1 d-flex justify-content-center mt-1">2. Create and fill in an Event.</li>
             <li className="vh-1 d-flex justify-content-center mt-1">3. Create a row in Server and set the Event to this event.</li>
-            <li className="vh-1 d-flex justify-content-center mt-1">4. Create a Team for every team in the event and fill in team number, name, and location</li>
+            <li className="vh-1 d-flex justify-content-center mt-1">4. Create a Team for every team in the event and fill in team number, name, and location.</li>
+            <li className="vh-1 d-flex justify-content-center mt-1">5. Ensure each team is connected to the event.</li>
           </ul>
         </>
       )}
@@ -79,7 +80,7 @@ export default function Data() {
           <Row className="my-4">
             <Col md={8}>
               <Database
-                activeMatchName={mainData.activeMatchName as string}
+                rankings={viewerData.rankings as Ranking[]}
                 handleMatchSelect={async (name) =>
                   await dispatch(
                     setActiveMatchAsync({
@@ -96,25 +97,11 @@ export default function Data() {
                     })
                   )
                 }
-                scouters={adminData.scouters as Scouter[]}
-                handleScouterSelect={async (matchName, station, id) => {
-                  await dispatch(
-                    setMatchScouterAsync({
-                      eventCode: mainData.activeEvent?.code as string,
-                      matchName,
-                      station,
-                      scouterId: id,
-                    })
-                  );
-                }}
               />
             </Col>
             <Col md={3}>
               <Controls eventCode={mainData.activeEvent?.code as string} />
             </Col>
-          </Row>
-          <Row>
-            
           </Row>
         </Container>
       )}

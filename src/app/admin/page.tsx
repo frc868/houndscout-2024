@@ -20,12 +20,12 @@ import {
   setActiveMatchAsync,
   setMatchScouterAsync,
 } from "@/redux/adminDataSlice";
-import MatchSchedule from "@/components/admin/MatchSchedule";
+import MatchSchedule from "@/components/admin/match/MatchSchedule";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import Activity from "@/components/admin/Activity";
-import Controls from "@/components/admin/MatchControls";
+import Activity from "@/components/admin/match/Activity";
+import Controls from "@/components/admin/match/MatchControls";
 import { Event } from "@prisma/client";
-import EventDetails from "@/components/admin/EventDetails";
+import EventDetails from "@/components/admin/match/EventDetails";
 
 export default function Admin() {
   const mainData = useSelector((state: ReduxState) => state.mainData);
@@ -38,17 +38,20 @@ export default function Admin() {
       await dispatch(getActiveMatchAsync());
       await dispatch(getScoutersAsync());
       await dispatch(getHeartbeatsAsync());
-      await dispatch(getTeamsAsync());
 
       mainData.activeEvent?.code &&
         (await dispatch(
           getMatchesAsync({ eventCode: mainData.activeEvent?.code })
         ));
+      mainData.activeEvent?.code &&
+        (await dispatch(
+          getTeamsAsync({ eventCode: mainData.activeEvent?.code })
+        ));
     }, 1000);
     return () => clearInterval(interval);
   }, [dispatch, mainData.activeEvent?.code, mainData.activeMatchName]);
 
-  const ready = mainData.activeEvent?.code && adminData.matches;
+  const ready = mainData.activeEvent?.code && adminData.matches && adminData.teams;
 
   const activeMatch = adminData.matches?.filter(
     (match) => match.name === mainData.activeMatchName
@@ -74,6 +77,7 @@ export default function Admin() {
             <li className="vh-1 d-flex justify-content-center mt-1">2. Create and fill in an Event.</li>
             <li className="vh-1 d-flex justify-content-center mt-1">3. Create a row in Server and set the Event to this event.</li>
             <li className="vh-1 d-flex justify-content-center mt-1">4. Create a Team for every team in the event and fill in team number, name, and location</li>
+            <li className="vh-1 d-flex justify-content-center mt-1">5. Ensure each team is connected to the event.</li>
           </ul>
         </>
       )}

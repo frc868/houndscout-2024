@@ -1,26 +1,23 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { ReduxState } from "./store";
 import { Ranking } from "@/lib/enums";
 
 export interface ViewerData {
-  rankings: Ranking[];
+  rankings?: Ranking[];
   rankingsStatus: "idle" | "waiting" | "succeeded" | "failed";
 }
 
 export const getRankingsAsync = createAsyncThunk(
   "viewer/getRankingsAsync",
-  async (_, { dispatch, getState }) => {
-    const state = getState() as ReduxState;
-    const mainData = state.mainData;
+  async ({ eventCode }: { eventCode: string }) => {
     const res = await axios.get(
-      `/api/v1/events/${mainData.activeEvent?.code}/statistics/rankings`
+      `/api/v1/events/${eventCode}/statistics/rankings`
     );
-    return res.data;
+    return res.data.rankings;
   }
 );
 const initialState: ViewerData = {
-  rankings: [],
+  rankings: undefined,
   rankingsStatus: "idle",
 };
 

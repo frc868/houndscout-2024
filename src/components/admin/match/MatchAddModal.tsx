@@ -5,8 +5,8 @@ import TeamDropdown from "./TeamDropdown";
 import { Team } from "@/redux/adminDataSlice";
 
 interface Props {
-  show: boolean;
   teams: Team[];
+  show: boolean;
   handleClose: () => void;
   handleSubmit: ({
     number,
@@ -28,8 +28,8 @@ interface Props {
 }
 
 export default function SignInModal({
-  show,
   teams,
+  show,
   handleClose,
   handleSubmit,
 }: Props) {
@@ -42,6 +42,7 @@ export default function SignInModal({
   const [blue3, setBlue3] = useState("");
 
   function clearState(){
+    setNumber("");
     setRed1("");
     setRed2("");
     setRed3("");
@@ -72,7 +73,7 @@ export default function SignInModal({
                 <TeamDropdown
                   red={true}
                   activeTeam={red1}
-                  teams={teams}
+                  teams={teams as Team[]}
                   handleTeamSelect={(number) => setRed1(number.toString())}
                 />
               </Form.Group>
@@ -83,7 +84,7 @@ export default function SignInModal({
                 <TeamDropdown
                   red={true}
                   activeTeam={red2}
-                  teams={teams}
+                  teams={teams as Team[]}
                   handleTeamSelect={(number) => setRed2(number.toString())}
                 />
               </Form.Group>
@@ -94,7 +95,7 @@ export default function SignInModal({
                 <TeamDropdown
                   red={true}
                   activeTeam={red3}
-                  teams={teams}
+                  teams={teams as Team[]}
                   handleTeamSelect={(number) => setRed3(number.toString())}
                 />
               </Form.Group>
@@ -107,7 +108,7 @@ export default function SignInModal({
                 <TeamDropdown
                   red={false}
                   activeTeam={blue1}
-                  teams={teams}
+                  teams={teams as Team[]}
                   handleTeamSelect={(number) => setBlue1(number.toString())}
                 />
               </Form.Group>
@@ -118,7 +119,7 @@ export default function SignInModal({
                 <TeamDropdown
                   red={false}
                   activeTeam={blue2}
-                  teams={teams}
+                  teams={teams as Team[]}
                   handleTeamSelect={(number) => setBlue2(number.toString())}
                 />
               </Form.Group>
@@ -129,7 +130,7 @@ export default function SignInModal({
                 <TeamDropdown
                   red={false}
                   activeTeam={blue3}
-                  teams={teams}
+                  teams={teams as Team[]}
                   handleTeamSelect={(number) => setBlue3(number.toString())}
                 />
               </Form.Group>
@@ -139,7 +140,12 @@ export default function SignInModal({
       </Modal.Body>
 
       <Modal.Footer>
-        <p>To do: Change the team numbers to dropdowns</p>
+      <Button
+          variant="danger"
+          onClick={() => clearState()}
+        >
+          Clear
+        </Button>
         <Button
           variant="primary"
           onClick={() =>

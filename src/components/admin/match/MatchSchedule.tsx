@@ -1,9 +1,9 @@
 /* eslint-disable react/display-name */
-import { Match, Scouter, Team, createMatchAsync } from "@/redux/adminDataSlice";
+import { Match, Team, Scouter, createMatchAsync } from "@/redux/adminDataSlice";
 import React, { useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import ScoutersDropdown from "./ScouterDropdown";
-import DeleteButton from "../client/common/DeleteButton";
+import DeleteButton from "./DeleteButton";
 import MatchAddModal from "./MatchAddModal";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
@@ -34,8 +34,8 @@ export default function MatchSchedule({
   return (
     <div className="d-flex justify-content-center">
       <MatchAddModal
+        teams={teams as Team[]}
         show={showMatchAdd}
-        teams={teams}
         handleClose={() => setShowMatchAdd(false)}
         handleSubmit={async (payload) => {
           await dispatch(
@@ -51,7 +51,7 @@ export default function MatchSchedule({
         <h1 className="text-center mb-3">Match Schedule</h1>
         <Button
           className="w-25 mx-auto mb-3"
-          onClick={() => {console.log(teams); setShowMatchAdd(true);}}
+          onClick={() => {setShowMatchAdd(true);}}
         >
           Create new match
         </Button>

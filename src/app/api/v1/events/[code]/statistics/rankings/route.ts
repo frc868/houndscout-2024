@@ -11,7 +11,7 @@ import {
 } from "@prisma/client";
 import { Ranking } from "@/lib/enums";
 
-//viewerDataSlive/getRankingsAsync
+//viewerDataSlice/getRankingsAsync
 export async function GET(
   req: Request,
   { params }: { params: { code: string } }
@@ -100,16 +100,15 @@ export async function GET(
         incapSegments: IncapSegment[];
       })[]; // Remove null entries
 
-      const mobility =
+      const mobility:number =
         (teamScores.filter((score) => score.leftStartingZone).length /
-          teamScores.length) *
-        100;
-
-      const autoSpeaker =
+          teamScores.length);
+  
+      const autoSpeaker:number =
         teamScores.reduce((o, s) => o + (s?.autoGamePiecesScored || 0), 0) /
         teamScores.length;
 
-      const autoMisses =
+      const autoMisses:number =
         (teamScores.reduce((o, s) => o + (s?.autoGamePieces.length || 0), 0) -
           autoSpeaker +
           2) /
@@ -136,7 +135,7 @@ export async function GET(
         }, 0) / teamScores.length;
 
       // Amp calculation
-      const amp =
+      const amp:number =
         teamScores.reduce((total, score) => {
           const ampEvents = score.teleopScoringEvents.filter(
             (event) =>
@@ -146,7 +145,7 @@ export async function GET(
         }, 0) / teamScores.length;
 
       // Amp Misses calculation
-      const ampMisses =
+      const ampMisses:number =
         teamScores.reduce((total, score) => {
           const ampMissEvents = score.teleopScoringEvents.filter(
             (event) =>
@@ -155,7 +154,7 @@ export async function GET(
           return total + ampMissEvents;
         }, 0) / teamScores.length;
 
-      const pass =
+      const pass:number =
         teamScores.reduce((total, score) => {
           const passEvents = score.teleopScoringEvents.filter(
             (event) =>
@@ -165,7 +164,7 @@ export async function GET(
         }, 0) / teamScores.length;
 
       // Pass Misses calculation
-      const passMisses =
+      const passMisses:number =
         teamScores.reduce((total, score) => {
           const passMissEvents = score.teleopScoringEvents.filter(
             (event) =>
@@ -175,41 +174,43 @@ export async function GET(
         }, 0) / teamScores.length;
 
       // Climb calculation
-      const climb =
+      const climb:number =
         teamScores.filter((score) => score.climbType === ClimbType.CLIMBED)
           .length / teamScores.length;
 
-      const ensemble =
+      const ensemble:number =
         teamScores.reduce(
           (total, score) => total + (score.numberRobotsOnChain || 0),
           0
         ) / teamScores.length;
 
       // Trap calculation
-      const trap =
+      const trap:number =
         teamScores.filter((score) => score.scoredInTrap).length /
         teamScores.length;
 
-      // Incap calculation
-      // const incap =
-      //   teamScores.reduce((total, score) => {
-      //     const totalIncapTime = score.incapSegments.reduce(
-      //       (sum, segment) =>
-      //         sum +
-      //         (Number(segment.timestampEnded) -
-      //           Number(segment.timestampStarted)),
-      //       0
-      //     );
-      //     return total + totalIncapTime;
-      //   }, 0) / teamScores.length;
+      //Incap calculation
+      const incap:number =
+        teamScores.reduce((total, score) => {
+          const totalIncapTime = score.incapSegments.reduce(
+            (sum, segment) =>
+              sum +
+              (Number(segment.timestampEnded) -
+                Number(segment.timestampStarted)),
+            0
+          );
+          return total + totalIncapTime;
+        }, 0) / teamScores.length;
 
       // Defense calculation
-      const defense =
+      const defense:number =
         teamScores.filter((score) => score.playedDefense).length /
         teamScores.length;
 
       return {
-        team: team.number,
+        teamNumber: team.number,
+        teamName: team.name,
+        teamScores: teamScores,
         mobility,
         autoSpeaker,
         autoMisses,
@@ -222,10 +223,13 @@ export async function GET(
         climb,
         ensemble,
         trap,
+        incap,
         defense,
+        total: teamScores.length
       };
     });
-    return NextResponse.json(rankings);
+    
+    return NextResponse.json({ ok: true, rankings: rankings});
   } catch (e) {
     return NextResponse.json({ ok: false });
   }

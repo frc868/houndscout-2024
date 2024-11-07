@@ -27,6 +27,12 @@ export interface Scouter {
   name: string;
 }
 
+export interface Team {
+  id: number;
+  number: number;
+  name: string;
+}
+
 export interface Heartbeat {
   time: number;
   section: string;
@@ -35,6 +41,7 @@ export interface Heartbeat {
 export interface AdminData {
   matches?: Match[];
   scouters?: Scouter[];
+  teams?: Team[];
   matchesStatus: "idle" | "waiting" | "succeeded" | "failed";
   scoutersStatus: "idle" | "waiting" | "succeeded" | "failed";
   teamsStatus: "idle" | "waiting" | "succeeded" | "failed";
@@ -50,11 +57,10 @@ export interface AdminData {
 }
 
 export const getMatchesAsync = createAsyncThunk(
-  "adminData/getActiveTeamNumber",
+  "adminData/getMatches",
   async ({ eventCode }: { eventCode: string }) => {
     const res = await axios.get(`/api/v1/events/${eventCode}/matches`);
-    const data = res.data;
-    return data.matches;
+    return res.data.matches;
   }
 );
 
@@ -114,6 +120,27 @@ export const deleteMatchAsync = createAsyncThunk(
   }
 );
 
+export const deleteTeamAsync = createAsyncThunk(
+  "adminData/deleteTeam",
+  async ({
+    eventCode,
+    teamNumber,
+  }: {
+    eventCode: string;
+    teamNumber: number;
+  }) => {
+    await axios.delete(`/api/v1/events/${eventCode}/teams/${teamNumber}`);
+  }
+);
+
+export const getTeamsAsync = createAsyncThunk(
+  "adminData/getTeamsAsync",
+  async ({ eventCode }: { eventCode: string }) => {
+    const res = await axios.get(`/api/v1/events/${eventCode}/teams`);
+    return res.data.teams;
+  }
+);
+
 export const getScoutersAsync = createAsyncThunk(
   "adminData/getScoutersAsync",
   async () => {
@@ -121,6 +148,14 @@ export const getScoutersAsync = createAsyncThunk(
     return res.data.scouters;
   }
 );
+
+export const deleteScouterAsync = createAsyncThunk(
+  "adminData/deleteScouterAsync",
+  async ({ scouterId }: { scouterId: number }) => {
+    await axios.delete(`/api/v1/scouters/${scouterId}`);
+  }
+);
+
 
 export const getHeartbeatsAsync = createAsyncThunk(
   "adminData/getHeartbeats",
@@ -157,6 +192,7 @@ const initialState: AdminData = {
   matchesStatus: "idle",
   scouters: undefined,
   scoutersStatus: "idle",
+  teams: undefined,
   teamsStatus: "idle",
   error: undefined,
   heartbeats: {
@@ -246,6 +282,24 @@ export const mainData = createSlice({
       })
       .addCase(getScoutersAsync.rejected, (state, action) => {
         state.scoutersStatus = "failed";
+        state.error = action.error.message || "";
+      });
+    builder
+      .addCase(getTeamsAsync.pending, (state) => {
+        state.teamsStatus = "waiting";
+      })
+      .addCase(getTeamsAsync.fulfilled, (state, action) => {
+        if (action.payload !== null) {
+          state.teams = action.payload;
+          state.teams?.sort((a, b) => a.id - b.id);
+
+          state.teamsStatus = "succeeded";
+        } else {
+          state.teamsStatus = "idle";
+        }
+      })
+      .addCase(getTeamsAsync.rejected, (state, action) => {
+        state.teamsStatus = "failed";
         state.error = action.error.message || "";
       });
     builder.addCase(getHeartbeatsAsync.fulfilled, (state, action) => {

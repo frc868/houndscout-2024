@@ -2,7 +2,8 @@
 import { Event } from "@prisma/client";
 import React, { useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
-import EventConfigureModal from "./EventConfigureModal";
+import EventEditModal from "./EventEditModal";
+import NewEventModal from "./NewEventModal";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import { Match, Scouter, createMatchAsync } from "@/redux/adminDataSlice";
@@ -13,14 +14,20 @@ interface Props {
 export default function EventDetails({ event }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const mainData = useSelector((state: ReduxState) => state.mainData);
-  const [showEventConfigure, setShowEventConfigure] = useState(false);
+  const [showEventEdit, setShowEventEdit] = useState(false);
 
   return (
     <div className="d-flex flex-column align-items-center">
-      <EventConfigureModal
-        show={showEventConfigure}
-        handleClose={() => setShowEventConfigure(false)}
-        handleSubmit={() => setShowEventConfigure(false)
+      <EventEditModal
+        show={showEventEdit}
+        intName={event.name as string}
+        intCode={event.code as string}
+        intWeek={event.weekNumber?.toString() as string}
+        intStart={event.startDate?.toISOString() as string}
+        intEnd={event.endDate?.toISOString() as string}
+        intAddress={event.address as string}
+        handleClose={() => setShowEventEdit(false)}
+        handleSubmit={() => setShowEventEdit(false)
           // async (payload) => {
           // await dispatch(
           //   createMatchAsync({
@@ -28,10 +35,10 @@ export default function EventDetails({ event }: Props) {
           //     ...payload,
           //   })
           // );
-          // setShowEventConfigure(false);
+          // setShowEventEdit(false);
         // }
         }
-      ></EventConfigureModal>
+      ></EventEditModal>
       <h1 className="text-center mb-3">Event</h1>
       <Card className="mb-4">
         <Row className="g-0">
@@ -53,10 +60,22 @@ export default function EventDetails({ event }: Props) {
           </Col>
           <Card.Footer>
             <Button
-            className="edit-button"
-            onClick={() => setShowEventConfigure(true)}
+            className="edit-button mx-1"
+            onClick={() => setShowEventEdit(true)}
             >
-              Configure
+              Edit Event
+            </Button>
+            <Button
+            className="edit-button mx-3"
+            onClick={() => setShowEventEdit(true)}
+            >
+              New Event
+            </Button>
+            <Button
+            className="edit-button mx-1"
+            onClick={() => setShowEventEdit(true)}
+            >
+              Manage Events
             </Button>
           </Card.Footer>
         </Row>
