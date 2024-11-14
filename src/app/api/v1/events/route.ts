@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+//mainDataSlice/getEventsAsync
 export async function GET(req: Request) {
   let events;
   try {
@@ -9,10 +10,11 @@ export async function GET(req: Request) {
     console.error(e);
     return NextResponse.json({ ok: false });
   }
-
+  
   return NextResponse.json({ ok: true, events });
 }
 
+//adminDataSlice/createEventAsync
 export async function POST(req: Request) {
   const data = await req.json();
 
@@ -20,15 +22,17 @@ export async function POST(req: Request) {
   try {
     event = await prisma.event.create({
       data: {
+        name: data.name,
         code: data.code,
-        weekNumber: Number(data.weekNumber),
-        startDate: new Date(data.startDate),
+        weekNumber: data.week,
+        startDate: new Date(data.start),//Is this right?
+        endDate: new Date(data.end),
+        address: data.address
       },
     });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ ok: false });
   }
-
   return NextResponse.json({ ok: true, event });
 }

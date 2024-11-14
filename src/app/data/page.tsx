@@ -60,7 +60,7 @@ export default function Data() {
       {!ready && (
         <>
           <div className="vh-30 d-flex justify-content-center mt-5">
-            <h1>Note: Work in Progress...</h1>
+            <h1>Loading...</h1>
           </div>
           <div className="vh-3 d-flex justify-content-center mt-5">
             <h5>If you haven't done so already, please go to Prisma Studio and do the following:</h5>

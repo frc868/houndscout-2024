@@ -7,6 +7,7 @@ import DeleteButton from "./DeleteButton";
 import MatchAddModal from "./MatchAddModal";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
+import { Event } from "@prisma/client"
 
 interface Props {
   matches: Match[];

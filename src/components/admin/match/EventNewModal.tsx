@@ -105,7 +105,7 @@ export default function NewEventModal({
       </Modal.Body>
 
       <Modal.Footer>
-        <p>Note: Non-functional, use patch in api/v1/events/[code]</p>
+        <p>Note: Non-functional, use patch in api/v1/events</p>
         <Button variant="secondary" className="bg-danger" onClick={handleClose}>
           Discard Changes
         </Button>

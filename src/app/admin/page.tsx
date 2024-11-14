@@ -13,6 +13,9 @@ import {
   Scouter,
   Team,
   deleteMatchAsync,
+  getEventsAsync,
+  editEventAsync,
+  deleteEventAsync,
   getHeartbeatsAsync,
   getMatchesAsync,
   getScoutersAsync,
@@ -37,6 +40,7 @@ export default function Admin() {
       await dispatch(getActiveEventAsync());
       await dispatch(getActiveMatchAsync());
       await dispatch(getScoutersAsync());
+      await dispatch(getEventsAsync());
       await dispatch(getHeartbeatsAsync());
 
       mainData.activeEvent?.code &&
@@ -94,6 +98,7 @@ export default function Admin() {
             <Col md={4}>
               <EventDetails
                 event={mainData.activeEvent as Event}
+                eventList={adminData?.eventList as Event[]}
               />
             </Col>
             <Col md={3}>

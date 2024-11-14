@@ -49,10 +49,10 @@ export default function Database({
             {teamScores.map((score:TeamScore) => (
               <tr key={score.id}>
                 <td className="px-2">
-                  <p>{score.preloaded}</p>
+                  <p>{score.preloaded?"Yes":"No"}</p>
                 </td>
                 <td className="px-2">
-                  <p>{score.leftStartingZone}<br />Zone {score.autoStartingZone}</p>
+                  <p>{score.leftStartingZone?"Left":"Didn't Leave"} Starting Zone:<br />{score.autoStartingZone}</p>
                 </td>
                 <td className="px-2">
                   <p>{score.autoGamePieces}</p>
@@ -69,10 +69,13 @@ export default function Database({
                   {/* <p>{score.climbType} at {score.timestampClimbStarted} with {score.numberRobotsOnChain}<br />Scored in Trap: {score.scoredInTrap}<br />Spotlit: {score.scoredInTrap}</p> */}
                 </td>
                 <td className="px-2">
-                  <p>{score.playedDefense}</p>
+                  <p>{score.driverSkillRating?.toString()}</p>
                 </td>
                 <td className="px-2">
-                  <p>{score.underDefense}</p>
+                  <p>{score.playedDefense?.toString()}</p>
+                </td>
+                <td className="px-2">
+                  <p>{score.underDefense?.toString()}</p>
                 </td>
                 <td
                   className={"px-2"}

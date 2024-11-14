@@ -38,6 +38,7 @@ export const getStationData = createAsyncThunk(
     };
   }
 );
+
 export const getActiveEventAsync = createAsyncThunk(
   "mainData/getActiveEvent",
   async () => {

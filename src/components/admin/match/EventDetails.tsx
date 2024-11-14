@@ -3,18 +3,22 @@ import { Event } from "@prisma/client";
 import React, { useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import EventEditModal from "./EventEditModal";
-import NewEventModal from "./NewEventModal";
+import NewEventModal from "./EventNewModal";
+import EventManageModal from "./EventManageModal";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
-import { Match, Scouter, createMatchAsync } from "@/redux/adminDataSlice";
+import { Match, Scouter, createEventAsync, editEventAsync, deleteEventAsync } from "@/redux/adminDataSlice";
 interface Props {
   event: Event;
+  eventList: Event[];
 }
 
-export default function EventDetails({ event }: Props) {
+export default function EventDetails({ event, eventList }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const mainData = useSelector((state: ReduxState) => state.mainData);
   const [showEventEdit, setShowEventEdit] = useState(false);
+  const [showEventNew, setShowEventNew] = useState(false);
+  const [showEventManage, setShowEventManage] = useState(false);
 
   return (
     <div className="d-flex flex-column align-items-center">
@@ -28,6 +32,41 @@ export default function EventDetails({ event }: Props) {
         intAddress={event.address as string}
         handleClose={() => setShowEventEdit(false)}
         handleSubmit={() => setShowEventEdit(false)
+          // async (code, payload) => {
+          // await dispatch(
+          //   editEventAsync({
+          //     eventCode: code,
+          //     ...payload,
+          //   })
+          // );
+          // setShowEventEdit(false);
+        // }
+        }
+      ></EventEditModal>
+      <NewEventModal
+        show={showEventNew}
+        handleClose={() => setShowEventNew(false)}
+        handleSubmit={
+          async (payload) => {
+          await dispatch(
+            createEventAsync({
+              ...payload,
+            })
+          );
+          setShowEventNew(false);
+        }
+        }
+      ></NewEventModal>
+      <EventManageModal
+        show={showEventManage}
+        eventList={eventList as Event[]}
+        handleClose={() => setShowEventManage(false)}
+        handleDelete={async (code) =>
+          await dispatch(
+            deleteEventAsync({ eventCode: code })
+          )
+        }
+        handleSubmit={() => setShowEventManage(false)
           // async (payload) => {
           // await dispatch(
           //   createMatchAsync({
@@ -38,14 +77,14 @@ export default function EventDetails({ event }: Props) {
           // setShowEventEdit(false);
         // }
         }
-      ></EventEditModal>
+      ></EventManageModal>
       <h1 className="text-center mb-3">Event</h1>
       <Card className="mb-4">
         <Row className="g-0">
           <Col>
             <Card.Body>
               <Card.Title as="h4" className="mb-2">
-                {event.name}
+                {event.name} 
               </Card.Title>
               <Card.Subtitle>
                 <div className="mt-3 mb-3 font-monospace">{event.code}</div>
@@ -67,13 +106,13 @@ export default function EventDetails({ event }: Props) {
             </Button>
             <Button
             className="edit-button mx-3"
-            onClick={() => setShowEventEdit(true)}
+            onClick={() => setShowEventNew(true)}
             >
               New Event
             </Button>
             <Button
             className="edit-button mx-1"
-            onClick={() => setShowEventEdit(true)}
+            onClick={() => setShowEventManage(true)}
             >
               Manage Events
             </Button>

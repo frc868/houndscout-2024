@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { Event } from "@prisma/client"
 
 export interface Match {
   name: string;
@@ -42,9 +43,11 @@ export interface AdminData {
   matches?: Match[];
   scouters?: Scouter[];
   teams?: Team[];
+  eventList?: Event[];
   matchesStatus: "idle" | "waiting" | "succeeded" | "failed";
   scoutersStatus: "idle" | "waiting" | "succeeded" | "failed";
   teamsStatus: "idle" | "waiting" | "succeeded" | "failed";
+  eventListStatus: "idle" | "waiting" | "succeeded" | "failed";
   error?: string;
   heartbeats: {
     red1: Heartbeat;
@@ -55,6 +58,54 @@ export interface AdminData {
     blue3: Heartbeat;
   };
 }
+
+export const getEventsAsync = createAsyncThunk(
+  "adminData/getEvents",
+  async () => {
+    const res = await axios.get(`/api/v1/events`);
+    return res.data.events;
+  }
+);
+
+export const createEventAsync = createAsyncThunk(
+  "adminData/createEvent",
+  async (data: {
+    name: string,
+    code: string,
+    week: number,
+    start: string,
+    end: string,
+    address: string
+  }) => {
+    await axios.post(`/api/v1/events`, {
+      ...data,
+    });
+  }
+);
+
+export const editEventAsync = createAsyncThunk(
+  "adminData/editEvent",
+  async ({eventCode, ...data}: {
+    name: string,
+    newCode: string,
+    week: number,
+    start: string,
+    end: string,
+    address: string,
+    eventCode: string
+  }) => {
+    await axios.patch(`/api/v1/events/${eventCode}`, {
+      ...data,
+    });
+  }
+);
+
+export const deleteEventAsync = createAsyncThunk(
+  "adminData/deleteEvent",
+  async ({ eventCode }: { eventCode: string }) => {
+    await axios.delete(`/api/v1/events/${eventCode}`, {});
+  }
+);
 
 export const getMatchesAsync = createAsyncThunk(
   "adminData/getMatches",
@@ -194,6 +245,8 @@ const initialState: AdminData = {
   scoutersStatus: "idle",
   teams: undefined,
   teamsStatus: "idle",
+  eventList: undefined,
+  eventListStatus: "idle",
   error: undefined,
   heartbeats: {
     red1: { time: Date.now(), section: "" },
@@ -300,6 +353,23 @@ export const mainData = createSlice({
       })
       .addCase(getTeamsAsync.rejected, (state, action) => {
         state.teamsStatus = "failed";
+        state.error = action.error.message || "";
+      });
+      builder
+      .addCase(getEventsAsync.pending, (state) => {
+        state.eventListStatus = "waiting";
+      })
+      .addCase(getEventsAsync.fulfilled, (state, action) => {
+        if (action.payload !== null) {
+          state.eventList = action.payload;
+          console.log(state.eventList);
+          state.eventListStatus = "succeeded";
+        } else {
+          state.eventListStatus = "idle";
+        }
+      })
+      .addCase(getEventsAsync.rejected, (state, action) => {
+        state.eventListStatus = "failed";
         state.error = action.error.message || "";
       });
     builder.addCase(getHeartbeatsAsync.fulfilled, (state, action) => {
