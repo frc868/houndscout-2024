@@ -63,6 +63,7 @@ export default function SignInModal({
             <Form.Control
               placeholder="e.g. 1"
               value={number}
+              type="number"
               onChange={(e) => setNumber(e.target.value)}
             />
           </Form.Group>

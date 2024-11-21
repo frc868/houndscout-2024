@@ -3,50 +3,57 @@ import { Button, Modal, ListGroup } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
 import { Event } from "@prisma/client";
 import DeleteButton from "./DeleteButton";
+import { Scouter } from "@/redux/adminDataSlice";
+import NewScouterForm from "./NewScouterForm";
 
 interface Props {
   show: boolean;
-  eventList: Event[];
+  scouters: Scouter[];
   handleClose: () => void;
-  handleDelete: (code: string) => void;
-  handleSubmit: ({
-    name,
-    code,
-    week,
-    start,
-    end,
-    address,
-  }: {
-    name: string;
-    code: string;
-    week: number;
-    start: string;
-    end: string;
-    address: string;
-  }) => void;
+  handleDelete: (id: number) => void;
 }
 
 export default function ScouterManageModal({
   show,
-  eventList,
+  scouters,
   handleClose,
   handleDelete,
-  handleSubmit,
 }: Props) {
+  const [showScouterNew, setShowScouterNew] = useState(false);
 
   return (
     <Modal centered show={show} size="lg" onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Manage Events</Modal.Title>
+        <Modal.Title>Manage Scouters</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <Button
+        className="edit-button mx-3 mb-3"
+        onClick={() => setShowScouterNew(!showScouterNew)}
+        >
+          {showScouterNew?"Hide":"Show"} New Scouter Form
+        </Button>
+        {showScouterNew&&(
+          <NewScouterForm
+            handleSubmit={()=>{
+              // async (payload) => {
+              //   await dispatch(
+              //     createScouterAsync({
+              //       ...payload,
+              //     })
+              //   );
+              //   setShowEventNew(false);
+              }
+            }
+          ></NewScouterForm>
+        )}
         <ListGroup>
-          {eventList.map((event: Event)=>(
+          {scouters.map((scouter: Scouter)=>(
             <ListGroup.Item>
-              Week {event.weekNumber}: {event.name} ({event.code})
+              {scouter.name}
               <DeleteButton
                 variant={"danger"}
-                handleDelete={() => handleDelete(event.code)}
+                handleDelete={() => handleDelete(scouter.id)}
               />  
             </ListGroup.Item>
           ))}
@@ -54,10 +61,8 @@ export default function ScouterManageModal({
       </Modal.Body>
 
       <Modal.Footer>
-        <p>Note: Non-functional, use patch in api/v1/events/[code]</p>
-        <Button variant="secondary" className="bg-danger" onClick={handleClose}>
-          Discard Changes
-        </Button>
+        <p>Note: Non-functional</p>
+        
       </Modal.Footer>
     </Modal>
   );

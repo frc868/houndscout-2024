@@ -153,7 +153,18 @@ export default function MatchSchedule({
                     match.name === activeMatchName && "table-secondary"
                   }`}
                 >
-                  <Button className="bg-primary" size="sm">Select</Button>
+                  <Button
+                  variant={
+                    match.name === activeMatchName
+                      ? "primary"
+                      : "outline-primary"
+                  }
+                  className={"mb-1 mx-2"}
+                  size="sm"
+                  onClick={() => handleMatchSelect(match.name)}
+                  >
+                    {match.name === activeMatchName?"Current Active":"Set As Active"}
+                  </Button>
                   <DeleteButton
                     variant={
                       match.name === activeMatchName

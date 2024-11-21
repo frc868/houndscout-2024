@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import {
@@ -14,14 +14,14 @@ import {
   Team,
   deleteMatchAsync,
   getEventsAsync,
-  editEventAsync,
-  deleteEventAsync,
   getHeartbeatsAsync,
   getMatchesAsync,
   getScoutersAsync,
   getTeamsAsync,
   setActiveMatchAsync,
   setMatchScouterAsync,
+  setActiveEventAsync,
+  deleteEventAsync
 } from "@/redux/adminDataSlice";
 import MatchSchedule from "@/components/admin/match/MatchSchedule";
 import { Button, Col, Container, Row } from "react-bootstrap";
@@ -29,6 +29,7 @@ import Activity from "@/components/admin/match/Activity";
 import Controls from "@/components/admin/match/MatchControls";
 import { Event } from "@prisma/client";
 import EventDetails from "@/components/admin/match/EventDetails";
+import EventManageModal from "@/components/admin/match/EventManageModal";
 
 export default function Admin() {
   const mainData = useSelector((state: ReduxState) => state.mainData);
@@ -61,6 +62,8 @@ export default function Admin() {
     (match) => match.name === mainData.activeMatchName
   )[0];
 
+  const [showEventManage, setShowEventManage] = useState(false);
+
   return (
     <>
       <AdminStatusBar
@@ -88,6 +91,22 @@ export default function Admin() {
 
       {ready && (
         <Container>
+          <EventManageModal
+            show={showEventManage}
+            eventList={adminData?.eventList as Event[]}
+            activeEvent={mainData.activeEvent?.code as string}
+            handleClose={() => setShowEventManage(false)}
+            handleDelete={async (code) =>
+              await dispatch(
+                deleteEventAsync({ eventCode: code })
+              )
+            }
+            handleSelect={async (code) =>
+              await dispatch(
+                setActiveEventAsync({ eventCode: code })
+              )
+            }
+          ></EventManageModal>
           <Row className="my-4">
             <Col md={5}>
               <Activity
@@ -98,11 +117,21 @@ export default function Admin() {
             <Col md={4}>
               <EventDetails
                 event={mainData.activeEvent as Event}
-                eventList={adminData?.eventList as Event[]}
               />
+              <Button
+              variant="secondary"
+              className="edit-button mx-auto"
+              onClick={() => setShowEventManage(true)}
+              >
+                Manage Events
+              </Button>
             </Col>
             <Col md={3}>
-              <Controls eventCode={mainData.activeEvent?.code as string} />
+              <Controls
+                eventCode={mainData.activeEvent?.code as string}
+                scouters={adminData.scouters as Scouter[]}
+                teams={adminData.teams as Team[]}
+              />
             </Col>
           </Row>
           <Row>

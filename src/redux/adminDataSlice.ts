@@ -106,6 +106,18 @@ export const deleteEventAsync = createAsyncThunk(
     await axios.delete(`/api/v1/events/${eventCode}`, {});
   }
 );
+export const setActiveEventAsync = createAsyncThunk(
+  "adminData/setActiveEvent",
+  async ({
+    eventCode,
+  }: {
+    eventCode: string;
+  }) => {
+    await axios.post(`/api/v1/server/event`, {
+      code: eventCode,
+    });
+  }
+);
 
 export const getMatchesAsync = createAsyncThunk(
   "adminData/getMatches",

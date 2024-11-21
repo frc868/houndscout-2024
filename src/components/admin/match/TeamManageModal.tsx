@@ -3,60 +3,87 @@ import { Button, Modal, ListGroup } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
 import { Event } from "@prisma/client";
 import DeleteButton from "./DeleteButton";
+import { Team } from "@/redux/adminDataSlice";
+import NewTeamForm from "./NewTeamForm";
 
 interface Props {
   show: boolean;
-  eventList: Event[];
+  teams: Team[];
   handleClose: () => void;
-  handleDelete: (code: string) => void;
-  handleSubmit: ({
-    name,
-    code,
-    week,
-    start,
-    end,
-    address,
-  }: {
-    name: string;
-    code: string;
-    week: number;
-    start: string;
-    end: string;
-    address: string;
-  }) => void;
+  handleDelete: (number: number) => void;
+  handleSelect: (number: number) => void;
 }
 
 export default function TeamManageModal({
   show,
-  eventList,
+  teams,
   handleClose,
   handleDelete,
-  handleSubmit,
+  handleSelect
 }: Props) {
-
+  const [showTeamNew, setShowTeamNew] = useState(false);
   return (
     <Modal centered show={show} size="lg" onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Manage Events</Modal.Title>
+        <Modal.Title>Manage Teams</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        <Button
+        className="edit-button mx-3 mb-3"
+        onClick={() => setShowTeamNew(!showTeamNew)}
+        >
+          {showTeamNew?"Hide":"Show"} New Team Form
+        </Button>
+        {showTeamNew&&(
+          <NewTeamForm
+            handleSubmit={()=>{
+              // async (payload) => {
+              //   await dispatch(
+              //     createTeamAsync({
+              //       ...payload,
+              //     })
+              //   );
+              //   setShowEventNew(false);
+              }
+            }
+          ></NewTeamForm>
+        )}
         <ListGroup>
-          {eventList.map((event: Event)=>(
+          {teams.map((team: Team)=>(
             <ListGroup.Item>
-              Week {event.weekNumber}: {event.name} ({event.code})
+              Team {team.number}: {team.name}
+              <Button
+                className="mx-2"
+                size="sm"
+                variant={
+                  true
+                    ? "primary"
+                    : "outline-primary"
+                }
+                onClick={()=>handleSelect(team.number)}
+              >
+                Select
+              </Button>
               <DeleteButton
-                variant={"danger"}
-                handleDelete={() => handleDelete(event.code)}
-              />  
+                variant={
+                  true
+                    ? "danger"
+                    : "outline-danger"
+                }
+                handleDelete={() => handleDelete(team.number)}
+              /> 
             </ListGroup.Item>
           ))}
         </ListGroup>
       </Modal.Body>
 
       <Modal.Footer>
-        <p>Note: Non-functional, use patch in api/v1/events/[code]</p>
-        <Button variant="secondary" className="bg-danger" onClick={handleClose}>
-          Discard Changes
+        <p>Note: Non-functional</p>
+        <Button
+        className="edit-button mx-3"
+        onClick={() => setShowTeamNew(true)}
+        >
+          New Team
         </Button>
       </Modal.Footer>
     </Modal>

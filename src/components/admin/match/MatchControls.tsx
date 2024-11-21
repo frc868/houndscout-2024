@@ -1,40 +1,48 @@
 /* eslint-disable react/display-name */
 import React, { useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
-import TBADataModal from "../data/TBADataModal";
-import { uploadTBADataAsync } from "@/redux/adminDataSlice";
+import { Scouter, Team } from "@/redux/adminDataSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
+import TeamManageModal from "@/components/admin/match/TeamManageModal";
+import ScouterManageModal from "@/components/admin/match/ScouterManageModal";
 
 interface Props {
   eventCode: string;
+  scouters: Scouter[];
+  teams: Team[];
 }
 
-export default function Controls({ eventCode }: Props) {
+export default function Controls({ eventCode, scouters, teams }: Props) {
   const dispatch = useDispatch<AppDispatch>();
-  const [showTBADataModal, setShowTBADataModal] = useState(false);
+  const [showTeamManage, setShowTeamManage] = useState(false);
+  const [showScouterManage, setShowScouterManage] = useState(false);
 
   return (
     <div className="d-flex flex-column align-items-center">
-      <TBADataModal
-        show={showTBADataModal}
-        handleClose={() => setShowTBADataModal(false)}
-        handleSubmit={async (payload) => {
-          await dispatch(uploadTBADataAsync({ ...payload, eventCode }));
-          setShowTBADataModal(false);
-        }}
-      ></TBADataModal>
+      <TeamManageModal
+        show={showTeamManage}
+        teams={teams as Team[]}
+        handleClose={() => setShowTeamManage(false)}
+        handleDelete={()=>{}}
+        handleSelect={()=>{}}
+      ></TeamManageModal>
+      <ScouterManageModal
+        show={showScouterManage}
+        scouters={scouters as Scouter[]}
+        handleClose={() => setShowScouterManage(false)}
+        handleDelete={()=>{}}
+      ></ScouterManageModal>
       <h1 className="text-center mb-3">Controls</h1>
-
       <Button size="lg" disabled className="d-flex mx-auto mb-3">
         Start Match Timer
       </Button>
       <Row className="">
         <Col>
-          <Button variant="secondary" disabled className="mb-2 mx-1">
+          <Button variant="secondary" onClick={() => setShowScouterManage(true)} className="mb-2 mx-1">
             Edit Scouters
           </Button>
-          <Button variant="secondary" disabled className="mb-2 mx-1">
+          <Button variant="secondary" onClick={() => setShowTeamManage(true)} className="mb-2 mx-1">
             Edit Teams
           </Button>
         </Col>

@@ -3,8 +3,6 @@ import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
 
 interface Props {
-  show: boolean;
-  handleClose: () => void;
   handleSubmit: ({
     name,
     code,
@@ -22,9 +20,7 @@ interface Props {
   }) => void;
 }
 
-export default function NewEventModal({
-  show,
-  handleClose,
+export default function NewEventForm({
   handleSubmit,
 }: Props) {
   const [name, setName] = useState("");
@@ -35,11 +31,9 @@ export default function NewEventModal({
   const [address, setAddress] = useState("");
 
   return (
-    <Modal centered show={show} size="lg" onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>New Event</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
+    <div>
+      <hr />
+      <Row>
         <Form>
           <Form.Group className="mb-1">
             <Form.Label>Event Name</Form.Label>
@@ -102,13 +96,8 @@ export default function NewEventModal({
             />
           </Form.Group>
         </Form>
-      </Modal.Body>
-
-      <Modal.Footer>
-        <p>Note: Non-functional, use patch in api/v1/events</p>
-        <Button variant="secondary" className="bg-danger" onClick={handleClose}>
-          Discard Changes
-        </Button>
+      </Row>
+      <Row>
         <Button
           variant="primary"
           onClick={() =>
@@ -122,9 +111,10 @@ export default function NewEventModal({
             })
           }
         >
-          Save changes
+          Add Event
         </Button>
-      </Modal.Footer>
-    </Modal>
+      </Row>
+      <hr />
+    </div>
   );
 }

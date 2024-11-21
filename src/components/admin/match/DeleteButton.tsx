@@ -21,7 +21,7 @@ export default function DeleteButton({ variant, handleDelete }: Props) {
   return (
     <Button
       size="sm"
-      className="mt-1"
+      className="mx-2"
       variant={variant}
       onClick={deleteConfirm ? handleDelete : () => setDeleteConfirm(true)}
     >
