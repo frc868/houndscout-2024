@@ -42,7 +42,6 @@ export default function Database({
               <th>Driver Skill Rating</th>
               <th>Played Defense?</th>
               <th>Under Heavy Defense?</th>
-              <th>Comments</th>
             </tr>
           </thead>
           <tbody className="align-middle text-center">
@@ -55,9 +54,9 @@ export default function Database({
                   <p>{score.leftStartingZone?"Left":"Didn't Leave"} Starting Zone:<br />{score.autoStartingZone}</p>
                 </td>
                 <td className="px-2">
-                  <p>{score.autoGamePieces}</p>
-                  <p>{score.missingAutoGamePieces}</p>
-                  <p>{score.autoGamePiecesScored}</p>
+                  <p>Pieces Attempted: {score.autoGamePieces}</p>
+                  <p>Missing Pieces: {score.missingAutoGamePieces}</p>
+                  <p>Pieces Scored: {score.autoGamePiecesScored}</p>
                 </td>
                 <td className="px-2">
                   {/* <p>{score.teleopScoringEvents}</p> */}
@@ -72,15 +71,10 @@ export default function Database({
                   <p>{score.driverSkillRating?.toString()}</p>
                 </td>
                 <td className="px-2">
-                  <p>{score.playedDefense?.toString()}</p>
+                  <p>{score.playedDefense?"Yes":"No"}</p>
                 </td>
                 <td className="px-2">
-                  <p>{score.underDefense?.toString()}</p>
-                </td>
-                <td
-                  className={"px-2"}
-                >
-                  <p>{score.comments}</p>
+                  <p>{score.underDefense?"Yes":"No"}</p>
                 </td>
               </tr>
             ))

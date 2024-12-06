@@ -47,8 +47,8 @@ export default function Client({ station }: Props) {
   }, [mainData.activeMatchName]);
 
   const ready = mainData.scouter.name
-    // && mainData.activeTeamNumber &&
-    // mainData.activeMatchName;
+    && mainData.activeTeamNumber &&
+    mainData.activeMatchName;
 
   return (
     <>

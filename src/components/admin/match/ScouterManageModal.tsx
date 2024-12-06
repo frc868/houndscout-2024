@@ -1,30 +1,39 @@
 import { useState, useEffect } from "react";
 import { Button, Modal, ListGroup } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
-import { Event } from "@prisma/client";
 import DeleteButton from "./DeleteButton";
 import { Scouter } from "@/redux/adminDataSlice";
+import { createScouterAsync, deleteScouterAsync } from "@/redux/mainDataSlice";
 import NewScouterForm from "./NewScouterForm";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
 
 interface Props {
   show: boolean;
   scouters: Scouter[];
   handleClose: () => void;
-  handleDelete: (id: number) => void;
 }
 
 export default function ScouterManageModal({
   show,
   scouters,
-  handleClose,
-  handleDelete,
+  handleClose
 }: Props) {
+  const dispatch = useDispatch<AppDispatch>();
   const [showScouterNew, setShowScouterNew] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   return (
     <Modal centered show={show} size="lg" onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>Manage Scouters</Modal.Title>
+        <MoonLoader
+          className="mx-2"
+          color={"black"}
+          loading={loading}
+          size={25}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
       </Modal.Header>
       <Modal.Body>
         <Button
@@ -35,14 +44,16 @@ export default function ScouterManageModal({
         </Button>
         {showScouterNew&&(
           <NewScouterForm
-            handleSubmit={()=>{
-              // async (payload) => {
-              //   await dispatch(
-              //     createScouterAsync({
-              //       ...payload,
-              //     })
-              //   );
-              //   setShowEventNew(false);
+            handleSubmit={
+              async (payload) => {
+                setLoading(true);
+                await dispatch(
+                  createScouterAsync({
+                    ...payload,
+                  })
+                );
+                setLoading(false);
+                setShowScouterNew(false);
               }
             }
           ></NewScouterForm>
@@ -53,7 +64,13 @@ export default function ScouterManageModal({
               {scouter.name}
               <DeleteButton
                 variant={"danger"}
-                handleDelete={() => handleDelete(scouter.id)}
+                handleDelete={async () => {
+                  setLoading(true);
+                  await dispatch(
+                    deleteScouterAsync({ id: scouter.id })
+                  );
+                  setLoading(false);
+                }}
               />  
             </ListGroup.Item>
           ))}
@@ -61,8 +78,7 @@ export default function ScouterManageModal({
       </Modal.Body>
 
       <Modal.Footer>
-        <p>Note: Non-functional</p>
-        
+        <p>Note: WIP</p>
       </Modal.Footer>
     </Modal>
   );

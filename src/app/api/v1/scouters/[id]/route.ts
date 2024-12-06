@@ -41,6 +41,7 @@ export async function PATCH(
   return NextResponse.json({ scouter, ok: true });
 }
 
+//mainDataSlice/deleteScouterAsync
 export async function DELETE(
   req: Request,
   { params }: { params: { id: string } }

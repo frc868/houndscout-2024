@@ -45,6 +45,7 @@ export async function PATCH(
   return NextResponse.json({ team, ok: true });
 }
 
+//adminDataSlice/deleteTeamAsync
 export async function DELETE(
   req: Request,
   { params }: { params: { number: string } }

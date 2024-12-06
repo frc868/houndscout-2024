@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Col, Form, Modal, Row } from "react-bootstrap";
+import { Button, Form, Row } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
 
 interface Props {

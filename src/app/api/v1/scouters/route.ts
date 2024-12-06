@@ -14,6 +14,7 @@ export async function GET(req: Request) {
   return NextResponse.json({ ok: true, scouters });
 }
 
+//mainDataSlice/createScouterAsync
 export async function POST(req: Request) {
   const data = await req.json();
 

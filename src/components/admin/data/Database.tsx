@@ -10,14 +10,10 @@ import { Ranking } from "@/lib/enums";
 import DataTeamModal from "./DataTeamModal";
 interface Props {
   rankings: Ranking[];
-  handleMatchSelect: (name: string) => void;
-  handleMatchDelete: (name: string) => void;
 }
 
 export default function Database({
-  rankings,
-  handleMatchSelect,
-  handleMatchDelete,
+  rankings
 }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const [showTeam, setShowTeam] = useState(false);

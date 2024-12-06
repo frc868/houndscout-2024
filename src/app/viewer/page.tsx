@@ -13,6 +13,7 @@ import RankingsContent from "@/components/viewer/content/RankingsContent";
 import { getRankingsAsync } from "@/redux/viewerDataSlice";
 
 export default function Viewer() {
+  const mainData = useSelector((state: ReduxState) => state.mainData);
   const viewerData = useSelector((state: ReduxState) => state.viewerData);
   const dispatch = useDispatch<AppDispatch>();
   const [tab, setTab] = useState<ViewerTab>(ViewerTab.HOME);
@@ -20,7 +21,9 @@ export default function Viewer() {
   useEffect(() => {
     async function update() {
       await dispatch(getActiveEventAsync());
-      await dispatch(getRankingsAsync());
+      mainData.activeEvent?.code && (
+        await dispatch(getRankingsAsync({ eventCode: mainData.activeEvent?.code }))  
+      );
     }
     update();
   }, [dispatch]);

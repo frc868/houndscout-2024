@@ -100,6 +100,21 @@ export const sendHeartbeatAsync = createAsyncThunk(
     await axios.post(`/api/v1/heartbeat/${station.toLowerCase()}`, { section });
   }
 );
+export const deleteScouterAsync = createAsyncThunk(
+  "mainData/deleteScouter",
+  async ({ id }: { id: number }) => {
+    await axios.delete(`/api/v1/scouters/${id}`, {});
+  }
+);
+
+export const createScouterAsync = createAsyncThunk(
+  "mainData/createScouter",
+  async (data: {name: string}) => {
+    await axios.post(`/api/v1/scouters`, {
+      ...data,
+    });
+  }
+);
 
 const initialState: MainData = {
   station: undefined,

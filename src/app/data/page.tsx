@@ -81,22 +81,6 @@ export default function Data() {
             <Col md={8}>
               <Database
                 rankings={viewerData.rankings as Ranking[]}
-                handleMatchSelect={async (name) =>
-                  await dispatch(
-                    setActiveMatchAsync({
-                      eventCode: mainData.activeEvent?.code as string,
-                      matchName: name,
-                    })
-                  )
-                }
-                handleMatchDelete={async (name) =>
-                  await dispatch(
-                    deleteMatchAsync({
-                      eventCode: mainData.activeEvent?.code as string,
-                      matchName: name,
-                    })
-                  )
-                }
               />
             </Col>
             <Col md={3}>

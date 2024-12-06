@@ -1,19 +1,19 @@
 /* eslint-disable react/display-name */
 import React, { useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
-import { Scouter, Team } from "@/redux/adminDataSlice";
+import { Scouter, Team, deleteTeamAsync } from "@/redux/adminDataSlice";
+import { deleteScouterAsync } from "@/redux/mainDataSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import TeamManageModal from "@/components/admin/match/TeamManageModal";
 import ScouterManageModal from "@/components/admin/match/ScouterManageModal";
 
 interface Props {
-  eventCode: string;
   scouters: Scouter[];
   teams: Team[];
 }
 
-export default function Controls({ eventCode, scouters, teams }: Props) {
+export default function Controls({ scouters, teams }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const [showTeamManage, setShowTeamManage] = useState(false);
   const [showScouterManage, setShowScouterManage] = useState(false);
@@ -24,14 +24,11 @@ export default function Controls({ eventCode, scouters, teams }: Props) {
         show={showTeamManage}
         teams={teams as Team[]}
         handleClose={() => setShowTeamManage(false)}
-        handleDelete={()=>{}}
-        handleSelect={()=>{}}
       ></TeamManageModal>
       <ScouterManageModal
         show={showScouterManage}
         scouters={scouters as Scouter[]}
         handleClose={() => setShowScouterManage(false)}
-        handleDelete={()=>{}}
       ></ScouterManageModal>
       <h1 className="text-center mb-3">Controls</h1>
       <Button size="lg" disabled className="d-flex mx-auto mb-3">

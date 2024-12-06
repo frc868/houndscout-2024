@@ -12,16 +12,13 @@ import {
   Match,
   Scouter,
   Team,
-  deleteMatchAsync,
   getEventsAsync,
   getHeartbeatsAsync,
   getMatchesAsync,
   getScoutersAsync,
   getTeamsAsync,
-  setActiveMatchAsync,
   setMatchScouterAsync,
-  setActiveEventAsync,
-  deleteEventAsync
+  getAllTeamsAsync
 } from "@/redux/adminDataSlice";
 import MatchSchedule from "@/components/admin/match/MatchSchedule";
 import { Button, Col, Container, Row } from "react-bootstrap";
@@ -43,6 +40,7 @@ export default function Admin() {
       await dispatch(getScoutersAsync());
       await dispatch(getEventsAsync());
       await dispatch(getHeartbeatsAsync());
+      await dispatch(getAllTeamsAsync());
 
       mainData.activeEvent?.code &&
         (await dispatch(
@@ -96,16 +94,6 @@ export default function Admin() {
             eventList={adminData?.eventList as Event[]}
             activeEvent={mainData.activeEvent?.code as string}
             handleClose={() => setShowEventManage(false)}
-            handleDelete={async (code) =>
-              await dispatch(
-                deleteEventAsync({ eventCode: code })
-              )
-            }
-            handleSelect={async (code) =>
-              await dispatch(
-                setActiveEventAsync({ eventCode: code })
-              )
-            }
           ></EventManageModal>
           <Row className="my-4">
             <Col md={5}>
@@ -128,9 +116,8 @@ export default function Admin() {
             </Col>
             <Col md={3}>
               <Controls
-                eventCode={mainData.activeEvent?.code as string}
                 scouters={adminData.scouters as Scouter[]}
-                teams={adminData.teams as Team[]}
+                teams={adminData.allTeams as Team[]}
               />
             </Col>
           </Row>
@@ -139,22 +126,6 @@ export default function Admin() {
               matches={adminData.matches as Match[]}
               teams={adminData.teams as Team[]}
               activeMatchName={mainData.activeMatchName as string}
-              handleMatchSelect={async (name) =>
-                await dispatch(
-                  setActiveMatchAsync({
-                    eventCode: mainData.activeEvent?.code as string,
-                    matchName: name,
-                  })
-                )
-              }
-              handleMatchDelete={async (name) =>
-                await dispatch(
-                  deleteMatchAsync({
-                    eventCode: mainData.activeEvent?.code as string,
-                    matchName: name,
-                  })
-                )
-              }
               scouters={adminData.scouters as Scouter[]}
               handleScouterSelect={async (matchName, station, id) => {
                 await dispatch(
