@@ -110,26 +110,32 @@ model Match {
   @@unique([name, eventCode])
 }
 
+//Some things here may need to be changed.
 model TeamScore {
   id     Int  @id @default(autoincrement())
   teamId Int
   team   Team @relation(fields: [teamId], references: [id])
 
+//Auton
   preloaded             Boolean              @default(true)
   leftStartingZone      Boolean              @default(false)
   autoStartingZone      AutoStartingZone?
-  autoGamePieces        AutoGamePiece[]
-  missingAutoGamePieces AutoGamePiece[]
-  autoGamePiecesScored  Int                  @default(0)
+  autoGamePieces        AutoGamePiece[] //The pieces the robot attempted to pick up
+  missingAutoGamePieces AutoGamePiece[] //The pieces the robot attempted but failed to pick up
+  autoGamePiecesScored  Int                  @default(0) //The overall pieces scored.
+
+//Teleop
   teleopScoringEvents   TeleopScoringEvent[]
   incapSegments         IncapSegment[]
 
+//End
   climbType             ClimbType?
   timestampClimbStarted Decimal?
   numberRobotsOnChain   Int?       @default(0)
   scoredInTrap          Boolean?   @default(false)
   spotlit               Boolean?   @default(false)
 
+//Postmatch
   driverSkillRating Int?
   playedDefense     Boolean?
   underDefense      Boolean?

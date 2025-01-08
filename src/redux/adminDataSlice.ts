@@ -69,7 +69,6 @@ export const getEventsAsync = createAsyncThunk(
     return res.data.events;
   }
 );
-
 export const createEventAsync = createAsyncThunk(
   "adminData/createEvent",
   async (data: {
@@ -85,7 +84,6 @@ export const createEventAsync = createAsyncThunk(
     });
   }
 );
-
 export const editEventAsync = createAsyncThunk(
   "adminData/editEvent",
   async ({eventCode, ...data}: {
@@ -102,7 +100,6 @@ export const editEventAsync = createAsyncThunk(
     });
   }
 );
-
 export const deleteEventAsync = createAsyncThunk(
   "adminData/deleteEvent",
   async ({ eventCode }: { eventCode: string }) => {
@@ -163,16 +160,6 @@ export const createMatchAsync = createAsyncThunk(
     });
   }
 );
-export const uploadTBADataAsync = createAsyncThunk(
-  "adminData/uploadTBADataAsync",
-  async (data: { eventCode: string; teams: string; matches: string }) => {
-    await axios.post(`/api/v1/events/${data.eventCode}/tbaseed/offline`, {
-      teams: data.teams,
-      matches: data.matches,
-    });
-  }
-);
-
 export const deleteMatchAsync = createAsyncThunk(
   "adminData/deleteMatch",
   async ({
@@ -186,6 +173,15 @@ export const deleteMatchAsync = createAsyncThunk(
   }
 );
 
+export const uploadTBADataAsync = createAsyncThunk(
+  "adminData/uploadTBADataAsync",
+  async (data: { eventCode: string; teams: string; matches: string }) => {
+    await axios.post(`/api/v1/events/${data.eventCode}/tbaseed/offline`, {
+      teams: data.teams,
+      matches: data.matches,
+    });
+  }
+);
 export const createTeamAsync = createAsyncThunk(
   "adminData/createTeam",
   async (data: {
@@ -208,7 +204,6 @@ export const deleteTeamAsync = createAsyncThunk(
     await axios.delete(`/api/v1/teams/${teamNumber}`);
   }
 );
-
 // export const deleteTeamAsync = createAsyncThunk(
 //   "adminData/deleteTeam",
 //   async ({
@@ -221,7 +216,6 @@ export const deleteTeamAsync = createAsyncThunk(
 //     await axios.delete(`/api/v1/events/${eventCode}/teams/${teamNumber}`);
 //   }
 // );
-
 export const getTeamsAsync = createAsyncThunk(
   "adminData/getTeamsAsync",
   async ({ eventCode }: { eventCode: string }) => {
@@ -229,7 +223,6 @@ export const getTeamsAsync = createAsyncThunk(
     return res.data.teams;
   }
 );
-
 export const getAllTeamsAsync = createAsyncThunk(
   "adminData/getAllTeamsAsync",
   async () => {
@@ -246,23 +239,12 @@ export const getScoutersAsync = createAsyncThunk(
     return res.data.scouters;
   }
 );
-
 export const deleteScouterAsync = createAsyncThunk(
   "adminData/deleteScouterAsync",
   async ({ scouterId }: { scouterId: number }) => {
     await axios.delete(`/api/v1/scouters/${scouterId}`);
   }
 );
-
-
-export const getHeartbeatsAsync = createAsyncThunk(
-  "adminData/getHeartbeats",
-  async () => {
-    const res = await axios.get("/api/v1/heartbeat");
-    return res.data.heartbeats;
-  }
-);
-
 export const setMatchScouterAsync = createAsyncThunk(
   "adminData/setMatchScouter",
   async ({
@@ -282,6 +264,14 @@ export const setMatchScouterAsync = createAsyncThunk(
         id: scouterId,
       }
     );
+  }
+);
+
+export const getHeartbeatsAsync = createAsyncThunk(
+  "adminData/getHeartbeats",
+  async () => {
+    const res = await axios.get("/api/v1/heartbeat");
+    return res.data.heartbeats;
   }
 );
 

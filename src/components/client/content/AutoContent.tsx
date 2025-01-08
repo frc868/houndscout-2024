@@ -37,6 +37,7 @@ export default function AutoContent({ show }: Props) {
       !missingGamePieces.includes(selection)
     )
       setMissingGamePieces((old) => [...old, selection]);
+      //If selected game piece already in selected array but not in missing array, adds it to missing array
     else if (
       selectedGamePieces.includes(selection) &&
       missingGamePieces.includes(selection)
@@ -45,6 +46,7 @@ export default function AutoContent({ show }: Props) {
         old.filter((value) => value !== selection)
       );
       setMissingGamePieces((old) => old.filter((value) => value !== selection));
+      //If selected game piece is already in both arrays, removes it from both arrays
     } else {
       setSelectedGamePieces((old) => [...old, selection]);
     }
