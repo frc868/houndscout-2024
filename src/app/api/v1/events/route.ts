@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 //mainDataSlice/getEventsAsync
+//Gets every event in the database.
 export async function GET(req: Request) {
   let events;
   try {
@@ -15,6 +16,7 @@ export async function GET(req: Request) {
 }
 
 //adminDataSlice/createEventAsync
+//creates a new event.
 export async function POST(req: Request) {
   const data = await req.json();
 

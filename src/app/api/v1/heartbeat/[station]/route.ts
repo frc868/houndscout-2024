@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import { Station } from "@prisma/client";
 
 //mainDataSlice/sendHeartbeatAsync
+//Updates database with information about the status of each scouting station (a heartbeat).
 export async function POST(
   req: Request,
   { params }: { params: { station: string } }

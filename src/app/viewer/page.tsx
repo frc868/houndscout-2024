@@ -1,5 +1,6 @@
 "use client";
-
+//I actually did not know this thing existed lol
+//VERY WIP, will probably replace my data thing once finished.
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";

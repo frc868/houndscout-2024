@@ -12,6 +12,9 @@ import {
 import { Ranking } from "@/lib/enums";
 
 //viewerDataSlice/getRankingsAsync
+//see DataControls for additional implementation.
+//If you just want raw JSON info about LITERALLY EVERYTHING in the event, here you go.
+//This is way more complicated than everything else that's exportable, so this also feeds into the database.
 export async function GET(
   req: Request,
   { params }: { params: { code: string } }

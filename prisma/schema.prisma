@@ -1,3 +1,9 @@
+//Once you've set up your database
+
+//npx prisma migrate dev: updates the layout of your database with this schema.
+//npx prisma studio: starts Prisma Studio, allowing you to view and edit data on your database directly.
+
+//Don't need to mess with the generators.
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,9 +14,12 @@ generator erd {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL")//Make a .env filed with DATABASE_URL linking to your database.
 }
 
+// The tables/collections in a database. Some of these link to each other.
+
+//Currently, this will have to be manually created. Make sure you set the active event to something as well.
 model Server {
   id            Int         @id @default(autoincrement())
   activeEvent   Event?      @relation(fields: [activeEventId], references: [id])
@@ -21,6 +30,7 @@ model Server {
   blueOnLeft    Boolean
 }
 
+//You'll need to manually create six of these, one per team on the field.
 model Heartbeat {
   id      Int      @id @default(autoincrement())
   station Station  @unique @default(RED1)
@@ -31,12 +41,14 @@ model Heartbeat {
   serverId Int
 }
 
+//These can be created through the admin panel.
 model Scouter {
   id        Int         @id @default(autoincrement())
   name      String      @unique
   TeamScore TeamScore[]
 }
 
+//One will need to be created manually to make the system work, but after that you can create them on the admin panel.
 model Event {
   id    Int    @id @default(autoincrement())
   code  String @unique
@@ -52,6 +64,7 @@ model Event {
   servers Server[]
 }
 
+//One will need to be created manually to make the system work, but after that you can create them on the admin panel.
 model Team {
   id           Int         @id @default(autoincrement())
   number       Int         @unique
@@ -67,6 +80,7 @@ model Team {
   teamScores   TeamScore[]
 }
 
+//One will need to be created manually to make the system work, but after that you can create them on the admin panel.
 model Match {
   id        Int    @id @default(autoincrement())
   key       String @unique
@@ -110,7 +124,7 @@ model Match {
   @@unique([name, eventCode])
 }
 
-//Some things here may need to be changed.
+//Each of these represents one robot's performance in one match. A lot of these might need to be adjusted.
 model TeamScore {
   id     Int  @id @default(autoincrement())
   teamId Int
@@ -156,6 +170,7 @@ model TeamScore {
   StageAttempt     StageAttempt[]
 }
 
+//Unimplemented. Likely to be merged with TeleopScoringEvent.
 model AutoScoringEvent {
   id                Int              @id @default(autoincrement())
   gamePiece         AutoGamePiece
@@ -170,6 +185,7 @@ model AutoScoringEvent {
   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
 }
 
+//Likely to be merged with AutoScoringEvent.
 model TeleopScoringEvent {
   id                Int              @id @default(autoincrement())
   intakeLocation    IntakeLocation
@@ -183,6 +199,7 @@ model TeleopScoringEvent {
   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
 }
 
+//Unimplemented. All current functionality is currently in teamScore.
 model StageAttempt {
   id Int @id @default(autoincrement())
 
@@ -190,6 +207,7 @@ model StageAttempt {
   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
 }
 
+//Unimplemented, as far as I'm aware. Probably going to put this on the client status bar.
 model IncapSegment {
   id               Int       @id @default(autoincrement())
   timestampStarted Decimal
@@ -199,6 +217,7 @@ model IncapSegment {
   TeamScore        TeamScore @relation(fields: [teamScoreId], references: [id])
 }
 
+//These are here so we can set the data type for certain columns to them. Most will need updating.
 enum AutoStartingZone {
   ONE
   TWO

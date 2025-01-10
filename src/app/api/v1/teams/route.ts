@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 //adminDataSlice/getTeamsAsync
+// Gets all teams in the database.
 export async function GET(req: Request) {
   let teams;
   try {
@@ -14,6 +15,8 @@ export async function GET(req: Request) {
   return NextResponse.json({ ok: true, teams });
 }
 
+//adminDataSlice/createTeamAsync
+//creates a team.
 export async function POST(req: Request) {
   const data = await req.json();
 

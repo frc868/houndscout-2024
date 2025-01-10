@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 //mainDataSlice/getActiveEventAsync
+//Gets the active event.
 export async function GET(req: Request) {
   let event;
   try {
@@ -23,6 +24,7 @@ export async function GET(req: Request) {
 }
 
 //adminDataSlice/setActiveEventAsync
+//Sets the active event.
 export async function POST(req: Request) {
   const data = await req.json();
 

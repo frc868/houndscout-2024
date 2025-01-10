@@ -25,6 +25,7 @@ interface TBAMatch {
 }
 
 //adminDataSlice/uploadTBADataAsync
+//Updates database with manually-inputed data from The Blue Alliance API.
 export async function POST(
   req: Request,
   { params }: { params: { code: string } }

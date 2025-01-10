@@ -40,6 +40,7 @@ export async function GET(
 }
 
 //adminDataSlice/createMatchAsync
+//Creates a match in the specified event.
 export async function POST(
   req: Request,
   { params }: { params: { code: string } }

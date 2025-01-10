@@ -25,7 +25,7 @@ export default function TBADataModal({
   return (
     <Modal centered show={show} size="lg" onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Import TBA API Data</Modal.Title>
+        <Modal.Title>Import Data from The Blue Alliance API</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>

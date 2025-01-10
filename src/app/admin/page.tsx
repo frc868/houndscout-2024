@@ -1,5 +1,5 @@
 "use client";
-
+//Quick tip, you can ctrl+click on something from another file to go directly there.
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
@@ -23,16 +23,20 @@ import {
 import MatchSchedule from "@/components/admin/match/MatchSchedule";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Activity from "@/components/admin/match/Activity";
-import Controls from "@/components/admin/match/MatchControls";
+import AdminControls from "@/components/admin/match/MatchControls";
 import { Event } from "@prisma/client";
 import EventDetails from "@/components/admin/match/EventDetails";
 import EventManageModal from "@/components/admin/match/EventManageModal";
 
 export default function Admin() {
+  //Accesses Redux state. You can find more details in mainDataSlice and adminDataSlice.
+  //Do note that you'll have to manually add imports for your async thunks and any interfaces stored there.
   const mainData = useSelector((state: ReduxState) => state.mainData);
   const adminData = useSelector((state: ReduxState) => state.adminData);
+  //dispatch is used to call functions in a redux file.
   const dispatch = useDispatch<AppDispatch>();
 
+  //I just shoehorned every function in my update here; please optimize.
   useEffect(() => {
     const interval = setInterval(async () => {
       await dispatch(getActiveEventAsync());
@@ -42,6 +46,8 @@ export default function Admin() {
       await dispatch(getHeartbeatsAsync());
       await dispatch(getAllTeamsAsync());
 
+      //These two things only trigger after the event code has been loaded.
+      //For some reason it errored when I put them in the same thing.
       mainData.activeEvent?.code &&
         (await dispatch(
           getMatchesAsync({ eventCode: mainData.activeEvent?.code })
@@ -55,12 +61,14 @@ export default function Admin() {
   }, [dispatch, mainData.activeEvent?.code, mainData.activeMatchName]);
 
   const ready = mainData.activeEvent?.code && adminData.matches && adminData.teams;
+  //Displays a loading screen if these haven't been filled in the state yet.
+  //This prevents errors from trying to render things too early.
 
   const activeMatch = adminData.matches?.filter(
     (match) => match.name === mainData.activeMatchName
   )[0];
 
-  const [showEventManage, setShowEventManage] = useState(false);
+  const [showEventManage, setShowEventManage] = useState(false);//Modal toggle
 
   return (
     <>
@@ -87,6 +95,7 @@ export default function Admin() {
         </>
       )}
 
+      {/* Most of the documentation for these components are on their respective pages. */}
       {ready && (
         <Container>
           <EventManageModal
@@ -115,7 +124,7 @@ export default function Admin() {
               </Button>
             </Col>
             <Col md={3}>
-              <Controls
+              <AdminControls
                 scouters={adminData.scouters as Scouter[]}
                 teams={adminData.allTeams as Team[]}
               />

@@ -1,5 +1,6 @@
 "use client";
-
+//This is the only page I actually created. It's meant to be a built-in database.
+//TBA
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
@@ -7,9 +8,6 @@ import {
   getActiveEventAsync,
   getActiveMatchAsync,
 } from "@/redux/mainDataSlice";
-import {
-  Scores
-} from "@/redux/scoresSlice";
 import AdminStatusBar from "@/components/admin/AdminStatusBar";
 import {
   Scouter,
@@ -26,6 +24,7 @@ import Controls from "@/components/admin/data/DataControls";
 import { Ranking } from "@/lib/enums";
 
 export default function Data() {
+  //I went over these on the admin page, but viewerDataSlice is another redux slice that only contains rankings.
   const mainData = useSelector((state: ReduxState) => state.mainData);
   const adminData = useSelector((state: ReduxState) => state.adminData);
   const viewerData = useSelector((state: ReduxState) => state.viewerData);
@@ -35,7 +34,6 @@ export default function Data() {
     const interval = setInterval(async () => {
       await dispatch(getActiveEventAsync());
       await dispatch(getActiveMatchAsync());
-      await dispatch(getScoutersAsync());
 
       mainData.activeEvent?.code && (
         await dispatch(getMatchesAsync({ eventCode: mainData.activeEvent?.code }))        

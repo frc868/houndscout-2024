@@ -3,6 +3,8 @@ import prisma from "@/lib/prisma";
 import { Station } from "@prisma/client";
 
 //mainDataSlice/getStationData
+//Gets server data to be sent to each of the client scouters.
+//Specifically orientation, active event, and active match.
 export async function GET(
   req: Request,
   { params }: { params: { station: string } }

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+//Currently unimplemented.
+//Gets a specified team
 export async function GET(
   req: Request,
   { params }: { params: { number: string } }
@@ -23,6 +25,9 @@ export async function GET(
   return NextResponse.json({ ok: true, team });
 }
 
+//Currently unimplemented.
+// Updates info about a specified team.
+// As soon as a good place to put a team edit modal is found, use this.
 export async function PATCH(
   req: Request,
   { params }: { params: { number: string } }
@@ -46,6 +51,7 @@ export async function PATCH(
 }
 
 //adminDataSlice/deleteTeamAsync
+// Deletes the team with the specified number.
 export async function DELETE(
   req: Request,
   { params }: { params: { number: string } }

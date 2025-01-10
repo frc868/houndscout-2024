@@ -1,20 +1,6 @@
 "use client";
-
-import SectionSelector from "@/components/client/common/SectionSelector";
+//Just a menu page. Not much to it.
 import StatusBar from "@/components/client/common/StatusBar";
-import { useEffect, useState } from "react";
-import AutoContent from "@/components/client/content/AutoContent";
-import PostmatchContent from "@/components/client/content/PostmatchContent";
-import TeleopContent from "@/components/client/content/TeleopContent";
-import PrematchContent from "@/components/client/content/PrematchContent";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, ReduxState } from "@/redux/store";
-import {
-  getStationData,
-  sendHeartbeatAsync,
-  setStation,
-} from "@/redux/mainDataSlice";
-import { Section } from "@prisma/client";
 import { Row, Button, Col } from "react-bootstrap";
 
 export default function Home() {
@@ -93,7 +79,15 @@ export default function Home() {
             variant="secondary"
             href="/data"
           >
-            Data Controls
+            Data Controls (Will be deteted once Viewer is finished)
+          </Button>
+          <Button
+            className="mx-1 mt-2"
+            size="lg"
+            variant="secondary"
+            href="/data"
+          >
+            Viewer (WIP)
           </Button>
         </Col>
       </Row>

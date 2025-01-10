@@ -1,3 +1,5 @@
+//Currently unimplemented, but it allows you to create an autoScoringEvent. Will probably be merged with the teleopEvent one.
+
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 

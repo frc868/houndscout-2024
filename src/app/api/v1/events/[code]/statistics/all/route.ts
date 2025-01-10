@@ -11,6 +11,8 @@ import {
 } from "@prisma/client";
 import { Ranking } from "@/lib/enums";
 
+//see DataControls for implementation.
+//If you just want raw JSON info about the teamScores in the event, here you go.
 export async function GET(
   req: Request,
   { params }: { params: { code: string } }

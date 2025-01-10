@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+//Unimplemented, but returns the teamScores in the match with the specified name and in the event with the specified code.
 export async function GET(
   req: Request,
   { params }: { params: { code: string; name: string; station: string } }
@@ -37,6 +38,7 @@ export async function GET(
 }
 
 //scoresSlice/(most things)
+//A do-it-all function that can update update anything in the specified teamScore that needs to be updated.
 export async function PATCH(
   req: Request,
   { params }: { params: { code: string; name: string; station: string } }

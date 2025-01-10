@@ -1,5 +1,7 @@
 "use client";
+//You found it! (lame joke punchline)
 
+//The page info for every client page.
 import SectionSelector from "@/components/client/common/SectionSelector";
 import StatusBar from "@/components/client/common/StatusBar";
 import { useEffect, useState } from "react";
@@ -82,6 +84,7 @@ export default function Client({ station }: Props) {
             )}
             {ready && (
               <>
+              {/* ...and now you'll have to go into each tab to look at everything. */}
                 <PrematchContent show={tab === Section.PREMATCH} />
                 <AutoContent show={tab === Section.AUTO} />
                 <TeleopContent show={tab === Section.TELEOP} />
