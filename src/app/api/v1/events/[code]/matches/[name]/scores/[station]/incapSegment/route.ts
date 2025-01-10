@@ -1,4 +1,7 @@
+//Currently unimplemented, but it creates an incap segment to the database.
+//I think it's supposed to be fully created, so make sure you get both the start and end times before calling this.
 import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
 export async function POST(
   req: Request,

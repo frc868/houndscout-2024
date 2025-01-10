@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { Event } from "@prisma/client"
 
 export interface Match {
   name: string;
@@ -27,6 +28,13 @@ export interface Scouter {
   name: string;
 }
 
+export interface Team {
+  id: number;
+  number: number;
+  name: string;
+  events?: Event[];
+}
+
 export interface Heartbeat {
   time: number;
   section: string;
@@ -35,8 +43,14 @@ export interface Heartbeat {
 export interface AdminData {
   matches?: Match[];
   scouters?: Scouter[];
+  teams?: Team[];
+  allTeams?: Team[];
+  eventList?: Event[];
   matchesStatus: "idle" | "waiting" | "succeeded" | "failed";
   scoutersStatus: "idle" | "waiting" | "succeeded" | "failed";
+  teamsStatus: "idle" | "waiting" | "succeeded" | "failed";
+  allTeamsStatus: "idle" | "waiting" | "succeeded" | "failed";
+  eventListStatus: "idle" | "waiting" | "succeeded" | "failed";
   error?: string;
   heartbeats: {
     red1: Heartbeat;
@@ -48,15 +62,72 @@ export interface AdminData {
   };
 }
 
-export const getMatchesAsync = createAsyncThunk(
-  "adminData/getActiveTeamNumber",
+export const getEventsAsync = createAsyncThunk(
+  "adminData/getEvents",
+  async () => {
+    const res = await axios.get(`/api/v1/events`);
+    return res.data.events;
+  }
+);
+export const createEventAsync = createAsyncThunk(
+  "adminData/createEvent",
+  async (data: {
+    name: string,
+    code: string,
+    week: number,
+    start: string,
+    end: string,
+    address: string
+  }) => {
+    await axios.post(`/api/v1/events`, {
+      ...data,
+    });
+  }
+);
+export const editEventAsync = createAsyncThunk(
+  "adminData/editEvent",
+  async ({eventCode, ...data}: {
+    name: string,
+    newCode: string,
+    week: number,
+    start: string,
+    end: string,
+    address: string,
+    eventCode: string
+  }) => {
+    await axios.patch(`/api/v1/events/${eventCode}`, {
+      ...data,
+    });
+  }
+);
+export const deleteEventAsync = createAsyncThunk(
+  "adminData/deleteEvent",
   async ({ eventCode }: { eventCode: string }) => {
-    const res = await axios.get(`/api/v1/events/${eventCode}/matches`);
-    const data = res.data;
-    return data.matches;
+    await axios.delete(`/api/v1/events/${eventCode}`, {});
+  }
+);
+export const setActiveEventAsync = createAsyncThunk(
+  "adminData/setActiveEvent",
+  async ({
+    eventCode,
+  }: {
+    eventCode: string;
+  }) => {
+    await axios.post(`/api/v1/server/event`, {
+      code: eventCode,
+    });
   }
 );
 
+export const getMatchesAsync = createAsyncThunk(
+  "adminData/getMatches",
+  async ({ eventCode }: { eventCode: string }) => {
+    const res = await axios.get(`/api/v1/events/${eventCode}/matches`);
+    return res.data.matches;
+  }
+);
+
+//Move to mainDataSlice.
 export const setActiveMatchAsync = createAsyncThunk(
   "adminData/setActiveMatch",
   async ({
@@ -71,6 +142,96 @@ export const setActiveMatchAsync = createAsyncThunk(
     });
   }
 );
+export const createMatchAsync = createAsyncThunk(
+  "adminData/createMatch",
+  async (data: {
+    eventCode: string;
+    number: number;
+    red1: number;
+    red2: number;
+    red3: number;
+    blue1: number;
+    blue2: number;
+    blue3: number;
+  }) => {
+    await axios.post(`/api/v1/events/${data.eventCode}/matches`, {
+      key: `${data.eventCode}_qm${data.number}`,
+      name: `qm${data.number}`,
+      ...data,
+    });
+  }
+);
+export const deleteMatchAsync = createAsyncThunk(
+  "adminData/deleteMatch",
+  async ({
+    eventCode,
+    matchName,
+  }: {
+    eventCode: string;
+    matchName: string;
+  }) => {
+    await axios.delete(`/api/v1/events/${eventCode}/matches/${matchName}`);
+  }
+);
+
+export const uploadTBADataAsync = createAsyncThunk(
+  "adminData/uploadTBADataAsync",
+  async (data: { eventCode: string; teams: string; matches: string }) => {
+    await axios.post(`/api/v1/events/${data.eventCode}/tbaseed/offline`, {
+      teams: data.teams,
+      matches: data.matches,
+    });
+  }
+);
+export const createTeamAsync = createAsyncThunk(
+  "adminData/createTeam",
+  async (data: {
+    number: number;
+    name: string;
+    location: string;
+  }) => {
+    await axios.post(`/api/v1/teams`, {
+      ...data,
+    });
+  }
+);
+export const deleteTeamAsync = createAsyncThunk(
+  "adminData/deleteTeam",
+  async ({
+    teamNumber,
+  }: {
+    teamNumber: number;
+  }) => {
+    await axios.delete(`/api/v1/teams/${teamNumber}`);
+  }
+);
+// export const deleteTeamAsync = createAsyncThunk(
+//   "adminData/deleteTeam",
+//   async ({
+//     eventCode,
+//     teamNumber,
+//   }: {
+//     eventCode: string;
+//     teamNumber: number;
+//   }) => {
+//     await axios.delete(`/api/v1/events/${eventCode}/teams/${teamNumber}`);
+//   }
+// );
+export const getTeamsAsync = createAsyncThunk(
+  "adminData/getTeamsAsync",
+  async ({ eventCode }: { eventCode: string }) => {
+    const res = await axios.get(`/api/v1/events/${eventCode}/teams`);
+    return res.data.teams;
+  }
+);
+export const getAllTeamsAsync = createAsyncThunk(
+  "adminData/getAllTeamsAsync",
+  async () => {
+    const res = await axios.get(`/api/v1/teams`);
+    console.log(res.data);
+    return res.data.teams;
+  }
+);
 
 export const getScoutersAsync = createAsyncThunk(
   "adminData/getScoutersAsync",
@@ -79,14 +240,12 @@ export const getScoutersAsync = createAsyncThunk(
     return res.data.scouters;
   }
 );
-export const getHeartbeatsAsync = createAsyncThunk(
-  "adminData/getHeartbeats",
-  async () => {
-    const res = await axios.get("/api/v1/heartbeat");
-    return res.data.heartbeats;
+export const deleteScouterAsync = createAsyncThunk(
+  "adminData/deleteScouterAsync",
+  async ({ scouterId }: { scouterId: number }) => {
+    await axios.delete(`/api/v1/scouters/${scouterId}`);
   }
 );
-
 export const setMatchScouterAsync = createAsyncThunk(
   "adminData/setMatchScouter",
   async ({
@@ -109,11 +268,25 @@ export const setMatchScouterAsync = createAsyncThunk(
   }
 );
 
+export const getHeartbeatsAsync = createAsyncThunk(
+  "adminData/getHeartbeats",
+  async () => {
+    const res = await axios.get("/api/v1/heartbeat");
+    return res.data.heartbeats;
+  }
+);
+
 const initialState: AdminData = {
   matches: undefined,
   matchesStatus: "idle",
   scouters: undefined,
   scoutersStatus: "idle",
+  teams: undefined,
+  teamsStatus: "idle",
+  allTeams: undefined,
+  allTeamsStatus: "idle",
+  eventList: undefined,
+  eventListStatus: "idle",
   error: undefined,
   heartbeats: {
     red1: { time: Date.now(), section: "" },
@@ -186,7 +359,6 @@ export const mainData = createSlice({
         state.matchesStatus = "failed";
         state.error = action.error.message || "";
       });
-
     builder
       .addCase(getScoutersAsync.pending, (state) => {
         state.scoutersStatus = "waiting";
@@ -205,9 +377,60 @@ export const mainData = createSlice({
         state.scoutersStatus = "failed";
         state.error = action.error.message || "";
       });
+    builder
+      .addCase(getTeamsAsync.pending, (state) => {
+        state.teamsStatus = "waiting";
+      })
+      .addCase(getTeamsAsync.fulfilled, (state, action) => {
+        if (action.payload !== null) {
+          state.teams = action.payload;
+          state.teams?.sort((a, b) => a.id - b.id);
+
+          state.teamsStatus = "succeeded";
+        } else {
+          state.teamsStatus = "idle";
+        }
+      })
+      .addCase(getTeamsAsync.rejected, (state, action) => {
+        state.teamsStatus = "failed";
+        state.error = action.error.message || "";
+      });
+    builder
+      .addCase(getAllTeamsAsync.pending, (state) => {
+        state.allTeamsStatus = "waiting";
+      })
+      .addCase(getAllTeamsAsync.fulfilled, (state, action) => {
+        if (action.payload !== null) {
+          state.allTeams = action.payload;
+          state.allTeams?.sort((a, b) => a.id - b.id);
+
+          state.allTeamsStatus = "succeeded";
+        } else {
+          state.allTeamsStatus = "idle";
+        }
+      })
+      .addCase(getAllTeamsAsync.rejected, (state, action) => {
+        state.allTeamsStatus = "failed";
+        state.error = action.error.message || "";
+      });
+    builder
+      .addCase(getEventsAsync.pending, (state) => {
+        state.eventListStatus = "waiting";
+      })
+      .addCase(getEventsAsync.fulfilled, (state, action) => {
+        if (action.payload !== null) {
+          state.eventList = action.payload;
+          state.eventListStatus = "succeeded";
+        } else {
+          state.eventListStatus = "idle";
+        }
+      })
+      .addCase(getEventsAsync.rejected, (state, action) => {
+        state.eventListStatus = "failed";
+        state.error = action.error.message || "";
+      });
     builder.addCase(getHeartbeatsAsync.fulfilled, (state, action) => {
       if (action.payload !== null) {
-        console.log(action.payload);
         state.heartbeats.red1 = {
           time: new Date(action.payload.red1.time).getTime(),
           section: action.payload.red1.section,

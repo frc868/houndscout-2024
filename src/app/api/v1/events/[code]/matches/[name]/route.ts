@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
+//mainDataSlice/getActiveTeamNumberAsync
+//Gets the teams and scouters currently set to each station during the specified match.
+//The above function is responsible for narrowing it down further to the team at a single station.
 export async function GET(
   req: Request,
   { params }: { params: { code: string; name: string } }
@@ -36,6 +40,8 @@ export async function GET(
   return NextResponse.json({ ok: true, match });
 }
 
+//Currently unimplemented.
+//Updates the teams currently set to each station during the specified match.
 export async function PATCH(
   req: Request,
   { params }: { params: { code: string; name: string } }
@@ -66,18 +72,6 @@ export async function PATCH(
   }
   if (data.startTime) {
     updateData.startTime = data.startTime;
-  }
-  if (data.presetPiece1) {
-    updateData.presetPiece1 = data.presetPiece1;
-  }
-  if (data.presetPiece2) {
-    updateData.presetPiece2 = data.presetPiece2;
-  }
-  if (data.presetPiece3) {
-    updateData.presetPiece3 = data.presetPiece3;
-  }
-  if (data.presetPiece4) {
-    updateData.presetPiece4 = data.presetPiece4;
   }
 
   let match;
@@ -110,6 +104,7 @@ export async function PATCH(
   return NextResponse.json({ ok: true, match });
 }
 
+//adminDataSlice/deleteMatchAsync
 export async function DELETE(
   req: Request,
   { params }: { params: { code: string; name: string } }

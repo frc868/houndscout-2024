@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+//mainDataSlice/getScouterAsync
+//Gets the scouter currently set to run the specified station during the specified match
 export async function GET(
   req: Request,
   { params }: { params: { code: string; name: string; station: string } }
@@ -35,6 +37,8 @@ export async function GET(
   });
 }
 
+//adminDataSlice/setMatchScouterAsync
+//Sets the scouter this is to run the specified station during the specified match
 export async function POST(
   req: Request,
   { params }: { params: { code: string; name: string; station: string } }

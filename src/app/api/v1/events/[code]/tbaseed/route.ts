@@ -24,6 +24,8 @@ interface TBAMatch {
   key: string;
 }
 
+//Currently unimplemented.
+//Gets data directly from The Blue Alliance API and updates database information with it.
 export async function POST(
   req: Request,
   { params }: { params: { code: string } }

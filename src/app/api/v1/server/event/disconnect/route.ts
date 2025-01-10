@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+//Further research required. Sorry...
+//As compensation, stuff in the server folder usually deals with active event and active match, as those are stored in the server table.
 export async function POST(req: Request) {
   let event;
   try {

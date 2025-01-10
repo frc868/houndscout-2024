@@ -1,12 +1,14 @@
 "use client";
+//You found it! (lame joke punchline)
 
-import SectionSelector from "@/components/common/SectionSelector";
-import StatusBar from "@/components/common/StatusBar";
+//The page info for every client page.
+import SectionSelector from "@/components/client/common/SectionSelector";
+import StatusBar from "@/components/client/common/StatusBar";
 import { useEffect, useState } from "react";
-import AutoContent from "@/components/content/AutoContent";
-import PostmatchContent from "@/components/content/PostmatchContent";
-import TeleopContent from "@/components/content/TeleopContent";
-import PrematchContent from "@/components/content/PrematchContent";
+import AutoContent from "@/components/client/content/AutoContent";
+import PostmatchContent from "@/components/client/content/PostmatchContent";
+import TeleopContent from "@/components/client/content/TeleopContent";
+import PrematchContent from "@/components/client/content/PrematchContent";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import {
@@ -14,51 +16,40 @@ import {
   getActiveMatchAsync,
   getActiveTeamNumberAsync,
   getScouterAsync,
+  getStationData,
   sendHeartbeatAsync,
   setStation,
 } from "@/redux/mainDataSlice";
+import { Section, Station } from "@prisma/client";
 
 interface Props {
-  id: "red1" | "red2" | "red3" | "blue1" | "blue2" | "blue3";
+  station: Station;
 }
 
-export default function Client({ id }: Props) {
+export default function Client({ station }: Props) {
   const mainData = useSelector((state: ReduxState) => state.mainData);
   const dispatch = useDispatch<AppDispatch>();
-  const [tab, setTab] = useState<"auto" | "prematch" | "teleop" | "postmatch">(
-    "prematch"
-  );
+  const [tab, setTab] = useState<Section>(Section.PREMATCH);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(async () => {
-      await dispatch(getActiveEventAsync());
-      await dispatch(getActiveMatchAsync());
-      await dispatch(sendHeartbeatAsync({ station: id, section: tab }));
-      await dispatch(setStation({ station: id }));
-
-      if (mainData.activeEventCode && mainData.activeMatchName) {
-        await dispatch(
-          getActiveTeamNumberAsync({
-            eventCode: mainData.activeEventCode,
-            matchName: mainData.activeMatchName,
-            station: id,
-          })
-        );
-        await dispatch(
-          getScouterAsync({
-            eventCode: mainData.activeEventCode,
-            matchName: mainData.activeMatchName,
-            station: id,
-          })
-        );
-      }
-    }, 1000);
+    const update = async () => {
+      await dispatch(setStation({ station }));
+      await dispatch(getStationData({ station }));
+      await dispatch(sendHeartbeatAsync({ station, section: tab }));
+    };
+    update();
+    const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
-  }, [dispatch, mainData.activeEventCode, mainData.activeMatchName, id, tab]);
+  }, [dispatch, station, tab]);
 
-  const ready =
-    mainData.scouter.name &&
-    mainData.activeTeamNumber &&
+  useEffect(() => {
+    setSubmitted(false);
+    setTab(Section.PREMATCH);
+  }, [mainData.activeMatchName]);
+
+  const ready = mainData.scouter.name
+    && mainData.activeTeamNumber &&
     mainData.activeMatchName;
 
   return (
@@ -74,11 +65,38 @@ export default function Client({ id }: Props) {
           <h1>Waiting...</h1>
         </div>
       )}
-      {ready && <SectionSelector selected={tab} handleSelection={setTab} />}
-      {ready && tab === "prematch" && <PrematchContent />}
-      {ready && tab === "auto" && <AutoContent />}
-      {ready && tab === "teleop" && <TeleopContent />}
-      {ready && tab === "postmatch" && <PostmatchContent />}
+      <div
+        className={`${submitted && "bg-submitted"}`}
+        style={{
+          transition: "all 0.5s",
+          height: "calc(100vh - 56px)",
+        }}
+      >
+        {submitted ? (
+          <div className="d-flex justify-content-center align-items-center h-75 flex-column">
+            <h1 className="display-1 fw-bold">Submitted successfully!</h1>
+            <h1 className="mt-3">Waiting for next match...</h1>
+          </div>
+        ) : (
+          <div>
+            {ready && (
+              <SectionSelector selected={tab} handleSelection={setTab} />
+            )}
+            {ready && (
+              <>
+              {/* ...and now you'll have to go into each tab to look at everything. */}
+                <PrematchContent show={tab === Section.PREMATCH} />
+                <AutoContent show={tab === Section.AUTO} />
+                <TeleopContent show={tab === Section.TELEOP} />
+                <PostmatchContent
+                  show={tab === Section.POSTMATCH}
+                  handleSubmit={() => setSubmitted(true)}
+                />
+              </>
+            )}
+          </div>
+        )}
+      </div>
     </>
   );
 }

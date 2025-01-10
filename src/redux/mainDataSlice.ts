@@ -1,10 +1,14 @@
+import { Alliance } from "@/lib/enums";
+import { Event, Section, Station } from "@prisma/client";
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export interface MainData {
-  station?: "red1" | "red2" | "red3" | "blue1" | "blue2" | "blue3";
+  station?: Station;
+  alliance: Alliance;
+  blueOnLeft: boolean;
   lastHeartbeat: number;
-  activeEventCode?: string;
+  activeEvent?: Event;
   activeMatchName?: string;
   activeTeamNumber?: number;
   scouter: {
@@ -18,12 +22,29 @@ export interface MainData {
   error?: string;
 }
 
+export const getStationData = createAsyncThunk(
+  "mainData/getStationData",
+  async ({ station }: { station: Station }) => {
+    const res = await axios.get(
+      `/api/v1/server/stationData/${station.toLowerCase()}`
+    );
+    const data = res.data;
+    return {
+      blueOnLeft: data.blueOnLeft,
+      event: data.event,
+      matchName: data.match?.name,
+      scouter: data.scouter,
+      teamNumber: data.match?.[`${station.toLowerCase()}Team`]?.number,
+    };
+  }
+);
+
 export const getActiveEventAsync = createAsyncThunk(
   "mainData/getActiveEvent",
   async () => {
     const res = await axios.get(`/api/v1/server/event`);
     const data = res.data;
-    return data.event?.code;
+    return data.event;
   }
 );
 
@@ -51,7 +72,7 @@ export const getActiveTeamNumberAsync = createAsyncThunk(
       `/api/v1/events/${eventCode}/matches/${matchName}`
     );
     const data = res.data;
-    return data.match?.[`${station}Team`]?.number;
+    return data.match?.[`${station.toLowerCase()}Team`]?.number;
   }
 );
 
@@ -67,7 +88,7 @@ export const getScouterAsync = createAsyncThunk(
     station: string;
   }) => {
     const res = await axios.get(
-      `/api/v1/events/${eventCode}/matches/${matchName}/scouters/${station}`
+      `/api/v1/events/${eventCode}/matches/${matchName}/scouters/${station.toLowerCase()}`
     );
     const data = res.data;
     return data.scouter;
@@ -75,15 +96,32 @@ export const getScouterAsync = createAsyncThunk(
 );
 export const sendHeartbeatAsync = createAsyncThunk(
   "mainData/sendHeartbeatAsync",
-  async ({ station, section }: { station: string; section: string }) => {
-    await axios.post(`/api/v1/heartbeat/${station}`, { section });
+  async ({ station, section }: { station: Station; section: Section }) => {
+    await axios.post(`/api/v1/heartbeat/${station.toLowerCase()}`, { section });
+  }
+);
+// export const deleteScouterAsync = createAsyncThunk(
+//   "mainData/deleteScouter",
+//   async ({ id }: { id: number }) => {
+//     await axios.delete(`/api/v1/scouters/${id}`, {});
+//   }
+// );
+  
+export const createScouterAsync = createAsyncThunk(
+  "mainData/createScouter",
+  async (data: {name: string}) => {
+    await axios.post(`/api/v1/scouters`, {
+      ...data,
+    });
   }
 );
 
 const initialState: MainData = {
   station: undefined,
+  alliance: Alliance.BLUE,
+  blueOnLeft: true,
   lastHeartbeat: 0,
-  activeEventCode: undefined,
+  activeEvent: undefined,
   activeMatchName: undefined,
   activeTeamNumber: undefined,
   scouter: {
@@ -104,20 +142,63 @@ export const mainData = createSlice({
     setStation: (
       state,
       action: PayloadAction<{
-        station: "red1" | "red2" | "red3" | "blue1" | "blue2" | "blue3";
+        station: Station;
       }>
     ) => {
       state.station = action.payload.station;
+      state.alliance = action.payload.station.includes("RED")
+        ? Alliance.RED
+        : Alliance.BLUE;
     },
   },
   extraReducers: (builder) => {
+    builder
+      .addCase(getStationData.pending, (state) => {
+        state.eventStatus = "waiting";
+        state.matchStatus = "waiting";
+        state.teamNumberStatus = "waiting";
+        state.scouterStatus = "waiting";
+      })
+      .addCase(getStationData.fulfilled, (state, action) => {
+        if (action.payload !== null) {
+          state.blueOnLeft = action.payload.blueOnLeft;
+          state.activeEvent = action.payload.event;
+          state.activeMatchName = action.payload.matchName;
+          state.activeTeamNumber = action.payload.teamNumber;
+          state.scouter.id = action.payload.scouter?.id || 0;
+          state.scouter.name = action.payload.scouter?.name || "Unassigned";
+          state.eventStatus = "succeeded";
+          state.matchStatus = "succeeded";
+          state.teamNumberStatus = "succeeded";
+          state.scouterStatus = "succeeded";
+        } else {
+          state.eventStatus = "idle";
+          state.matchStatus = "idle";
+          state.teamNumberStatus = "idle";
+          state.scouterStatus = "idle";
+        }
+      })
+      .addCase(getStationData.rejected, (state, action) => {
+        state.eventStatus = "failed";
+        state.matchStatus = "failed";
+        state.teamNumberStatus = "failed";
+        state.scouterStatus = "failed";
+        state.error = action.error.message || "";
+      });
+
     builder
       .addCase(getActiveEventAsync.pending, (state) => {
         state.eventStatus = "waiting";
       })
       .addCase(getActiveEventAsync.fulfilled, (state, action) => {
         if (action.payload !== null) {
-          state.activeEventCode = action.payload;
+          state.activeEvent = action.payload;
+          (state.activeEvent as Event).startDate = new Date(
+            action.payload.startDate as string
+          );
+          (state.activeEvent as Event).endDate = new Date(
+            action.payload.endDate as string
+          );
           state.eventStatus = "succeeded";
         } else {
           state.eventStatus = "idle";

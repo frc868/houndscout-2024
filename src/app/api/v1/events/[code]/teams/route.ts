@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
+//adminDataSlice/getTeamsAsync
+//Gets the teams in the specified event.
 export async function GET(
   req: Request,
   { params }: { params: { code: string } }
@@ -21,6 +23,8 @@ export async function GET(
   return NextResponse.json({ teams: event.teams, ok: true });
 }
 
+//Currently unimplemented.
+//I believe this adds existing teams into the specified event by number. 
 export async function POST(
   req: Request,
   { params }: { params: { code: string } }

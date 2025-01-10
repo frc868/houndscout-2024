@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+//Currently unimplemented.
+//Gets the specified event.
 export async function GET(
   req: Request,
   { params }: { params: { code: string } }
@@ -19,6 +21,8 @@ export async function GET(
   return NextResponse.json({ ok: true, event });
 }
 
+//adminDataSlice/editEventAsync
+//updates information about the specified event.
 export async function PATCH(
   req: Request,
   { params }: { params: { code: string } }
@@ -41,6 +45,8 @@ export async function PATCH(
   return NextResponse.json({ event, ok: true });
 }
 
+//adminDataSlice/deleteEventAsync
+//Deletes the speficied event.
 export async function DELETE(
   req: Request,
   { params }: { params: { code: string } }

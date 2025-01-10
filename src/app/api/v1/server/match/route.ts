@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+//mainDataSlice/getActiveMatchAsync
+//Gets active match.
 export async function GET(req: Request) {
   let match;
   try {
@@ -20,6 +22,8 @@ export async function GET(req: Request) {
   return NextResponse.json({ ok: true, match });
 }
 
+// adminDataSlice/setActiveMatchAsync (Will be changed.)
+//Sets active match.
 export async function POST(req: Request) {
   const data = await req.json();
 
