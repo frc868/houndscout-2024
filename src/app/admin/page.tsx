@@ -127,6 +127,7 @@ export default function Admin() {
               <AdminControls
                 scouters={adminData.scouters as Scouter[]}
                 teams={adminData.allTeams as Team[]}
+                eventCode={mainData.activeEvent?.code as string}
               />
             </Col>
           </Row>

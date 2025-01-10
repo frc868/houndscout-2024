@@ -1,25 +1,36 @@
 /* eslint-disable react/display-name */
 import React, { useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
-import { Scouter, Team, deleteTeamAsync } from "@/redux/adminDataSlice";
-import { deleteScouterAsync } from "@/redux/mainDataSlice";
+import { Scouter, Team, deleteTeamAsync, uploadTBADataAsync } from "@/redux/adminDataSlice";
+// import { deleteScouterAsync } from "@/redux/mainDataSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import TeamManageModal from "@/components/admin/match/TeamManageModal";
 import ScouterManageModal from "@/components/admin/match/ScouterManageModal";
+import TBADataModal from "../data/TBADataModal";
 
 interface Props {
   scouters: Scouter[];
   teams: Team[];
+  eventCode: string;
 }
 
-export default function Controls({ scouters, teams }: Props) {
+export default function Controls({ scouters, teams, eventCode }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const [showTeamManage, setShowTeamManage] = useState(false);
   const [showScouterManage, setShowScouterManage] = useState(false);
+  const [showTBADataModal, setShowTBADataModal] = useState(false);
 
   return (
     <div className="d-flex flex-column align-items-center">
+      <TBADataModal
+        show={showTBADataModal}
+        handleClose={() => setShowTBADataModal(false)}
+        handleSubmit={async (payload) => {
+          await dispatch(uploadTBADataAsync({ ...payload, eventCode }));
+          setShowTBADataModal(false);
+        }}
+      ></TBADataModal>
       <TeamManageModal
         show={showTeamManage}
         teams={teams as Team[]}
@@ -46,6 +57,42 @@ export default function Controls({ scouters, teams }: Props) {
       </Row>
       <Button variant="secondary" disabled className="mb-2">
         Generate Scouter Schedule
+      </Button>
+      <Row className="">
+        <Button size="lg" href="/api/v1/export" className="text-center mx-auto mb-3">
+          Export Database
+        </Button>
+        <Button
+          variant="secondary"
+          className="mb-2"
+          onClick={() => setShowTBADataModal(true)}
+        >
+          Import TBA Data
+        </Button>
+      </Row>
+      <h3 className="text-center mb-3">Export:</h3>
+      <Button
+        variant="secondary"
+        href={`/api/v1/events/${eventCode}/statistics/all/csv`}
+        className="mb-2 mx-1"
+      >
+        Full CSV
+      </Button>
+      <Button
+        variant="secondary"
+        href={`/api/v1/events/${eventCode}/statistics/all`}
+        className="mb-2 mx-1"
+        target="_blank"
+      >
+        Full JSON
+      </Button>
+      <Button
+        variant="secondary"
+        href={`/api/v1/events/${eventCode}/statistics/rankings`}
+        className="mb-2 mx-1"
+        target="_blank"
+      >
+        Aggregate JSON
       </Button>
     </div>
   );

@@ -107,8 +107,8 @@ export default function RankingsContent() {
           </tr>
         </thead>
         <tbody>
-          {sortedRankings.map((r, idx) => (
-            <tr key={r.team}>
+          {sortedRankings.map((r:Ranking, idx: number) => (
+            <tr key={r.teamNumber}>
               <td>{idx + 1}</td>
               {Object.entries(r).map(([key, value]) =>
                 key !== "team" ? (

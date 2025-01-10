@@ -6,8 +6,6 @@ export default function HomeContent() {
         width: "calc(100% - 2*24px)",
       }}
       className="m-4 bg-dark rounded-3"
-    >
-      <h1>Welcome to the HoundScout data viewer!</h1>
-    </div>
+    ></div>
   );
 }
