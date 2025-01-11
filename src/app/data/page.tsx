@@ -33,7 +33,6 @@ export default function Data() {
   useEffect(() => {
     const interval = setInterval(async () => {
       await dispatch(getActiveEventAsync());
-      await dispatch(getActiveMatchAsync());
 
       mainData.activeEvent?.code && (
         await dispatch(getMatchesAsync({ eventCode: mainData.activeEvent?.code }))        
@@ -44,7 +43,7 @@ export default function Data() {
     
     }, 1000);
     return () => clearInterval(interval);
-  }, [dispatch, mainData.activeEvent?.code, mainData.activeMatchName]);
+  }, [dispatch, mainData.activeEvent?.code]);
 
   const ready = mainData.activeEvent?.code && adminData.matches && viewerData.rankings;
 

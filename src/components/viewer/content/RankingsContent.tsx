@@ -1,17 +1,21 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ReduxState } from "@/redux/store";
 import { Table } from "react-bootstrap";
 import { Ranking } from "@/lib/enums";
 
-export default function RankingsContent() {
+interface Props {
+  rankings: Ranking[];
+}
+export default function RankingsContent({
+  rankings
+}: Props) {
   const viewerData = useSelector((state: ReduxState) => state?.viewerData);
   const [sortField, setSortField] = useState<keyof Ranking | null>(null);
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
   // Sorting function
   const sortedRankings = useMemo(() => {
-    const rankings = viewerData.rankings || [];
     if (!sortField) return rankings;
 
     return [...rankings].sort((a, b) => {
@@ -64,14 +68,20 @@ export default function RankingsContent() {
 
   return (
     <div
-      style={{ height: "calc(100% - 2*24px)", width: "calc(100% - 2*24px)" }}
-      className="m-4 bg-dark"
+      style={{
+        height: "calc(100% - 2*24px)",
+        width: "calc(100% - 2*24px)",
+        color: "white",
+      }}
+      className="m-4 bg-dark rounded-3 font-monospace text-center"
     >
+      <h1>Rankings</h1>
+      <p>WIP</p>
       <Table
         bordered
         hover
         variant="dark"
-        className="font-monospace text-center table-responsive"
+        className="table-responsive"
       >
         <thead>
           <tr>
@@ -107,9 +117,9 @@ export default function RankingsContent() {
           </tr>
         </thead>
         <tbody>
-          {sortedRankings.map((r:Ranking, idx: number) => (
+          {sortedRankings.map((r, idx) => (
             <tr key={r.teamNumber}>
-              <td>{idx + 1}</td>
+              <td>{idx}</td>
               {Object.entries(r).map(([key, value]) =>
                 key !== "team" ? (
                   <td

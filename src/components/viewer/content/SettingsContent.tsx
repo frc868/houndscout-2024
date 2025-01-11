@@ -4,8 +4,12 @@ export default function HomeContent() {
       style={{
         height: "calc(100% - 2*24px)",
         width: "calc(100% - 2*24px)",
+        color: "white",
       }}
-      className="m-4 bg-dark rounded-3"
-    ></div>
+      className="m-4 bg-dark rounded-3 font-monospace text-center"
+    >
+      <h1>Settings</h1>
+      <p>WIP</p>
+    </div>
   );
 }

@@ -11,7 +11,13 @@ import MenuBar from "@/components/viewer/MenuBar";
 import { Col, Row } from "react-bootstrap";
 import HomeContent from "@/components/viewer/content/HomeContent";
 import RankingsContent from "@/components/viewer/content/RankingsContent";
+import ImportContent from "@/components/viewer/content/ImportContent";
+import PicklistContent from "@/components/viewer/content/PicklistContent";
+import CompareContent from "@/components/viewer/content/CompareContent";
+import AutosContent from "@/components/viewer/content/AutosContent";
+import SettingsContent from "@/components/viewer/content/SettingsContent";
 import { getRankingsAsync } from "@/redux/viewerDataSlice";
+import { Ranking } from "@/lib/enums";
 
 export default function Viewer() {
   const mainData = useSelector((state: ReduxState) => state.mainData);
@@ -20,29 +26,48 @@ export default function Viewer() {
   const [tab, setTab] = useState<ViewerTab>(ViewerTab.HOME);
 
   useEffect(() => {
-    async function update() {
+    const interval = setInterval(async () => {
       await dispatch(getActiveEventAsync());
       mainData.activeEvent?.code && (
         await dispatch(getRankingsAsync({ eventCode: mainData.activeEvent?.code }))  
       );
-    }
-    update();
-  }, [dispatch]);
+    
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [dispatch, mainData.activeEvent?.code]);
+
+  const ready = mainData.activeEvent?.code && viewerData.rankings;
 
   return (
     <>
       <div className="vw-100 vh-100 position-relative">
         <div className="vw-100 vh-100 bg-secondary position-fixed z-n1"></div>
         <TopBar eventName="2024inmis" />
-        <MenuBar selectedTab={tab} handleTabSelect={setTab} />
-        <Row style={{ paddingTop: "64px" }}>
-          <Col className="ps-0 pe-0" md={2}></Col>
-
-          <Col className="ps-0">
-            {tab === ViewerTab.HOME && <HomeContent />}
-            {tab === ViewerTab.RANKINGS && <RankingsContent />}
-          </Col>
-        </Row>
+        
+        {!ready && (
+          <Row style={{ paddingTop: "64px", color: "white" }}>
+            <div className="ps-0 pe-0 m-4 bg-dark rounded-3 font-monospace text-center">
+              <h1>Loading...</h1>
+            </div>
+          </Row>
+        )}
+        {ready && (
+          <>
+          <MenuBar selectedTab={tab} handleTabSelect={setTab} />
+          <Row style={{ paddingTop: "64px" }}>
+            <Col className="ps-0 pe-0" md={2}></Col>
+            <Col className="ps-0">
+              {tab === ViewerTab.HOME && <HomeContent />}
+              {tab === ViewerTab.RANKINGS && <RankingsContent rankings={viewerData.rankings as Ranking[]} />}
+              {tab === ViewerTab.COMPARE && <CompareContent />}
+              {tab === ViewerTab.AUTOS && <AutosContent />}
+              {tab === ViewerTab.PICKLIST && <PicklistContent />}
+              {tab === ViewerTab.IMPORT && <ImportContent />}
+              {tab === ViewerTab.SETTINGS && <SettingsContent />}
+            </Col>
+          </Row>
+          </>
+        )}
       </div>
       {/* {!ready && (
         <div className="vh-100 d-flex justify-content-center mt-5">
