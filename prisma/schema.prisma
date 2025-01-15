@@ -12,6 +12,9 @@ generator erd {
   provider = "prisma-erd-generator"
 }
 
+//MAKE SURE YOU DO THE FOLLOWING TO MAKE YOUR DATABASE WORK:
+//set your database name to "houndscout"
+//set your database user to "techhounds"
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")//Make a .env filed with DATABASE_URL linking to your database.
@@ -78,6 +81,7 @@ model Team {
   blue2Matches Match[]     @relation("Blue2Team")
   blue3Matches Match[]     @relation("Blue3Team")
   teamScores   TeamScore[]
+  //picklist     Boolean     @default(true)
 }
 
 //One will need to be created manually to make the system work, but after that you can create them on the admin panel.
@@ -142,7 +146,7 @@ model TeamScore {
   teleopScoringEvents   TeleopScoringEvent[]
   incapSegments         IncapSegment[]
 
-//End
+//Endgame
   climbType             ClimbType?
   timestampClimbStarted Decimal?
   numberRobotsOnChain   Int?       @default(0)
@@ -150,7 +154,7 @@ model TeamScore {
   spotlit               Boolean?   @default(false)
 
 //Postmatch
-  driverSkillRating Int?
+  driverSkillRating Int? 
   playedDefense     Boolean?
   underDefense      Boolean?
   comments          String?
@@ -166,8 +170,24 @@ model TeamScore {
   blue1Match       Match?             @relation("Blue1TeamScore")
   blue2Match       Match?             @relation("Blue2TeamScore")
   blue3Match       Match?             @relation("Blue3TeamScore")
+
   AutoScoringEvent AutoScoringEvent[]
   StageAttempt     StageAttempt[]
+}
+
+//Likely to be merged with AutoScoringEvent.
+model TeleopScoringEvent {
+  id                Int              @id @default(autoincrement())
+  //gamePiece         GamePiece
+  intakeLocation    IntakeLocation
+  scoringLocation   ScoringLocation?
+  dropped           Boolean          @default(false)
+  failedScoring     Boolean          @default(false)
+  timestampPickedUp Decimal
+  timestampScored   Decimal
+
+  teamScoreId Int
+  teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
 }
 
 //Unimplemented. Likely to be merged with TeleopScoringEvent.
@@ -185,19 +205,21 @@ model AutoScoringEvent {
   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
 }
 
-//Likely to be merged with AutoScoringEvent.
-model TeleopScoringEvent {
-  id                Int              @id @default(autoincrement())
-  intakeLocation    IntakeLocation
-  scoringLocation   ScoringLocation?
-  dropped           Boolean          @default(false)
-  failedScoring     Boolean          @default(false)
-  timestampPickedUp Decimal
-  timestampScored   Decimal
+// Merged ScoringEvent idea.
+// model ScoringEvent {
+//   id                Int              @id @default(autoincrement())
+//   section           Section
+//   gamePiece         GamePiece //should be commented out if there's only one type of game piece.
+//   intakeLocation    IntakeLocation
+//   scoringLocation   ScoringLocation?
+//   dropped           Boolean          @default(false)
+//   failedScoring     Boolean          @default(false)
+//   timestampPickedUp Decimal
+//   timestampScored   Decimal
 
-  teamScoreId Int
-  teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
-}
+//   teamScoreId Int
+//   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
+// }
 
 //Unimplemented. All current functionality is currently in teamScore.
 model StageAttempt {
@@ -217,13 +239,16 @@ model IncapSegment {
   TeamScore        TeamScore @relation(fields: [teamScoreId], references: [id])
 }
 
-//These are here so we can set the data type for certain columns to them. Most will need updating.
+//These enums are here so we can set the data type for certain columns to them. I think.
+// This one should be the same between games, just mapped to different locations.
 enum AutoStartingZone {
   ONE
   TWO
   THREE
 }
 
+//This will probably become FieldGamePiece, or merged with IntakeLocation
+//This needs to be updated between games,
 enum AutoGamePiece {
   PRELOAD
   CENTER1
@@ -236,23 +261,32 @@ enum AutoGamePiece {
   CLOSE3
 }
 
+//May be merged with IntakeLocation.
+//Should probably check for updates between games.
+//One per game piece.
 enum IntakeLocation {
   GROUND
-  SOURCE
+  SOURCE//probably change to a more generic term.
+  //PRELOAD
 }
 
+//Needs to be updated.
+//One per game piece.
 enum ScoringLocation {
   SPEAKER
   AMP
   PASS
 }
 
+//Needs to be updated.
+//Change to the more generic EndgameType.
 enum ClimbType {
   NONE
   PARKED
   CLIMBED
 }
 
+//Keep the same.
 enum Section {
   PREMATCH
   AUTO
@@ -260,6 +294,7 @@ enum Section {
   POSTMATCH
 }
 
+//Keep the same.
 enum Station {
   RED1
   RED2
@@ -268,3 +303,9 @@ enum Station {
   BLUE2
   BLUE3
 }
+
+//If the game involves multiple game pieces, use the following as a framework:
+// enum GamePiece {
+//   CORAL
+//   ALGAE
+// }

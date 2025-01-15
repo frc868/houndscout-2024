@@ -14,6 +14,7 @@ interface Props {
   }) => void;
 }
 
+//The part of the TeamManageModal that allows you to create a new team. Basically a form.
 export default function NewTeamModal({
   handleSubmit,
 }: Props) {
@@ -26,14 +27,6 @@ export default function NewTeamModal({
       <hr />
       <Row>
         <Form>
-          <Form.Group className="mb-1">
-            <Form.Label>Team Number</Form.Label>
-            <Form.Control
-              type="number"
-              value={number}
-              onChange={(e) => setNumber(e.target.value)}
-            />
-          </Form.Group>
           <Row>
             <Col>
               <Form.Group className="mb-2">
@@ -47,15 +40,23 @@ export default function NewTeamModal({
             </Col>
             <Col>
               <Form.Group className="mb-2">
-                <Form.Label>Team Home City</Form.Label>
+                <Form.Label>Team Number</Form.Label>
                 <Form.Control
-                  placeholder="e.g. Carmel"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
+                  type="number"
+                  value={number}
+                  onChange={(e) => setNumber(e.target.value)}
                 />
               </Form.Group>
             </Col>
           </Row>
+          <Form.Group className="mb-1">
+            <Form.Label>Team Home City and State</Form.Label>
+            <Form.Control
+              placeholder="e.g. Carmel, Indiana"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+            />
+          </Form.Group>
         </Form>
       </Row>
 

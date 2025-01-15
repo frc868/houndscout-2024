@@ -7,6 +7,7 @@ interface Props {
   handleClick: () => void;
 }
 
+//currently unused.
 export default function StartButton({ enabled, handleClick }: Props) {
   return (
     <div className="d-flex flex-column align-items-center">

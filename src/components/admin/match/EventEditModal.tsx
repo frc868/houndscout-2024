@@ -1,15 +1,10 @@
 import { useState, useEffect } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
-
+import { Event } from "@prisma/client";
 interface Props {
   show: boolean;
-  intName: string;
-  intCode: string;
-  intWeek: string;
-  intStart: string;
-  intEnd: string;
-  intAddress: string;
+  event: Event;
   handleClose: () => void;
   handleSubmit: ({
     name,
@@ -28,14 +23,11 @@ interface Props {
   }) => void;
 }
 
+//This is initially filled in using data from the current event.
+//Currently WIP; see notice in footer.
 export default function EventEditModal({
   show,
-  intName,
-  intCode,
-  intWeek,
-  intStart,
-  intEnd,
-  intAddress,
+  event,
   handleClose,
   handleSubmit,
 }: Props) {
@@ -49,15 +41,14 @@ export default function EventEditModal({
 
   useEffect(() => {
     if (show) {
-      setName(intName);
-      setCode(intCode);
-      setWeek(intWeek);
-      setStart(intStart);
-      setEnd(intEnd);
-      setAddress(intAddress);
+      setName(event.name as string);
+      setCode(event.code as string);
+      setWeek(event.weekNumber?.toString() as string);
+      setStart(event.startDate?.toISOString() as string);
+      setEnd(event.endDate?.toISOString() as string);
+      setAddress(event.address as string);
     }
   }, [show]);
-
   return (
     <Modal centered show={show} size="lg" onHide={handleClose}>
       <Modal.Header closeButton>

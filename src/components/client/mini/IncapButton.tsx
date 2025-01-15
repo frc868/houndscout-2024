@@ -8,6 +8,7 @@ interface Props {
   className?: string;
 }
 
+//Incap button, currently unused.
 export default function IncapButton({ active, handleClick, className }: Props) {
   return (
     <div className={`d-flex justify-content-center ${className || ""}`}>

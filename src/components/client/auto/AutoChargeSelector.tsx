@@ -8,6 +8,7 @@ interface Props {
   handleSelection: (selection: "balanced" | "docked" | "failed" | null) => void;
 }
 
+//This was from Charged Up. It's similar to an endgame selector, so I'll document it there.
 export default function AutoChargeSelector({
   selected,
   handleSelection,

@@ -22,8 +22,9 @@ export default function EventManageModal({
 }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const [showEventNew, setShowEventNew] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); //I put a small loading animation jsut for user feedback.
 
+  //Everything managing events.
   return (
     <Modal centered show={show} size="lg" onHide={handleClose}>
       
@@ -40,6 +41,7 @@ export default function EventManageModal({
       </Modal.Header>
       <Modal.Body>
         <Button
+        //This first part opens an extra form to create a new event.
         className="edit-button mx-3 mb-3"
         onClick={() => setShowEventNew(!showEventNew)}
         >
@@ -63,6 +65,7 @@ export default function EventManageModal({
         )}
         <ListGroup>
           {eventList.map((event: Event)=>(
+            //Each of these event is represented by some basic info and buttons to set as active and delete them.
             <ListGroup.Item className={`${event.code === activeEvent && "fw-bold table-secondary"}`}>
               Week {event.weekNumber}: {event.name} ({event.code})
               <Button

@@ -13,6 +13,7 @@ interface Props {
   handleClose: () => void;
 }
 
+//Lists teams and allows you to delete and create them. Add team to event function WIP.
 export default function TeamManageModal({
   show,
   teams,
@@ -79,7 +80,7 @@ export default function TeamManageModal({
                   }
                 }
               >
-                Select
+                Add to Event
               </Button>
               <DeleteButton
                 variant={

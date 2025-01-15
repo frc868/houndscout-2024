@@ -5,6 +5,7 @@ interface Props {
   eventName: string;
 }
 
+//Just a small amount of info.
 export default function TopBar({ eventName }: Props) {
   return (
     <>
@@ -13,7 +14,7 @@ export default function TopBar({ eventName }: Props) {
           HoundScout Viewer
         </Navbar.Brand>
         <Navbar.Text className="justify-self-end text-end me-4 w-100 fs-6 fw-medium font-monospace">
-          {eventName}
+          Event Name: {eventName}
         </Navbar.Text>
       </Navbar>
     </>

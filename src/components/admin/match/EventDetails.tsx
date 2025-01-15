@@ -10,6 +10,7 @@ interface Props {
   event: Event;
 }
 
+//Displays details of the current event. Not too much to it.
 export default function EventDetails({ event }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const [showEventEdit, setShowEventEdit] = useState(false);
@@ -18,12 +19,7 @@ export default function EventDetails({ event }: Props) {
     <div className="d-flex flex-column align-items-center">
       <EventEditModal
         show={showEventEdit}
-        intName={event.name as string}
-        intCode={event.code as string}
-        intWeek={event.weekNumber?.toString() as string}
-        intStart={event.startDate?.toISOString() as string}
-        intEnd={event.endDate?.toISOString() as string}
-        intAddress={event.address as string}
+        event={event as Event}
         handleClose={() => setShowEventEdit(false)}
         handleSubmit={async (payload) => {
           await dispatch(

@@ -6,6 +6,7 @@ interface Props {
   handleSelection: (selection: IntakeLocation) => void;
 }
 
+//Used to indicate where an game piece intake was.
 export default function TeleopIntakePanel({
   selected,
   handleSelection,

@@ -1,13 +1,14 @@
 /* eslint-disable react/display-name */
 import React, { useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
-import { Scouter, Team, deleteTeamAsync, uploadTBADataAsync } from "@/redux/adminDataSlice";
+import { deleteTeamAsync, uploadTBADataAsync } from "@/redux/adminDataSlice";
 // import { deleteScouterAsync } from "@/redux/mainDataSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import TeamManageModal from "@/components/admin/match/TeamManageModal";
 import ScouterManageModal from "@/components/admin/match/ScouterManageModal";
 import TBADataModal from "../data/TBADataModal";
+import { Scouter, Team } from "@/lib/enums"
 
 interface Props {
   scouters: Scouter[];
@@ -15,6 +16,7 @@ interface Props {
   eventCode: string;
 }
 
+//Many of these link to other modals, others call certain apis.
 export default function Controls({ scouters, teams, eventCode }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const [showTeamManage, setShowTeamManage] = useState(false);

@@ -1,44 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { Event } from "@prisma/client"
-
-export interface Match {
-  name: string;
-  number: number;
-  teamNumbers: {
-    red1: number;
-    red2: number;
-    red3: number;
-    blue1: number;
-    blue2: number;
-    blue3: number;
-  };
-  scouters: {
-    red1: Scouter;
-    red2: Scouter;
-    red3: Scouter;
-    blue1: Scouter;
-    blue2: Scouter;
-    blue3: Scouter;
-  };
-}
-
-export interface Scouter {
-  id: number;
-  name: string;
-}
-
-export interface Team {
-  id: number;
-  number: number;
-  name: string;
-  events?: Event[];
-}
-
-export interface Heartbeat {
-  time: number;
-  section: string;
-}
+import { Match, Scouter, Team, Heartbeat } from "@/lib/enums";
 
 export interface AdminData {
   matches?: Match[];
@@ -62,6 +25,7 @@ export interface AdminData {
   };
 }
 
+//Most of these async thunks just post a call to an api folder.
 export const getEventsAsync = createAsyncThunk(
   "adminData/getEvents",
   async () => {
@@ -127,7 +91,7 @@ export const getMatchesAsync = createAsyncThunk(
   }
 );
 
-//Move to mainDataSlice.
+//Move anything active to mainDataSlice.
 export const setActiveMatchAsync = createAsyncThunk(
   "adminData/setActiveMatch",
   async ({
@@ -276,6 +240,10 @@ export const getHeartbeatsAsync = createAsyncThunk(
   }
 );
 
+
+// initialState defines the blank state, which will be filled in below.
+//For AdminData, this contains the anything on the admin page that isn't active events or the heartbeats
+//(At least I think that's what it should be, but I probably messed something up with my updates.)
 const initialState: AdminData = {
   matches: undefined,
   matchesStatus: "idle",
@@ -298,11 +266,16 @@ const initialState: AdminData = {
   },
 };
 
+
 export const mainData = createSlice({
   name: "mainData",
   initialState: initialState,
-  reducers: {},
+  reducers: {},//This is used for syncrhonous actions. See mainDataSlice.
   extraReducers: (builder) => {
+    //Each builder represents a single async thunk that fills out the state.
+    //When one of the functions is called, it calls the case responding to the current status of the thunk.
+    //When fufilled, matches the data returned to the state.
+    //Still not sure of the exact details though.
     builder
       .addCase(getMatchesAsync.pending, (state) => {
         state.matchesStatus = "waiting";

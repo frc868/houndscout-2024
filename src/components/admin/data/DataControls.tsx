@@ -9,7 +9,7 @@ import { AppDispatch } from "@/redux/store";
 interface Props {
   eventCode: string;
 }
-
+//I moved a couple functions here, but for documentation see the MatchControls page.
 export default function Controls({ eventCode }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const [showTBADataModal, setShowTBADataModal] = useState(false);

@@ -6,6 +6,7 @@ interface Props {
   handleSubmit: ({name} : {name: string;}) => void;
 }
 
+//The part of the ScouterManageModal that allows you to create a new scouter. Basically a form.
 export default function NewScouterModal({
   handleSubmit,
 }: Props) {
@@ -19,7 +20,7 @@ export default function NewScouterModal({
           <Form.Group className="mb-3">
             <Form.Label>Scouter Name:</Form.Label>
             <Form.Control
-              placeholder="e.g. 520 E Main St"
+              placeholder="e.g. David"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />

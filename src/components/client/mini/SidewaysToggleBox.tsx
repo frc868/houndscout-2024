@@ -5,6 +5,7 @@ interface Props {
   className?: string;
 }
 
+//Checkbox with the header on the side, for some reason.
 export default function ToggleBox({
   name,
   enabled,

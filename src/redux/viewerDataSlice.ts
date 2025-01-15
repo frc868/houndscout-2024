@@ -16,6 +16,8 @@ export const getRankingsAsync = createAsyncThunk(
     return res.data.rankings;
   }
 );
+
+//This one's fairly simple. Just one thunk that gets data to be sent to the viewer page.
 const initialState: ViewerData = {
   rankings: undefined,
   rankingsStatus: "idle",

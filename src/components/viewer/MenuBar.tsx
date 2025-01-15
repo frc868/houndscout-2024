@@ -6,6 +6,7 @@ interface Props {
   handleTabSelect: (tab: ViewerTab) => void;
 }
 
+//The side bar with the tab selctor.
 export default function MenuBar({ selectedTab, handleTabSelect }: Props) {
   return (
     <>

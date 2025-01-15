@@ -1,9 +1,9 @@
-// Currently unimplemented, but it creates an incap segment to the database.
-// I think it's supposed to put in both the start and end times,
-// so make sure you get both the start and end times before calling this.
+//WIP
+//Creates a ScoringEvent.
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+//Currently unimplemented.
 export async function POST(
   req: Request,
   { params }: { params: { code: string; name: string; station: string } }
@@ -19,11 +19,14 @@ export async function POST(
       data: {
         [`${params.station}TeamScore`]: {
           update: {
-            incapSegments: {
+            teleopScoringEvents: {
               create: {
-                timestampStarted: data.timestampStarted,
-                timestampEnded: data.timestampEnded,
-                full: data.full,
+                intakeLocation: data.intakeLocation,
+                scoringLocation: data.scoringLocation || undefined,
+                dropped: data.failed || false,
+                failedScoring: data.dropped || false,
+                timestampPickedUp: data.timestampPickedUp,
+                timestampScored: data.timestampScored,
               },
             },
           },
@@ -32,7 +35,7 @@ export async function POST(
       include: {
         [`${params.station}TeamScore`]: {
           include: {
-            incapSegments: true,
+            teleopScoringEvents: true,
           },
         },
       },

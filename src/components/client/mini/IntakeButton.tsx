@@ -6,6 +6,7 @@ interface Props {
   className?: string;
 }
 
+//A picture of the game piece used to indicate an intake location in teleop.
 export default function IntakeButton({
   selected,
   handleSelection,

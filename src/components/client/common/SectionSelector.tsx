@@ -6,6 +6,7 @@ interface Props {
   handleSelection: (selection: Section) => void;
 }
 
+//The tab selector that lets you switch between different parts of the client page.
 export default function SectionSelector({ selected, handleSelection }: Props) {
   return (
     <div className="d-flex justify-content-evenly mx-5 py-4">

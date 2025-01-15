@@ -7,10 +7,7 @@ import { Ranking } from "@/lib/enums";
 interface Props {
   rankings: Ranking[];
 }
-export default function RankingsContent({
-  rankings
-}: Props) {
-  const viewerData = useSelector((state: ReduxState) => state?.viewerData);
+export default function RankingsContent({rankings}: Props) {
   const [sortField, setSortField] = useState<keyof Ranking | null>(null);
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
@@ -26,12 +23,13 @@ export default function RankingsContent({
       if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
       return 0;
     });
-  }, [viewerData.rankings, sortField, sortDirection]);
+    
+  }, [rankings, sortField, sortDirection]);
 
   // Calculate max values for coloring
   const maxValues = useMemo(() => {
     const maxes: Record<string, number> = {};
-    viewerData.rankings?.forEach((r: Ranking) => {
+    [...rankings].forEach((r: Ranking) => {
       Object.entries(r).forEach(([key, value]) => {
         if (typeof value === "number" && key !== "team") {
           maxes[key] = Math.max(maxes[key] || 0, value);
@@ -39,7 +37,7 @@ export default function RankingsContent({
       });
     });
     return maxes;
-  }, [viewerData.rankings]);
+  }, [rankings]);
 
   // Handler to sort by column
   const handleSort = (field: keyof Ranking) => {
@@ -119,8 +117,21 @@ export default function RankingsContent({
         <tbody>
           {sortedRankings.map((r, idx) => (
             <tr key={r.teamNumber}>
-              <td>{idx}</td>
-              {Object.entries(r).map(([key, value]) =>
+              <td>{r.teamNumber}</td>
+              <td>{r.mobility}</td>
+              <td>{r.autoSpeaker}</td>
+              <td>{r.autoMisses}</td>
+              <td>WIP</td>
+              <td>{r.speaker}</td>
+              <td>{r.speakerMisses}</td>
+              <td>{r.amp}</td>
+              <td>{r.ampMisses}</td>
+              <td>{r.climb}</td>
+              <td>{r.ensemble}</td>
+              <td>{r.trap}</td>
+              <td>{r.incap}</td>
+              <td>{r.defense}</td>
+              {/* {Object.entries(r).map(([key, value]) =>
                 key !== "team" ? (
                   <td
                     key={key}
@@ -131,7 +142,7 @@ export default function RankingsContent({
                 ) : (
                   <td key={key}>{value}</td>
                 )
-              )}
+              )} */}
             </tr>
           ))}
         </tbody>

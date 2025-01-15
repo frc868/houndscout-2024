@@ -14,6 +14,7 @@ interface Props {
   handleClose: () => void;
 }
 
+//So far, this modal just lists scouters, allows you to delete them, and allows you to create the,.
 export default function ScouterManageModal({
   show,
   scouters,

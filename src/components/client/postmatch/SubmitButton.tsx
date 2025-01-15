@@ -6,6 +6,7 @@ interface Props {
   handleClick: () => void;
 }
 
+//Green button used to submit postmatch data.
 export default function SubmitButton({ handleClick }: Props) {
   return (
     <div className="d-flex flex-column align-items-center">

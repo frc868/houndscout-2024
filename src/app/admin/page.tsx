@@ -9,9 +9,6 @@ import {
 } from "@/redux/mainDataSlice";
 import AdminStatusBar from "@/components/admin/AdminStatusBar";
 import {
-  Match,
-  Scouter,
-  Team,
   getEventsAsync,
   getHeartbeatsAsync,
   getMatchesAsync,
@@ -27,6 +24,9 @@ import AdminControls from "@/components/admin/match/MatchControls";
 import { Event } from "@prisma/client";
 import EventDetails from "@/components/admin/match/EventDetails";
 import EventManageModal from "@/components/admin/match/EventManageModal";
+import {Match,
+  Scouter,
+  Team } from "@/lib/enums";
 
 export default function Admin() {
   //Accesses Redux state. You can find more details in mainDataSlice and adminDataSlice.
