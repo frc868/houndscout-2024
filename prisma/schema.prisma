@@ -1,7 +1,6 @@
-//Once you've set up your database
-
-//npx prisma migrate dev: updates the layout of your database with this schema.
-//npx prisma studio: starts Prisma Studio, allowing you to view and edit data on your database directly.
+//Once you've set up your database:
+//*npx prisma migrate dev: updates the layout of your database with this schema.
+//*npx prisma studio: starts Prisma Studio, allowing you to view and edit data on your database directly.
 
 //Don't need to mess with the generators.
 generator client {
@@ -134,29 +133,34 @@ model TeamScore {
   teamId Int
   team   Team @relation(fields: [teamId], references: [id])
 
-//Auton
+//Prematch
   preloaded             Boolean              @default(true)
-  leftStartingZone      Boolean              @default(false)
   autoStartingZone      AutoStartingZone?
-  autoGamePieces        AutoGamePiece[] //The pieces the robot attempted to pick up
-  missingAutoGamePieces AutoGamePiece[] //The pieces the robot attempted but failed to pick up
-  autoGamePiecesScored  Int                  @default(0) //The overall pieces scored.
+
+//Auton
+  leftStartingZone      Boolean              @default(false)
+  // autoGamePieces        AutoGamePiece[] //The pieces the robot attempted to pick up; comment out
+  // missingAutoGamePieces AutoGamePiece[] //The pieces the robot attempted but failed to pick up; comment out
+  // autoGamePiecesScored  Int                  @default(0) //The overall pieces scored; comment out
+  
+  autoCoralScoringEvents     AutoCoralScoringEvent[]
+  autoAlgaeScoringEvents     AutoAlgaeScoringEvent[]
 
 //Teleop
-  teleopScoringEvents   TeleopScoringEvent[]
+  teleopCoralScoringEvents   TeleopCoralScoringEvent[]
+  teleopAlgaeScoringEvents   TeleopAlgaeScoringEvent[]
+
+
   incapSegments         IncapSegment[]
 
 //Endgame
-  climbType             ClimbType?
-  timestampClimbStarted Decimal?
-  numberRobotsOnChain   Int?       @default(0)
-  scoredInTrap          Boolean?   @default(false)
-  spotlit               Boolean?   @default(false)
+  endgameType             EndgameType?
+  endgameSuccess          Boolean?   @default(false)
 
 //Postmatch
-  driverSkillRating Int? 
+  driverSkillRating Int?
+  result            Result?
   playedDefense     Boolean?
-  underDefense      Boolean?
   comments          String?
 
   submitted Boolean @default(false)
@@ -170,17 +174,27 @@ model TeamScore {
   blue1Match       Match?             @relation("Blue1TeamScore")
   blue2Match       Match?             @relation("Blue2TeamScore")
   blue3Match       Match?             @relation("Blue3TeamScore")
-
-  AutoScoringEvent AutoScoringEvent[]
-  StageAttempt     StageAttempt[]
 }
 
-//Likely to be merged with AutoScoringEvent.
-model TeleopScoringEvent {
+//The following four models are based on scoring events. There's one for each combination of phase and game piece.
+//Should be roughly the same aside from the different enums used.
+model AutoCoralScoringEvent {
   id                Int              @id @default(autoincrement())
-  //gamePiece         GamePiece
-  intakeLocation    IntakeLocation
-  scoringLocation   ScoringLocation?
+  intakeLocation    AutoCoralIntakeLocation
+  scoringLevel      CoralScoringLevel?//If the piece was dropped, anything scoring related won't be filled in.
+  scoringSide       AutoCoralScoringSide?
+  dropped           Boolean          @default(false) //For dropping the piece while not scoring
+  failedScoring     Boolean          @default(false) //For trying to score and failing
+  timestampPickedUp Decimal //The time the game piece was selected, or the start time if going from preload.
+  timestampScored   Decimal //Just do this based on whatever scoring input was clicked first for accuracy purposes.
+
+  teamScoreId Int
+  teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
+}
+model AutoAlgaeScoringEvent {
+  id                Int              @id @default(autoincrement())
+  intakeLocation    AutoAlgaeIntakeLocation
+  scoringLocation   AlgaeScoringLocation?
   dropped           Boolean          @default(false)
   failedScoring     Boolean          @default(false)
   timestampPickedUp Decimal
@@ -190,13 +204,11 @@ model TeleopScoringEvent {
   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
 }
 
-//Unimplemented. Likely to be merged with TeleopScoringEvent.
-model AutoScoringEvent {
+model TeleopCoralScoringEvent {
   id                Int              @id @default(autoincrement())
-  gamePiece         AutoGamePiece
-  scoringLocation   ScoringLocation?
-  noNote            Boolean          @default(false)
-  missed            Boolean          @default(false)
+  intakeLocation    TeleopCoralIntakeLocation
+  scoringLocation   CoralScoringLevel?
+  dropped           Boolean          @default(false)
   failedScoring     Boolean          @default(false)
   timestampPickedUp Decimal
   timestampScored   Decimal
@@ -205,25 +217,14 @@ model AutoScoringEvent {
   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
 }
 
-// Merged ScoringEvent idea.
-// model ScoringEvent {
-//   id                Int              @id @default(autoincrement())
-//   section           Section
-//   gamePiece         GamePiece //should be commented out if there's only one type of game piece.
-//   intakeLocation    IntakeLocation
-//   scoringLocation   ScoringLocation?
-//   dropped           Boolean          @default(false)
-//   failedScoring     Boolean          @default(false)
-//   timestampPickedUp Decimal
-//   timestampScored   Decimal
-
-//   teamScoreId Int
-//   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
-// }
-
-//Unimplemented. All current functionality is currently in teamScore.
-model StageAttempt {
-  id Int @id @default(autoincrement())
+model TeleopAlgaeScoringEvent {
+  id                Int              @id @default(autoincrement())
+  intakeLocation    TeleopAlgaeIntakeLocation
+  scoringLocation   AlgaeScoringLocation?
+  dropped           Boolean          @default(false)
+  failedScoring     Boolean          @default(false)
+  timestampPickedUp Decimal
+  timestampScored   Decimal
 
   teamScoreId Int
   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
@@ -247,43 +248,62 @@ enum AutoStartingZone {
   THREE
 }
 
-//This will probably become FieldGamePiece, or merged with IntakeLocation
-//This needs to be updated between games,
-enum AutoGamePiece {
+enum AutoCoralIntakeLocation {
   PRELOAD
-  CENTER1
-  CENTER2
-  CENTER3
-  CENTER4
-  CENTER5
-  CLOSE1
-  CLOSE2
-  CLOSE3
+  GROUND1 //Numbers go from top to bottom
+  GROUND2
+  GROUND3
 }
 
-//May be merged with IntakeLocation.
-//Should probably check for updates between games.
-//One per game piece.
-enum IntakeLocation {
+enum AutoAlgaeIntakeLocation {
+  REEF
+  GROUND1
+  GROUND2
+  GROUND3
+}
+
+enum TeleopCoralIntakeLocation {
   GROUND
-  SOURCE//probably change to a more generic term.
-  //PRELOAD
+  STATION
+}
+
+enum TeleopAlgaeIntakeLocation {
+  GROUND
+  REEF
+}
+
+enum CoralScoringLevel {
+  LEVEL1
+  LEVEL2
+  LEVEL3
+  LEVEL4
+}
+
+enum AutoCoralScoringSide {
+  SIDE1
+  SIDE2
+  SIDE3//I think 3 and 4 should be the closest to the starting line, just for consistency.
+  SIDE4
+  SIDE5
+  SIDE6
+}
+
+enum AlgaeScoringLocation {
+  NET
+  PROCESSOR
 }
 
 //Needs to be updated.
-//One per game piece.
-enum ScoringLocation {
-  SPEAKER
-  AMP
-  PASS
-}
-
-//Needs to be updated.
-//Change to the more generic EndgameType.
-enum ClimbType {
+enum EndgameType {
   NONE
   PARKED
-  CLIMBED
+  SHALLOW
+  DEEP
+}
+enum Result {
+  WIN
+  TIE
+  LOSS
 }
 
 //Keep the same.
@@ -293,8 +313,6 @@ enum Section {
   TELEOP
   POSTMATCH
 }
-
-//Keep the same.
 enum Station {
   RED1
   RED2
@@ -304,7 +322,7 @@ enum Station {
   BLUE3
 }
 
-//If the game involves multiple game pieces, use the following as a framework:
+//If the game involves multiple game pieces with similar intakes and scoring, use the following as a framework:
 // enum GamePiece {
 //   CORAL
 //   ALGAE

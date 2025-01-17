@@ -61,9 +61,6 @@ export default function Controls({ scouters, teams, eventCode }: Props) {
         Generate Scouter Schedule
       </Button>
       <Row className="">
-        <Button size="lg" href="/api/v1/export" className="text-center mx-auto mb-3">
-          Export Database
-        </Button>
         <Button
           variant="secondary"
           className="mb-2"
@@ -73,6 +70,13 @@ export default function Controls({ scouters, teams, eventCode }: Props) {
         </Button>
       </Row>
       <h3 className="text-center mb-3">Export:</h3>
+      <Button
+        variant="secondary"
+        href={`/api/v1/export`}
+        className="mb-2 mx-1"
+      >
+        Postgres Dump
+      </Button>
       <Button
         variant="secondary"
         href={`/api/v1/events/${eventCode}/statistics/all/csv`}
