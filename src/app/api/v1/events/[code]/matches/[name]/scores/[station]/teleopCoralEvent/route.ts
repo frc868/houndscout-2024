@@ -1,8 +1,8 @@
-// Currently unimplemented, but it creates an incap segment to the database.
-// This requires both the start and end times; make sure you get both before calling this.
+//Creates a teleopCoralScoringEvent.
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+//scoresSlice/sendTeleopEvent
 export async function POST(
   req: Request,
   { params }: { params: { code: string; name: string; station: string } }
@@ -18,11 +18,14 @@ export async function POST(
       data: {
         [`${params.station}TeamScore`]: {
           update: {
-            incapSegments: {
+            teleopCoralScoringEvents: {
               create: {
-                timestampStarted: data.timestampStarted,
-                timestampEnded: data.timestampEnded,
-                full: data.full,
+                intakeLocation: data.intakeLocation,
+                scoringLocation: data.scoringLocation || undefined,
+                dropped: data.dropped || false,
+                failedScoring: data.failedScoring || false,
+                timestampPickedUp: data.timestampPickedUp,
+                timestampScored: data.timestampScored,
               },
             },
           },
@@ -31,7 +34,7 @@ export async function POST(
       include: {
         [`${params.station}TeamScore`]: {
           include: {
-            incapSegments: true,
+            teleopCoralScoringEvents: true,
           },
         },
       },

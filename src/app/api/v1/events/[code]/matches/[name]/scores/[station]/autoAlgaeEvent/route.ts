@@ -1,9 +1,7 @@
-//WIP
-//Creates a ScoringEvent.
+//Creates an autoAlgaeScoringEvent.
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-//Currently unimplemented.
 export async function POST(
   req: Request,
   { params }: { params: { code: string; name: string; station: string } }
@@ -19,12 +17,12 @@ export async function POST(
       data: {
         [`${params.station}TeamScore`]: {
           update: {
-            teleopScoringEvents: {
+            autoAlgaeScoringEvents: {
               create: {
                 intakeLocation: data.intakeLocation,
                 scoringLocation: data.scoringLocation || undefined,
-                dropped: data.failed || false,
-                failedScoring: data.dropped || false,
+                dropped: data.dropped || false,
+                failedScoring: data.failedScoring || false,
                 timestampPickedUp: data.timestampPickedUp,
                 timestampScored: data.timestampScored,
               },
@@ -35,7 +33,7 @@ export async function POST(
       include: {
         [`${params.station}TeamScore`]: {
           include: {
-            teleopScoringEvents: true,
+            autoAlgaeScoringEvents: true,
           },
         },
       },

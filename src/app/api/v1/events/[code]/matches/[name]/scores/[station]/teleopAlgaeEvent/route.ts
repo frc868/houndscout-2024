@@ -1,7 +1,8 @@
-//Edits anything related to the endgame.
+//Creates a teleopAlgaeScoringEvent.
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+//scoresSlice/sendTeleopEvent
 export async function POST(
   req: Request,
   { params }: { params: { code: string; name: string; station: string } }
@@ -17,12 +18,14 @@ export async function POST(
       data: {
         [`${params.station}TeamScore`]: {
           update: {
-            stageAttempts: {
+            teleopAlgaeScoringEvents: {
               create: {
-                timestampStarted: data.timestampStarted,
-                numberRobotsOnChain: data.numberRobotsOnChain,
-                scoredInTrap: data.scoredInTrap,
-                spotlit: data.spotlit,
+                intakeLocation: data.intakeLocation,
+                scoringLocation: data.scoringLocation || undefined,
+                dropped: data.dropped || false,
+                failedScoring: data.failedScoring || false,
+                timestampPickedUp: data.timestampPickedUp,
+                timestampScored: data.timestampScored,
               },
             },
           },
@@ -31,7 +34,7 @@ export async function POST(
       include: {
         [`${params.station}TeamScore`]: {
           include: {
-            chargeStationAttempts: true,
+            teleopAlgaeScoringEvents: true,
           },
         },
       },

@@ -1,4 +1,5 @@
-//Currently unimplemented, but it allows you to create an autoScoringEvent. Will probably be merged with the teleopEvent one.
+//Creates an endgame attempt.
+//Currently unused; all functionality is done through the route on the next highest level.
 
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
@@ -18,15 +19,14 @@ export async function POST(
       data: {
         [`${params.station}TeamScore`]: {
           update: {
-            autoScoringEvents: {
+            stageAttempts: {
               create: {
-                gamePiece: data.gamePiece,
-                scoringLocation: data.scoringLocation || undefined,
-                noNote: data.noNote || false,
-                missed: data.missed || false,
-                failedScoring: data.failedScoring || false,
-                timestampPickedUp: data.timestampPickedUp,
-                timestampScored: data.timestampScored,
+                timestampStarted: data.timestampStarted,
+                climbType: data.climbType,
+  
+                numberRobotsOnChain: data.numberRobotsOnChain,
+                scoredInTrap: data.scoredInTrap,
+                spotlit: data.spotlit,
               },
             },
           },
@@ -35,7 +35,7 @@ export async function POST(
       include: {
         [`${params.station}TeamScore`]: {
           include: {
-            autoScoringEvents: true,
+            chargeStationAttempts: true,
           },
         },
       },

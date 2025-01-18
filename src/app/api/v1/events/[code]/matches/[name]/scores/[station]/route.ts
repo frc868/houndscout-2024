@@ -55,19 +55,18 @@ export async function PATCH(
         [`${params.station.toLowerCase()}TeamScore`]: {
           update: {
             preloaded: data.preloaded,
-            leftStartingZone: data.leftStartingZone,
-            driverSkillRating: data.driverSkillRating,
-            playedDefense: data.playedDefense,
-            underDefense: data.underDefense,
-            comments: data.comments,
             autoStartingZone: data.autoStartingZone,
-            autoGamePieces: data.autoGamePieces,
-            missingAutoGamePieces: data.missingAutoGamePieces,
-            autoGamePiecesScored: data.autoGamePiecesScored,
-            climbType: data.climbType,
-            numberRobotsOnChain: data.numberRobotsOnChain,
-            scoredInTrap: data.scoredInTrap,
-            spotlit: data.spotlit,
+
+            leftStartingZone: data.leftStartingZone,
+
+            endgameType: data.endgameType,
+            endgameSuccess: data.endgameSuccess,
+
+            driverSkillRating: data.driverSkillRating,
+            result: data.result,
+            playedDefense: data.playedDefense,
+            comments: data.comments,
+            
             submitted: data.submitted,
           },
         },

@@ -1,8 +1,8 @@
-//Creates a teleopScoringEvent. Will probably be merged with the autoEvent one.
+//Creates an autoCoralScoringEvent.
+
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-//scoresSlice/sendTeleopEvent
 export async function POST(
   req: Request,
   { params }: { params: { code: string; name: string; station: string } }
@@ -18,12 +18,13 @@ export async function POST(
       data: {
         [`${params.station}TeamScore`]: {
           update: {
-            teleopScoringEvents: {
+            autoCoralScoringEvents: {
               create: {
                 intakeLocation: data.intakeLocation,
-                scoringLocation: data.scoringLocation || undefined,
-                dropped: data.failed || false,
-                failedScoring: data.dropped || false,
+                scoringLevel: data.scoringLevel || undefined,
+                scoringSide: data.scoringSide || undefined,
+                dropped: data.dropped || false,
+                failedScoring: data.failedScoring || false,
                 timestampPickedUp: data.timestampPickedUp,
                 timestampScored: data.timestampScored,
               },
@@ -34,7 +35,7 @@ export async function POST(
       include: {
         [`${params.station}TeamScore`]: {
           include: {
-            teleopScoringEvents: true,
+            autoCoralScoringEvents: true,
           },
         },
       },
