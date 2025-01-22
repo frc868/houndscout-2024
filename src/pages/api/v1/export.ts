@@ -24,8 +24,8 @@ export default async function handler(
     }
 
     // Database credentials and details
-    const dbName = "houndscout";
-    const dbUser = "techhounds";
+    const dbName = "postgres";
+    const dbUser = "postgres";
     // Customize these details according to your PostgreSQL setup
 
     // Construct the pg_dump command
