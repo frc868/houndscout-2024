@@ -45,10 +45,18 @@ export default function Viewer() {
         <TopBar eventName="2024inmis" />
         
         {!ready && (
-          <Row style={{ paddingTop: "64px", color: "white" }}>
-            <div className="ps-0 pe-0 m-4 bg-dark rounded-3 font-monospace text-center">
-              <h1>Loading...</h1>
-            </div>
+          <Row style={{ paddingTop: "64px", color: "white" }} className="ps-0 pe-0 m-4 bg-dark rounded-3 font-monospace text-center">
+          <div className="vh-30 d-flex justify-content-center mt-5">
+            <h1>Waiting...</h1>
+          </div>
+          <div className="vh-3 d-flex justify-content-center mt-5">
+            <h5>If this screen persists, please consult Prisma Studio and ensure the following are true:</h5>
+          </div>
+          <ul className="vh-1 d-flex flex-column justify-content-center mt-3">
+            <li className="vh-1 d-flex justify-content-center mt-1">1. In Server, activeEvent has been set to a created Event.</li>
+            <li className="vh-1 d-flex justify-content-center mt-1">2. A Match has been created and linked to the active event.</li>
+            <li className="vh-1 d-flex justify-content-center mt-1">3. A Team has been created and linked to the active event.</li>
+          </ul>
           </Row>
         )}
         {ready && (

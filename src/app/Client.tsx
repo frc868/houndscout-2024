@@ -61,9 +61,19 @@ export default function Client({ station }: Props) {
         isConnected={true}
       />
       {!ready && (
-        <div className="vh-100 d-flex justify-content-center mt-5">
+        <>
+        <div className="vh-30 d-flex justify-content-center mt-5">
           <h1>Waiting...</h1>
         </div>
+        <div className="vh-3 d-flex justify-content-center mt-5">
+          <h5>If this screen persists, please have the lead scouter consult Prisma Studio and ensure the following are true (Current Station: {station}):</h5>
+        </div>
+        <ul className="vh-1 d-flex flex-column justify-content-center mt-3">
+          <li className="vh-1 d-flex justify-content-center mt-1">1. In Server, activeMatch has been set to a created Match. </li>
+          <li className="vh-1 d-flex justify-content-center mt-1">2. In the current activeMatch, a Scouter has been linked to this station.</li>
+          <li className="vh-1 d-flex justify-content-center mt-1">3. In the current activeMatch, a Team has been linked to this station:</li>
+        </ul>
+      </>
       )}
       <div
         className={`${submitted && "bg-submitted"}`}
