@@ -256,7 +256,12 @@ enum AutoCoralIntakeLocation {
 }
 
 enum AutoAlgaeIntakeLocation {
-  REEF
+  REEF1
+  REEF2
+  REEF3 //These correspond to the sides in AutoCoralScoringSide below.
+  REEF4
+  REEF5
+  REEF6
   GROUND1
   GROUND2
   GROUND3
@@ -282,7 +287,7 @@ enum CoralScoringLevel {
 enum AutoCoralScoringSide {
   SIDE1
   SIDE2
-  SIDE3//I think 3 and 4 should be the closest to the starting line, just for consistency.
+  SIDE3//I think these should go clockwise with 3 and 4 the closest to the starting line, just for consistency.
   SIDE4
   SIDE5
   SIDE6

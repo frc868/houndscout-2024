@@ -1,4 +1,5 @@
-import { TeamScore, TeleopScoringEvent, IncapSegment } from "@prisma/client";
+//A bunch of enums used throughout the program
+import { TeamScore, AutoCoralScoringEvent, AutoAlgaeScoringEvent, TeleopCoralScoringEvent, TeleopAlgaeScoringEvent, IncapSegment } from "@prisma/client";
 
 export enum Alliance {
   RED,
@@ -9,21 +10,28 @@ export interface Ranking {
   teamNumber: number;
   teamName: string;
   teamScores: (TeamScore & {
-    teleopScoringEvents: TeleopScoringEvent[];
+    autoCoralScoringEvents: AutoCoralScoringEvent[];
+    autoAlgaeScoringEvents: AutoAlgaeScoringEvent[];
+    teleopCoralScoringEvents: TeleopCoralScoringEvent[];
+    teleopAlgaeScoringEvents: TeleopAlgaeScoringEvent[];
     incapSegments: IncapSegment[];
   })[];
   mobility: number;
-  autoSpeaker: number;
-  autoMisses: number;
-  speaker: number;
-  speakerMisses: number;
-  amp: number;
-  ampMisses: number;
-  pass: number;
-  passMisses: number;
-  climb: number;
-  ensemble: number;
-  trap: number;
+  autoCoralLevel1Scored: number;
+  autoCoralLevel2Scored: number;
+  autoCoralLevel3Scored: number;
+  autoCoralLevel4Scored: number;
+  autoAlgaeNetScored: number;
+  autoAlgaeProcessorScored: number;
+  teleopCoralLevel1Scored: number;
+  teleopCoralLevel2Scored: number;
+  teleopCoralLevel3Scored: number;
+  teleopCoralLevel4Scored: number;
+  teleopAlgaeNetScored: number;
+  teleopAlgaeProcessorScored: number;
+  parked: number;
+  shallow: number;
+  deep: number;
   incap: number;
   defense: number;
   total: number;
