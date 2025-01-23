@@ -83,14 +83,12 @@ export default function Admin() {
             <h1>Waiting...</h1>
           </div>
           <div className="vh-3 d-flex justify-content-center mt-5">
-            <h5>If you haven't done so already, please go to Prisma Studio and do the following:</h5>
+            <h5>If this screen persists, please consult Prisma Studio and ensure the following are true:</h5>
           </div>
           <ul className="vh-1 d-flex flex-column justify-content-center mt-3">
-            <li className="vh-1 d-flex justify-content-center mt-1">1. Create and fill in 6 Heartbeats, one for each station.</li>
-            <li className="vh-1 d-flex justify-content-center mt-1">2. Create and fill in an Event.</li>
-            <li className="vh-1 d-flex justify-content-center mt-1">3. Create a row in Server and set the Event to this event.</li>
-            <li className="vh-1 d-flex justify-content-center mt-1">4. Create a Team for every team in the event and fill in team number, name, and location</li>
-            <li className="vh-1 d-flex justify-content-center mt-1">5. Ensure each team is connected to the event.</li>
+            <li className="vh-1 d-flex justify-content-center mt-1">1. In Server, activeEvent has been set to a created Event.</li>
+            <li className="vh-1 d-flex justify-content-center mt-1">2. A Match has been created and linked to the active event.</li>
+            <li className="vh-1 d-flex justify-content-center mt-1">3. A Team has been created and linked to the active event.</li>
           </ul>
         </>
       )}
