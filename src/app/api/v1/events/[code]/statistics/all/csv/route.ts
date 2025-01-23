@@ -8,6 +8,10 @@ import {
   StageAttempt,
   TeamScore,
   TeleopScoringEvent,
+  AutoCoralScoringEvent,
+  AutoAlgaeScoringEvent,
+  TeleopCoralScoringEvent,
+  TeleopAlgaeScoringEvent,
 } from "@prisma/client";
 import { Ranking } from "@/lib/enums";
 
@@ -36,7 +40,10 @@ export async function GET(
             red1TeamScore: {
               include: {
                 team: true,
-                teleopScoringEvents: true,
+                autoCoralScoringEvents: true,
+                autoAlgaeScoringEvents: true,
+                teleopCoralScoringEvents: true,
+                teleopAlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
@@ -44,7 +51,10 @@ export async function GET(
             red2TeamScore: {
               include: {
                 team: true,
-                teleopScoringEvents: true,
+                autoCoralScoringEvents: true,
+                autoAlgaeScoringEvents: true,
+                teleopCoralScoringEvents: true,
+                teleopAlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
@@ -52,7 +62,10 @@ export async function GET(
             red3TeamScore: {
               include: {
                 team: true,
-                teleopScoringEvents: true,
+                autoCoralScoringEvents: true,
+                autoAlgaeScoringEvents: true,
+                teleopCoralScoringEvents: true,
+                teleopAlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
@@ -60,7 +73,10 @@ export async function GET(
             blue1TeamScore: {
               include: {
                 team: true,
-                teleopScoringEvents: true,
+                autoCoralScoringEvents: true,
+                autoAlgaeScoringEvents: true,
+                teleopCoralScoringEvents: true,
+                teleopAlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
@@ -68,7 +84,10 @@ export async function GET(
             blue2TeamScore: {
               include: {
                 team: true,
-                teleopScoringEvents: true,
+                autoCoralScoringEvents: true,
+                autoAlgaeScoringEvents: true,
+                teleopCoralScoringEvents: true,
+                teleopAlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
@@ -76,7 +95,10 @@ export async function GET(
             blue3TeamScore: {
               include: {
                 team: true,
-                teleopScoringEvents: true,
+                autoCoralScoringEvents: true,
+                autoAlgaeScoringEvents: true,
+                teleopCoralScoringEvents: true,
+                teleopAlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
@@ -157,7 +179,6 @@ export async function GET(
         teamNumber: teamScore.teamNumber,
         speakerScored: teamScore.teleopScoringEvents.filter(
           (event) =>
-            event.scoringLocation === ScoringLocation.SPEAKER &&
             !event.failedScoring
         ).length,
         speakerMissed: teamScore.teleopScoringEvents.filter(
@@ -196,7 +217,10 @@ export async function GET(
           scouterId,
           scouter,
           incapSegments,
-          teleopScoringEvents,
+          autoCoralScoringEvents,
+          autoAlgaeScoringEvents,
+          teleopCoralScoringEvents,
+          teleopAlgaeScoringEvents,
           ...rest
         } = teamScore;
         return rest;

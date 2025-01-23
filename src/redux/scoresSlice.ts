@@ -242,7 +242,7 @@ const initialState: Scores = {
   spotlit: false,
 };
 
-//The async thunks here have the asynce thunks call actions here to change state rather than using builders.
+//The async thunks here have the async thunks call actions here to change state rather than using builders.
 //Probably has something to do with getting these out of the way quicker.
 export const scoresSlice = createSlice({
   name: "applicationData",
