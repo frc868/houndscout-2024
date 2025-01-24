@@ -1,13 +1,13 @@
 /* eslint-disable react/display-name */
-import { Scouter } from "@/redux/adminDataSlice";
 import { Scores } from "@/redux/scoresSlice";
 import React, { useState } from "react";
 import { Button, Table, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import { Event, TeamScore } from "@prisma/client";
-import { Ranking } from "@/lib/enums";
+import { Ranking, Scouter } from "@/lib/enums";
 
+//A modal that provides more specific info about a certain team
 interface Props {
   teamNumber: number;
   teamName: string;

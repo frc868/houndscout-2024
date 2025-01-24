@@ -1,4 +1,6 @@
-//Edits anything related to the endgame.
+//Creates an autoAlgaeScoringEvent.
+//UPDATE CYCLE: Please ensure this function's update values match the schema it's based off of.
+
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
@@ -17,12 +19,14 @@ export async function POST(
       data: {
         [`${params.station}TeamScore`]: {
           update: {
-            stageAttempts: {
+            autoAlgaeScoringEvents: {
               create: {
-                timestampStarted: data.timestampStarted,
-                numberRobotsOnChain: data.numberRobotsOnChain,
-                scoredInTrap: data.scoredInTrap,
-                spotlit: data.spotlit,
+                intakeLocation: data.intakeLocation,
+                scoringLocation: data.scoringLocation || undefined,
+                dropped: data.dropped || false,
+                failedScoring: data.failedScoring || false,
+                timestampPickedUp: data.timestampPickedUp,
+                timestampScored: data.timestampScored,
               },
             },
           },
@@ -31,7 +35,7 @@ export async function POST(
       include: {
         [`${params.station}TeamScore`]: {
           include: {
-            chargeStationAttempts: true,
+            autoAlgaeScoringEvents: true,
           },
         },
       },

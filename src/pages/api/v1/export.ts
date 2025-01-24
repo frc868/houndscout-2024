@@ -3,6 +3,11 @@ import fs from "fs";
 import { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
 
+//I have no idea what exactly this does, but it triggers on Export Database being clicked.
+//I (Tim) don't know who made these comments, but here's what you need to do to get this to work:
+//set your database name to "houndscout"
+//set your database user to "techhounds"
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -19,8 +24,8 @@ export default async function handler(
     }
 
     // Database credentials and details
-    const dbName = "houndscout";
-    const dbUser = "techhounds";
+    const dbName = "postgres";
+    const dbUser = "postgres";
     // Customize these details according to your PostgreSQL setup
 
     // Construct the pg_dump command

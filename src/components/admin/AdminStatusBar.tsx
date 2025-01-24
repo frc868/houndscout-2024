@@ -6,6 +6,7 @@ interface Props {
   isConnected: boolean;
 }
 
+//Displays some info about the active event and match on the server.
 export default function AdminStatusBar({
   matchName,
   eventCode,

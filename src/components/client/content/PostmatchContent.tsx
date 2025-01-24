@@ -24,6 +24,7 @@ export default function PostmatchContent({ show, handleSubmit }: Props) {
   const [underHeavyDefense, setUnderHeavyDefense] = useState(false);
   const [comments, setComments] = useState("");
 
+  //A form that's filled out after the match with supplementary info.
   return (
     <div className={`${!show && "d-none"}`}>
       <Row className="my-5">
@@ -35,6 +36,7 @@ export default function PostmatchContent({ show, handleSubmit }: Props) {
         </Col>
         <Col className="d-flex justify-content-center" md={4}>
           <ToggleBox
+          //Basically a checkbox.
             name="Played Defense?"
             enabled={playedDefense}
             handleClick={() =>

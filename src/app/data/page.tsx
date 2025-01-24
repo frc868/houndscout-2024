@@ -10,7 +10,6 @@ import {
 } from "@/redux/mainDataSlice";
 import AdminStatusBar from "@/components/admin/AdminStatusBar";
 import {
-  Scouter,
   deleteMatchAsync,
   getMatchesAsync,
   getScoutersAsync,
@@ -21,7 +20,7 @@ import { getRankingsAsync } from "@/redux/viewerDataSlice";
 import Database from "@/components/admin/data/Database";
 import { Button, Col, Container, Row, Table } from "react-bootstrap";
 import Controls from "@/components/admin/data/DataControls";
-import { Ranking } from "@/lib/enums";
+import { Ranking, Scouter } from "@/lib/enums";
 
 export default function Data() {
   //I went over these on the admin page, but viewerDataSlice is another redux slice that only contains rankings.
@@ -33,7 +32,6 @@ export default function Data() {
   useEffect(() => {
     const interval = setInterval(async () => {
       await dispatch(getActiveEventAsync());
-      await dispatch(getActiveMatchAsync());
 
       mainData.activeEvent?.code && (
         await dispatch(getMatchesAsync({ eventCode: mainData.activeEvent?.code }))        
@@ -44,7 +42,7 @@ export default function Data() {
     
     }, 1000);
     return () => clearInterval(interval);
-  }, [dispatch, mainData.activeEvent?.code, mainData.activeMatchName]);
+  }, [dispatch, mainData.activeEvent?.code]);
 
   const ready = mainData.activeEvent?.code && adminData.matches && viewerData.rankings;
 

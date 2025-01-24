@@ -1,19 +1,22 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import {
-  ClimbType,
   Event,
   IncapSegment,
-  ScoringLocation,
-  StageAttempt,
   TeamScore,
-  TeleopScoringEvent,
+  AutoCoralScoringEvent,
+  AutoAlgaeScoringEvent,
+  TeleopCoralScoringEvent,
+  TeleopAlgaeScoringEvent,
+  CoralScoringLevel,
+  AlgaeScoringLocation,
+  EndgameType,
 } from "@prisma/client";
 import { Ranking } from "@/lib/enums";
 
 //viewerDataSlice/getRankingsAsync
-//see DataControls for additional implementation.
-//If you just want raw JSON info about LITERALLY EVERYTHING in the event, here you go.
+//see the "Aggregate JSON" button in DataControls for additional implementation.
+//Creates a JSON object containing performance data about each team in the specified event.
 //This is way more complicated than everything else that's exportable, so this also feeds into the database.
 export async function GET(
   req: Request,
@@ -35,44 +38,69 @@ export async function GET(
             blue1Team: true,
             blue2Team: true,
             blue3Team: true,
+            //UPDATE CYCLE: Ensure all scoring events are listed in each of the _TeamScore objects.
             red1TeamScore: {
               include: {
-                teleopScoringEvents: true,
+                team: true,
+                autoCoralScoringEvents: true,
+                autoAlgaeScoringEvents: true,
+                teleopCoralScoringEvents: true,
+                teleopAlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
             },
             red2TeamScore: {
               include: {
-                teleopScoringEvents: true,
+                team: true,
+                autoCoralScoringEvents: true,
+                autoAlgaeScoringEvents: true,
+                teleopCoralScoringEvents: true,
+                teleopAlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
             },
             red3TeamScore: {
               include: {
-                teleopScoringEvents: true,
+                team: true,
+                autoCoralScoringEvents: true,
+                autoAlgaeScoringEvents: true,
+                teleopCoralScoringEvents: true,
+                teleopAlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
             },
             blue1TeamScore: {
               include: {
-                teleopScoringEvents: true,
+                team: true,
+                autoCoralScoringEvents: true,
+                autoAlgaeScoringEvents: true,
+                teleopCoralScoringEvents: true,
+                teleopAlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
             },
             blue2TeamScore: {
               include: {
-                teleopScoringEvents: true,
+                team: true,
+                autoCoralScoringEvents: true,
+                autoAlgaeScoringEvents: true,
+                teleopCoralScoringEvents: true,
+                teleopAlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
             },
             blue3TeamScore: {
               include: {
-                teleopScoringEvents: true,
+                team: true,
+                autoCoralScoringEvents: true,
+                autoAlgaeScoringEvents: true,
+                teleopCoralScoringEvents: true,
+                teleopAlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
@@ -86,9 +114,14 @@ export async function GET(
 
     const rankings: Ranking[] = event.teams.map((team) => {
       const teamScores: (TeamScore & {
-        teleopScoringEvents: TeleopScoringEvent[];
+        //UPDATE CYCLE: Ensure all scoring events are listed here.
+        autoCoralScoringEvents: AutoCoralScoringEvent[];
+        autoAlgaeScoringEvents: AutoAlgaeScoringEvent[];
+        teleopCoralScoringEvents: TeleopCoralScoringEvent[];
+        teleopAlgaeScoringEvents: TeleopAlgaeScoringEvent[];
         incapSegments: IncapSegment[];
       })[] = matches
+        //Filters out teamScores not attributed to the specified team, and that aren't submitted or null.
         .flatMap((match) => [
           match.red1TeamId === team.id ? match.red1TeamScore : null,
           match.red2TeamId === team.id ? match.red2TeamScore : null,
@@ -99,100 +132,141 @@ export async function GET(
         ])
         .filter((score) => score?.submitted)
         .filter((score) => score !== null) as (TeamScore & {
-        teleopScoringEvents: TeleopScoringEvent[];
+        autoCoralScoringEvents: AutoCoralScoringEvent[];
+        autoAlgaeScoringEvents: AutoAlgaeScoringEvent[];
+        teleopCoralScoringEvents: TeleopCoralScoringEvent[];
+        teleopAlgaeScoringEvents: TeleopAlgaeScoringEvent[];
         incapSegments: IncapSegment[];
       })[]; // Remove null entries
+  
+      // Archived from Crescendo
+      // const autoSpeaker:number =
+      //   teamScores.reduce((o, s) => o + (s?.autoGamePiecesScored || 0), 0) /
+      //   teamScores.length;
+      // const autoMisses:number =
+      //   (teamScores.reduce((o, s) => o + (s?.autoGamePieces.length || 0), 0) -
+      //     autoSpeaker +
+      //     2) /
+      //   teamScores.length;
 
+      // Calculates the fraction of games in which the team left the starting zone in auto.
       const mobility:number =
         (teamScores.filter((score) => score.leftStartingZone).length /
           teamScores.length);
-  
-      const autoSpeaker:number =
-        teamScores.reduce((o, s) => o + (s?.autoGamePiecesScored || 0), 0) /
-        teamScores.length;
 
-      const autoMisses:number =
-        (teamScores.reduce((o, s) => o + (s?.autoGamePieces.length || 0), 0) -
-          autoSpeaker +
-          2) /
-        teamScores.length;
-
-      const speaker =
+      //Each of these functions calculates the average amount of a game piece that was successfully scored on a certain location in a certain phrase per game.
+      //UPDATE CYCLE: Ensure all scoring locations for all scoring events are calculated here, including dropped pieces.
+      const autoCoralLevel1Scored =
         teamScores.reduce((total, score) => {
-          const speakerEvents = score.teleopScoringEvents.filter(
+          const gameAmount = score.autoCoralScoringEvents.filter(
             (event) =>
-              event.scoringLocation === ScoringLocation.SPEAKER &&
-              !event.dropped
+              event.scoringLevel === CoralScoringLevel.LEVEL1 && !event.failedScoring
           ).length;
-          return total + speakerEvents;
+          return total + gameAmount;
         }, 0) / teamScores.length;
-
-      // Speaker Misses calculation
-      const speakerMisses =
+      const autoCoralLevel2Scored =
         teamScores.reduce((total, score) => {
-          const speakerMissEvents = score.teleopScoringEvents.filter(
+          const gameAmount = score.autoCoralScoringEvents.filter(
             (event) =>
-              event.scoringLocation === ScoringLocation.SPEAKER && event.dropped
+              event.scoringLevel === CoralScoringLevel.LEVEL2 && !event.failedScoring
           ).length;
-          return total + speakerMissEvents;
+          return total + gameAmount;
         }, 0) / teamScores.length;
-
-      // Amp calculation
-      const amp:number =
+      const autoCoralLevel3Scored =
         teamScores.reduce((total, score) => {
-          const ampEvents = score.teleopScoringEvents.filter(
+          const gameAmount = score.autoCoralScoringEvents.filter(
             (event) =>
-              event.scoringLocation === ScoringLocation.AMP && !event.dropped
+              event.scoringLevel === CoralScoringLevel.LEVEL3 && !event.failedScoring
           ).length;
-          return total + ampEvents;
+          return total + gameAmount;
         }, 0) / teamScores.length;
-
-      // Amp Misses calculation
-      const ampMisses:number =
+      const autoCoralLevel4Scored =
         teamScores.reduce((total, score) => {
-          const ampMissEvents = score.teleopScoringEvents.filter(
+          const gameAmount = score.autoCoralScoringEvents.filter(
             (event) =>
-              event.scoringLocation === ScoringLocation.AMP && event.dropped
+              event.scoringLevel === CoralScoringLevel.LEVEL4 && !event.failedScoring
           ).length;
-          return total + ampMissEvents;
+          return total + gameAmount;
         }, 0) / teamScores.length;
-
-      const pass:number =
+      const autoAlgaeNetScored =
         teamScores.reduce((total, score) => {
-          const passEvents = score.teleopScoringEvents.filter(
+          const gameAmount = score.autoAlgaeScoringEvents.filter(
             (event) =>
-              event.scoringLocation === ScoringLocation.PASS && !event.dropped
+              event.scoringLocation === AlgaeScoringLocation.NET && !event.failedScoring
           ).length;
-          return total + passEvents;
+          return total + gameAmount;
         }, 0) / teamScores.length;
-
-      // Pass Misses calculation
-      const passMisses:number =
+      const autoAlgaeProcessorScored =
         teamScores.reduce((total, score) => {
-          const passMissEvents = score.teleopScoringEvents.filter(
+          const gameAmount = score.autoAlgaeScoringEvents.filter(
             (event) =>
-              event.scoringLocation === ScoringLocation.PASS && event.dropped
+              event.scoringLocation === AlgaeScoringLocation.PROCESSOR && !event.failedScoring
           ).length;
-          return total + passMissEvents;
+          return total + gameAmount;
         }, 0) / teamScores.length;
+      const teleopCoralLevel1Scored =
+        teamScores.reduce((total, score) => {
+          const gameAmount = score.teleopCoralScoringEvents.filter(
+            (event) =>
+              event.scoringLocation === CoralScoringLevel.LEVEL1 && !event.failedScoring
+          ).length;
+          return total + gameAmount;
+        }, 0) / teamScores.length;
+      const teleopCoralLevel2Scored =
+        teamScores.reduce((total, score) => {
+          const gameAmount = score.teleopCoralScoringEvents.filter(
+            (event) =>
+              event.scoringLocation === CoralScoringLevel.LEVEL2 && !event.failedScoring
+          ).length;
+          return total + gameAmount;
+        }, 0) / teamScores.length;
+      const teleopCoralLevel3Scored =
+        teamScores.reduce((total, score) => {
+          const gameAmount = score.teleopCoralScoringEvents.filter(
+            (event) =>
+              event.scoringLocation === CoralScoringLevel.LEVEL3 && !event.failedScoring
+          ).length;
+          return total + gameAmount;
+        }, 0) / teamScores.length;
+      const teleopCoralLevel4Scored =
+        teamScores.reduce((total, score) => {
+          const gameAmount = score.teleopCoralScoringEvents.filter(
+            (event) =>
+              event.scoringLocation === CoralScoringLevel.LEVEL4 && !event.failedScoring
+          ).length;
+          return total + gameAmount;
+        }, 0) / teamScores.length;
+      const teleopAlgaeNetScored =
+        teamScores.reduce((total, score) => {
+          const gameAmount = score.teleopAlgaeScoringEvents.filter(
+            (event) =>
+              event.scoringLocation === AlgaeScoringLocation.NET && !event.failedScoring
+          ).length;
+          return total + gameAmount;
+        }, 0) / teamScores.length;
+      const teleopAlgaeProcessorScored =
+        teamScores.reduce((total, score) => {
+          const gameAmount = score.teleopAlgaeScoringEvents.filter(
+            (event) =>
+              event.scoringLocation === AlgaeScoringLocation.PROCESSOR && !event.failedScoring
+          ).length;
+          return total + gameAmount;
+        }, 0) / teamScores.length;
+      
 
-      // Climb calculation
-      const climb:number =
-        teamScores.filter((score) => score.climbType === ClimbType.CLIMBED)
+      // Each of these functions calculates the fraction of games in which the team did a certain thing in endgame.
+      //UPDATE CYCLE: Ensure this is consistent with the Endgame section of TeamScore.
+      const parked:number =
+        teamScores.filter((score) => score.endgameType === EndgameType.PARKED)
+          .length / teamScores.length;
+      const shallow:number =
+        teamScores.filter((score) => score.endgameType === EndgameType.SHALLOW)
+          .length / teamScores.length;
+      const deep:number =
+        teamScores.filter((score) => score.endgameType === EndgameType.DEEP)
           .length / teamScores.length;
 
-      const ensemble:number =
-        teamScores.reduce(
-          (total, score) => total + (score.numberRobotsOnChain || 0),
-          0
-        ) / teamScores.length;
-
-      // Trap calculation
-      const trap:number =
-        teamScores.filter((score) => score.scoredInTrap).length /
-        teamScores.length;
-
-      //Incap calculation
+      //Average Incap time per match
       const incap:number =
         teamScores.reduce((total, score) => {
           const totalIncapTime = score.incapSegments.reduce(
@@ -205,27 +279,33 @@ export async function GET(
           return total + totalIncapTime;
         }, 0) / teamScores.length;
 
-      // Defense calculation
+      // fraction of games the robot played defence
       const defense:number =
         teamScores.filter((score) => score.playedDefense).length /
         teamScores.length;
 
+      //UPDATE CYCLE: Ensure everything calculated above is listed here.
       return {
-        teamNumber: team.number,
-        teamName: team.name,
-        teamScores: teamScores,
+        teamNumber: team.number,//keep this
+        teamName: team.name,//keep this
+        teamScores: teamScores,//keep this
+        //throw everything else out
         mobility,
-        autoSpeaker,
-        autoMisses,
-        speaker,
-        speakerMisses,
-        amp,
-        ampMisses,
-        pass,
-        passMisses,
-        climb,
-        ensemble,
-        trap,
+        autoCoralLevel1Scored,
+        autoCoralLevel2Scored,
+        autoCoralLevel3Scored,
+        autoCoralLevel4Scored,
+        autoAlgaeNetScored,
+        autoAlgaeProcessorScored,
+        teleopCoralLevel1Scored,
+        teleopCoralLevel2Scored,
+        teleopCoralLevel3Scored,
+        teleopCoralLevel4Scored,
+        teleopAlgaeNetScored,
+        teleopAlgaeProcessorScored,
+        parked,
+        shallow,
+        deep,
         incap,
         defense,
         total: teamScores.length

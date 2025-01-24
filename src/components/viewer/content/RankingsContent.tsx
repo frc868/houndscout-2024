@@ -1,17 +1,18 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { ReduxState } from "@/redux/store";
 import { Table } from "react-bootstrap";
 import { Ranking } from "@/lib/enums";
 
-export default function RankingsContent() {
-  const viewerData = useSelector((state: ReduxState) => state?.viewerData);
+interface Props {
+  rankings: Ranking[];
+}
+export default function RankingsContent({rankings}: Props) {
   const [sortField, setSortField] = useState<keyof Ranking | null>(null);
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
   // Sorting function
   const sortedRankings = useMemo(() => {
-    const rankings = viewerData.rankings || [];
     if (!sortField) return rankings;
 
     return [...rankings].sort((a, b) => {
@@ -22,12 +23,13 @@ export default function RankingsContent() {
       if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
       return 0;
     });
-  }, [viewerData.rankings, sortField, sortDirection]);
+    
+  }, [rankings, sortField, sortDirection]);
 
   // Calculate max values for coloring
   const maxValues = useMemo(() => {
     const maxes: Record<string, number> = {};
-    viewerData.rankings?.forEach((r: Ranking) => {
+    [...rankings].forEach((r: Ranking) => {
       Object.entries(r).forEach(([key, value]) => {
         if (typeof value === "number" && key !== "team") {
           maxes[key] = Math.max(maxes[key] || 0, value);
@@ -35,7 +37,7 @@ export default function RankingsContent() {
       });
     });
     return maxes;
-  }, [viewerData.rankings]);
+  }, [rankings]);
 
   // Handler to sort by column
   const handleSort = (field: keyof Ranking) => {
@@ -64,14 +66,20 @@ export default function RankingsContent() {
 
   return (
     <div
-      style={{ height: "calc(100% - 2*24px)", width: "calc(100% - 2*24px)" }}
-      className="m-4 bg-dark"
+      style={{
+        height: "calc(100% - 2*24px)",
+        width: "calc(100% - 2*24px)",
+        color: "white",
+      }}
+      className="m-4 bg-dark rounded-3 font-monospace text-center"
     >
+      <h1>Rankings</h1>
+      <p>WIP</p>
       <Table
         bordered
         hover
         variant="dark"
-        className="font-monospace text-center table-responsive"
+        className="table-responsive"
       >
         <thead>
           <tr>
@@ -108,9 +116,22 @@ export default function RankingsContent() {
         </thead>
         <tbody>
           {sortedRankings.map((r, idx) => (
-            <tr key={r.team}>
-              <td>{idx + 1}</td>
-              {Object.entries(r).map(([key, value]) =>
+            <tr key={r.teamNumber}>
+              <td>{r.teamNumber}</td>
+              <td>{r.mobility}</td>
+              <td>{r.autoSpeaker}</td>
+              <td>{r.autoMisses}</td>
+              <td>WIP</td>
+              <td>{r.speaker}</td>
+              <td>{r.speakerMisses}</td>
+              <td>{r.amp}</td>
+              <td>{r.ampMisses}</td>
+              <td>{r.climb}</td>
+              <td>{r.ensemble}</td>
+              <td>{r.trap}</td>
+              <td>{r.incap}</td>
+              <td>{r.defense}</td>
+              {/* {Object.entries(r).map(([key, value]) =>
                 key !== "team" ? (
                   <td
                     key={key}
@@ -121,7 +142,7 @@ export default function RankingsContent() {
                 ) : (
                   <td key={key}>{value}</td>
                 )
-              )}
+              )} */}
             </tr>
           ))}
         </tbody>

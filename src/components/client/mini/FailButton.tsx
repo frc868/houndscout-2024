@@ -4,6 +4,7 @@ interface Props {
   className?: string;
 }
 
+//Big fat fail button for when the robot fails to score.
 export default function FailButton({ active, handleClick, className }: Props) {
   return (
     <div className={className || ""}>

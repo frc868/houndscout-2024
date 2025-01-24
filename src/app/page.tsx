@@ -85,9 +85,17 @@ export default function Home() {
             className="mx-1 mt-2"
             size="lg"
             variant="secondary"
-            href="/data"
+            href="/viewer"
           >
-            Viewer (WIP)
+            Data Viewer (WIP)
+          </Button>
+          <Button
+            className="mx-1 mt-2"
+            size="lg"
+            variant="secondary"
+            href="/sandbox"
+          >
+            Sandbox Page
           </Button>
         </Col>
       </Row>

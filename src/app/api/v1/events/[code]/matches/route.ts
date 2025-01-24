@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 //adminDataSlice/getMatchesAsync
+//Gets all the matches in the specified event.
 export async function GET(
   req: Request,
   { params }: { params: { code: string } }

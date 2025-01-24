@@ -1,5 +1,6 @@
-//Currently unimplemented, but it creates an incap segment to the database.
-//I think it's supposed to be fully created, so make sure you get both the start and end times before calling this.
+// Creates an incapSegment.
+// This requires both the start and end times; make sure you get both before calling this.
+
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 

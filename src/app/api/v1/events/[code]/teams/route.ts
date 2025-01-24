@@ -23,8 +23,8 @@ export async function GET(
   return NextResponse.json({ teams: event.teams, ok: true });
 }
 
-//Currently unimplemented.
-//I believe this adds existing teams into the specified event by number. 
+//Currently unimplemented, though I have plans for this.
+//I think this adds existing teams into the specified event by number. 
 export async function POST(
   req: Request,
   { params }: { params: { code: string } }

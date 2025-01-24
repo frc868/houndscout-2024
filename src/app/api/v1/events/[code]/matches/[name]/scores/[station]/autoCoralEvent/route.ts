@@ -1,4 +1,5 @@
-//Currently unimplemented, but it allows you to create an autoScoringEvent. Will probably be merged with the teleopEvent one.
+//Creates an autoCoralScoringEvent.
+//UPDATE CYCLE: Please ensure this function's update values match the schema it's based off of.
 
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
@@ -18,12 +19,12 @@ export async function POST(
       data: {
         [`${params.station}TeamScore`]: {
           update: {
-            autoScoringEvents: {
+            autoCoralScoringEvents: {
               create: {
-                gamePiece: data.gamePiece,
-                scoringLocation: data.scoringLocation || undefined,
-                noNote: data.noNote || false,
-                missed: data.missed || false,
+                intakeLocation: data.intakeLocation,
+                scoringLevel: data.scoringLevel || undefined,
+                scoringSide: data.scoringSide || undefined,
+                dropped: data.dropped || false,
                 failedScoring: data.failedScoring || false,
                 timestampPickedUp: data.timestampPickedUp,
                 timestampScored: data.timestampScored,
@@ -35,7 +36,7 @@ export async function POST(
       include: {
         [`${params.station}TeamScore`]: {
           include: {
-            autoScoringEvents: true,
+            autoCoralScoringEvents: true,
           },
         },
       },

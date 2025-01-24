@@ -9,6 +9,7 @@ interface Props {
   handleTeamSelect: (id: number) => void;
 }
 
+//Used in MatchAddModal to specify each team in each match.
 export default function TeamDropdown({
   red,
   activeTeam,

@@ -8,6 +8,7 @@ interface Props {
   className?: string;
 }
 
+//I think this button was supposed to start an endgame attempt, but it was removed for some reason.
 export default function ClimbButton({ active, handleClick, className }: Props) {
   return (
     <div className={`d-flex justify-content-center w-100 ${className || ""}`}>
