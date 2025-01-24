@@ -22,19 +22,24 @@ export interface MainData {
   error?: string;
 }
 
+export const sendHeartbeatAsync = createAsyncThunk(
+  "mainData/sendHeartbeatAsync",
+  async ({ station, section }: { station: Station; section: Section }) => {
+    await axios.post(`/api/v1/heartbeat/${station.toLowerCase()}`, { section });
+  }
+);
 export const getStationData = createAsyncThunk(
   "mainData/getStationData",
   async ({ station }: { station: Station }) => {
     const res = await axios.get(
       `/api/v1/server/stationData/${station.toLowerCase()}`
     );
-    const data = res.data;
     return {
-      blueOnLeft: data.blueOnLeft,
-      event: data.event,
-      matchName: data.match?.name,
-      scouter: data.scouter,
-      teamNumber: data.match?.[`${station.toLowerCase()}Team`]?.number,
+      blueOnLeft: res.data.blueOnLeft,
+      event: res.data.event,
+      matchName: res.data.match?.name,
+      scouter: res.data.scouter,
+      teamNumber: res.data.match?.[`${station.toLowerCase()}Team`]?.number,
     };
   }
 );
@@ -47,6 +52,18 @@ export const getActiveEventAsync = createAsyncThunk(
     return data.event;
   }
 );
+export const setActiveEventAsync = createAsyncThunk(
+  "adminData/setActiveEvent",
+  async ({
+    eventCode,
+  }: {
+    eventCode: string;
+  }) => {
+    await axios.post(`/api/v1/server/event`, {
+      code: eventCode,
+    });
+  }
+);
 
 export const getActiveMatchAsync = createAsyncThunk(
   "mainData/getActiveMatch",
@@ -54,6 +71,20 @@ export const getActiveMatchAsync = createAsyncThunk(
     const res = await axios.get(`/api/v1/server/match`);
     const data = res.data;
     return data.match?.name;
+  }
+);
+export const setActiveMatchAsync = createAsyncThunk(
+  "adminData/setActiveMatch",
+  async ({
+    eventCode,
+    matchName,
+  }: {
+    eventCode: string;
+    matchName: string;
+  }) => {
+    await axios.post(`/api/v1/server/match`, {
+      key: `${eventCode}_${matchName}`,
+    });
   }
 );
 
@@ -94,18 +125,12 @@ export const getScouterAsync = createAsyncThunk(
     return data.scouter;
   }
 );
-export const sendHeartbeatAsync = createAsyncThunk(
-  "mainData/sendHeartbeatAsync",
-  async ({ station, section }: { station: Station; section: Section }) => {
-    await axios.post(`/api/v1/heartbeat/${station.toLowerCase()}`, { section });
+export const deleteScouterAsync = createAsyncThunk(
+  "mainData/deleteScouter",
+  async ({ id }: { id: number }) => {
+    await axios.delete(`/api/v1/scouters/${id}`, {});
   }
 );
-// export const deleteScouterAsync = createAsyncThunk(
-//   "mainData/deleteScouter",
-//   async ({ id }: { id: number }) => {
-//     await axios.delete(`/api/v1/scouters/${id}`, {});
-//   }
-// );
   
 export const createScouterAsync = createAsyncThunk(
   "mainData/createScouter",
@@ -116,21 +141,22 @@ export const createScouterAsync = createAsyncThunk(
   }
 );
 
+//This redux slice deals with server-related stuff.
 const initialState: MainData = {
   station: undefined,
   alliance: Alliance.BLUE,
   blueOnLeft: true,
   lastHeartbeat: 0,
   activeEvent: undefined,
+  eventStatus: "idle",
   activeMatchName: undefined,
+  matchStatus: "idle",
   activeTeamNumber: undefined,
+  teamNumberStatus: "idle",
   scouter: {
     name: undefined,
     id: undefined,
   },
-  eventStatus: "idle",
-  matchStatus: "idle",
-  teamNumberStatus: "idle",
   scouterStatus: "idle",
   error: undefined,
 };

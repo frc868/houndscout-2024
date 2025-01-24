@@ -10,6 +10,7 @@ interface Props {
   handleSelection: (selected: AutoStartingZone) => void;
 }
 
+//Three radio buttons over a depiction of the starting zone.
 export default function StartingZoneSelector({
   alliance,
   blueOnLeft,

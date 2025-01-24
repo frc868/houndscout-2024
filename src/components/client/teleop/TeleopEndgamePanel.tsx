@@ -14,6 +14,7 @@ interface Props {
   handleSpotlitSelection: (spotlit: boolean) => void;
 }
 
+//Endgame stuff.
 export default function TeleopStagePanel({
   climbType,
   numRobots,

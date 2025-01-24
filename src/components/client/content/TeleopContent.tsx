@@ -7,7 +7,7 @@ import { ClimbType, IntakeLocation, ScoringLocation } from "@prisma/client";
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import TeleopStagePanel from "@/components/client/teleop/TeleopStagePanel";
+import TeleopStagePanel from "@/components/client/teleop/TeleopEndgamePanel";
 import {
   sendTeleopEvent,
   setClimbTypeAsync,
@@ -21,14 +21,18 @@ interface Props {
   show: boolean;
 }
 
+//Teleop tab.
+//Most of this stuff will probably be copied onto the new auton page, and duplicated for each game piece.
 export default function TeleopContent({ show }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
   const [intakeLocation, setIntakeLocation] = useState<
     IntakeLocation | undefined
   >(undefined);
-  const [activeSide, setActiveSide] = useState("intaking");
+  const [activeSide, setActiveSide] = useState("intaking");//This is set between intaking and scoring.
+  const [coralActiveSide, setCoralActiveSide] = useState("intaking");//For Reefscape.
 
+  //triggers when intake is selected
   const handleIntakeSelection = (selection: IntakeLocation) => {
     setIntakeLocation(selection);
     setActiveSide("scoring");
@@ -45,7 +49,7 @@ export default function TeleopContent({ show }: Props) {
         scoringLocation: location,
         failed,
         dropped,
-      };
+      }; //teleopScoringEvent creation.
       setIntakeLocation(undefined);
       setActiveSide("intaking");
 
@@ -71,6 +75,7 @@ export default function TeleopContent({ show }: Props) {
         </Col>
         <Col className="d-flex justify-content-start ms-5" md={4}>
           <TeleopStagePanel
+          //Endgame content.
             climbType={scores.climbType}
             numRobots={scores.numberRobotsOnChain}
             scoredInTrap={scores.scoredInTrap}

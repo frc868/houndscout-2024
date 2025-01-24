@@ -11,6 +11,9 @@ interface Props {
   handleSelection: (selection: AutoGamePiece) => void;
 }
 
+//Displays a map of half of the field.
+//The notes are clickable, each representing an enum choice that represents that position.
+//Click a note again to render it missing, and click again to indicate no pickup.
 export default function AutoIntakePanel({
   alliance,
   blueOnLeft,

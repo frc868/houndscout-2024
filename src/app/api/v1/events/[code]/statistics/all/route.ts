@@ -1,18 +1,21 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import {
-  ClimbType,
   Event,
   IncapSegment,
-  ScoringLocation,
-  StageAttempt,
+  CoralScoringLevel,
+  AlgaeScoringLocation,
   TeamScore,
-  TeleopScoringEvent,
+  AutoCoralScoringEvent,
+  AutoAlgaeScoringEvent,
+  TeleopCoralScoringEvent,
+  TeleopAlgaeScoringEvent,
 } from "@prisma/client";
 import { Ranking } from "@/lib/enums";
 
-//see DataControls for implementation.
-//If you just want raw JSON info about the teamScores in the event, here you go.
+//see the "JSON" button in DataControls for implementation.
+//Creates a JSON object containing data about the specified event.
+//UPDATE CYCLE: Most of the necessary edits also apply to the CSV button.
 export async function GET(
   req: Request,
   { params }: { params: { code: string } }
@@ -33,10 +36,14 @@ export async function GET(
             blue1Team: true,
             blue2Team: true,
             blue3Team: true,
+            //UPDATE CYCLE: Ensure all scoring events are listed in each of the _TeamScore objects.
             red1TeamScore: {
               include: {
                 team: true,
-                teleopScoringEvents: true,
+                autoCoralScoringEvents: true,
+                autoAlgaeScoringEvents: true,
+                teleopCoralScoringEvents: true,
+                teleopAlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
@@ -44,7 +51,10 @@ export async function GET(
             red2TeamScore: {
               include: {
                 team: true,
-                teleopScoringEvents: true,
+                autoCoralScoringEvents: true,
+                autoAlgaeScoringEvents: true,
+                teleopCoralScoringEvents: true,
+                teleopAlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
@@ -52,7 +62,10 @@ export async function GET(
             red3TeamScore: {
               include: {
                 team: true,
-                teleopScoringEvents: true,
+                autoCoralScoringEvents: true,
+                autoAlgaeScoringEvents: true,
+                teleopCoralScoringEvents: true,
+                teleopAlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
@@ -60,7 +73,10 @@ export async function GET(
             blue1TeamScore: {
               include: {
                 team: true,
-                teleopScoringEvents: true,
+                autoCoralScoringEvents: true,
+                autoAlgaeScoringEvents: true,
+                teleopCoralScoringEvents: true,
+                teleopAlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
@@ -68,7 +84,10 @@ export async function GET(
             blue2TeamScore: {
               include: {
                 team: true,
-                teleopScoringEvents: true,
+                autoCoralScoringEvents: true,
+                autoAlgaeScoringEvents: true,
+                teleopCoralScoringEvents: true,
+                teleopAlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
@@ -76,7 +95,10 @@ export async function GET(
             blue3TeamScore: {
               include: {
                 team: true,
-                teleopScoringEvents: true,
+                autoCoralScoringEvents: true,
+                autoAlgaeScoringEvents: true,
+                teleopCoralScoringEvents: true,
+                teleopAlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
@@ -89,6 +111,7 @@ export async function GET(
     let matches = event.matches;
 
     const teamScoresWithDetails = matches
+      //Turns all the match data into an array of submitted teamScores.
       .flatMap((match) => [
         ...(match.red1TeamScore
           ? [
@@ -152,41 +175,53 @@ export async function GET(
           : []),
       ])
       .filter((teamScore) => teamScore.submitted)
+      //Calculates extra data about each teamScore
+      //UPDATE CYCLE: Ensure all scoring locations for all scoring events are calculated here, including dropped pieces.
       .map((teamScore) => ({
         ...teamScore,
         teamNumber: teamScore.teamNumber,
-        speakerScored: teamScore.teleopScoringEvents.filter(
-          (event) =>
-            event.scoringLocation === ScoringLocation.SPEAKER &&
-            !event.failedScoring
+        autoCoralLevel1Scored: teamScore.autoCoralScoringEvents.filter(
+          (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL1
         ).length,
-        speakerMissed: teamScore.teleopScoringEvents.filter(
-          (event) =>
-            event.scoringLocation === ScoringLocation.SPEAKER &&
-            event.failedScoring
+        autoCoralLevel2Scored: teamScore.autoCoralScoringEvents.filter(
+          (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL2
         ).length,
-        ampScored: teamScore.teleopScoringEvents.filter(
-          (event) =>
-            event.scoringLocation === ScoringLocation.AMP &&
-            !event.failedScoring
+        autoCoralLevel3Scored: teamScore.autoCoralScoringEvents.filter(
+          (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL3
         ).length,
-        ampMissed: teamScore.teleopScoringEvents.filter(
-          (event) =>
-            event.scoringLocation === ScoringLocation.AMP && event.failedScoring
+        autoCoralLevel4Scored: teamScore.autoCoralScoringEvents.filter(
+          (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL4
         ).length,
-        pass: teamScore.teleopScoringEvents.filter(
-          (event) =>
-            event.scoringLocation === ScoringLocation.PASS &&
-            !event.failedScoring
+        autoAlgaeNetScored: teamScore.autoAlgaeScoringEvents.filter(
+          (event) => !event.failedScoring&&event.scoringLocation==AlgaeScoringLocation.NET
         ).length,
-        passMissed: teamScore.teleopScoringEvents.filter(
-          (event) =>
-            event.scoringLocation === ScoringLocation.PASS &&
-            event.failedScoring
+        autoAlgaeProcessorScored: teamScore.autoAlgaeScoringEvents.filter(
+          (event) => !event.failedScoring&&event.scoringLocation==AlgaeScoringLocation.PROCESSOR
         ).length,
-        dropped: teamScore.teleopScoringEvents.filter((event) => event.dropped)
-          .length,
+        teleopCoralLevel1Scored: teamScore.teleopCoralScoringEvents.filter(
+          (event) => !event.failedScoring&&event.scoringLocation==CoralScoringLevel.LEVEL1
+        ).length,
+        teleopCoralLevel2Scored: teamScore.teleopCoralScoringEvents.filter(
+          (event) => !event.failedScoring&&event.scoringLocation==CoralScoringLevel.LEVEL2
+        ).length,
+        teleopCoralLevel3Scored: teamScore.teleopCoralScoringEvents.filter(
+          (event) => !event.failedScoring&&event.scoringLocation==CoralScoringLevel.LEVEL3
+        ).length,
+        teleopCoralLevel4Scored: teamScore.teleopCoralScoringEvents.filter(
+          (event) => !event.failedScoring&&event.scoringLocation==CoralScoringLevel.LEVEL4
+        ).length,
+        teleopAlgaeNetScored: teamScore.teleopAlgaeScoringEvents.filter(
+          (event) => !event.failedScoring&&event.scoringLocation==AlgaeScoringLocation.NET
+        ).length,
+        teleopAlgaeProcessorScored: teamScore.teleopAlgaeScoringEvents.filter(
+          (event) => !event.failedScoring&&event.scoringLocation==AlgaeScoringLocation.PROCESSOR
+        ).length,
+        autoCoralDropped: teamScore.autoCoralScoringEvents.filter((event) => event.dropped).length,
+        autoAlgaeDropped: teamScore.autoAlgaeScoringEvents.filter((event) => event.dropped).length,
+        teleopCoralDropped: teamScore.teleopCoralScoringEvents.filter((event) => event.dropped).length,
+        teleopAlgaeDropped: teamScore.teleopAlgaeScoringEvents.filter((event) => event.dropped).length,
       }))
+      //UPDATE CYCLE: Ensure all scoring events are listed here.
       .map((teamScore) => {
         const {
           team,
@@ -196,7 +231,10 @@ export async function GET(
           scouterId,
           scouter,
           incapSegments,
-          teleopScoringEvents,
+          autoCoralScoringEvents,
+          autoAlgaeScoringEvents,
+          teleopCoralScoringEvents,
+          teleopAlgaeScoringEvents,
           ...rest
         } = teamScore;
         return rest;

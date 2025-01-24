@@ -12,6 +12,7 @@ interface Props {
   ) => void;
 }
 
+//Used to indicate where a game piece was scored, and if it was successful or not.
 export default function TeleopScoringPanel({ active, handleSelection }: Props) {
   return (
     <div className="d-flex flex-column align-items-center">

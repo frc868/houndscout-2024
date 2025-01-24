@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
 import TeamDropdown from "./TeamDropdown";
-import { Team } from "@/redux/adminDataSlice";
+import { Team } from "@/lib/enums";
 
 interface Props {
   teams: Team[];
@@ -27,7 +27,8 @@ interface Props {
   }) => void;
 }
 
-export default function SignInModal({
+//A form to add a new match.
+export default function MatchAddModal({
   teams,
   show,
   handleClose,
@@ -41,6 +42,7 @@ export default function SignInModal({
   const [blue2, setBlue2] = useState("");
   const [blue3, setBlue3] = useState("");
 
+  //clean-up function for when this thing is closed.
   function clearState(){
     setNumber("");
     setRed1("");
@@ -50,6 +52,7 @@ export default function SignInModal({
     setBlue2("");
     setBlue3("");
   }
+
   return (
     <Modal centered show={show} size="lg" onHide={handleClose}>
       <Modal.Header closeButton>

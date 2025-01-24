@@ -1,6 +1,5 @@
 export enum ViewerTab {
   HOME,
-  TEAM,
   RANKINGS,
   COMPARE,
   AUTOS,

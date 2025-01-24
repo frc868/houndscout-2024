@@ -9,6 +9,7 @@ interface Props {
   handleScouterSelect: (id: number) => void;
 }
 
+//Dropdown used in MatchSchedule to specify the scouter in each.
 export default function ScoutersDropdown({
   active,
   activeScouter,

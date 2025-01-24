@@ -1,9 +1,9 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-//Currently unimplemented.
-//Detetes a team from the specified event with the specified number.
-//Check api/v1/teams/[number] for current implementation; might need to be adjusted.
+//Currently unimplemented, though I have plans for this.
+//Removes a team from the specified event with the specified number.
+//Check api/v1/teams/[number] for deleting a team entirely.
 export async function DELETE(
   req: Request,
   { params }: { params: { code: string; number: string } }

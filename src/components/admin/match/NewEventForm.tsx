@@ -20,6 +20,7 @@ interface Props {
   }) => void;
 }
 
+//The part of the EventManageModal that allows you to create a new event. Basically a form.
 export default function NewEventForm({
   handleSubmit,
 }: Props) {

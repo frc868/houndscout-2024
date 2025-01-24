@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import { Heartbeat, Scouter } from "@/redux/adminDataSlice";
+import { Heartbeat, Scouter } from "@/lib/enums";
 import React from "react";
 import { Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
 import { BounceLoader } from "react-spinners";
@@ -23,6 +23,7 @@ interface Props {
   };
 }
 
+//Lists heartbeats for each station, including how long ago the device's last communication was and which phase the scouter is on.
 export default function Activity({ scouters, heartbeats }: Props) {
   return (
     <div className="d-flex flex-column align-items-center">
@@ -90,6 +91,7 @@ export default function Activity({ scouters, heartbeats }: Props) {
                         ? "#198754"
                         : "#DC3545"
                     }
+                    // Displays a red signal if the last communication was 5 seconds ago, otherwise green.
                     size={10}
                     className="me-1"
                   />

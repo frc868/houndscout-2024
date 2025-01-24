@@ -6,6 +6,7 @@ interface Props {
   handleTabSelect: (tab: ViewerTab) => void;
 }
 
+//The side bar with the tab selctor.
 export default function MenuBar({ selectedTab, handleTabSelect }: Props) {
   return (
     <>
@@ -25,14 +26,6 @@ export default function MenuBar({ selectedTab, handleTabSelect }: Props) {
           onClick={() => handleTabSelect(ViewerTab.HOME)}
         >
           Home
-        </div>
-        <div
-          className={`fs-5 py-2 ps-4 font-monospace ${
-            selectedTab === ViewerTab.TEAM && "bg-secondary"
-          }`}
-          onClick={() => handleTabSelect(ViewerTab.TEAM)}
-        >
-          Team
         </div>
         <div
           className={`fs-5 py-2 ps-4 font-monospace ${

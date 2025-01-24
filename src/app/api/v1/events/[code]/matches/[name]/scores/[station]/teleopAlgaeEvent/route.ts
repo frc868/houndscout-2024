@@ -1,4 +1,6 @@
-//Creates a teleopScoringEvent. Will probably be merged with the autoEvent one.
+//Creates a teleopAlgaeScoringEvent.
+//UPDATE CYCLE: Please ensure this function's update values match the schema it's based off of.
+
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
@@ -18,12 +20,12 @@ export async function POST(
       data: {
         [`${params.station}TeamScore`]: {
           update: {
-            teleopScoringEvents: {
+            teleopAlgaeScoringEvents: {
               create: {
                 intakeLocation: data.intakeLocation,
                 scoringLocation: data.scoringLocation || undefined,
-                dropped: data.failed || false,
-                failedScoring: data.dropped || false,
+                dropped: data.dropped || false,
+                failedScoring: data.failedScoring || false,
                 timestampPickedUp: data.timestampPickedUp,
                 timestampScored: data.timestampScored,
               },
@@ -34,7 +36,7 @@ export async function POST(
       include: {
         [`${params.station}TeamScore`]: {
           include: {
-            teleopScoringEvents: true,
+            teleopAlgaeScoringEvents: true,
           },
         },
       },

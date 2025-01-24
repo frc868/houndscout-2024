@@ -11,11 +11,12 @@ import DataTeamModal from "./DataTeamModal";
 interface Props {
   rankings: Ranking[];
 }
-
+//This and everything else in the data page will become obsolete once we get the viewer page working, but here's some comments for reference:
 export default function Database({
   rankings
 }: Props) {
-  const dispatch = useDispatch<AppDispatch>();
+
+  //These are filled in when the more info section is clicked, to give DataTeamModal something to fill in with.
   const [showTeam, setShowTeam] = useState(false);
   const [teamNumber, setTeamNumber] = useState(0);
   const [teamName, setTeamName] = useState("");
@@ -31,7 +32,7 @@ export default function Database({
         handleClose={() => setShowTeam(false)}
       ></DataTeamModal>
       <div className="d-flex flex-column">
-        <h1 className="text-center mb-3">Database (WIP)</h1>
+        <h1 className="text-center mb-3">Database (Will be removed)</h1>
         <Table bordered className="border-secondary-subtle">
           <thead className="align-middle text-center">
             <tr>

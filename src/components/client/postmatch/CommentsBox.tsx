@@ -6,6 +6,7 @@ interface Props {
   className?: string;
 }
 
+//Text input box.
 export default function CommentsBox({
   contents,
   handleChange,

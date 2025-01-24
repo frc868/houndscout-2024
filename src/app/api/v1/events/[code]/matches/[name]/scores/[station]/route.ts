@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-//Unimplemented, but returns the teamScores in the match with the specified name and in the event with the specified code.
+//Currently unimplemented.
+// Returns the teamScore mapped to the specified station in the specified match.
+// UPDATE CYCLE: Ensure all scoring events are listed here.
 export async function GET(
   req: Request,
   { params }: { params: { code: string; name: string; station: string } }
@@ -18,9 +20,11 @@ export async function GET(
       include: {
         [`${params.station}TeamScore`]: {
           include: {
-            autoScoringEvents: true,
-            teleopScoringEvents: true,
-            stageAttempts: true,
+            autoCoralScoringEvents: true,
+            autoAlgaeScoringEvents: true,
+            teleopCoralScoringEvents: true,
+            teleopAlgaeScoringEvents: true,
+            endgaeAttempts: true,
             incapSegments: true,
           },
         },
@@ -39,6 +43,7 @@ export async function GET(
 
 //scoresSlice/(most things)
 //A do-it-all function that can update update anything in the specified teamScore that needs to be updated.
+// UPDATE CYCLE: Please ensure this matches the updated TeamScore schema.
 export async function PATCH(
   req: Request,
   { params }: { params: { code: string; name: string; station: string } }
@@ -55,19 +60,18 @@ export async function PATCH(
         [`${params.station.toLowerCase()}TeamScore`]: {
           update: {
             preloaded: data.preloaded,
-            leftStartingZone: data.leftStartingZone,
-            driverSkillRating: data.driverSkillRating,
-            playedDefense: data.playedDefense,
-            underDefense: data.underDefense,
-            comments: data.comments,
             autoStartingZone: data.autoStartingZone,
-            autoGamePieces: data.autoGamePieces,
-            missingAutoGamePieces: data.missingAutoGamePieces,
-            autoGamePiecesScored: data.autoGamePiecesScored,
-            climbType: data.climbType,
-            numberRobotsOnChain: data.numberRobotsOnChain,
-            scoredInTrap: data.scoredInTrap,
-            spotlit: data.spotlit,
+
+            leftStartingZone: data.leftStartingZone,
+
+            endgameType: data.endgameType,
+            endgameSuccess: data.endgameSuccess,
+
+            driverSkillRating: data.driverSkillRating,
+            result: data.result,
+            playedDefense: data.playedDefense,
+            comments: data.comments,
+            
             submitted: data.submitted,
           },
         },

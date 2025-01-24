@@ -1,5 +1,6 @@
 /* eslint-disable react/display-name */
-import { Match, Team, Scouter, createMatchAsync, deleteMatchAsync, setActiveMatchAsync } from "@/redux/adminDataSlice";
+import { createMatchAsync, deleteMatchAsync } from "@/redux/adminDataSlice";
+import { setActiveMatchAsync } from "@/redux/mainDataSlice";
 import React, { useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import ScoutersDropdown from "./ScouterDropdown";
@@ -9,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import { Event } from "@prisma/client"
 import { MoonLoader } from "react-spinners";
+import { Match, Team, Scouter } from "@/lib/enums"
 interface Props {
   matches: Match[];
   teams: Team[];
@@ -75,6 +77,7 @@ export default function MatchSchedule({
           </thead>
           <tbody className="align-middle text-center">
             {matches.map((match) => (
+              //For each match, the team in each position is listed.
               <tr
                 key={match.number}
                 className={`${match.name === activeMatchName && "fw-bold"}`}
@@ -166,6 +169,7 @@ export default function MatchSchedule({
                   className={"mb-1 mx-2"}
                   size="sm"
                   onClick={async () => {
+                    //Sets the match as the active one if it isn't already.
                     setLoading(true);
                     await dispatch(
                       setActiveMatchAsync({
@@ -185,6 +189,7 @@ export default function MatchSchedule({
                         : "outline-danger"
                     }
                     handleDelete={async () => {
+                      //deletes the match.
                       setLoading(true);
                       await dispatch(
                         deleteMatchAsync({

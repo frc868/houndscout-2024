@@ -13,6 +13,8 @@ interface Props {
   handleLeftStartingZoneClick: () => void;
 }
 
+//The amount of notes clicked in AutoIntakePanel determines the numbers you can click for Notes Scored.
+// 1 (preload) + the number of discs clicked.
 export default function AutoScoringPanel({
   numIntaked,
   numSelected,

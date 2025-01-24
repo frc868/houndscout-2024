@@ -7,6 +7,8 @@ interface Props {
   isConnected: boolean;
 }
 
+//Displays some info about the active event and match on the server.
+//Only different from AdminStatusBar because the scouter name is determiend by what's on the schedule.
 export default function StatusBar({
   scouterName,
   team,

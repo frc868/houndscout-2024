@@ -5,6 +5,9 @@ import { createWrapper } from "next-redux-wrapper";
 import adminDataReducer, { AdminData } from "./adminDataSlice";
 import viewerDataReducer, { ViewerData } from "./viewerDataSlice";
 
+//This is the central source of redux state.
+//Calls to mainData or something else go through here and then to the necessary slice.
+
 export const store = configureStore({
   reducer: {
     mainData: mainDataReducer,

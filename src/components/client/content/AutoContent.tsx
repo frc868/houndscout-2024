@@ -51,6 +51,7 @@ export default function AutoContent({ show }: Props) {
       setSelectedGamePieces((old) => [...old, selection]);
     }
 
+    //Then sends the new game piece arrays to the database.
     await dispatch(
       setAutoGamePiecesAsync({ autoGamePieces: selectedGamePieces })
     );
