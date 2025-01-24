@@ -5,6 +5,7 @@ Then, create a PostgreSQL database. Ensure you the database name, username, and 
 
 ## HoundScout: Setup guide for Codespaces
 Create a codespace off of your branch. GitHub should handle the rest of the setup.
+Please note that usage of Codespaces is limited by GitHub.
 
 ## HoundScout: Finish Setup
 1. Create a .env file and enter the following to connect the database to your server:
