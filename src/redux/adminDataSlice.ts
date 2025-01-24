@@ -70,18 +70,6 @@ export const deleteEventAsync = createAsyncThunk(
     await axios.delete(`/api/v1/events/${eventCode}`, {});
   }
 );
-export const setActiveEventAsync = createAsyncThunk(
-  "adminData/setActiveEvent",
-  async ({
-    eventCode,
-  }: {
-    eventCode: string;
-  }) => {
-    await axios.post(`/api/v1/server/event`, {
-      code: eventCode,
-    });
-  }
-);
 
 export const getMatchesAsync = createAsyncThunk(
   "adminData/getMatches",
@@ -91,21 +79,6 @@ export const getMatchesAsync = createAsyncThunk(
   }
 );
 
-//Move anything active to mainDataSlice.
-export const setActiveMatchAsync = createAsyncThunk(
-  "adminData/setActiveMatch",
-  async ({
-    eventCode,
-    matchName,
-  }: {
-    eventCode: string;
-    matchName: string;
-  }) => {
-    await axios.post(`/api/v1/server/match`, {
-      key: `${eventCode}_${matchName}`,
-    });
-  }
-);
 export const createMatchAsync = createAsyncThunk(
   "adminData/createMatch",
   async (data: {

@@ -11,17 +11,14 @@ generator erd {
   provider = "prisma-erd-generator"
 }
 
-//MAKE SURE YOU DO THE FOLLOWING TO MAKE YOUR DATABASE WORK:
-//set your database name to "houndscout"
-//set your database user to "techhounds"
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")//Make a .env filed with DATABASE_URL linking to your database.
+  url      = env("DATABASE_URL")//Links to your .env file; see README for more details.
 }
 
-// The tables/collections in a database. Some of these link to each other.
+// The tables/collections in a database. See README for setup details.
 
-//Currently, this will have to be manually created. Make sure you set the active event to something as well.
+//Represents the server device.
 model Server {
   id            Int         @id @default(autoincrement())
   activeEvent   Event?      @relation(fields: [activeEventId], references: [id])
@@ -32,7 +29,7 @@ model Server {
   blueOnLeft    Boolean
 }
 
-//You'll need to manually create six of these, one per team on the field.
+//Represents the devices tracking each station.
 model Heartbeat {
   id      Int      @id @default(autoincrement())
   station Station  @unique @default(RED1)
@@ -43,14 +40,14 @@ model Heartbeat {
   serverId Int
 }
 
-//These can be created through the admin panel.
+//Represents each human scouter.
 model Scouter {
   id        Int         @id @default(autoincrement())
   name      String      @unique
   TeamScore TeamScore[]
 }
 
-//One will need to be created manually to make the system work, but after that you can create them on the admin panel.
+//Represents an FRC event.
 model Event {
   id    Int    @id @default(autoincrement())
   code  String @unique
@@ -66,7 +63,7 @@ model Event {
   servers Server[]
 }
 
-//One will need to be created manually to make the system work, but after that you can create them on the admin panel.
+//Represents an FRC team. Should be auto-filled using The Blue Alliance API.
 model Team {
   id           Int         @id @default(autoincrement())
   number       Int         @unique
@@ -83,7 +80,7 @@ model Team {
   //picklist     Boolean     @default(true)
 }
 
-//One will need to be created manually to make the system work, but after that you can create them on the admin panel.
+//Represents a match in an event. Should be auto-filled using The Blue Alliance API.
 model Match {
   id        Int    @id @default(autoincrement())
   key       String @unique
@@ -127,7 +124,8 @@ model Match {
   @@unique([name, eventCode])
 }
 
-//Each of these represents one robot's performance in one match. A lot of these might need to be adjusted.
+//Represents one robot's performance in one match.
+//UPDATE CYCLE: Please review this model between years to ensure all necessary data is being tracked.
 model TeamScore {
   id     Int  @id @default(autoincrement())
   teamId Int
@@ -139,9 +137,10 @@ model TeamScore {
 
 //Auton
   leftStartingZone      Boolean              @default(false)
-  // autoGamePieces        AutoGamePiece[] //The pieces the robot attempted to pick up; comment out
-  // missingAutoGamePieces AutoGamePiece[] //The pieces the robot attempted but failed to pick up; comment out
-  // autoGamePiecesScored  Int                  @default(0) //The overall pieces scored; comment out
+  //The following three lines are left over from Crescendo. See the crescendo_archive branch to see how it works.
+  // autoGamePieces        AutoGamePiece[] //Crescendo: The pieces the robot attempted to pick up
+  // missingAutoGamePieces AutoGamePiece[] //Crescendo: The pieces the robot attempted but failed to pick up
+  // autoGamePiecesScored  Int                  @default(0) //Crescendo: The overall pieces scored
   
   autoCoralScoringEvents     AutoCoralScoringEvent[]
   autoAlgaeScoringEvents     AutoAlgaeScoringEvent[]
@@ -177,13 +176,13 @@ model TeamScore {
 }
 
 //The following four models are based on scoring events. There's one for each combination of phase and game piece.
-//Should be roughly the same aside from the different enums used.
+//UPDATE CYCLE: Please update these models for the amount of game pieces and the possible scoring locations in each event.
 model AutoCoralScoringEvent {
   id                Int              @id @default(autoincrement())
   intakeLocation    AutoCoralIntakeLocation
-  scoringLevel      CoralScoringLevel?//If the piece was dropped, anything scoring related won't be filled in.
+  scoringLevel      CoralScoringLevel? //If the piece was dropped, anything scoring related won't be filled in.
   scoringSide       AutoCoralScoringSide?
-  dropped           Boolean          @default(false) //For dropping the piece while not scoring
+  dropped           Boolean          @default(false) //For dropping the piece before a scoring attempt was made
   failedScoring     Boolean          @default(false) //For trying to score and failing
   timestampPickedUp Decimal //The time the game piece was selected, or the start time if going from preload.
   timestampScored   Decimal //Just do this based on whatever scoring input was clicked first for accuracy purposes.
@@ -203,7 +202,6 @@ model AutoAlgaeScoringEvent {
   teamScoreId Int
   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
 }
-
 model TeleopCoralScoringEvent {
   id                Int              @id @default(autoincrement())
   intakeLocation    TeleopCoralIntakeLocation
@@ -216,7 +214,6 @@ model TeleopCoralScoringEvent {
   teamScoreId Int
   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
 }
-
 model TeleopAlgaeScoringEvent {
   id                Int              @id @default(autoincrement())
   intakeLocation    TeleopAlgaeIntakeLocation
@@ -230,7 +227,8 @@ model TeleopAlgaeScoringEvent {
   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
 }
 
-//Unimplemented, as far as I'm aware. Probably going to put this on the client status bar.
+//Represents a segment where a robot was disabled during a match.
+//2025: Put this on the client status bar.
 model IncapSegment {
   id               Int       @id @default(autoincrement())
   timestampStarted Decimal
@@ -240,21 +238,23 @@ model IncapSegment {
   TeamScore        TeamScore @relation(fields: [teamScoreId], references: [id])
 }
 
-//These enums are here so we can set the data type for certain columns to them. I think.
-// This one should be the same between games, just mapped to different locations.
+//These enums are here so we can set the data type for certain columns to them.
+
+// The (approximate) starting locations for robots on one side of the field.
 enum AutoStartingZone {
   ONE
   TWO
   THREE
 }
 
+//The potential intake locations for each combination of game piece and phrase.
+//UPDATE CYCLE: Please ensure these are accurate between games.
 enum AutoCoralIntakeLocation {
   PRELOAD
   GROUND1 //Numbers go from top to bottom
   GROUND2
   GROUND3
 }
-
 enum AutoAlgaeIntakeLocation {
   REEF1
   REEF2
@@ -266,24 +266,24 @@ enum AutoAlgaeIntakeLocation {
   GROUND2
   GROUND3
 }
-
 enum TeleopCoralIntakeLocation {
   GROUND
   STATION
 }
-
 enum TeleopAlgaeIntakeLocation {
   GROUND
   REEF
 }
 
+//The potential scoring locations for each combination of game piece and phrase.
+//For particularly complicated games, feel free to sort these into parts.
+//UPDATE CYCLE: Please ensure these are accurate between games.
 enum CoralScoringLevel {
   LEVEL1
   LEVEL2
   LEVEL3
   LEVEL4
 }
-
 enum AutoCoralScoringSide {
   SIDE1
   SIDE2
@@ -292,32 +292,36 @@ enum AutoCoralScoringSide {
   SIDE5
   SIDE6
 }
-
 enum AlgaeScoringLocation {
   NET
   PROCESSOR
 }
 
-//Needs to be updated.
+//The different scoring levels for the endgame (final 20 seconds)
+//UPDATE CYCLE: Please ensure these are accurate between games.
 enum EndgameType {
   NONE
   PARKED
   SHALLOW
   DEEP
 }
+
+//The potential game results for each alliance.
 enum Result {
   WIN
   TIE
   LOSS
 }
 
-//Keep the same.
+//The tab the scouter is currently on.
 enum Section {
   PREMATCH
   AUTO
   TELEOP
   POSTMATCH
 }
+
+//The scouting stations.
 enum Station {
   RED1
   RED2

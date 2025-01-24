@@ -52,6 +52,18 @@ export const getActiveEventAsync = createAsyncThunk(
     return data.event;
   }
 );
+export const setActiveEventAsync = createAsyncThunk(
+  "adminData/setActiveEvent",
+  async ({
+    eventCode,
+  }: {
+    eventCode: string;
+  }) => {
+    await axios.post(`/api/v1/server/event`, {
+      code: eventCode,
+    });
+  }
+);
 
 export const getActiveMatchAsync = createAsyncThunk(
   "mainData/getActiveMatch",
@@ -59,6 +71,20 @@ export const getActiveMatchAsync = createAsyncThunk(
     const res = await axios.get(`/api/v1/server/match`);
     const data = res.data;
     return data.match?.name;
+  }
+);
+export const setActiveMatchAsync = createAsyncThunk(
+  "adminData/setActiveMatch",
+  async ({
+    eventCode,
+    matchName,
+  }: {
+    eventCode: string;
+    matchName: string;
+  }) => {
+    await axios.post(`/api/v1/server/match`, {
+      key: `${eventCode}_${matchName}`,
+    });
   }
 );
 

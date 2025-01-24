@@ -15,8 +15,8 @@ import {
 import { Ranking } from "@/lib/enums";
 
 //viewerDataSlice/getRankingsAsync
-//see DataControls for additional implementation.
-//If you just want raw JSON info about LITERALLY EVERYTHING in the event, here you go.
+//see the "Aggregate JSON" button in DataControls for additional implementation.
+//Creates a JSON object containing performance data about each team in the specified event.
 //This is way more complicated than everything else that's exportable, so this also feeds into the database.
 export async function GET(
   req: Request,
@@ -38,6 +38,7 @@ export async function GET(
             blue1Team: true,
             blue2Team: true,
             blue3Team: true,
+            //UPDATE CYCLE: Ensure all scoring events are listed in each of the _TeamScore objects.
             red1TeamScore: {
               include: {
                 team: true,
@@ -113,12 +114,14 @@ export async function GET(
 
     const rankings: Ranking[] = event.teams.map((team) => {
       const teamScores: (TeamScore & {
+        //UPDATE CYCLE: Ensure all scoring events are listed here.
         autoCoralScoringEvents: AutoCoralScoringEvent[];
         autoAlgaeScoringEvents: AutoAlgaeScoringEvent[];
         teleopCoralScoringEvents: TeleopCoralScoringEvent[];
         teleopAlgaeScoringEvents: TeleopAlgaeScoringEvent[];
         incapSegments: IncapSegment[];
       })[] = matches
+        //Filters out teamScores not attributed to the specified team, and that aren't submitted or null.
         .flatMap((match) => [
           match.red1TeamId === team.id ? match.red1TeamScore : null,
           match.red2TeamId === team.id ? match.red2TeamScore : null,
@@ -135,22 +138,24 @@ export async function GET(
         teleopAlgaeScoringEvents: TeleopAlgaeScoringEvent[];
         incapSegments: IncapSegment[];
       })[]; // Remove null entries
-
-      const mobility:number =
-        (teamScores.filter((score) => score.leftStartingZone).length /
-          teamScores.length);
   
+      // Archived from Crescendo
       // const autoSpeaker:number =
       //   teamScores.reduce((o, s) => o + (s?.autoGamePiecesScored || 0), 0) /
       //   teamScores.length;
-
       // const autoMisses:number =
       //   (teamScores.reduce((o, s) => o + (s?.autoGamePieces.length || 0), 0) -
       //     autoSpeaker +
       //     2) /
       //   teamScores.length;
 
+      // Calculates the fraction of games in which the team left the starting zone in auto.
+      const mobility:number =
+        (teamScores.filter((score) => score.leftStartingZone).length /
+          teamScores.length);
+
       //Each of these functions calculates the average amount of a game piece that was successfully scored on a certain location in a certain phrase per game.
+      //UPDATE CYCLE: Ensure all scoring locations for all scoring events are calculated here, including dropped pieces.
       const autoCoralLevel1Scored =
         teamScores.reduce((total, score) => {
           const gameAmount = score.autoCoralScoringEvents.filter(
@@ -249,7 +254,8 @@ export async function GET(
         }, 0) / teamScores.length;
       
 
-      // Calculates the fraction of games in which the team did each of the following in endgame
+      // Each of these functions calculates the fraction of games in which the team did a certain thing in endgame.
+      //UPDATE CYCLE: Ensure this is consistent with the Endgame section of TeamScore.
       const parked:number =
         teamScores.filter((score) => score.endgameType === EndgameType.PARKED)
           .length / teamScores.length;
@@ -278,10 +284,12 @@ export async function GET(
         teamScores.filter((score) => score.playedDefense).length /
         teamScores.length;
 
+      //UPDATE CYCLE: Ensure everything calculated above is listed here.
       return {
-        teamNumber: team.number,
-        teamName: team.name,
-        teamScores: teamScores,
+        teamNumber: team.number,//keep this
+        teamName: team.name,//keep this
+        teamScores: teamScores,//keep this
+        //throw everything else out
         mobility,
         autoCoralLevel1Scored,
         autoCoralLevel2Scored,

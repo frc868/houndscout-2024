@@ -13,8 +13,9 @@ import {
 } from "@prisma/client";
 import { Ranking } from "@/lib/enums";
 
-//see DataControls for implementation.
-//If you just want raw JSON info about the teamScores in the event, here you go.
+//see the "JSON" button in DataControls for implementation.
+//Creates a JSON object containing data about the specified event.
+//UPDATE CYCLE: Most of the necessary edits also apply to the CSV button.
 export async function GET(
   req: Request,
   { params }: { params: { code: string } }
@@ -35,6 +36,7 @@ export async function GET(
             blue1Team: true,
             blue2Team: true,
             blue3Team: true,
+            //UPDATE CYCLE: Ensure all scoring events are listed in each of the _TeamScore objects.
             red1TeamScore: {
               include: {
                 team: true,
@@ -109,6 +111,7 @@ export async function GET(
     let matches = event.matches;
 
     const teamScoresWithDetails = matches
+      //Turns all the match data into an array of submitted teamScores.
       .flatMap((match) => [
         ...(match.red1TeamScore
           ? [
@@ -172,6 +175,8 @@ export async function GET(
           : []),
       ])
       .filter((teamScore) => teamScore.submitted)
+      //Calculates extra data about each teamScore
+      //UPDATE CYCLE: Ensure all scoring locations for all scoring events are calculated here, including dropped pieces.
       .map((teamScore) => ({
         ...teamScore,
         teamNumber: teamScore.teamNumber,
@@ -216,6 +221,7 @@ export async function GET(
         teleopCoralDropped: teamScore.teleopCoralScoringEvents.filter((event) => event.dropped).length,
         teleopAlgaeDropped: teamScore.teleopAlgaeScoringEvents.filter((event) => event.dropped).length,
       }))
+      //UPDATE CYCLE: Ensure all scoring events are listed here.
       .map((teamScore) => {
         const {
           team,

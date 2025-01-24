@@ -1,5 +1,6 @@
 /* eslint-disable react/display-name */
-import { createMatchAsync, deleteMatchAsync, setActiveMatchAsync } from "@/redux/adminDataSlice";
+import { createMatchAsync, deleteMatchAsync } from "@/redux/adminDataSlice";
+import { setActiveMatchAsync } from "@/redux/mainDataSlice";
 import React, { useState } from "react";
 import { Button, Table } from "react-bootstrap";
 import ScoutersDropdown from "./ScouterDropdown";

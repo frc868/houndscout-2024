@@ -82,7 +82,7 @@ export default function Controls({ scouters, teams, eventCode }: Props) {
         href={`/api/v1/events/${eventCode}/statistics/all/csv`}
         className="mb-2 mx-1"
       >
-        Full CSV
+        CSV
       </Button>
       <Button
         variant="secondary"
@@ -90,7 +90,7 @@ export default function Controls({ scouters, teams, eventCode }: Props) {
         className="mb-2 mx-1"
         target="_blank"
       >
-        Full JSON
+        JSON
       </Button>
       <Button
         variant="secondary"

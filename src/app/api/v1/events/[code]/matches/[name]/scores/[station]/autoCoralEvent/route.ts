@@ -1,4 +1,5 @@
 //Creates an autoCoralScoringEvent.
+//UPDATE CYCLE: Please ensure this function's update values match the schema it's based off of.
 
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";

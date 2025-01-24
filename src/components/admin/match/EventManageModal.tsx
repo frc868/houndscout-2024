@@ -4,7 +4,8 @@ import { MoonLoader } from "react-spinners";
 import { Event } from "@prisma/client";
 import DeleteButton from "./DeleteButton";
 import NewEventForm from "./NewEventForm";
-import { deleteEventAsync, createEventAsync, setActiveEventAsync } from "@/redux/adminDataSlice";
+import { deleteEventAsync, createEventAsync } from "@/redux/adminDataSlice";
+import { setActiveEventAsync } from "@/redux/mainDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
 interface Props {
@@ -66,7 +67,7 @@ export default function EventManageModal({
         <ListGroup>
           {eventList.map((event: Event)=>(
             //Each of these event is represented by some basic info and buttons to set as active and delete them.
-            <ListGroup.Item className={`${event.code === activeEvent && "fw-bold table-secondary"}`}>
+            <ListGroup.Item key={event.id} className={`${event.code === activeEvent && "fw-bold table-secondary"}`}>
               Week {event.weekNumber}: {event.name} ({event.code})
               <Button
                 className="mx-2"
