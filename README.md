@@ -13,11 +13,9 @@ DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres"
 2. Run "npx prisma migrate dev" in the terminal to create the necessary framework in the database. 
 3. Create a row in Server.
 4. Create and fill in 6 Heartbeats, each set to a different station. Connect each of these to the Server you created.
-4. Create an Event and fill in all text inputs. Connect it to the Server.
-5. Create a Team and connect it to the Server and the Event.
-5. Create a Match and connect it to the Server and the Event.
-6. Create a Team for every team in the event and fill in team number, name, and location.
-7. Ensure each team is connected to the event.
+5. Create an Event and connect it to the Server.
+6. Create a Team and connect it to the Event.
+7. Create a Match and connect it to the Server and the Event.
 
 Finally, run the development server:
 
