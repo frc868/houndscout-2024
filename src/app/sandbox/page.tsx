@@ -1,8 +1,150 @@
 //Feel free to use this page to create boilerplates for the app without relying on data.
+
+/* eslint-disable @next/next/no-img-element */
+import { Alliance } from "@/lib/enums";
+import { AutoStartingZone } from "@prisma/client";
+import { Button } from "react-bootstrap";
 export default function Data() {
+    let alliance: Alliance = Alliance.BLUE;
+    let blueOnLeft: boolean = true;
     return(
         <>
-            Hello World!
+            <div className="d-flex justify-content-center">
+      <div className="position-relative">
+        <div className="d-flex flex-column">
+          <h1 className="text-center mb-3">Starting Position</h1>
+          <img
+            className="mx-auto"
+            alt=""
+            src={
+              alliance === Alliance.BLUE
+                ? blueOnLeft
+                  ? "/assets/blue_start_prematch.png"
+                  : "/assets/blue_start_prematch.png"
+                : blueOnLeft
+                ? "/assets/red_start_prematch.png"
+                : "/assets/red_start_prematch.png"
+            }
+            width={400}
+          />
+          {}
+        </div>
+        <div
+          style={
+            alliance === Alliance.BLUE
+              ? blueOnLeft
+                ? {
+                    position: "absolute",
+                    top: "120px",
+                    left: "55px",
+                  }
+                : {
+                    position: "absolute",
+                    top: "450px",
+                    left: "295px",
+                  }
+              : blueOnLeft
+              ? {
+                  position: "absolute",
+                  top: "120px",
+                  left: "295px",
+                }
+              : {
+                  position: "absolute",
+                  top: "450px",
+                  left: "55px",
+                }
+          }
+        >
+          <Button
+            // variant={
+            //   selected === AutoStartingZone.ONE ? "primary" : "secondary"
+            // }
+            className="fw-bold"
+            style={{ width: "50px" }}
+            // onMouseDown={() => handleSelection(AutoStartingZone.ONE)}
+          >
+            1
+          </Button>
+        </div>
+        <div
+          style={
+            alliance === Alliance.BLUE
+              ? blueOnLeft
+                ? {
+                    position: "absolute",
+                    top: "208px",
+                    left: "85px",
+                  }
+                : {
+                    position: "absolute",
+                    top: "372px",
+                    left: "275px",
+                  }
+              : blueOnLeft
+              ? {
+                  position: "absolute",
+                  top: "203px",
+                  left: "274px",
+                }
+              : {
+                  position: "absolute",
+                  top: "372px",
+                  left: "87px",
+                }
+          }
+        >
+          <Button
+            // variant={
+            //   selected === AutoStartingZone.TWO ? "primary" : "secondary"
+            // }
+            className="fw-bold"
+            style={{ width: "40px" }}
+            // onMouseDown={() => handleSelection(AutoStartingZone.TWO)}
+          >
+            2
+          </Button>
+        </div>
+        <div
+          style={
+            alliance === Alliance.BLUE
+              ? blueOnLeft
+                ? {
+                    position: "absolute",
+                    top: "350px",
+                    left: "55px",
+                  }
+                : {
+                    position: "absolute",
+                    top: "220px",
+                    left: "295px",
+                  }
+              : blueOnLeft
+              ? {
+                  position: "absolute",
+                  top: "350px",
+                  left: "295px",
+                }
+              : {
+                  position: "absolute",
+                  top: "220px",
+                  left: "55px",
+                }
+          }
+        >
+          <Button
+            // variant={
+            //   selected == AutoStartingZone.THREE ? "primary" : "secondary"
+            // }
+            className="fw-bold"
+            style={{ width: "50px" }}
+            // onMouseDown={() => handleSelection(AutoStartingZone.THREE)}
+          >
+            3
+          </Button>
+        </div>
+      </div>
+    </div>
         </>
     )
 }
