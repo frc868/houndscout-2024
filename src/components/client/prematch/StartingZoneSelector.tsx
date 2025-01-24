@@ -28,11 +28,11 @@ export default function StartingZoneSelector({
             src={
               alliance === Alliance.BLUE
                 ? blueOnLeft
-                  ? "/assets/blue_auto_left.png"
-                  : "/assets/blue_auto_right.png"
+                  ? "/assets/blue_start_prematch.png"
+                  : "/assets/blue_start_prematch.png"
                 : blueOnLeft
-                ? "/assets/red_auto_right.png"
-                : "/assets/red_auto_left.png"
+                ? "/assets/red_start_prematch.png"
+                : "/assets/red_start_prematch.png"
             }
             width={400}
           />
