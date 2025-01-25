@@ -10,20 +10,20 @@ export default function Data() {
 
     return(
         <>
+            {/* StartingPositionSelector */}
             <div className="d-flex justify-content-center">
                 <div className="position-relative">
                     <div className="d-flex flex-column">
-                        <h1 className="text-center mb-3">Starting Position (Blue)</h1>
+                        <h1 className="text-center mb-3">Starting Position</h1>
                         <img
                             className="mx-auto"
                             alt=""
+                            style={!blueOnLeft?{
+                                transform: 'rotate(180deg)'
+                            }:{}}
                             src={
                             allianceIsBlue//replace with alliance === Alliance.BLUE
-                                ? blueOnLeft
                                 ? "/assets/blue_start_prematch.png"
-                                : "/assets/blue_start_prematch.png"
-                                : blueOnLeft
-                                ? "/assets/red_start_prematch.png"
                                 : "/assets/red_start_prematch.png"
                             }
                             width={400}
@@ -146,6 +146,7 @@ export default function Data() {
                     </div>
                 </div>
             </div>
+            
         </>
     )
 }
