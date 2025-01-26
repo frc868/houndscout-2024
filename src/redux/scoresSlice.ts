@@ -2,7 +2,6 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { ReduxState } from "./store";
 import {
-  AutoGamePiece,
   AutoStartingZone,
   EndgameType,
   AutoCoralIntakeLocation,
@@ -37,6 +36,7 @@ export const setAutoStartingZoneAsync = createAsyncThunk(
     );
   }
 );
+//From Crescendo
 // export const setAutoGamePiecesAsync = createAsyncThunk(
 //   "scores/setAutoGamePieces",
 //   async (
@@ -93,6 +93,7 @@ export const setAutoStartingZoneAsync = createAsyncThunk(
 //     );
 //   }
 // );
+
 export const setLeftStartingZoneAsync = createAsyncThunk(
   "scores/setLeftStartingZoneAsync",
   async (
@@ -112,6 +113,8 @@ export const setLeftStartingZoneAsync = createAsyncThunk(
     );
   }
 );
+//UPDATE CYCLE: This may need to be updated if postmatch data changes.
+//If so, ensure all arguments match the postmatch part of the teamScore model in the schema. 
 export const sendPostMatchData = createAsyncThunk(
   "scores/sendPostMatchData",
   async (
@@ -145,6 +148,8 @@ export const sendPostMatchData = createAsyncThunk(
   }
 );
 
+//The following thunks create scoring events.
+//UPDATE CYCLE: Please ensure all scoring event models are accounted for, matching the format of the schema in the arguments.
 export const sendAutoCoralEvent = createAsyncThunk(
   "scores/sendAutoCoralEvent",
   async (
@@ -254,6 +259,7 @@ export const setEndgameTypeAsync = createAsyncThunk(
   }
 );
 
+// Old endgame stuff from Crescendo
 // export const setNumberRobotsOnChainAsync = createAsyncThunk(
 //   "scores/setNumberRobots",
 //   async (
@@ -303,7 +309,6 @@ export const setEndgameTypeAsync = createAsyncThunk(
 //   }
 // );
 
-//The clients will be using this one, which encompasses most things they do.
 const initialState: Scores = {
   autoStartingZone: undefined,
   leftStartingZone: false,
@@ -332,6 +337,7 @@ export const scoresSlice = createSlice({
     ) => {
       state.leftStartingZone = action.payload.leftStartingZone;
     },
+    //Crescendo stuff
     // addAutoGamePiece: (
     //   state,
     //   action: PayloadAction<{
@@ -348,6 +354,7 @@ export const scoresSlice = createSlice({
     ) => {
       state.endgameType = action.payload.endgameType;
     },
+    // Crescendo stuff
     // setNumberRobotsOnChain: (
     //   state,
     //   action: PayloadAction<{
