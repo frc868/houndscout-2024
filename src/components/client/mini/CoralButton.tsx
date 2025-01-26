@@ -7,7 +7,7 @@ interface Props {
 }
 
 //A picture of the game piece used to indicate an intake location in teleop.
-export default function IntakeButton({
+export default function CoralButton({
   selected,
   handleSelection,
   className,
@@ -21,7 +21,7 @@ export default function IntakeButton({
         style={{ width: "110px", height: "110px" }}
         onMouseDown={handleSelection}
       >
-        <img className="" alt="" src={`/assets/note.png`} width={85} />
+        <img className="" alt="" src={`/assets/coral_object.png`} width={85} />
       </div>
     </div>
   );

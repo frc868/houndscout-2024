@@ -2,11 +2,13 @@
 
 /* eslint-disable @next/next/no-img-element */
 import { Alliance } from "@/lib/enums";
-import { Button } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 export default function Data() {
-    //Update these two variables to change certain aspects of the boilerplate.
+    //Update these variables to change certain aspects of the boilerplate.
     let allianceIsBlue: boolean = true;
     let blueOnLeft: boolean = true;
+    let active: boolean = true;
+    let selected: boolean = true;
 
     return(
         <>
@@ -36,7 +38,7 @@ export default function Data() {
                             ? blueOnLeft
                                 ? {
                                     position: "absolute",
-                                    top: "120px",
+                                    top: "10px",
                                     left: "55px",
                                 }
                                 : {
@@ -146,7 +148,173 @@ export default function Data() {
                     </div>
                 </div>
             </div>
-            
+            {/* TeleopIntakeSelector */}
+                <div className="d-flex flex-column align-items-center">
+                <h1 className="text-center mb-3">Intake</h1>
+
+                <div className="d-flex justify-content-center flex-column">
+                    <div className="d-flex flex-column my-2">
+                    <h3 className="text-center">Coral</h3>
+                    {/* AlgaeButton */}
+                        <div className=""
+                        // {className || ""}
+                        >
+                        <div
+                            className={`mx-2 grow d-flex justify-content-center align-items-center rounded-4
+                            ${selected ? `intake-note-selected` : ""}
+                            `}
+                            style={{ width: "110px", height: "110px" }}
+                            // onMouseDown={handleSelection}
+                        >
+                            <img className="" alt="" src={`/assets/algae_object.png`} width={85} />
+                        </div>
+                        </div>
+                    </div>
+                    <div className="d-flex flex-column my-2">
+                    <h3 className="text-center">Algae</h3>
+                    {/* CoralButton */}
+                    <div className=""
+                        // {className || ""}
+                        >
+                        <div
+                            className={`mx-2 grow d-flex justify-content-center align-items-center rounded-4
+                            ${selected ? `intake-note-selected` : ""}
+                            `}
+                            style={{ width: "110px", height: "110px" }}
+                            // onMouseDown={handleSelection}
+                        >
+                            <img className="" alt="" src={`/assets/coral_object.png`} width={85} />
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+            {/* TeleopScoringPanel */}
+            <div className="d-flex flex-column align-items-center">
+                <h1 className="text-center mb-1">Scoring</h1>
+                <Row>
+                    <Col>
+                    <div className="d-flex flex-column my-3">
+                        <h3 className="text-center">Speaker</h3>
+                        <div className="d-flex justify-content-center">
+                        {/* scoreButton */}
+                            <div className=""
+                        // {className || ""}
+                        >
+                        <div
+                            className={`d-flex justify-content-center align-items-center border border-5 score-button rounded-4 grow ${
+                            active
+                                ? "bg-success-subtle border-success text-success"
+                                : "bg-secondary-subtle border-secondary text-secondary"
+                            }`}
+                            style={{
+                            width: "110px",
+                            height: "110px",
+                            fontSize: "90pt",
+                            }}
+                            // onMouseDown={handleClick}
+                        >
+                            <i className="bi bi-check" />
+                        </div>
+                        </div>
+                        {/* FailButton */}
+                        <div className=""
+                        // {className || ""}
+                        >
+                            <div
+                                className={`d-flex justify-content-center align-items-center border border-5 score-button rounded-4 grow ${
+                                active
+                                    ? "bg-danger-subtle border-danger text-danger"
+                                    : "bg-secondary-subtle border-secondary text-secondary"
+                                }`}
+                                style={{
+                                width: "110px",
+                                height: "110px",
+                                fontSize: "70pt",
+                                WebkitTextStroke: "4px",
+                                }}
+                                // onMouseDown={handleClick}
+                            >
+                                <i className="bi bi-x" />
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="d-flex flex-column my-3">
+                        <h3 className="text-center">Amp</h3>
+                        <div className="d-flex justify-content-center">
+                        {/* scoreButton */}
+                        <div className=""
+                        // {className || ""}
+                        >
+                        <div
+                            className={`d-flex justify-content-center align-items-center border border-5 score-button rounded-4 grow ${
+                            active
+                                ? "bg-success-subtle border-success text-success"
+                                : "bg-secondary-subtle border-secondary text-secondary"
+                            }`}
+                            style={{
+                            width: "110px",
+                            height: "110px",
+                            fontSize: "90pt",
+                            }}
+                            // onMouseDown={handleClick}
+                        >
+                            <i className="bi bi-check" />
+                        </div>
+                        </div>
+                        {/* FailButton */}
+                        <div className=""
+                        // {className || ""}
+                        >
+                            <div
+                                className={`d-flex justify-content-center align-items-center border border-5 score-button rounded-4 grow ${
+                                active
+                                    ? "bg-danger-subtle border-danger text-danger"
+                                    : "bg-secondary-subtle border-secondary text-secondary"
+                                }`}
+                                style={{
+                                width: "110px",
+                                height: "110px",
+                                fontSize: "70pt",
+                                WebkitTextStroke: "4px",
+                                }}
+                                // onMouseDown={handleClick}
+                            >
+                                <i className="bi bi-x" />
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    </Col>
+                    <Col className="d-flex flex-column justify-content-center align-items-center my-3">
+                    <h3 className="text-center">Dropped</h3>
+                    {/* FailButton */}
+                    <div className=""
+                        // {className || ""}
+                        >
+                            <div
+                                className={`d-flex justify-content-center align-items-center border border-5 score-button rounded-4 grow ${
+                                active
+                                    ? "bg-danger-subtle border-danger text-danger"
+                                    : "bg-secondary-subtle border-secondary text-secondary"
+                                }`}
+                                style={{
+                                width: "110px",
+                                height: "110px",
+                                fontSize: "70pt",
+                                WebkitTextStroke: "4px",
+                                }}
+                                // onMouseDown={handleClick}
+                            >
+                                <i className="bi bi-x" />
+                            </div>
+                            </div>
+                    </Col>
+                </Row>
+                </div>
         </>
     )
 }
