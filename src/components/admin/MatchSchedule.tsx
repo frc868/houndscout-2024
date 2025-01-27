@@ -2,7 +2,7 @@
 import { createMatchAsync, deleteMatchAsync } from "@/redux/adminDataSlice";
 import { setActiveMatchAsync } from "@/redux/mainDataSlice";
 import React, { useState } from "react";
-import { Button, Table } from "react-bootstrap";
+import { Button, Table, Form } from "react-bootstrap";
 import ScoutersDropdown from "./ScouterDropdown";
 import DeleteButton from "./DeleteButton";
 import MatchAddModal from "./MatchAddModal";
@@ -88,6 +88,22 @@ export default function MatchSchedule({
                   }`}
                 >
                   Match {match.number}
+                  <Form.Check
+                    type="radio"
+                    label="Active"
+                    name="active"
+                    onChange={async () => {
+                      //Sets the match as the active one if it isn't already.
+                      setLoading(true);
+                      await dispatch(
+                        setActiveMatchAsync({
+                          eventCode: mainData.activeEvent?.code as string,
+                          matchName: match.name,
+                        })
+                      )
+                      setLoading(false);
+                    }}
+                  />
                 </td>
                 <td className="px-2 table-danger">
                   {match.teamNumbers.red1}{" "}
@@ -180,7 +196,7 @@ export default function MatchSchedule({
                     setLoading(false);
                   }}
                   >
-                    {match.name === activeMatchName?"Current Active":"Set As Active"}
+                    Edit Event (TBA)
                   </Button>
                   <DeleteButton
                     variant={

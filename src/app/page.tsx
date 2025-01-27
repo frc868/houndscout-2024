@@ -63,7 +63,7 @@ export default function Home() {
         </Col>
       </Row>
       <Row>
-        <h1 className="text-center mt-4">Lead Scouter</h1>
+        <h1 className="text-center mt-4">Other</h1>
         <Col className="d-flex justify-content-center flex-column align-items-center">
           <Button
             className="mx-1 mt-2"
@@ -71,7 +71,7 @@ export default function Home() {
             variant="secondary"
             href="/admin"
           >
-            Match Controls
+            Lead Scouter
           </Button>
           <Button
             className="mx-1 mt-2"

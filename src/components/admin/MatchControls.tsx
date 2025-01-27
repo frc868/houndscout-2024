@@ -5,9 +5,9 @@ import { deleteTeamAsync, uploadTBADataAsync } from "@/redux/adminDataSlice";
 // import { deleteScouterAsync } from "@/redux/mainDataSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import TeamManageModal from "@/components/admin/match/TeamManageModal";
-import ScouterManageModal from "@/components/admin/match/ScouterManageModal";
-import TBADataModal from "../data/TBADataModal";
+import TeamManageModal from "@/components/admin/TeamManageModal";
+import ScouterManageModal from "@/components/admin/ScouterManageModal";
+import TBADataModal from "./data/TBADataModal";
 import { Scouter, Team } from "@/lib/enums"
 
 interface Props {
@@ -57,9 +57,16 @@ export default function Controls({ scouters, teams, eventCode }: Props) {
           </Button>
         </Col>
       </Row>
-      <Button variant="secondary" disabled className="mb-2">
-        Generate Scouter Schedule
-      </Button>
+      <Row className="">
+        <Button variant="secondary" disabled className="mb-2">
+          Generate Scouter Schedule
+        </Button>
+      </Row>
+      <Row className="">
+        <Button variant="secondary" disabled className="mb-2">
+          Toggle Orientation (Currently: TBA)
+        </Button>
+      </Row>
       <Row className="">
         <Button
           variant="secondary"
@@ -70,36 +77,47 @@ export default function Controls({ scouters, teams, eventCode }: Props) {
         </Button>
       </Row>
       <h3 className="text-center mb-3">Export:</h3>
-      <Button
-        variant="secondary"
-        href={`/api/v1/export`}
-        className="mb-2 mx-1"
-      >
-        Postgres Dump
-      </Button>
-      <Button
-        variant="secondary"
-        href={`/api/v1/events/${eventCode}/statistics/all/csv`}
-        className="mb-2 mx-1"
-      >
-        CSV
-      </Button>
-      <Button
-        variant="secondary"
-        href={`/api/v1/events/${eventCode}/statistics/all`}
-        className="mb-2 mx-1"
-        target="_blank"
-      >
-        JSON
-      </Button>
-      <Button
-        variant="secondary"
-        href={`/api/v1/events/${eventCode}/statistics/rankings`}
-        className="mb-2 mx-1"
-        target="_blank"
-      >
-        Aggregate JSON
-      </Button>
+      
+      <Row className="">
+        <Col>
+          <Button
+            variant="secondary"
+            href={`/api/v1/export`}
+            className="mb-2 mx-1"
+          >
+            Postgres Dump
+          </Button>
+          <Button
+            variant="secondary"
+            href={`/api/v1/events/${eventCode}/statistics/all/csv`}
+            className="mb-2 mx-1"
+          >
+            CSV
+          </Button>
+        </Col>
+      </Row>
+      <Row className="">
+        <Col>
+          <Button
+            variant="secondary"
+            href={`/api/v1/events/${eventCode}/statistics/all`}
+            className="mb-2 mx-1"
+            target="_blank"
+          >
+            JSON
+          </Button>
+          <Button
+            variant="secondary"
+            href={`/api/v1/events/${eventCode}/statistics/rankings`}
+            className="mb-2 mx-1"
+            target="_blank"
+          >
+            Aggregate JSON
+          </Button>
+        </Col>
+      </Row>
+      
+      
     </div>
   );
 }
