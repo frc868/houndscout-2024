@@ -13,7 +13,7 @@ interface Props {
   show: boolean;
 }
 
-//So far, all you really need to do is put the approximate starting position; everything else is handled by the admin.
+//All the scouter really needs to do is put the approximate starting position; everything else is handled by the lead.
 export default function PrematchContent({ show }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);

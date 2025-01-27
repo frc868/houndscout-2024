@@ -26,29 +26,34 @@ interface Props {
 export default function TeleopContent({ show }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
+
+  //UPDATE CYCLE: Make sure everything down to handleScoringSelection is duplicated if there's multiple game pieces.
+  //Also ensure the enums used are accurate; those are imported from Prisma, so update those as well.
   const [intakeLocation, setIntakeLocation] = useState<
     IntakeLocation | undefined
   >(undefined);
   const [activeSide, setActiveSide] = useState("intaking");//This is set between intaking and scoring.
-  const [coralActiveSide, setCoralActiveSide] = useState("intaking");//For Reefscape.
-
-  //triggers when intake is selected
+  
+  //triggers when intake location is selected
   const handleIntakeSelection = (selection: IntakeLocation) => {
+    //Add a timestamp creator at the first scoring input.
     setIntakeLocation(selection);
-    setActiveSide("scoring");
+    setActiveSide("scoring");    
   };
-
+  //triggers when scoring location is selected
   const handleScoringSelection = async (
     location?: ScoringLocation,
     failed?: boolean,
     dropped?: boolean
   ) => {
     if (activeSide == "scoring") {
+      //Add a timestamp creator here or wherever the first scoring input is.
       const event = {
         intakeLocation: intakeLocation as IntakeLocation,
         scoringLocation: location,
-        failed,
+        failedScoring,
         dropped,
+        //Need to add timestampPickedUp and timestampScored here.
       }; //teleopScoringEvent creation.
       setIntakeLocation(undefined);
       setActiveSide("intaking");
@@ -59,6 +64,7 @@ export default function TeleopContent({ show }: Props) {
 
   return (
     <div className={`${!show && "d-none"}`}>
+      { /* We're probably going to redo this layout, but keep a copy of it for future reference.  */ }
       <Row></Row>
       <Row className="my-5">
         <Col className="d-flex justify-content-end" md={3}>
@@ -75,7 +81,7 @@ export default function TeleopContent({ show }: Props) {
         </Col>
         <Col className="d-flex justify-content-start ms-5" md={4}>
           <TeleopStagePanel
-          //Endgame content.
+          //Endgame content. May be moved to its own tab if necessary.
             climbType={scores.climbType}
             numRobots={scores.numberRobotsOnChain}
             scoredInTrap={scores.scoredInTrap}
