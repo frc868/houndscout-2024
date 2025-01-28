@@ -1,10 +1,10 @@
-import { Team } from "@/redux/adminDataSlice";
+import { Team } from "@/lib/enums";
 import { useState } from "react";
 import { Dropdown, Form } from "react-bootstrap";
 
 interface Props {
   red: boolean;
-  activeTeam: string;
+  activeTeam: number;
   teams: Team[];
   handleTeamSelect: (id: number) => void;
 }
