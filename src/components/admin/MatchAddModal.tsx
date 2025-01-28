@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
 import TeamDropdown from "./TeamDropdown";
 import { Team } from "@/lib/enums";
 
 interface Props {
-  teams: Team[];
   show: boolean;
+  initialMatch?: number;
+  initialRed1?: number;
+  initialRed2?: number;
+  initialRed3?: number;
+  initialBlue1?: number;
+  initialBlue2?: number;
+  initialBlue3?: number;
+  teams: Team[];
   handleClose: () => void;
   handleSubmit: ({
     number,
@@ -30,27 +37,45 @@ interface Props {
 //A form to add a new match.
 export default function MatchAddModal({
   teams,
+  initialMatch,
+  initialRed1,
+  initialRed2,
+  initialRed3,
+  initialBlue1,
+  initialBlue2,
+  initialBlue3,
   show,
   handleClose,
   handleSubmit,
 }: Props) {
-  const [number, setNumber] = useState("");
-  const [red1, setRed1] = useState("");
-  const [red2, setRed2] = useState("");
-  const [red3, setRed3] = useState("");
-  const [blue1, setBlue1] = useState("");
-  const [blue2, setBlue2] = useState("");
-  const [blue3, setBlue3] = useState("");
+  const [match, setMatch] = useState<number | undefined>(undefined);
+  const [red1, setRed1] = useState<number | undefined>(undefined);
+  const [red2, setRed2] = useState<number | undefined>(undefined);
+  const [red3, setRed3] = useState<number | undefined>(undefined);
+  const [blue1, setBlue1] = useState<number | undefined>(undefined);
+  const [blue2, setBlue2] = useState<number | undefined>(undefined);
+  const [blue3, setBlue3] = useState<number | undefined>(undefined);
 
-  //clean-up function for when this thing is closed.
+  //load function to set the initial values of the edit version of this modal
+  useEffect(() => {
+    setMatch(initialMatch || undefined);
+    setRed1(initialRed1 || undefined);
+    setRed2(initialRed2 || undefined);
+    setRed3(initialRed3 || undefined);
+    setBlue1(initialBlue1 || undefined);
+    setBlue2(initialBlue2 || undefined);
+    setBlue3(initialBlue3 || undefined);
+  }, [initialMatch, initialRed1, initialRed2, initialRed3, initialBlue1, initialBlue2, initialBlue3]);
+
+  //clean-up function for when this modal is closed.
   function clearState(){
-    setNumber("");
-    setRed1("");
-    setRed2("");
-    setRed3("");
-    setBlue1("");
-    setBlue2("");
-    setBlue3("");
+    setMatch(undefined);
+    setRed1(undefined);
+    setRed2(undefined);
+    setRed3(undefined);
+    setBlue1(undefined);
+    setBlue2(undefined);
+    setBlue3(undefined);
   }
 
   return (
@@ -65,9 +90,9 @@ export default function MatchAddModal({
             <Form.Label>Match Number</Form.Label>
             <Form.Control
               placeholder="e.g. 1"
-              value={number}
+              value={match}
               type="number"
-              onChange={(e) => setNumber(e.target.value)}
+              onChange={(e) => setMatch(Number(e.target.value))}
             />
           </Form.Group>
           <Row>
@@ -76,9 +101,9 @@ export default function MatchAddModal({
                 <Form.Label>Red 1</Form.Label>
                 <TeamDropdown
                   red={true}
-                  activeTeam={red1}
+                  activeTeam={Number(red1)}
                   teams={teams as Team[]}
-                  handleTeamSelect={(number) => setRed1(number.toString())}
+                  handleTeamSelect={(number) => setRed1(number)}
                 />
               </Form.Group>
             </Col>
@@ -87,9 +112,9 @@ export default function MatchAddModal({
                 <Form.Label>Red 2</Form.Label>
                 <TeamDropdown
                   red={true}
-                  activeTeam={red2}
+                  activeTeam={Number(red2)}
                   teams={teams as Team[]}
-                  handleTeamSelect={(number) => setRed2(number.toString())}
+                  handleTeamSelect={(number) => setRed2(number)}
                 />
               </Form.Group>
             </Col>
@@ -98,9 +123,9 @@ export default function MatchAddModal({
                 <Form.Label>Red 3</Form.Label>
                 <TeamDropdown
                   red={true}
-                  activeTeam={red3}
+                  activeTeam={Number(red3)}
                   teams={teams as Team[]}
-                  handleTeamSelect={(number) => setRed3(number.toString())}
+                  handleTeamSelect={(number) => setRed3(number)}
                 />
               </Form.Group>
             </Col>
@@ -111,9 +136,9 @@ export default function MatchAddModal({
                 <Form.Label>Blue 1</Form.Label>
                 <TeamDropdown
                   red={false}
-                  activeTeam={blue1}
+                  activeTeam={Number(blue1)}
                   teams={teams as Team[]}
-                  handleTeamSelect={(number) => setBlue1(number.toString())}
+                  handleTeamSelect={(number) => setBlue1(number)}
                 />
               </Form.Group>
             </Col>
@@ -122,9 +147,9 @@ export default function MatchAddModal({
                 <Form.Label>Blue 2</Form.Label>
                 <TeamDropdown
                   red={false}
-                  activeTeam={blue2}
+                  activeTeam={Number(blue2)}
                   teams={teams as Team[]}
-                  handleTeamSelect={(number) => setBlue2(number.toString())}
+                  handleTeamSelect={(number) => setBlue2(number)}
                 />
               </Form.Group>
             </Col>
@@ -133,9 +158,9 @@ export default function MatchAddModal({
                 <Form.Label>Blue 3</Form.Label>
                 <TeamDropdown
                   red={false}
-                  activeTeam={blue3}
+                  activeTeam={Number(blue3)}
                   teams={teams as Team[]}
-                  handleTeamSelect={(number) => setBlue3(number.toString())}
+                  handleTeamSelect={(number) => setBlue3(number)}
                 />
               </Form.Group>
             </Col>
@@ -156,7 +181,7 @@ export default function MatchAddModal({
             {
               clearState();
               handleSubmit({
-                number: Number(number),
+                number: Number(match),
                 red1: Number(red1),
                 red2: Number(red2),
                 red3: Number(red3),

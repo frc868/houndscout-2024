@@ -39,7 +39,7 @@ export async function GET(
   return NextResponse.json({ ok: true, match });
 }
 
-//Currently unimplemented.
+//adminDataSlice/editMatchAsync
 //Updates the teams currently set to each station during the specified match.
 export async function PATCH(
   req: Request,

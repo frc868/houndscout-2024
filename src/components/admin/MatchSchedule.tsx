@@ -1,8 +1,8 @@
 /* eslint-disable react/display-name */
-import { createMatchAsync, deleteMatchAsync } from "@/redux/adminDataSlice";
+import { createMatchAsync, deleteMatchAsync, editMatchAsync } from "@/redux/adminDataSlice";
 import { setActiveMatchAsync } from "@/redux/mainDataSlice";
 import React, { useState } from "react";
-import { Button, Table } from "react-bootstrap";
+import { Button, Table, Form } from "react-bootstrap";
 import ScoutersDropdown from "./ScouterDropdown";
 import DeleteButton from "./DeleteButton";
 import MatchAddModal from "./MatchAddModal";
@@ -28,14 +28,36 @@ export default function MatchSchedule({
 }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const mainData = useSelector((state: ReduxState) => state.mainData);
-  const [showMatchAdd, setShowMatchAdd] = useState(false);
+  const [showMatchCreate, setShowMatchCreate] = useState(false);
+  const [showMatchEdit, setShowMatchEdit] = useState(false);
+  const [matchEditData, setMatchEditData] = useState<{
+    match: number;
+    name: string;
+    red1: number;
+    red2: number;
+    red3: number;
+    blue1: number;
+    blue2: number;
+    blue3: number;
+  }>({
+    match: 0,
+    name: "",
+    red1: 0,
+    red2: 0,
+    red3: 0,
+    blue1: 0,
+    blue2: 0,
+    blue3: 0
+  });
+
   const [loading, setLoading] = useState(false);
   return (
     <div className="d-flex justify-content-center">
       <MatchAddModal
+      // Create a new match
         teams={teams as Team[]}
-        show={showMatchAdd}
-        handleClose={() => setShowMatchAdd(false)}
+        show={showMatchCreate}
+        handleClose={() => setShowMatchCreate(false)}
         handleSubmit={async (payload) => {
           await dispatch(
             createMatchAsync({
@@ -43,7 +65,30 @@ export default function MatchSchedule({
               ...payload,
             })
           );
-          setShowMatchAdd(false);
+          setShowMatchCreate(false);
+        }}
+      ></MatchAddModal>
+      <MatchAddModal
+      // Edit an existing match
+        teams={teams as Team[]}
+        initialMatch={matchEditData.match}
+        initialRed1={matchEditData.red1}
+        initialRed2={matchEditData.red2}
+        initialRed3={matchEditData.red3}
+        initialBlue1={matchEditData.blue1}
+        initialBlue2={matchEditData.blue2}
+        initialBlue3={matchEditData.blue3}
+        show={showMatchEdit}
+        handleClose={() => setShowMatchEdit(false)}
+        handleSubmit={async (payload) => {
+          await dispatch(
+            editMatchAsync({
+              eventCode: mainData.activeEvent?.code as string,
+              name: matchEditData.name,
+              ...payload,
+            })
+          );
+          setShowMatchEdit(false);
         }}
       ></MatchAddModal>
       <div className="d-flex flex-column">
@@ -58,7 +103,7 @@ export default function MatchSchedule({
         />
         <Button
           className="w-25 mx-auto mb-3"
-          onClick={() => {setShowMatchAdd(true);}}
+          onClick={() => {setShowMatchCreate(true);}}
         >
           Create new match
         </Button>
@@ -88,6 +133,22 @@ export default function MatchSchedule({
                   }`}
                 >
                   Match {match.number}
+                  <Form.Check
+                    type="radio"
+                    label="Active"
+                    name="active"
+                    onChange={async () => {
+                      //Sets the match as the active one if it isn't already.
+                      setLoading(true);
+                      await dispatch(
+                        setActiveMatchAsync({
+                          eventCode: mainData.activeEvent?.code as string,
+                          matchName: match.name,
+                        })
+                      )
+                      setLoading(false);
+                    }}
+                  />
                 </td>
                 <td className="px-2 table-danger">
                   {match.teamNumbers.red1}{" "}
@@ -169,18 +230,20 @@ export default function MatchSchedule({
                   className={"mb-1 mx-2"}
                   size="sm"
                   onClick={async () => {
-                    //Sets the match as the active one if it isn't already.
-                    setLoading(true);
-                    await dispatch(
-                      setActiveMatchAsync({
-                        eventCode: mainData.activeEvent?.code as string,
-                        matchName: match.name,
-                      })
-                    )
-                    setLoading(false);
+                    setMatchEditData({
+                      match: match.number,
+                      name: match.name,
+                      red1: match.teamNumbers.red1,
+                      red2: match.teamNumbers.red2,
+                      red3: match.teamNumbers.red3,
+                      blue1: match.teamNumbers.blue1,
+                      blue2: match.teamNumbers.blue2,
+                      blue3: match.teamNumbers.blue3
+                    });
+                    setShowMatchEdit(true);
                   }}
                   >
-                    {match.name === activeMatchName?"Current Active":"Set As Active"}
+                    Edit Event (TBA)
                   </Button>
                   <DeleteButton
                     variant={

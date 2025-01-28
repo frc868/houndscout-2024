@@ -1,4 +1,5 @@
 //A bunch of enums used throughout the program
+//UPDATE CYCLE: Make sure the imports are correct.
 import { TeamScore, AutoCoralScoringEvent, AutoAlgaeScoringEvent, TeleopCoralScoringEvent, TeleopAlgaeScoringEvent, IncapSegment } from "@prisma/client";
 
 export enum Alliance {
@@ -6,6 +7,7 @@ export enum Alliance {
   BLUE,
 }
 
+//UPDATE CYCLE: Ensure this interface reflects the rankings API.
 export interface Ranking {
   teamNumber: number;
   teamName: string;

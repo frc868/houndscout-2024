@@ -79,6 +79,25 @@ export const getMatchesAsync = createAsyncThunk(
   }
 );
 
+
+export const editMatchAsync = createAsyncThunk(
+  "adminData/editMatch",
+  async (data: {
+    eventCode: string;
+    number: number;
+    name: string;
+    red1: number;
+    red2: number;
+    red3: number;
+    blue1: number;
+    blue2: number;
+    blue3: number;
+  }) => {
+    await axios.post(`/api/v1/events/${data.eventCode}/matches/${data.name}`, {
+      ...data,
+    });
+  }
+);
 export const createMatchAsync = createAsyncThunk(
   "adminData/createMatch",
   async (data: {
