@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { Alliance } from "@/lib/enums";
 import { AutoStartingZone } from "@prisma/client";
+import { autoBatchEnhancer } from "@reduxjs/toolkit";
 import { Button } from "react-bootstrap";
 
 interface Props {
@@ -25,6 +26,10 @@ export default function StartingZoneSelector({
           <img
             className="mx-auto"
             alt=""
+            style={{
+              width: "75%",
+              height: "auto"
+            }}
             src={
               alliance === Alliance.BLUE
                 ? blueOnLeft
