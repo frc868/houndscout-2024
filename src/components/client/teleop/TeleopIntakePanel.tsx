@@ -1,5 +1,6 @@
 import { IntakeLocation } from "@prisma/client";
-import IntakeButton from "../mini/IntakeButton";
+import CoralButton from "../mini/CoralButton";
+import AlgaeButton from "../mini/AlgaeButton";
 
 interface Props {
   selected?: IntakeLocation;
@@ -18,7 +19,7 @@ export default function TeleopIntakePanel({
       <div className="d-flex justify-content-center flex-column">
         <div className="d-flex flex-column my-2">
           <h3 className="text-center">Chute</h3>
-          <IntakeButton
+          <CoralButton
             className="mt-2"
             selected={selected == IntakeLocation.SOURCE}
             handleSelection={() => handleSelection(IntakeLocation.SOURCE)}
@@ -26,7 +27,7 @@ export default function TeleopIntakePanel({
         </div>
         <div className="d-flex flex-column my-2">
           <h3 className="text-center">Ground</h3>
-          <IntakeButton
+          <AlgaeButton
             className="mt-2"
             selected={selected == IntakeLocation.GROUND}
             handleSelection={() => handleSelection(IntakeLocation.GROUND)}
