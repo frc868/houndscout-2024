@@ -21,14 +21,6 @@ export default function MenuBar({ selectedTab, handleTabSelect }: Props) {
       >
         <div
           className={`fs-5 py-2 ps-4 font-monospace ${
-            selectedTab === ViewerTab.HOME && "bg-secondary"
-          }`}
-          onClick={() => handleTabSelect(ViewerTab.HOME)}
-        >
-          Home
-        </div>
-        <div
-          className={`fs-5 py-2 ps-4 font-monospace ${
             selectedTab === ViewerTab.RANKINGS && "bg-secondary"
           }`}
           onClick={() => handleTabSelect(ViewerTab.RANKINGS)}
@@ -37,27 +29,11 @@ export default function MenuBar({ selectedTab, handleTabSelect }: Props) {
         </div>
         <div
           className={`fs-5 py-2 ps-4 font-monospace ${
-            selectedTab === ViewerTab.COMPARE && "bg-secondary"
-          }`}
-          onClick={() => handleTabSelect(ViewerTab.COMPARE)}
-        >
-          Compare
-        </div>
-        <div
-          className={`fs-5 py-2 ps-4 font-monospace ${
             selectedTab === ViewerTab.AUTOS && "bg-secondary"
           }`}
           onClick={() => handleTabSelect(ViewerTab.AUTOS)}
         >
           Autos
-        </div>
-        <div
-          className={`fs-5 py-2 mb-auto ps-4 font-monospace ${
-            selectedTab === ViewerTab.PICKLIST && "bg-secondary"
-          }`}
-          onClick={() => handleTabSelect(ViewerTab.PICKLIST)}
-        >
-          Picklist
         </div>
         <div
           className={`fs-5 py-2 ps-4 font-monospace ${

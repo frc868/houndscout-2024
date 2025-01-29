@@ -10,6 +10,7 @@ export default function HomeContent() {
     >
       <h1>Autos</h1>
       <p>WIP</p>
+      {/* Copy the Auto things here, then add things from the API. */}
     </div>
   );
 }

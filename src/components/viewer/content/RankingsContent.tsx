@@ -73,8 +73,8 @@ export default function RankingsContent({rankings}: Props) {
       }}
       className="m-4 bg-dark rounded-3 font-monospace text-center"
     >
-      <h1>Rankings</h1>
-      <p>WIP</p>
+      <h1>Welcome to the HoundScout data viewer! (WIP)</h1>
+      <p>This is a built-in tool that provides easy access to the collected data. Feel free to use this page to make the best possible decisions!</p>
       <Table
         bordered
         hover
@@ -111,6 +111,7 @@ export default function RankingsContent({rankings}: Props) {
           </tr>
         </thead>
         <tbody>
+          {/* Once the team selection function in admin is working, that can be modified for the picklist. */}
           {sortedRankings.map((r, idx) => (
             <tr key={r.teamNumber}>
               <td>{r.teamNumber}</td>

@@ -70,8 +70,8 @@ export default function Client({ station }: Props) {
         </div>
         <ul className="vh-1 d-flex flex-column justify-content-center mt-3">
           <li className="vh-1 d-flex justify-content-center mt-1">1. In Server, activeMatch has been set to a created Match. </li>
-          <li className="vh-1 d-flex justify-content-center mt-1">2. In the current activeMatch, a Scouter has been linked to this station.</li>
-          <li className="vh-1 d-flex justify-content-center mt-1">3. In the current activeMatch, a Team has been linked to this station:</li>
+          <li className="vh-1 d-flex justify-content-center mt-1">2. In the current activeMatch, a Team has been linked to this station.</li>
+          <li className="vh-1 d-flex justify-content-center mt-1">3. In the current activeMatch, a TeamScore has has been linked to this station, and a Scouter is linked to it.</li>
         </ul>
       </>
       )}
