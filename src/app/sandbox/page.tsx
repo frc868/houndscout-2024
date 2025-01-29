@@ -339,6 +339,46 @@ export default function Data() {
                         </div> 
                     </Row>
                 </div>
+
+                {/* Game Piece Selector */}
+                <div className="d-flex flex-column align-items-center">
+                    <h1>Game Piece Selector</h1>
+                    <Row className="d-flex justify-content-center" style={{backgroundColor:"red"}}>
+                        <Col className="d-flex flex-column" style={{backgroundColor:"orange"}}>
+                            <h1 className="text-center mb-1">Intake</h1>
+                            {/* Copy everything in this div. */}
+                            <div className="d-flex flex-column">
+                                <h3 className="text-center">Ground</h3>
+                                {/* IntakeButton */}
+                                <div className="d-flex flex-column">
+                                    <h3 className = "text-center">Chute</h3>
+                                    
+                                    <div
+                                        className={`mx-2 grow d-flex justify-content-center align-items-center rounded-4
+                                        ${selected ? `intake-note-selected` : ""}
+                                        `}
+                                        style={{ width: "110px", height: "110px" }}
+                                        // onMouseDown={handleSelection}
+                                    >
+                                        <img className="" alt="" src={`/assets/coral_object.png`} width={85} />
+                                    </div>
+                                </div>
+                            </div>
+                        </Col>
+                        <Col className="d-flex flex-column" style={{backgroundColor:"purple"}}>
+                            <h1 className="text-center mb-1">Scoring</h1>
+                            {/* Algae here */}
+                            <div className="d-flex flex-column">
+                                
+                            </div>
+                                <h3 className="text-center">Ground</h3>
+                                {/* IntakeButton */}
+                                <div className="d-flex flex-column">
+                                    <h3 className = "text-center">Chute</h3>
+                                    </div>
+                        </Col>
+                    </Row>
+                </div>
                 
         </>
     )
