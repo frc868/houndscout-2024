@@ -350,18 +350,27 @@ export default function Data() {
                             <div className="d-flex flex-column">
                                 <h3 className="text-center">Ground</h3>
                                 {/* IntakeButton */}
-                                <div className="d-flex flex-column">
-                                    <h3 className = "text-center">Chute</h3>
-                                    
-                                    <div
-                                        className={`mx-2 grow d-flex justify-content-center align-items-center rounded-4
-                                        ${selected ? `intake-note-selected` : ""}
-                                        `}
-                                        style={{ width: "110px", height: "110px" }}
-                                        // onMouseDown={handleSelection}
-                                    >
-                                        <img className="" alt="" src={`/assets/coral_object.png`} width={85} />
-                                    </div>
+                                <div
+                                    className={`mx-2 grow d-flex justify-content-center align-items-center rounded-4
+                                    ${selected ? `intake-note-selected` : ""}
+                                    `}
+                                    style={{ width: "110px", height: "110px" }}
+                                    // onMouseDown={handleSelection}
+                                >
+                                    <img className="" alt="" src={`/assets/coral_object.png`} width={85} />
+                                </div>
+                            </div>
+                            <div className="d-flex flex-column">
+                                <h3 className = "text-center">Station</h3>
+                                {/* IntakeButton */}
+                                <div
+                                    className={`mx-2 grow d-flex justify-content-center align-items-center rounded-4
+                                    ${selected ? `intake-note-selected` : ""}
+                                    `}
+                                    style={{ width: "110px", height: "110px" }}
+                                    // onMouseDown={handleSelection}
+                                >
+                                    <img className="" alt="" src={`/assets/coral_object.png`} width={85} />
                                 </div>
                             </div>
                         </Col>
