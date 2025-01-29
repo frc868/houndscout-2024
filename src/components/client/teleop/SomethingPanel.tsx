@@ -16,11 +16,18 @@ import MiniToggleBox from "../mini/MiniToggleBox";
 
 interface Props {
   show: boolean;
+  intakeSelected?: IntakeLocation;
+  handleIntakeSelection: (selection: IntakeLocation) => void;
+  scoringActive: boolean;
+  handleScoringSelection: (
+    location?: ScoringLocation,
+    failed?: boolean,
+    dropped?: boolean
+  ) => void;
 }
 
-//Teleop tab.
-//Most of this stuff will probably be copied onto the new auton page, and duplicated for each game piece.
-export default function TeleopContent({ show }: Props) {
+
+export default function SomethingPanel({ show, intakeSelected, handleIntakeSelection, scoringActive, handleScoringSelection }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
 
