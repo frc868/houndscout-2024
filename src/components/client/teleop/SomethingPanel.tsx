@@ -3,36 +3,43 @@
 import TeleopIntakePanel from "@/components/client/teleop/TeleopIntakePanel";
 import TeleopScoringPanel from "@/components/client/teleop/TeleopScoringPanel";
 import { AppDispatch, ReduxState } from "@/redux/store";
-import { CoralIntakeLocation, AlgaeIntakeLocation, CoralScoringLevel, AlgaeScoringLocation } from "@prisma/client";
+import { TeleopCoralIntakeLocation, TeleopAlgaeIntakeLocation, CoralScoringLevel, AlgaeScoringLocation } from "@prisma/client";
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import TeleopStagePanel from "@/components/client/endgame/EndgamePanel";
 import {
-  sendCoralEvent,
-  sendAlgaeEvent,
+  sendTeleopCoralEvent,
+  sendTeleopAlgaeEvent,
 } from "@/redux/scoresSlice";
 import MiniToggleBox from "../mini/MiniToggleBox";
 
 interface Props {
   show: boolean;
+  intakeSelected?: IntakeLocation;
+  handleIntakeSelection: (selection: IntakeLocation) => void;
+  scoringActive: boolean;
+  handleScoringSelection: (
+    location?: ScoringLocation,
+    failed?: boolean,
+    dropped?: boolean
+  ) => void;
 }
 
-//Teleop tab.
-//Most of this stuff will probably be copied onto the new auton page, and duplicated for each game piece.
-export default function TeleopContent({ show }: Props) {
+
+export default function SomethingPanel({ show, intakeSelected, handleIntakeSelection, scoringActive, handleScoringSelection }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
 
   //UPDATE CYCLE: Make sure everything down to handleScoringSelection is duplicated if there's multiple game pieces.
   //Also ensure the enums used are accurate; those are imported from Prisma, so update those as well.
   const [coralIntakeLocation, setCoralIntakeLocation] = useState<
-    CoralIntakeLocation | undefined
+    TeleopCoralIntakeLocation | undefined
   >(undefined);
   const [coralActiveSide, setCoralActiveSide] = useState("intaking");//This is set between intaking and scoring.
   
   //triggers when intake location is selected
-  const handleCoralIntakeSelection = (selection: CoralIntakeLocation) => {
+  const handleCoralIntakeSelection = (selection: TeleopCoralIntakeLocation) => {
     //Add a timestamp creator at the first scoring input.
     setCoralIntakeLocation(selection);
     setCoralActiveSide("scoring");    
@@ -46,7 +53,7 @@ export default function TeleopContent({ show }: Props) {
     if (coralActiveSide == "scoring") {
       //Add a timestamp creator here or wherever the first scoring input is.
       const event = {
-        intakeLocation: coralIntakeLocation as CoralIntakeLocation,
+        intakeLocation: coralIntakeLocation as TeleopCoralIntakeLocation,
         scoringLocation: location,
         failedScoring,
         dropped,
@@ -55,32 +62,32 @@ export default function TeleopContent({ show }: Props) {
       setCoralIntakeLocation(undefined);
       setCoralActiveSide("intaking");
 
-      await dispatch(sendCoralEvent(event));
+      await dispatch(sendTeleopCoralEvent(event));
     }
   };
 
 
   const [algaeIntakeLocation, setAlgaeIntakeLocation] = useState<
-    AlgaeIntakeLocation | undefined
+    TeleopAlgaeIntakeLocation | undefined
   >(undefined);
   const [algaeActiveSide, setAlgaeActiveSide] = useState("intaking");//This is set between intaking and scoring.
   
   //triggers when intake location is selected
-  const handleAlgaeIntakeSelection = (selection: AlgaeIntakeLocation) => {
+  const handleAlgaeIntakeSelection = (selection: TeleopAlgaeIntakeLocation) => {
     //Add a timestamp creator at the first scoring input.
     setAlgaeIntakeLocation(selection);
     setAlgaeActiveSide("scoring");    
   };
   //triggers when scoring location is selected
   const handleAlgaeScoringSelection = async (
-    location?: AlgaeScoringLocation,
+    location?: CoralScoringLevel,
     failedScoring?: boolean,
     dropped?: boolean
   ) => {
     if (algaeActiveSide == "scoring") {
       //Add a timestamp creator here or wherever the first scoring input is.
       const event = {
-        intakeLocation: algaeIntakeLocation as AlgaeIntakeLocation,
+        intakeLocation: algaeIntakeLocation as TeleopAlgaeIntakeLocation,
         scoringLocation: location,
         failedScoring,
         dropped,
@@ -89,7 +96,7 @@ export default function TeleopContent({ show }: Props) {
       setAlgaeIntakeLocation(undefined);
       setAlgaeActiveSide("intaking");
 
-      await dispatch(sendAlgaeEvent(event));
+      await dispatch(sendTeleopAlgaeEvent(event));
     }
   };
 
@@ -99,14 +106,14 @@ export default function TeleopContent({ show }: Props) {
       <Row className="my-5">
         <Col className="d-flex justify-content-end" md={3}>
           <TeleopIntakePanel
-            selected={coralIntakeLocation}
-            handleSelection={handleCoralIntakeSelection}
+            selected={intakeLocation}
+            handleSelection={handleIntakeSelection}
           />
         </Col>
         <Col className="d-flex justify-content-end" md={4}>
           <TeleopScoringPanel
-            active={coralActiveSide === "scoring"}
-            handleSelection={handleCoralScoringSelection}
+            active={activeSide === "scoring"}
+            handleSelection={handleScoringSelection}
           />
         </Col>
       </Row>

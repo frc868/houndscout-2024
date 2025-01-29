@@ -86,17 +86,13 @@ export default function RankingsContent({rankings}: Props) {
             {/* Clickable table headers for sorting */}
             {[
               "Team",
+              "Total Games",
               "Mobility",
-              "Auto Speaker",
-              "Auto Misses",
-              "Combined Scoring",
-              "Speaker",
-              "Speaker Misses",
-              "Amp",
-              "Amp Misses",
-              "Climb",
-              "Ensemble",
-              "Trap",
+              "Auto Coral",
+              "Auto Algae",
+              "Teleop Coral",
+              "Teleop Algae",
+              "Endgame",
               "Incap",
               "Defense",
             ].map((header) => (
@@ -118,17 +114,33 @@ export default function RankingsContent({rankings}: Props) {
           {sortedRankings.map((r, idx) => (
             <tr key={r.teamNumber}>
               <td>{r.teamNumber}</td>
+              <td>{r.total}</td>
               <td>{r.mobility}</td>
-              <td>{r.autoSpeaker}</td>
-              <td>{r.autoMisses}</td>
-              <td>WIP</td>
-              <td>{r.speaker}</td>
-              <td>{r.speakerMisses}</td>
-              <td>{r.amp}</td>
-              <td>{r.ampMisses}</td>
-              <td>{r.climb}</td>
-              <td>{r.ensemble}</td>
-              <td>{r.trap}</td>
+              <td>
+                L1: {r.autoCoralLevel1Scored}<br />
+                L2: {r.autoCoralLevel2Scored}<br />
+                L3: {r.autoCoralLevel3Scored}<br />
+                L4: {r.autoCoralLevel4Scored}<br />
+              </td>
+              <td>
+                Net: {r.autoAlgaeNetScored}<br />
+                Processor: {r.autoAlgaeProcessorScored}<br />
+              </td>
+              <td>
+                L1: {r.teleopCoralLevel1Scored}<br />
+                L2: {r.teleopCoralLevel2Scored}<br />
+                L3: {r.teleopCoralLevel3Scored}<br />
+                L4: {r.teleopCoralLevel4Scored}<br />
+              </td>
+              <td>
+                Net: {r.teleopAlgaeNetScored}<br />
+                Processor: {r.teleopAlgaeProcessorScored}<br />
+              </td>
+              <td>
+                Parked: {r.parked}<br />
+                Shallow: {r.shallow}<br />
+                Deep: {r.deep}<br />
+              </td>
               <td>{r.incap}</td>
               <td>{r.defense}</td>
               {/* {Object.entries(r).map(([key, value]) =>

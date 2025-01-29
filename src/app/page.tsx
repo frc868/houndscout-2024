@@ -77,6 +77,14 @@ export default function Home() {
             className="mx-1 mt-2"
             size="lg"
             variant="secondary"
+            href="/pit"
+          >
+            Pit Scouting (WIP)
+          </Button>
+          <Button
+            className="mx-1 mt-2"
+            size="lg"
+            variant="secondary"
             href="/data"
           >
             Data Controls (Will be deteted once Viewer is finished)

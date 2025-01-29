@@ -124,7 +124,7 @@ export default function MatchSchedule({
             {matches.map((match) => (
               //For each match, the team in each position is listed.
               <tr
-                key={match.number}
+                key={match.id}
                 className={`${match.name === activeMatchName && "fw-bold"}`}
               >
                 <td

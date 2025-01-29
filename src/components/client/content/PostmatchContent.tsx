@@ -2,6 +2,7 @@
 
 import CommentsBox from "@/components/client/postmatch/CommentsBox";
 import DriverSkillSelector from "@/components/client/postmatch/DriverSkillSelector";
+import ResultSelector from "@/components/client/postmatch/ResultSelector";
 import SubmitButton from "@/components/client/postmatch/SubmitButton";
 import ToggleBox from "@/components/client/postmatch/ToggleBox";
 import { sendPostMatchData } from "@/redux/scoresSlice";
@@ -9,6 +10,7 @@ import { AppDispatch } from "@/redux/store";
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
+import { Result } from "@prisma/client";
 
 interface Props {
   show: boolean;
@@ -19,6 +21,9 @@ export default function PostmatchContent({ show, handleSubmit }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const [driverSkillRating, setDriverSkillRating] = useState<number | null>(
     null
+  );
+  const [result, setResult] = useState<Result>(
+    Result.TIE
   );
   const [playedDefense, setPlayedDefense] = useState(false);
   const [underHeavyDefense, setUnderHeavyDefense] = useState(false);
@@ -35,21 +40,18 @@ export default function PostmatchContent({ show, handleSubmit }: Props) {
           />
         </Col>
         <Col className="d-flex justify-content-center" md={4}>
+          <ResultSelector
+            selected={result as Result}
+            handleSelection={setResult}
+          />
+        </Col>
+        <Col className="d-flex justify-content-start" md={4}>
           <ToggleBox
           //Basically a checkbox.
             name="Played Defense?"
             enabled={playedDefense}
             handleClick={() =>
               setPlayedDefense((playedDefense) => !playedDefense)
-            }
-          />
-        </Col>
-        <Col className="d-flex justify-content-start" md={4}>
-          <ToggleBox
-            name="Under Heavy Defense?"
-            enabled={underHeavyDefense}
-            handleClick={() =>
-              setUnderHeavyDefense((underHeavyDefense) => !underHeavyDefense)
             }
           />
         </Col>
@@ -66,8 +68,8 @@ export default function PostmatchContent({ show, handleSubmit }: Props) {
               dispatch(
                 sendPostMatchData({
                   driverSkillRating: driverSkillRating as number,
+                  result: result as Result,
                   playedDefense,
-                  underDefense: underHeavyDefense,
                   comments,
                 })
               );

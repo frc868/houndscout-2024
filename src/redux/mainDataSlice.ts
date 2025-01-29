@@ -44,16 +44,35 @@ export const getStationData = createAsyncThunk(
   }
 );
 
+export const getBlueOnLeftAsync = createAsyncThunk(
+  "mainData/getBlueOnLeft",
+  async () => {
+    const res = await axios.get(`/api/v1/server/stationData`);
+    return res.data.blueOnLeft;
+  }
+);
+export const setBlueOnLeftAsync = createAsyncThunk(
+  "mainData/setBlueOnLeft",
+  async ({
+    blueOnLeft,
+  }: {
+    blueOnLeft: boolean;
+  }) => {
+    await axios.post(`/api/v1/server/stationData`, {
+      onLeft: blueOnLeft
+    });
+  }
+);
+
 export const getActiveEventAsync = createAsyncThunk(
   "mainData/getActiveEvent",
   async () => {
     const res = await axios.get(`/api/v1/server/event`);
-    const data = res.data;
-    return data.event;
+    return res.data.event;
   }
 );
 export const setActiveEventAsync = createAsyncThunk(
-  "adminData/setActiveEvent",
+  "mainData/setActiveEvent",
   async ({
     eventCode,
   }: {
@@ -74,7 +93,7 @@ export const getActiveMatchAsync = createAsyncThunk(
   }
 );
 export const setActiveMatchAsync = createAsyncThunk(
-  "adminData/setActiveMatch",
+  "mainData/setActiveMatch",
   async ({
     eventCode,
     matchName,

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 //Currently unimplemented.
-// Returns the teamScore mapped to the specified station in the specified match.
+// Returns the scoring events and incap segments mapped to the specified station in the specified match.
 // UPDATE CYCLE: Ensure all scoring events are listed here.
 export async function GET(
   req: Request,
@@ -20,11 +20,8 @@ export async function GET(
       include: {
         [`${params.station}TeamScore`]: {
           include: {
-            autoCoralScoringEvents: true,
-            autoAlgaeScoringEvents: true,
-            teleopCoralScoringEvents: true,
-            teleopAlgaeScoringEvents: true,
-            endgaeAttempts: true,
+            CoralScoringEvents: true,
+            AlgaeScoringEvents: true,
             incapSegments: true,
           },
         },

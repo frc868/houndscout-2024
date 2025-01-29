@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import { deleteTeamAsync, uploadTBADataAsync } from "@/redux/adminDataSlice";
-// import { deleteScouterAsync } from "@/redux/mainDataSlice";
+import { setBlueOnLeftAsync } from "@/redux/mainDataSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import TeamManageModal from "@/components/admin/TeamManageModal";
@@ -14,10 +14,11 @@ interface Props {
   scouters: Scouter[];
   teams: Team[];
   eventCode: string;
+  blueOnLeft: boolean;
 }
 
 //Many of these link to other modals, others call certain apis.
-export default function Controls({ scouters, teams, eventCode }: Props) {
+export default function Controls({ scouters, teams, eventCode, blueOnLeft }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const [showTeamManage, setShowTeamManage] = useState(false);
   const [showScouterManage, setShowScouterManage] = useState(false);
@@ -63,8 +64,18 @@ export default function Controls({ scouters, teams, eventCode }: Props) {
         </Button>
       </Row>
       <Row className="">
-        <Button variant="secondary" disabled className="mb-2">
-          Toggle Orientation (Currently: TBA)
+        <Button
+          disabled
+          variant="secondary"
+          className="mb-2"
+          onClick={async (payload) => {
+            await dispatch(
+              setBlueOnLeftAsync({
+                blueOnLeft: !blueOnLeft,
+            }));
+          }}
+        >
+          Toggle Orientation (TBA) <br></br>(Currently: {blueOnLeft?"Blue on Left":"Blue on Right"})
         </Button>
       </Row>
       <Row className="">
