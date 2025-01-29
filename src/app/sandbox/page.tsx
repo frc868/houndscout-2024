@@ -369,12 +369,12 @@ export default function Data() {
                             <h1 className="text-center mb-1">Scoring</h1>
                             {/* Algae here */}
                             <div className="d-flex flex-column">
-                                
+
                             </div>
                                 <h3 className="text-center">Ground</h3>
                                 {/* IntakeButton */}
                                 <div className="d-flex flex-column">
-                                    <h3 className = "text-center">Chute</h3>
+                                    <h3 className = "text-center">Reef</h3>
                                     </div>
                         </Col>
                     </Row>
