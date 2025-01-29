@@ -1,5 +1,6 @@
 import { IntakeLocation } from "@prisma/client";
-import IntakeButton from "../mini/IntakeButton";
+import CoralButton from "../mini/CoralButton";
+import AlgaeButton from "../mini/AlgaeButton";
 
 interface Props {
   selected?: IntakeLocation;

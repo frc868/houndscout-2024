@@ -289,7 +289,7 @@ export async function GET(
         teamNumber: team.number,//keep this
         teamName: team.name,//keep this
         teamScores: teamScores,//keep this
-        //throw everything else out
+        //throw everything else out between games
         mobility,
         autoCoralLevel1Scored,
         autoCoralLevel2Scored,

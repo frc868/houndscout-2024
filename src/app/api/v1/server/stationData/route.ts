@@ -1,49 +1,50 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-//mainDataSlice/getActiveMatchAsync
-//Gets active match.
+//mainDataSlice/getActiveEventAsync
+//Gets the active event.
 export async function GET(req: Request) {
-  let match;
+  let onLeft;
   try {
     const server = await prisma.server.findUnique({
       where: {
         id: 1,
       },
       include: {
-        activeMatch: true,
+        blueOnLeft: true,
       },
     });
-    match = server?.activeMatch;
+    onLeft = server?.blueOnLeft;
   } catch (e) {
+    console.error(e);
     return NextResponse.json({ ok: false });
   }
 
-  return NextResponse.json({ ok: true, match });
+  return NextResponse.json({ ok: true, onLeft });
 }
 
-// mainDataSlice/setActiveMatchAsync
-//Sets active match.
+// mainDataSlice/setBlueOnLeftAsync
+//Sets field orientation.
 export async function POST(req: Request) {
   const data = await req.json();
 
-  let match;
+  let onLeft;
   try {
     const server = await prisma.server.update({
       where: {
         id: 1,
       },
       data: {
-        activeMatch: { connect: { key: data.key } },
+        blueOnLeft: data.onLeft,
       },
       include: {
-        activeMatch: true,
+        blueOnLeft: true,
       },
     });
-    match = server.activeMatch;
+    onLeft = server.blueOnLeft;
   } catch (e) {
     console.log(e);
     return NextResponse.json({ ok: false }, { status: 400 });
   }
-  return NextResponse.json({ match, ok: true });
+  return NextResponse.json({ onLeft, ok: true });
 }

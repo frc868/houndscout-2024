@@ -18,6 +18,7 @@ export interface Scores {
   autoStartingZone?: AutoStartingZone;
   leftStartingZone: boolean;
   endgameType?: EndgameType;
+  endgameSuccess: boolean;
 }
 
 export const setAutoStartingZoneAsync = createAsyncThunk(
@@ -294,25 +295,26 @@ export const setEndgameTypeAsync = createAsyncThunk(
 //     );
 //   }
 // );
-// export const setSpotlitAsync = createAsyncThunk(
-//   "scores/setSpotlit",
-//   async ({ spotlit }: { spotlit: boolean }, { dispatch, getState }) => {
-//     const state = getState() as ReduxState;
-//     const mainData = state.mainData;
-//     dispatch(setSpotlit({ spotlit }));
-//     const res = await axios.patch(
-//       `/api/v1/events/${mainData.activeEvent?.code}/matches/${
-//         mainData.activeMatchName
-//       }/scores/${mainData.station?.toLowerCase()}`,
-//       { spotlit }
-//     );
-//   }
-// );
+export const setEndgameSuccessAsync = createAsyncThunk(
+  "scores/setEndgameSuccess",
+  async ({ endgameSuccess }: { endgameSuccess: boolean }, { dispatch, getState }) => {
+    const state = getState() as ReduxState;
+    const mainData = state.mainData;
+    dispatch(setEndgameSuccess({ endgameSuccess }));
+    const res = await axios.patch(
+      `/api/v1/events/${mainData.activeEvent?.code}/matches/${
+        mainData.activeMatchName
+      }/scores/${mainData.station?.toLowerCase()}`,
+      { endgameSuccess }
+    );
+  }
+);
 
 const initialState: Scores = {
   autoStartingZone: undefined,
   leftStartingZone: false,
   endgameType: undefined,
+  endgameSuccess: false,
 };
 
 //The async thunks here have the async thunks call actions here to change state rather than using builders.
@@ -371,14 +373,14 @@ export const scoresSlice = createSlice({
     // ) => {
     //   state.scoredInTrap = action.payload.scoredInTrap;
     // },
-    // setSpotlit: (
-    //   state,
-    //   action: PayloadAction<{
-    //     spotlit: boolean;
-    //   }>
-    // ) => {
-    //   state.spotlit = action.payload.spotlit;
-    // },
+    setEndgameSuccess: (
+      state,
+      action: PayloadAction<{
+        endgameSuccess: boolean;
+      }>
+    ) => {
+      state.endgameSuccess = action.payload.endgameSuccess;
+    },
   },
   extraReducers: (builder) => {},
 });
@@ -387,5 +389,6 @@ export const {
   setAutoStartingZone,
   setLeftStartingZone,
   setEndgameType,
+  setEndgameSuccess,
 } = scoresSlice.actions;
 export default scoresSlice.reducer;

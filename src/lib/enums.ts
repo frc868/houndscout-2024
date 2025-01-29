@@ -40,6 +40,7 @@ export interface Ranking {
 }
 
 export interface Match {
+  id: number;
   name: string;
   number: number;
   teamNumbers: {

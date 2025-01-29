@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button, Modal, ListGroup } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
 import DeleteButton from "./DeleteButton";
-import { Scouter } from "@/redux/adminDataSlice";
+import { Scouter } from "@/lib/enums";
 import { createScouterAsync, deleteScouterAsync } from "@/redux/mainDataSlice";
 import NewScouterForm from "./NewScouterForm";
 import { useDispatch } from "react-redux";
@@ -61,7 +61,7 @@ export default function ScouterManageModal({
         )}
         <ListGroup>
           {scouters.map((scouter: Scouter)=>(
-            <ListGroup.Item>
+            <ListGroup.Item key={scouter.id}>
               {scouter.name}
               <DeleteButton
                 variant={"danger"}
