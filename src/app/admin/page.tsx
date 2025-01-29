@@ -48,7 +48,7 @@ export default function Admin() {
       await dispatch(getEventsAsync());
       await dispatch(getHeartbeatsAsync());
       await dispatch(getAllTeamsAsync());
-      await dispatch(getBlueOnLeftAsync());
+      // await dispatch(getBlueOnLeftAsync());
 
       //These two things only trigger after the event code has been loaded.
       //For some reason it errored when I put them in the same thing.

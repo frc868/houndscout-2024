@@ -65,6 +65,7 @@ export default function Controls({ scouters, teams, eventCode, blueOnLeft }: Pro
       </Row>
       <Row className="">
         <Button
+          disabled
           variant="secondary"
           className="mb-2"
           onClick={async (payload) => {
