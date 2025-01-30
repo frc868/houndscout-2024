@@ -1,5 +1,6 @@
 //Feel free to use this page to create boilerplates for the app without relying on data.
 
+"use client"
 /* eslint-disable @next/next/no-img-element */
 import { Alliance } from "@/lib/enums";
 import { Button, Col, Row } from "react-bootstrap";
@@ -7,7 +8,8 @@ import IntakeButton from "@/components/sandbox/mini/IntakeButton";
 import FailButton from "@/components/sandbox/mini/FailButton";
 import ScoreButton from "@/components/sandbox/mini/ScoreButton";
 import LocationButton from "@/components/sandbox/mini/LocationButton";
-import useState from "react"
+import DroppedButton from "@/components/sandbox/mini/DroppedButton";
+import { useState } from "react";
 
 export default function Data() {
     //Update these variables to change certain aspects of the boilerplate.
@@ -19,17 +21,15 @@ export default function Data() {
 
     return(
         <>
-            <div className="d-flex flex-row">
+            <div className="d-flex flex-row justify-content-center">
                 <Button
                     className="fw-bold"
-                    style={{ width: "50px" }}
                     onMouseDown={() => setAllianceIsBlue(!allianceIsBlue)}
                 >
                     Change Alliance 
                 </Button>
                 <Button
                     className="fw-bold"
-                    style={{ width: "50px" }}
                     onMouseDown={() => setBlueOnLeft(!blueOnLeft)}
                 >
                     Change Field Orientation 
@@ -172,18 +172,16 @@ export default function Data() {
                 </div>
             </div>
 
-            <div className="d-flex flex-row">
+            <div className="d-flex flex-row justify-content-center pt-5">
                 <Button
                     className="fw-bold"
-                    style={{ width: "50px" }}
                     onMouseDown={() => setActive(!active)}
                 >
                     Toggle Active Button Highlights
                 </Button>
                 <Button
                     className="fw-bold"
-                    style={{ width: "50px" }}
-                    onMouseDown={() => setStelected(!selected)}
+                    onMouseDown={() => setSelected(!selected)}
                 >
                     Toggle Selected Button Highlights 
                 </Button>
@@ -354,7 +352,7 @@ export default function Data() {
                             {/* Algae here */}
                         </Col>
                     </Row>
-                    <Row style={{backgroundColor:"red"}}>
+                    <Row className="d-flex flex-row" style={{backgroundColor:"red"}}>
                         {/* Failed and Dropped buttons here */}
                         <div className="d-flex justify-content-center">
                           <ScoreButton
@@ -366,6 +364,20 @@ export default function Data() {
                             className="mx-3 my-2"
                             active={active}
                             //handleClick={() => {handleSelection(ScoringLocation.SPEAKER, true);}}
+                          />
+                        </div>
+                        <div className="d-flex justify-content-center">
+                          <DroppedButton
+                            className="mx-3 my-2"
+                            active={active}
+                            gamePiece="coral"
+                            //handleClick={() => {handleSelection(ScoringLocation.SPEAKER);}}
+                          />
+                          <DroppedButton
+                            className="mx-3 my-2"
+                            active={active}
+                            gamePiece="algae"
+                            //handleClick={() => {handleSelection(ScoringLocation.SPEAKER);}}
                           />
                         </div>
                     </Row>
@@ -399,9 +411,7 @@ export default function Data() {
                         </Col>
                         <Col className="d-flex flex-column" style={{backgroundColor:"purple"}}>
                             <h1 className="text-center mb-1">Scoring</h1>
-                            {/* Algae here */}
                             <div className="d-flex flex-column">
-                                <h3 className="text-center">Ground</h3>
                                 <LocationButton
                                     className="mt-2"
                                     active={active}

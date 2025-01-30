@@ -10,7 +10,7 @@ interface Props {
 
 //A picture of the game piece used to indicate an intake location in teleop.
 export default function LocationButton({
-  active
+  active,
   selected,
   // handleSelection,
   className,
@@ -19,13 +19,17 @@ export default function LocationButton({
   return (
     <div className={className || ""}>
       <div
-        className={`mx-2 grow d-flex justify-content-center align-items-center border border-5 border-secondary rounded-4 ${
-          selected ? `location-area-selected` : active ? `location-active` : ""
+        className={`mx-2 grow d-flex justify-content-center align-items-center border border-5 rounded-4 ${
+          selected
+           ? `location-area-selected border-primary`
+           : active
+             ? `location-active border-secondary`
+             : `bg-secondary-subtle border-secondary`
         }`}
-        style={{ width: "110px", height: "110px" }}
+        style={{ width: "110px", height: "75px" }}
         //onMouseDown={handleSelection}
       >
-        <h4>{text}</h4>
+        <h3>{text}</h3>
       </div>
     </div>
   );

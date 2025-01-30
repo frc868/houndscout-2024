@@ -5,7 +5,11 @@ interface Props {
 }
 
 //Button that indicates the robot scored!
-export default function ScoreButton({ active, /*handleClick*/, className }: Props) {
+export default function ScoreButton({
+  active,
+  // handleClick,
+  className
+}: Props) {
   return (
     <div className={className || ""}>
       <div
