@@ -1,7 +1,7 @@
 interface Props {
   name: string;
   enabled: boolean;
-  handleClick: () => void;
+  // handleClick: () => void;
   className?: string;
 }
 
@@ -9,7 +9,7 @@ interface Props {
 export default function ToggleBox({
   name,
   enabled,
-  handleClick,
+  // handleClick,
   className,
 }: Props) {
   return (
@@ -23,7 +23,7 @@ export default function ToggleBox({
           height: "60px",
           fontSize: "30pt",
         }}
-        onMouseDown={handleClick}
+        //onMouseDown={handleClick}
       >
         {enabled && <i className="bi bi-check-lg" />}
       </div>
