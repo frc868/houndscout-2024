@@ -3,6 +3,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { Alliance } from "@/lib/enums";
 import { Button, Col, Row } from "react-bootstrap";
+import IntakeButton from "@/components/sandbox/mini/IntakeButton";
+import FailButton from "@/components/sandbox/mini/FailButton";
+import ScoreButton from "@/components/sandbox/mini/ScoreButton";
+import LocationButton from "@/components/sandbox/mini/LocationButton";
 export default function Data() {
     //Update these variables to change certain aspects of the boilerplate.
     let allianceIsBlue: boolean = true; //If running blue or red client
@@ -317,26 +321,19 @@ export default function Data() {
                         </Col>
                     </Row>
                     <Row style={{backgroundColor:"red"}}>
-{/* Result and Delete Buttons here */}
-                    {/* FailButton */}
-                    <div className="mx-3 my-2">{/* Replace with <div className={className || ""}> */}
-                            <div
-                                className={`d-flex justify-content-center align-items-center border border-5 score-button rounded-4 grow ${
-                                active
-                                    ? "bg-danger-subtle border-danger text-danger"
-                                    : "bg-secondary-subtle border-secondary text-secondary"
-                                }`}
-                                style={{
-                                width: "110px",
-                                height: "110px",
-                                fontSize: "70pt",
-                                WebkitTextStroke: "4px",
-                                }}
-                                // onMouseDown={handleClick}
-                            >
-                                <i className="bi bi-x" />
-                            </div>
-                        </div> 
+                        {/* Failed and Dropped buttons here */}
+                        <div className="d-flex justify-content-center">
+                          <ScoreButton
+                            className="mx-3 my-2"
+                            active={active}
+                            //handleClick={() => {handleSelection(ScoringLocation.SPEAKER);}}
+                          />
+                          <FailButton
+                            className="mx-3 my-2"
+                            active={active}
+                            //handleClick={() => {handleSelection(ScoringLocation.SPEAKER, true);}}
+                          />
+                        </div>
                     </Row>
                 </div>
 
@@ -349,42 +346,36 @@ export default function Data() {
                             {/* Copy everything in this div. */}
                             <div className="d-flex flex-column">
                                 <h3 className="text-center">Ground</h3>
-                                {/* IntakeButton */}
-                                <div
-                                    className={`mx-2 grow d-flex justify-content-center align-items-center rounded-4
-                                    ${selected ? `intake-note-selected` : ""}
-                                    `}
-                                    style={{ width: "110px", height: "110px" }}
-                                    // onMouseDown={handleSelection}
-                                >
-                                    <img className="" alt="" src={`/assets/coral_object.png`} width={85} />
-                                </div>
+                                <IntakeButton
+                                    className="mt-2"
+                                    selected={selected}
+                                    //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                    gamePiece="coral"
+                                />
                             </div>
                             <div className="d-flex flex-column">
                                 <h3 className = "text-center">Station</h3>
-                                {/* IntakeButton */}
-                                <div
-                                    className={`mx-2 grow d-flex justify-content-center align-items-center rounded-4
-                                    ${selected ? `intake-note-selected` : ""}
-                                    `}
-                                    style={{ width: "110px", height: "110px" }}
-                                    // onMouseDown={handleSelection}
-                                >
-                                    <img className="" alt="" src={`/assets/coral_object.png`} width={85} />
-                                </div>
+                                <IntakeButton
+                                    className="mt-2"
+                                    selected={selected}
+                                    //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                    gamePiece="coral"
+                                />
                             </div>
                         </Col>
                         <Col className="d-flex flex-column" style={{backgroundColor:"purple"}}>
                             <h1 className="text-center mb-1">Scoring</h1>
                             {/* Algae here */}
                             <div className="d-flex flex-column">
-
-                            </div>
                                 <h3 className="text-center">Ground</h3>
-                                {/* IntakeButton */}
-                                <div className="d-flex flex-column">
-                                    <h3 className = "text-center">Reef</h3>
-                                    </div>
+                                <LocationButton
+                                    className="mt-2"
+                                    active={active}
+                                    selected={selected}
+                                    //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                    text="L1"
+                                />
+                            </div>
                         </Col>
                     </Row>
                 </div>
