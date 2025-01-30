@@ -1,11 +1,11 @@
 interface Props {
   active: boolean;
-  handleClick: () => void;
+  //handleClick: () => void;
   className?: string;
 }
 
 //Button that indicates the robot scored!
-export default function ScoreButton({ active, handleClick, className }: Props) {
+export default function ScoreButton({ active, /*handleClick*/, className }: Props) {
   return (
     <div className={className || ""}>
       <div
@@ -19,7 +19,7 @@ export default function ScoreButton({ active, handleClick, className }: Props) {
           height: "110px",
           fontSize: "90pt",
         }}
-        onMouseDown={handleClick}
+        //onMouseDown={handleClick}
       >
         <i className="bi bi-check" />
       </div>
