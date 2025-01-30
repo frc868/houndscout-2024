@@ -7,16 +7,34 @@ import IntakeButton from "@/components/sandbox/mini/IntakeButton";
 import FailButton from "@/components/sandbox/mini/FailButton";
 import ScoreButton from "@/components/sandbox/mini/ScoreButton";
 import LocationButton from "@/components/sandbox/mini/LocationButton";
+import useState from "react"
+
 export default function Data() {
     //Update these variables to change certain aspects of the boilerplate.
-    let allianceIsBlue: boolean = true; //If running blue or red client
-    let blueOnLeft: boolean = true; //If blueOnLeft is enabled in database
+    const [allianceIsBlue, setAllianceIsBlue] = useState(true); //If running blue or red client
+    const [blueOnLeft, setBlueOnLeft] = useState(true); //If blueOnLeft is enabled in database
 
-    let active: boolean = true; //If the scoring sections are to be highlighted due to intake piece being selected
-    let selected: boolean = true; //If the piece was selected in the intake section
+    const [active, setActive] = useState(true); //If the scoring sections are to be highlighted due to intake piece being selected
+    const [selected, setSelected] = useState(true); //If the piece was selected in the intake section
 
     return(
         <>
+            <div className="d-flex flex-row">
+                <Button
+                    className="fw-bold"
+                    style={{ width: "50px" }}
+                    onMouseDown={() => setAllianceIsBlue(!allianceIsBlue)}
+                >
+                    Change Alliance 
+                </Button>
+                <Button
+                    className="fw-bold"
+                    style={{ width: "50px" }}
+                    onMouseDown={() => setBlueOnLeft(!blueOnLeft)}
+                >
+                    Change Field Orientation 
+                </Button>
+            </div>
             {/* StartingPositionSelector */}
             <div className="d-flex justify-content-center">
                 <div className="position-relative">
@@ -154,6 +172,22 @@ export default function Data() {
                 </div>
             </div>
 
+            <div className="d-flex flex-row">
+                <Button
+                    className="fw-bold"
+                    style={{ width: "50px" }}
+                    onMouseDown={() => setActive(!active)}
+                >
+                    Toggle Active Button Highlights
+                </Button>
+                <Button
+                    className="fw-bold"
+                    style={{ width: "50px" }}
+                    onMouseDown={() => setStelected(!selected)}
+                >
+                    Toggle Selected Button Highlights 
+                </Button>
+            </div>
             {/* TeleopIntakePanel */}
             <div className="d-flex flex-column align-items-center">
                 <h1 className="text-center mb-3">Intake</h1>
