@@ -26,17 +26,17 @@ export default function StartingZoneSelector({
           <img
             className="mx-auto"
             alt=""
-            style={{
+            style={!blueOnLeft?{
+              transform: 'rotate(180deg)',
+              width: "75%",
+              height: "auto"
+            }:{
               width: "75%",
               height: "auto"
             }}
             src={
               alliance === Alliance.BLUE
-                ? blueOnLeft
-                  ? "/assets/blue_start_prematch.png"
-                  : "/assets/blue_start_prematch.png"
-                : blueOnLeft
-                ? "/assets/red_start_prematch.png"
+                ? "/assets/blue_start_prematch.png"
                 : "/assets/red_start_prematch.png"
             }
             width={400}
@@ -47,26 +47,26 @@ export default function StartingZoneSelector({
           style={
             alliance === Alliance.BLUE
               ? blueOnLeft
-                ? {
+                ? {// Blueside button #1
                     position: "absolute",
-                    top: "120px",
-                    left: "55px",
+                    top: "183px",
+                    left: "525px",
                   }
-                : {
+                : {//Blueside button reverse
                     position: "absolute",
-                    top: "450px",
-                    left: "295px",
+                    top: "195px",
+                    left: "335px",
                   }
-              : blueOnLeft
+              : blueOnLeft //Redside button #1
               ? {
                   position: "absolute",
-                  top: "120px",
-                  left: "295px",
+                  top: "189px",
+                  left: "305px",
                 }
-              : {
+              : {//redside button reverse
                   position: "absolute",
-                  top: "450px",
-                  left: "55px",
+                  top: "425px",
+                  left: "565px",
                 }
           }
         >
@@ -85,26 +85,26 @@ export default function StartingZoneSelector({
           style={
             alliance === Alliance.BLUE
               ? blueOnLeft
-                ? {
+                ? {//Blueside button #2
                     position: "absolute",
-                    top: "208px",
-                    left: "85px",
+                    top: "289px",
+                    left: "525px",
                   }
-                : {
+                : {//blueside button reverse
                     position: "absolute",
-                    top: "372px",
-                    left: "275px",
+                    top: "314px",
+                    left: "335px",
                   }
-              : blueOnLeft
+              : blueOnLeft //redside button #2
               ? {
                   position: "absolute",
-                  top: "203px",
-                  left: "274px",
+                  top: "297px",
+                  left: "305px",
                 }
-              : {
+              : {//redside button reverse
                   position: "absolute",
-                  top: "372px",
-                  left: "87px",
+                  top: "309px",
+                  left: "565px",
                 }
           }
         >
@@ -122,27 +122,27 @@ export default function StartingZoneSelector({
         <div
           style={
             alliance === Alliance.BLUE
-              ? blueOnLeft
+              ? blueOnLeft //Blueside button #3
                 ? {
                     position: "absolute",
-                    top: "350px",
-                    left: "55px",
+                    top: "400px",
+                    left: "525px",
                   }
-                : {
+                : { // Blueside button reverse 
                     position: "absolute",
-                    top: "220px",
-                    left: "295px",
+                    top: "425px",
+                    left: "335px",
                   }
-              : blueOnLeft
+              : blueOnLeft //Redside button #3
               ? {
                   position: "absolute",
-                  top: "350px",
-                  left: "295px",
+                  top: "409px",
+                  left: "305px",
                 }
-              : {
+              : { //redside button reverse
                   position: "absolute",
-                  top: "220px",
-                  left: "55px",
+                  top: "195px",
+                  left: "565px",
                 }
           }
         >

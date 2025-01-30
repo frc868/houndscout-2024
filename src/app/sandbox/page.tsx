@@ -303,6 +303,83 @@ export default function Data() {
                     </Col>
                 </Row>
                 </div>
+                {/* New Teleop Tab */}
+                <div className="d-flex flex-column align-items-center">
+                    <h1>Teleop</h1>
+                    <Row className="d-flex justify-content-center" style={{backgroundColor:"yellow"}}>
+                        <Col className="d-flex" style={{backgroundColor:"purple"}}>
+                            <h1 className="text-center mb-1">Coral</h1>
+                            {/* Coral here */}
+                        </Col>
+                        <Col className="d-flex" style={{backgroundColor:"green"}}>
+                            <h1 className="text-center mb-1">Algae</h1>
+                            {/* Algae here */}
+                        </Col>
+                    </Row>
+                    <Row style={{backgroundColor:"red"}}>
+{/* Result and Delete Buttons here */}
+                    {/* FailButton */}
+                    <div className="mx-3 my-2">{/* Replace with <div className={className || ""}> */}
+                            <div
+                                className={`d-flex justify-content-center align-items-center border border-5 score-button rounded-4 grow ${
+                                active
+                                    ? "bg-danger-subtle border-danger text-danger"
+                                    : "bg-secondary-subtle border-secondary text-secondary"
+                                }`}
+                                style={{
+                                width: "110px",
+                                height: "110px",
+                                fontSize: "70pt",
+                                WebkitTextStroke: "4px",
+                                }}
+                                // onMouseDown={handleClick}
+                            >
+                                <i className="bi bi-x" />
+                            </div>
+                        </div> 
+                    </Row>
+                </div>
+
+                {/* Game Piece Selector */}
+                <div className="d-flex flex-column align-items-center">
+                    <h1>Game Piece Selector</h1>
+                    <Row className="d-flex justify-content-center" style={{backgroundColor:"red"}}>
+                        <Col className="d-flex flex-column" style={{backgroundColor:"orange"}}>
+                            <h1 className="text-center mb-1">Intake</h1>
+                            {/* Copy everything in this div. */}
+                            <div className="d-flex flex-column">
+                                <h3 className="text-center">Ground</h3>
+                                {/* IntakeButton */}
+                                <div className="d-flex flex-column">
+                                    <h3 className = "text-center">Chute</h3>
+                                    
+                                    <div
+                                        className={`mx-2 grow d-flex justify-content-center align-items-center rounded-4
+                                        ${selected ? `intake-note-selected` : ""}
+                                        `}
+                                        style={{ width: "110px", height: "110px" }}
+                                        // onMouseDown={handleSelection}
+                                    >
+                                        <img className="" alt="" src={`/assets/coral_object.png`} width={85} />
+                                    </div>
+                                </div>
+                            </div>
+                        </Col>
+                        <Col className="d-flex flex-column" style={{backgroundColor:"purple"}}>
+                            <h1 className="text-center mb-1">Scoring</h1>
+                            {/* Algae here */}
+                            <div className="d-flex flex-column">
+
+                            </div>
+                                <h3 className="text-center">Ground</h3>
+                                {/* IntakeButton */}
+                                <div className="d-flex flex-column">
+                                    <h3 className = "text-center">Reef</h3>
+                                    </div>
+                        </Col>
+                    </Row>
+                </div>
+                
         </>
     )
 }
