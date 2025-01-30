@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import AutoContent from "@/components/client/content/AutoContent";
 import PostmatchContent from "@/components/client/content/PostmatchContent";
 import TeleopContent from "@/components/client/content/TeleopContent";
+import EndgameContent from "@/components/client/content/EndgameContent";
 import PrematchContent from "@/components/client/content/PrematchContent";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
@@ -98,6 +99,7 @@ export default function Client({ station }: Props) {
                 <PrematchContent show={tab === Section.PREMATCH} />
                 <AutoContent show={tab === Section.AUTO} />
                 <TeleopContent show={tab === Section.TELEOP} />
+                <EndgameContent show={tab === Section.ENDGAME} />
                 <PostmatchContent
                   show={tab === Section.POSTMATCH}
                   handleSubmit={() => setSubmitted(true)}

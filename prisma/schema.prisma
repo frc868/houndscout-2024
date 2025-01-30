@@ -1,5 +1,6 @@
 //Once you've set up your database:
-//*npx prisma migrate dev: updates the layout of your database with this schema.
+//*npx prisma migrate dev: updates prisma client and the database with the current schema. (run if you made the changes)
+//*npx prisma generate: updates prisma client with the current schema. (run if someone else made the changes)
 //*npx prisma studio: starts Prisma Studio, allowing you to view and edit data on your database directly.
 
 //Don't need to mess with the generators.
@@ -288,6 +289,7 @@ enum Section {
   PREMATCH
   AUTO
   TELEOP
+  ENDGAME
   POSTMATCH
 }
 
