@@ -1,11 +1,11 @@
 interface Props {
   active: boolean;
-  handleClick: () => void;
+  // handleClick: () => void;
   className?: string;
 }
 
 //Big fat fail button for when the robot fails to score.
-export default function FailButton({ active, handleClick, className }: Props) {
+export default function FailButton({ active, /*handleClick*/, className }: Props) {
   return (
     <div className={className || ""}>
       <div
@@ -20,7 +20,7 @@ export default function FailButton({ active, handleClick, className }: Props) {
           fontSize: "70pt",
           WebkitTextStroke: "4px",
         }}
-        onMouseDown={handleClick}
+        //onMouseDown={handleClick}
       >
         <i className="bi bi-x" />
       </div>
