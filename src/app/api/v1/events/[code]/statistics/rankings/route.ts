@@ -4,10 +4,8 @@ import {
   Event,
   IncapSegment,
   TeamScore,
-  AutoCoralScoringEvent,
-  AutoAlgaeScoringEvent,
-  TeleopCoralScoringEvent,
-  TeleopAlgaeScoringEvent,
+  CoralScoringEvent,
+  AlgaeScoringEvent,
   CoralScoringLevel,
   AlgaeScoringLocation,
   EndgameType,
@@ -42,10 +40,8 @@ export async function GET(
             red1TeamScore: {
               include: {
                 team: true,
-                autoCoralScoringEvents: true,
-                autoAlgaeScoringEvents: true,
-                teleopCoralScoringEvents: true,
-                teleopAlgaeScoringEvents: true,
+                CoralScoringEvents: true,
+                AlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
@@ -53,10 +49,8 @@ export async function GET(
             red2TeamScore: {
               include: {
                 team: true,
-                autoCoralScoringEvents: true,
-                autoAlgaeScoringEvents: true,
-                teleopCoralScoringEvents: true,
-                teleopAlgaeScoringEvents: true,
+                CoralScoringEvents: true,
+                AlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
@@ -64,10 +58,8 @@ export async function GET(
             red3TeamScore: {
               include: {
                 team: true,
-                autoCoralScoringEvents: true,
-                autoAlgaeScoringEvents: true,
-                teleopCoralScoringEvents: true,
-                teleopAlgaeScoringEvents: true,
+                CoralScoringEvents: true,
+                AlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
@@ -75,10 +67,8 @@ export async function GET(
             blue1TeamScore: {
               include: {
                 team: true,
-                autoCoralScoringEvents: true,
-                autoAlgaeScoringEvents: true,
-                teleopCoralScoringEvents: true,
-                teleopAlgaeScoringEvents: true,
+                CoralScoringEvents: true,
+                AlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
@@ -86,10 +76,8 @@ export async function GET(
             blue2TeamScore: {
               include: {
                 team: true,
-                autoCoralScoringEvents: true,
-                autoAlgaeScoringEvents: true,
-                teleopCoralScoringEvents: true,
-                teleopAlgaeScoringEvents: true,
+                CoralScoringEvents: true,
+                AlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
@@ -97,10 +85,8 @@ export async function GET(
             blue3TeamScore: {
               include: {
                 team: true,
-                autoCoralScoringEvents: true,
-                autoAlgaeScoringEvents: true,
-                teleopCoralScoringEvents: true,
-                teleopAlgaeScoringEvents: true,
+                CoralScoringEvents: true,
+                AlgaeScoringEvents: true,
                 incapSegments: true,
                 scouter: true,
               },
@@ -115,10 +101,8 @@ export async function GET(
     const rankings: Ranking[] = event.teams.map((team) => {
       const teamScores: (TeamScore & {
         //UPDATE CYCLE: Ensure all scoring events are listed here.
-        autoCoralScoringEvents: AutoCoralScoringEvent[];
-        autoAlgaeScoringEvents: AutoAlgaeScoringEvent[];
-        teleopCoralScoringEvents: TeleopCoralScoringEvent[];
-        teleopAlgaeScoringEvents: TeleopAlgaeScoringEvent[];
+        CoralScoringEvents: CoralScoringEvent[];
+        AlgaeScoringEvents: AlgaeScoringEvent[];
         incapSegments: IncapSegment[];
       })[] = matches
         //Filters out teamScores not attributed to the specified team, and that aren't submitted or null.
@@ -132,10 +116,8 @@ export async function GET(
         ])
         .filter((score) => score?.submitted)
         .filter((score) => score !== null) as (TeamScore & {
-        autoCoralScoringEvents: AutoCoralScoringEvent[];
-        autoAlgaeScoringEvents: AutoAlgaeScoringEvent[];
-        teleopCoralScoringEvents: TeleopCoralScoringEvent[];
-        teleopAlgaeScoringEvents: TeleopAlgaeScoringEvent[];
+        CoralScoringEvents: CoralScoringEvent[];
+        AlgaeScoringEvents: AlgaeScoringEvent[];
         incapSegments: IncapSegment[];
       })[]; // Remove null entries
   
@@ -158,7 +140,7 @@ export async function GET(
       //UPDATE CYCLE: Ensure all scoring locations for all scoring events are calculated here, including dropped pieces.
       const autoCoralLevel1Scored =
         teamScores.reduce((total, score) => {
-          const gameAmount = score.autoCoralScoringEvents.filter(
+          const gameAmount = score.CoralScoringEvents.filter(
             (event) =>
               event.scoringLevel === CoralScoringLevel.LEVEL1 && !event.failedScoring
           ).length;
@@ -166,7 +148,7 @@ export async function GET(
         }, 0) / teamScores.length;
       const autoCoralLevel2Scored =
         teamScores.reduce((total, score) => {
-          const gameAmount = score.autoCoralScoringEvents.filter(
+          const gameAmount = score.CoralScoringEvents.filter(
             (event) =>
               event.scoringLevel === CoralScoringLevel.LEVEL2 && !event.failedScoring
           ).length;
@@ -174,7 +156,7 @@ export async function GET(
         }, 0) / teamScores.length;
       const autoCoralLevel3Scored =
         teamScores.reduce((total, score) => {
-          const gameAmount = score.autoCoralScoringEvents.filter(
+          const gameAmount = score.CoralScoringEvents.filter(
             (event) =>
               event.scoringLevel === CoralScoringLevel.LEVEL3 && !event.failedScoring
           ).length;
@@ -182,7 +164,7 @@ export async function GET(
         }, 0) / teamScores.length;
       const autoCoralLevel4Scored =
         teamScores.reduce((total, score) => {
-          const gameAmount = score.autoCoralScoringEvents.filter(
+          const gameAmount = score.CoralScoringEvents.filter(
             (event) =>
               event.scoringLevel === CoralScoringLevel.LEVEL4 && !event.failedScoring
           ).length;
@@ -190,7 +172,7 @@ export async function GET(
         }, 0) / teamScores.length;
       const autoAlgaeNetScored =
         teamScores.reduce((total, score) => {
-          const gameAmount = score.autoAlgaeScoringEvents.filter(
+          const gameAmount = score.AlgaeScoringEvents.filter(
             (event) =>
               event.scoringLocation === AlgaeScoringLocation.NET && !event.failedScoring
           ).length;
@@ -198,7 +180,7 @@ export async function GET(
         }, 0) / teamScores.length;
       const autoAlgaeProcessorScored =
         teamScores.reduce((total, score) => {
-          const gameAmount = score.autoAlgaeScoringEvents.filter(
+          const gameAmount = score.AlgaeScoringEvents.filter(
             (event) =>
               event.scoringLocation === AlgaeScoringLocation.PROCESSOR && !event.failedScoring
           ).length;
@@ -206,39 +188,39 @@ export async function GET(
         }, 0) / teamScores.length;
       const teleopCoralLevel1Scored =
         teamScores.reduce((total, score) => {
-          const gameAmount = score.teleopCoralScoringEvents.filter(
+          const gameAmount = score.CoralScoringEvents.filter(
             (event) =>
-              event.scoringLocation === CoralScoringLevel.LEVEL1 && !event.failedScoring
+              event.scoringLevel === CoralScoringLevel.LEVEL1 && !event.failedScoring
           ).length;
           return total + gameAmount;
         }, 0) / teamScores.length;
       const teleopCoralLevel2Scored =
         teamScores.reduce((total, score) => {
-          const gameAmount = score.teleopCoralScoringEvents.filter(
+          const gameAmount = score.CoralScoringEvents.filter(
             (event) =>
-              event.scoringLocation === CoralScoringLevel.LEVEL2 && !event.failedScoring
+              event.scoringLevel === CoralScoringLevel.LEVEL2 && !event.failedScoring
           ).length;
           return total + gameAmount;
         }, 0) / teamScores.length;
       const teleopCoralLevel3Scored =
         teamScores.reduce((total, score) => {
-          const gameAmount = score.teleopCoralScoringEvents.filter(
+          const gameAmount = score.CoralScoringEvents.filter(
             (event) =>
-              event.scoringLocation === CoralScoringLevel.LEVEL3 && !event.failedScoring
+              event.scoringLevel === CoralScoringLevel.LEVEL3 && !event.failedScoring
           ).length;
           return total + gameAmount;
         }, 0) / teamScores.length;
       const teleopCoralLevel4Scored =
         teamScores.reduce((total, score) => {
-          const gameAmount = score.teleopCoralScoringEvents.filter(
+          const gameAmount = score.CoralScoringEvents.filter(
             (event) =>
-              event.scoringLocation === CoralScoringLevel.LEVEL4 && !event.failedScoring
+              event.scoringLevel === CoralScoringLevel.LEVEL4 && !event.failedScoring
           ).length;
           return total + gameAmount;
         }, 0) / teamScores.length;
       const teleopAlgaeNetScored =
         teamScores.reduce((total, score) => {
-          const gameAmount = score.teleopAlgaeScoringEvents.filter(
+          const gameAmount = score.AlgaeScoringEvents.filter(
             (event) =>
               event.scoringLocation === AlgaeScoringLocation.NET && !event.failedScoring
           ).length;
@@ -246,7 +228,7 @@ export async function GET(
         }, 0) / teamScores.length;
       const teleopAlgaeProcessorScored =
         teamScores.reduce((total, score) => {
-          const gameAmount = score.teleopAlgaeScoringEvents.filter(
+          const gameAmount = score.AlgaeScoringEvents.filter(
             (event) =>
               event.scoringLocation === AlgaeScoringLocation.PROCESSOR && !event.failedScoring
           ).length;
@@ -289,7 +271,7 @@ export async function GET(
         teamNumber: team.number,//keep this
         teamName: team.name,//keep this
         teamScores: teamScores,//keep this
-        //throw everything else out
+        //throw everything else out between games
         mobility,
         autoCoralLevel1Scored,
         autoCoralLevel2Scored,

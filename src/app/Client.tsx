@@ -4,10 +4,12 @@
 //The page info for every client page.
 import SectionSelector from "@/components/client/common/SectionSelector";
 import StatusBar from "@/components/client/common/StatusBar";
+import { CoralIntakeLocation, AlgaeIntakeLocation, CoralScoringLevel, AlgaeScoringLocation } from "@prisma/client";
 import { useEffect, useState } from "react";
 import AutoContent from "@/components/client/content/AutoContent";
 import PostmatchContent from "@/components/client/content/PostmatchContent";
 import TeleopContent from "@/components/client/content/TeleopContent";
+import EndgameContent from "@/components/client/content/EndgameContent";
 import PrematchContent from "@/components/client/content/PrematchContent";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
@@ -20,6 +22,10 @@ import {
   sendHeartbeatAsync,
   setStation,
 } from "@/redux/mainDataSlice";
+import {
+  sendCoralEvent,
+  sendAlgaeEvent,
+} from "@/redux/scoresSlice";
 import { Section, Station } from "@prisma/client";
 
 interface Props {
@@ -48,6 +54,75 @@ export default function Client({ station }: Props) {
     setTab(Section.PREMATCH);
   }, [mainData.activeMatchName]);
 
+  //UPDATE CYCLE: Make sure everything down to handleScoringSelection is duplicated if there's multiple game pieces.
+  //Also ensure the enums used are accurate; those are imported from Prisma, so update those as well.
+  const [coralIntakeLocation, setCoralIntakeLocation] = useState<
+    CoralIntakeLocation | undefined
+  >(undefined);
+  const [coralActiveSide, setCoralActiveSide] = useState("intaking");//This is set between intaking and scoring.
+  
+  //triggers when intake location is selected
+  const handleCoralIntakeSelection = (selection: CoralIntakeLocation) => {
+    //Add a timestamp creator at the first scoring input.
+    setCoralIntakeLocation(selection);
+    setCoralActiveSide("scoring");    
+  };
+  //triggers when scoring location is selected
+  const handleCoralScoringSelection = async (
+    location?: CoralScoringLevel,
+    failedScoring?: boolean,
+    dropped?: boolean
+  ) => {
+    if (coralActiveSide == "scoring") {
+      //Add a timestamp creator here or wherever the first scoring input is.
+      const event = {
+        intakeLocation: coralIntakeLocation as CoralIntakeLocation,
+        scoringLocation: location,
+        failedScoring,
+        dropped,
+        //Need to add timestampPickedUp and timestampScored here.
+      }; //teleopScoringEvent creation.
+      setCoralIntakeLocation(undefined);
+      setCoralActiveSide("intaking");
+
+      await dispatch(sendCoralEvent(event));
+    }
+  };
+
+
+  const [algaeIntakeLocation, setAlgaeIntakeLocation] = useState<
+    AlgaeIntakeLocation | undefined
+  >(undefined);
+  const [algaeActiveSide, setAlgaeActiveSide] = useState("intaking");//This is set between intaking and scoring.
+  
+  //triggers when intake location is selected
+  const handleAlgaeIntakeSelection = (selection: AlgaeIntakeLocation) => {
+    //Add a timestamp creator at the first scoring input.
+    setAlgaeIntakeLocation(selection);
+    setAlgaeActiveSide("scoring");    
+  };
+  //triggers when scoring location is selected
+  const handleAlgaeScoringSelection = async (
+    location?: AlgaeScoringLocation,
+    failedScoring?: boolean,
+    dropped?: boolean
+  ) => {
+    if (algaeActiveSide == "scoring") {
+      //Add a timestamp creator here or wherever the first scoring input is.
+      const event = {
+        intakeLocation: algaeIntakeLocation as AlgaeIntakeLocation,
+        scoringLocation: location,
+        failedScoring,
+        dropped,
+        //Need to add timestampPickedUp and timestampScored here.
+      }; //teleopScoringEvent creation.
+      setAlgaeIntakeLocation(undefined);
+      setAlgaeActiveSide("intaking");
+
+      await dispatch(sendAlgaeEvent(event));
+    }
+  };
+
   const ready = mainData.scouter.name
     && mainData.activeTeamNumber &&
     mainData.activeMatchName;
@@ -70,8 +145,8 @@ export default function Client({ station }: Props) {
         </div>
         <ul className="vh-1 d-flex flex-column justify-content-center mt-3">
           <li className="vh-1 d-flex justify-content-center mt-1">1. In Server, activeMatch has been set to a created Match. </li>
-          <li className="vh-1 d-flex justify-content-center mt-1">2. In the current activeMatch, a Scouter has been linked to this station.</li>
-          <li className="vh-1 d-flex justify-content-center mt-1">3. In the current activeMatch, a Team has been linked to this station:</li>
+          <li className="vh-1 d-flex justify-content-center mt-1">2. In the current activeMatch, a Team has been linked to this station.</li>
+          <li className="vh-1 d-flex justify-content-center mt-1">3. In the current activeMatch, a TeamScore has has been linked to this station, and a Scouter is linked to it.</li>
         </ul>
       </>
       )}
@@ -96,8 +171,29 @@ export default function Client({ station }: Props) {
               <>
               {/* ...and now you'll have to go into each tab to look at everything. */}
                 <PrematchContent show={tab === Section.PREMATCH} />
-                <AutoContent show={tab === Section.AUTO} />
-                <TeleopContent show={tab === Section.TELEOP} />
+                <AutoContent
+                  show={tab === Section.AUTO}
+                  coralActiveSide={coralActiveSide}
+                  coralIntakeLocation={coralIntakeLocation}
+                  handleCoralIntakeSelection={handleCoralIntakeSelection}
+                  handleCoralScoringSelection={handleCoralScoringSelection}
+                  algaeActiveSide={algaeActiveSide}
+                  algaeIntakeLocation={algaeIntakeLocation}
+                  handleAlgaeIntakeSelection={handleAlgaeIntakeSelection}
+                  handleAlgaeScoringSelection={handleAlgaeScoringSelection}
+                />
+                <TeleopContent
+                  show={tab === Section.TELEOP}
+                  coralActiveSide={coralActiveSide}
+                  coralIntakeLocation={coralIntakeLocation}
+                  handleCoralIntakeSelection={handleCoralIntakeSelection}
+                  handleCoralScoringSelection={handleCoralScoringSelection}
+                  algaeActiveSide={algaeActiveSide}
+                  algaeIntakeLocation={algaeIntakeLocation}
+                  handleAlgaeIntakeSelection={handleAlgaeIntakeSelection}
+                  handleAlgaeScoringSelection={handleAlgaeScoringSelection}
+                />
+                <EndgameContent show={tab === Section.ENDGAME} />
                 <PostmatchContent
                   show={tab === Section.POSTMATCH}
                   handleSubmit={() => setSubmitted(true)}

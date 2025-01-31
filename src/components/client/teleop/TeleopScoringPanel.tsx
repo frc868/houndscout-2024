@@ -1,12 +1,12 @@
 import { Col, Row } from "react-bootstrap";
 import ScoreButton from "../mini/ScoreButton";
 import FailButton from "../mini/FailButton";
-import { ScoringLocation } from "@prisma/client";
+import { CoralScoringLevel } from "@prisma/client";
 
 interface Props {
   active: boolean;
   handleSelection: (
-    location?: ScoringLocation,
+    location?: CoralScoringLevel,
     failed?: boolean,
     dropped?: boolean
   ) => void;
@@ -22,7 +22,7 @@ export default function TeleopScoringPanel({ active, handleSelection }: Props) {
           <div className="d-flex flex-column my-3">
             <h3 className="text-center">Speaker</h3>
             <div className="d-flex justify-content-center">
-              <ScoreButton
+              {/* <ScoreButton
                 className="mx-3 my-2"
                 active={active}
                 handleClick={() => {
@@ -35,13 +35,13 @@ export default function TeleopScoringPanel({ active, handleSelection }: Props) {
                 handleClick={() => {
                   handleSelection(ScoringLocation.SPEAKER, true);
                 }}
-              />
+              /> */}
             </div>
           </div>
           <div className="d-flex flex-column my-3">
             <h3 className="text-center">Amp</h3>
             <div className="d-flex justify-content-center">
-              <ScoreButton
+              {/* <ScoreButton
                 className="mx-3 my-2"
                 active={active}
                 handleClick={() => {
@@ -73,7 +73,7 @@ export default function TeleopScoringPanel({ active, handleSelection }: Props) {
                 handleClick={() => {
                   handleSelection(ScoringLocation.PASS, true);
                 }}
-              />
+              /> */}
             </div>
           </div>
         </Col>

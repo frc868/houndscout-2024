@@ -9,8 +9,7 @@ interface Props {
 }
 
 //Allows rating of driver skill.
-//This is VERY subjective; I'd probably just measure cycle times instead.
-export default function AutoScoringPanel({ selected, handleSelection }: Props) {
+export default function DriverSkillSelector({ selected, handleSelection }: Props) {
   return (
     <div className="d-flex flex-column align-items-center">
       <h1 className="text-center">Driver Skill</h1>

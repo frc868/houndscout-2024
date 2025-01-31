@@ -47,7 +47,6 @@ export async function PATCH(
 ) {
   const data = await req.json();
   let updateData: any = {};
-
   if (data.red1) {
     updateData.red1Team = { connect: { number: data.red1 } };
   }

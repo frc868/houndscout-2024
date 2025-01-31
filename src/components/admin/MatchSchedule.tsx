@@ -126,7 +126,7 @@ export default function MatchSchedule({
             {matches.map((match) => (
               //For each match, the team in each position is listed.
               <tr
-                key={match.number}
+                key={match.id}
                 className={`${match.name === activeMatchName && "fw-bold"}`}
               >
                 <td
@@ -139,6 +139,7 @@ export default function MatchSchedule({
                     type="radio"
                     label="Active"
                     name="active"
+                    checked={match.name === activeMatchName}
                     onChange={async () => {
                       //Sets the match as the active one if it isn't already.
                       setLoading(true);

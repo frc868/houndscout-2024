@@ -4,12 +4,10 @@ import { ReduxState } from "./store";
 import {
   AutoStartingZone,
   EndgameType,
-  AutoCoralIntakeLocation,
-  AutoAlgaeIntakeLocation,
-  TeleopCoralIntakeLocation,
-  TeleopAlgaeIntakeLocation,
+  CoralIntakeLocation,
+  AlgaeIntakeLocation,
   CoralScoringLevel,
-  AutoCoralScoringSide,
+  CoralScoringSide,
   AlgaeScoringLocation,
   Result,
 } from "@prisma/client";
@@ -18,6 +16,7 @@ export interface Scores {
   autoStartingZone?: AutoStartingZone;
   leftStartingZone: boolean;
   endgameType?: EndgameType;
+  endgameSuccess: boolean;
 }
 
 export const setAutoStartingZoneAsync = createAsyncThunk(
@@ -150,13 +149,13 @@ export const sendPostMatchData = createAsyncThunk(
 
 //The following thunks create scoring events.
 //UPDATE CYCLE: Please ensure all scoring event models are accounted for, matching the format of the schema in the arguments.
-export const sendAutoCoralEvent = createAsyncThunk(
-  "scores/sendAutoCoralEvent",
+export const sendCoralEvent = createAsyncThunk(
+  "scores/sendCoralEvent",
   async (
     data: {
-      intakeLocation: AutoCoralIntakeLocation;
+      intakeLocation: CoralIntakeLocation;
       scoringLevel?: CoralScoringLevel;
-      scoringSide?: AutoCoralScoringSide;
+      scoringSide?: CoralScoringSide;
       dropped?: boolean;
       failedScoring?: boolean;
     },
@@ -169,16 +168,16 @@ export const sendAutoCoralEvent = createAsyncThunk(
     const res = await axios.post(
       `/api/v1/events/${mainData.activeEvent?.code}/matches/${
         mainData.activeMatchName
-      }/scores/${mainData.station?.toLowerCase()}/autoCoralEvent`,
+      }/scores/${mainData.station?.toLowerCase()}/coralEvent`,
       data
     );
   }
 );
-export const sendAutoAlgaeEvent = createAsyncThunk(
-  "scores/sendAutoAlgaeEvent",
+export const sendAlgaeEvent = createAsyncThunk(
+  "scores/sendAlgaeEvent",
   async (
     data: {
-      intakeLocation: AutoAlgaeIntakeLocation;
+      intakeLocation: AlgaeIntakeLocation;
       scoringLocation?: AlgaeScoringLocation;
       dropped?: boolean;
       failedScoring?: boolean;
@@ -192,53 +191,7 @@ export const sendAutoAlgaeEvent = createAsyncThunk(
     const res = await axios.post(
       `/api/v1/events/${mainData.activeEvent?.code}/matches/${
         mainData.activeMatchName
-      }/scores/${mainData.station?.toLowerCase()}/autoAlgaeEvent`,
-      data
-    );
-  }
-);
-export const sendTeleopCoralEvent = createAsyncThunk(
-  "scores/sendTeleopCoralEvent",
-  async (
-    data: {
-      intakeLocation: TeleopCoralIntakeLocation;
-      scoringLocation?: CoralScoringLevel;
-      dropped?: boolean;
-      failedScoring?: boolean;
-    },
-    { getState }
-  ) => {
-    const state = getState() as ReduxState;
-    const mainData = state.mainData;
-    (data as any).timestampPickedUp = 0;
-    (data as any).timestampScored = 0;
-    const res = await axios.post(
-      `/api/v1/events/${mainData.activeEvent?.code}/matches/${
-        mainData.activeMatchName
-      }/scores/${mainData.station?.toLowerCase()}/teleopCoralEvent`,
-      data
-    );
-  }
-);
-export const sendTeleopAlgaeEvent = createAsyncThunk(
-  "scores/sendTeleopAlgaeEvent",
-  async (
-    data: {
-      intakeLocation: TeleopAlgaeIntakeLocation;
-      scoringLocation?: AlgaeScoringLocation;
-      dropped?: boolean;
-      failedScoring?: boolean;
-    },
-    { getState }
-  ) => {
-    const state = getState() as ReduxState;
-    const mainData = state.mainData;
-    (data as any).timestampPickedUp = 0;
-    (data as any).timestampScored = 0;
-    const res = await axios.post(
-      `/api/v1/events/${mainData.activeEvent?.code}/matches/${
-        mainData.activeMatchName
-      }/scores/${mainData.station?.toLowerCase()}/teleopAlgaeEvent`,
+      }/scores/${mainData.station?.toLowerCase()}/algaeEvent`,
       data
     );
   }
@@ -294,25 +247,26 @@ export const setEndgameTypeAsync = createAsyncThunk(
 //     );
 //   }
 // );
-// export const setSpotlitAsync = createAsyncThunk(
-//   "scores/setSpotlit",
-//   async ({ spotlit }: { spotlit: boolean }, { dispatch, getState }) => {
-//     const state = getState() as ReduxState;
-//     const mainData = state.mainData;
-//     dispatch(setSpotlit({ spotlit }));
-//     const res = await axios.patch(
-//       `/api/v1/events/${mainData.activeEvent?.code}/matches/${
-//         mainData.activeMatchName
-//       }/scores/${mainData.station?.toLowerCase()}`,
-//       { spotlit }
-//     );
-//   }
-// );
+export const setEndgameSuccessAsync = createAsyncThunk(
+  "scores/setEndgameSuccess",
+  async ({ endgameSuccess }: { endgameSuccess: boolean }, { dispatch, getState }) => {
+    const state = getState() as ReduxState;
+    const mainData = state.mainData;
+    dispatch(setEndgameSuccess({ endgameSuccess }));
+    const res = await axios.patch(
+      `/api/v1/events/${mainData.activeEvent?.code}/matches/${
+        mainData.activeMatchName
+      }/scores/${mainData.station?.toLowerCase()}`,
+      { endgameSuccess }
+    );
+  }
+);
 
 const initialState: Scores = {
   autoStartingZone: undefined,
   leftStartingZone: false,
   endgameType: undefined,
+  endgameSuccess: false,
 };
 
 //The async thunks here have the async thunks call actions here to change state rather than using builders.
@@ -371,14 +325,14 @@ export const scoresSlice = createSlice({
     // ) => {
     //   state.scoredInTrap = action.payload.scoredInTrap;
     // },
-    // setSpotlit: (
-    //   state,
-    //   action: PayloadAction<{
-    //     spotlit: boolean;
-    //   }>
-    // ) => {
-    //   state.spotlit = action.payload.spotlit;
-    // },
+    setEndgameSuccess: (
+      state,
+      action: PayloadAction<{
+        endgameSuccess: boolean;
+      }>
+    ) => {
+      state.endgameSuccess = action.payload.endgameSuccess;
+    },
   },
   extraReducers: (builder) => {},
 });
@@ -387,5 +341,6 @@ export const {
   setAutoStartingZone,
   setLeftStartingZone,
   setEndgameType,
+  setEndgameSuccess,
 } = scoresSlice.actions;
 export default scoresSlice.reducer;

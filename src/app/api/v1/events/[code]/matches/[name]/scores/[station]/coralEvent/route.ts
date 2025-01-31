@@ -1,4 +1,4 @@
-//Creates an autoAlgaeScoringEvent.
+//Creates an CoralScoringEvent.
 //UPDATE CYCLE: Please ensure this function's update values match the schema it's based off of.
 
 import { NextResponse } from "next/server";
@@ -19,10 +19,11 @@ export async function POST(
       data: {
         [`${params.station}TeamScore`]: {
           update: {
-            autoAlgaeScoringEvents: {
+            CoralScoringEvents: {
               create: {
                 intakeLocation: data.intakeLocation,
-                scoringLocation: data.scoringLocation || undefined,
+                scoringLevel: data.scoringLevel || undefined,
+                scoringSide: data.scoringSide || undefined,
                 dropped: data.dropped || false,
                 failedScoring: data.failedScoring || false,
                 timestampPickedUp: data.timestampPickedUp,
@@ -35,7 +36,7 @@ export async function POST(
       include: {
         [`${params.station}TeamScore`]: {
           include: {
-            autoAlgaeScoringEvents: true,
+            CoralScoringEvents: true,
           },
         },
       },

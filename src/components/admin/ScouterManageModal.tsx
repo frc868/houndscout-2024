@@ -62,7 +62,7 @@ export default function ScouterManageModal({
         )}
         <ListGroup>
           {scouters.map((scouter: Scouter)=>(
-            <ListGroup.Item>
+            <ListGroup.Item key={scouter.id}>
               {scouter.name}
               <DeleteButton
                 variant={"danger"}

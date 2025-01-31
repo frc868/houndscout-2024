@@ -1,5 +1,6 @@
 //Once you've set up your database:
-//*npx prisma migrate dev: updates the layout of your database with this schema.
+//*npx prisma migrate dev: updates prisma client and the database with the current schema. (run if you made the changes)
+//*npx prisma generate: updates prisma client with the current schema. (run if someone else made the changes)
 //*npx prisma studio: starts Prisma Studio, allowing you to view and edit data on your database directly.
 
 //Don't need to mess with the generators.
@@ -77,7 +78,8 @@ model Team {
   blue2Matches Match[]     @relation("Blue2Team")
   blue3Matches Match[]     @relation("Blue3Team")
   teamScores   TeamScore[]
-  //picklist     Boolean     @default(true)
+  
+  picklist     Boolean     @default(true)
 }
 
 //Represents a match in an event. Should be auto-filled using The Blue Alliance API.
@@ -142,13 +144,9 @@ model TeamScore {
   // missingAutoGamePieces AutoGamePiece[] //Crescendo: The pieces the robot attempted but failed to pick up
   // autoGamePiecesScored  Int                  @default(0) //Crescendo: The overall pieces scored
   
-  autoCoralScoringEvents     AutoCoralScoringEvent[]
-  autoAlgaeScoringEvents     AutoAlgaeScoringEvent[]
-
-//Teleop
-  teleopCoralScoringEvents   TeleopCoralScoringEvent[]
-  teleopAlgaeScoringEvents   TeleopAlgaeScoringEvent[]
-
+//Scoring Events
+  CoralScoringEvents     CoralScoringEvent[]
+  AlgaeScoringEvents     AlgaeScoringEvent[]
 
   incapSegments         IncapSegment[]
 
@@ -177,11 +175,11 @@ model TeamScore {
 
 //The following four models are based on scoring events. There's one for each combination of phase and game piece.
 //UPDATE CYCLE: Please update these models for the amount of game pieces and the possible scoring locations in each event.
-model AutoCoralScoringEvent {
+model CoralScoringEvent {
   id                Int              @id @default(autoincrement())
-  intakeLocation    AutoCoralIntakeLocation
+  intakeLocation    CoralIntakeLocation
   scoringLevel      CoralScoringLevel? //If the piece was dropped, anything scoring related won't be filled in.
-  scoringSide       AutoCoralScoringSide?
+  scoringSide       CoralScoringSide? //Auto only.
   dropped           Boolean          @default(false) //For dropping the piece before a scoring attempt was made
   failedScoring     Boolean          @default(false) //For trying to score and failing
   timestampPickedUp Decimal //The time the game piece was selected, or the start time if going from preload.
@@ -190,33 +188,9 @@ model AutoCoralScoringEvent {
   teamScoreId Int
   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
 }
-model AutoAlgaeScoringEvent {
+model AlgaeScoringEvent {
   id                Int              @id @default(autoincrement())
-  intakeLocation    AutoAlgaeIntakeLocation
-  scoringLocation   AlgaeScoringLocation?
-  dropped           Boolean          @default(false)
-  failedScoring     Boolean          @default(false)
-  timestampPickedUp Decimal
-  timestampScored   Decimal
-
-  teamScoreId Int
-  teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
-}
-model TeleopCoralScoringEvent {
-  id                Int              @id @default(autoincrement())
-  intakeLocation    TeleopCoralIntakeLocation
-  scoringLocation   CoralScoringLevel?
-  dropped           Boolean          @default(false)
-  failedScoring     Boolean          @default(false)
-  timestampPickedUp Decimal
-  timestampScored   Decimal
-
-  teamScoreId Int
-  teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
-}
-model TeleopAlgaeScoringEvent {
-  id                Int              @id @default(autoincrement())
-  intakeLocation    TeleopAlgaeIntakeLocation
+  intakeLocation    AlgaeIntakeLocation
   scoringLocation   AlgaeScoringLocation?
   dropped           Boolean          @default(false)
   failedScoring     Boolean          @default(false)
@@ -247,35 +221,33 @@ enum AutoStartingZone {
   THREE
 }
 
-//The potential intake locations for each combination of game piece and phrase.
+//The potential intake locations for each game piece. The first word in each value indicates phrase.
 //UPDATE CYCLE: Please ensure these are accurate between games.
-enum AutoCoralIntakeLocation {
-  PRELOAD
-  GROUND1 //Numbers go from top to bottom
-  GROUND2
-  GROUND3
+enum CoralIntakeLocation {
+  AUTOPRELOAD
+  AUTOGROUND1 //Numbers go from top to bottom
+  AUTOGROUND2
+  AUTOGROUND3
+  AUTOSTATION1
+  AUTOSTATION2
+  TELEOPGROUND
+  TELEOPSTATION
 }
-enum AutoAlgaeIntakeLocation {
-  REEF1
-  REEF2
-  REEF3 //These correspond to the sides in AutoCoralScoringSide below.
-  REEF4
-  REEF5
-  REEF6
-  GROUND1
-  GROUND2
-  GROUND3
-}
-enum TeleopCoralIntakeLocation {
-  GROUND
-  STATION
-}
-enum TeleopAlgaeIntakeLocation {
-  GROUND
-  REEF
+enum AlgaeIntakeLocation {
+  AUTOREEF1
+  AUTOREEF2
+  AUTOREEF3 //These correspond to the sides in AutoCoralScoringSide below.
+  AUTOREEF4
+  AUTOREEF5
+  AUTOREEF6
+  AUTOGROUND1
+  AUTOGROUND2
+  AUTOGROUND3
+  TELEOPREEF
+  TELEOPGROUND
 }
 
-//The potential scoring locations for each combination of game piece and phrase.
+//The potential scoring locations for each game piece.
 //For particularly complicated games, feel free to sort these into parts.
 //UPDATE CYCLE: Please ensure these are accurate between games.
 enum CoralScoringLevel {
@@ -284,7 +256,7 @@ enum CoralScoringLevel {
   LEVEL3
   LEVEL4
 }
-enum AutoCoralScoringSide {
+enum CoralScoringSide {
   SIDE1
   SIDE2
   SIDE3//I think these should go clockwise with 3 and 4 the closest to the starting line, just for consistency.
@@ -318,6 +290,7 @@ enum Section {
   PREMATCH
   AUTO
   TELEOP
+  ENDGAME
   POSTMATCH
 }
 
@@ -333,6 +306,6 @@ enum Station {
 
 //If the game involves multiple game pieces with similar intakes and scoring, use the following as a framework:
 // enum GamePiece {
-//   CORAL
-//   ALGAE
+//   CUBE
+//   CONE
 // }

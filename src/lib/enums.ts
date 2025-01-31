@@ -1,21 +1,23 @@
-//A bunch of enums used throughout the program
-//UPDATE CYCLE: Make sure the imports are correct.
-import { TeamScore, AutoCoralScoringEvent, AutoAlgaeScoringEvent, TeleopCoralScoringEvent, TeleopAlgaeScoringEvent, IncapSegment } from "@prisma/client";
+//A bunch of enums used throughout the program.
+import {
+  TeamScore,
+  CoralScoringEvent,
+  AlgaeScoringEvent,
+  IncapSegment
+} from "@prisma/client";
 
 export enum Alliance {
   RED,
   BLUE,
 }
 
-//UPDATE CYCLE: Ensure this interface reflects the rankings API.
+//UPDATE CYCLE: Ensure this interface reflects the rankings API. Update imports as needed as well.
 export interface Ranking {
   teamNumber: number;
   teamName: string;
   teamScores: (TeamScore & {
-    autoCoralScoringEvents: AutoCoralScoringEvent[];
-    autoAlgaeScoringEvents: AutoAlgaeScoringEvent[];
-    teleopCoralScoringEvents: TeleopCoralScoringEvent[];
-    teleopAlgaeScoringEvents: TeleopAlgaeScoringEvent[];
+    CoralScoringEvents: CoralScoringEvent[];
+    AlgaeScoringEvents: AlgaeScoringEvent[];
     incapSegments: IncapSegment[];
   })[];
   mobility: number;
@@ -40,6 +42,7 @@ export interface Ranking {
 }
 
 export interface Match {
+  id: number;
   name: string;
   number: number;
   teamNumbers: {

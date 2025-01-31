@@ -12,8 +12,6 @@ import { Col, Row } from "react-bootstrap";
 import HomeContent from "@/components/viewer/content/HomeContent";
 import RankingsContent from "@/components/viewer/content/RankingsContent";
 import ImportContent from "@/components/viewer/content/ImportContent";
-import PicklistContent from "@/components/viewer/content/PicklistContent";
-import CompareContent from "@/components/viewer/content/CompareContent";
 import AutosContent from "@/components/viewer/content/AutosContent";
 import SettingsContent from "@/components/viewer/content/SettingsContent";
 import { getRankingsAsync } from "@/redux/viewerDataSlice";
@@ -23,7 +21,7 @@ export default function Viewer() {
   const mainData = useSelector((state: ReduxState) => state.mainData);
   const viewerData = useSelector((state: ReduxState) => state.viewerData);
   const dispatch = useDispatch<AppDispatch>();
-  const [tab, setTab] = useState<ViewerTab>(ViewerTab.HOME);
+  const [tab, setTab] = useState<ViewerTab>(ViewerTab.RANKINGS);
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -65,11 +63,8 @@ export default function Viewer() {
           <Row style={{ paddingTop: "64px" }}>
             <Col className="ps-0 pe-0" md={2}></Col>
             <Col className="ps-0">
-              {tab === ViewerTab.HOME && <HomeContent />}
               {tab === ViewerTab.RANKINGS && <RankingsContent rankings={viewerData.rankings as Ranking[]} />}
-              {tab === ViewerTab.COMPARE && <CompareContent />}
               {tab === ViewerTab.AUTOS && <AutosContent />}
-              {tab === ViewerTab.PICKLIST && <PicklistContent />}
               {tab === ViewerTab.IMPORT && <ImportContent />}
               {tab === ViewerTab.SETTINGS && <SettingsContent />}
             </Col>
@@ -77,16 +72,6 @@ export default function Viewer() {
           </>
         )}
       </div>
-      {/* {!ready && (
-        <div className="vh-100 d-flex justify-content-center mt-5">
-          <h1>Waiting...</h1>
-        </div>
-      )}
-      {ready && <SectionSelector selected={tab} handleSelection={setTab} />}
-      {ready && tab === Section.PREMATCH && <PrematchContent />}
-      {ready && tab === Section.AUTO && <AutoContent />}
-      {ready && tab === Section.TELEOP && <TeleopContent />}
-      {ready && tab === Section.POSTMATCH && <PostmatchContent />} */}
     </>
   );
 }

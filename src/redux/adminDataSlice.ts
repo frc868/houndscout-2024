@@ -161,18 +161,32 @@ export const deleteTeamAsync = createAsyncThunk(
     await axios.delete(`/api/v1/teams/${teamNumber}`);
   }
 );
-// export const deleteTeamAsync = createAsyncThunk(
-//   "adminData/deleteTeam",
-//   async ({
-//     eventCode,
-//     teamNumber,
-//   }: {
-//     eventCode: string;
-//     teamNumber: number;
-//   }) => {
-//     await axios.delete(`/api/v1/events/${eventCode}/teams/${teamNumber}`);
-//   }
-// );
+export const addTeamToEventAsync = createAsyncThunk(
+  "adminData/addTeamToEvent",
+  async ({
+    eventCode,
+    ...data
+  }: {
+    eventCode: string;
+    teamNumber: number;
+  }) => {
+    await axios.post(`/api/v1/events/${eventCode}/teams`,{
+      ...data
+    });
+  }
+);
+export const removeTeamFromEventAsync = createAsyncThunk(
+  "adminData/removeTeamFromEvent",
+  async ({
+    eventCode,
+    teamNumber,
+  }: {
+    eventCode: string;
+    teamNumber: number;
+  }) => {
+    await axios.delete(`/api/v1/events/${eventCode}/teams/${teamNumber}`);
+  }
+);
 export const getTeamsAsync = createAsyncThunk(
   "adminData/getTeamsAsync",
   async ({ eventCode }: { eventCode: string }) => {

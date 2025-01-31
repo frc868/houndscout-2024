@@ -58,6 +58,10 @@
   background-color: #5271ff;
 }
 
+.state-button.endgame-button {
+  background-color: #d752ff;
+}
+
 .state-button.postmatch-button {
   background-color: #00bf63;
 }
@@ -80,6 +84,14 @@
 
 .intake-note-selected {
   background-color: rgba(255, 205, 174, 0.8);
+}
+
+.location-area-selected {
+  background-color: rgba(145, 100, 255, 0.8);
+}
+
+.location-active {
+  background-color: rgba(205, 174, 255, 0.8);
 }
 
 .score-button {

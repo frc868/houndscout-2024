@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { Alliance } from "@/lib/enums";
 import { AutoStartingZone } from "@prisma/client";
+import { autoBatchEnhancer } from "@reduxjs/toolkit";
 import { Button } from "react-bootstrap";
 
 interface Props {
@@ -25,13 +26,17 @@ export default function StartingZoneSelector({
           <img
             className="mx-auto"
             alt=""
+            style={!blueOnLeft?{
+              transform: 'rotate(180deg)',
+              width: "75%",
+              height: "auto"
+            }:{
+              width: "75%",
+              height: "auto"
+            }}
             src={
               alliance === Alliance.BLUE
-                ? blueOnLeft
-                  ? "/assets/blue_start_prematch.png"
-                  : "/assets/blue_start_prematch.png"
-                : blueOnLeft
-                ? "/assets/red_start_prematch.png"
+                ? "/assets/blue_start_prematch.png"
                 : "/assets/red_start_prematch.png"
             }
             width={400}
@@ -42,26 +47,26 @@ export default function StartingZoneSelector({
           style={
             alliance === Alliance.BLUE
               ? blueOnLeft
-                ? {
+                ? {// Blueside button #1
                     position: "absolute",
-                    top: "120px",
-                    left: "55px",
+                    top: "26%",
+                    left: "60%",
                   }
-                : {
+                : {//Blueside button reverse
                     position: "absolute",
-                    top: "450px",
-                    left: "295px",
+                    top: "80%",
+                    left: "35%",
                   }
-              : blueOnLeft
+              : blueOnLeft //Redside button #1
               ? {
                   position: "absolute",
-                  top: "120px",
-                  left: "295px",
+                  top: "27%",
+                  left: "30%",
                 }
-              : {
+              : {//redside button reverse
                   position: "absolute",
-                  top: "450px",
-                  left: "55px",
+                  top: "79%",
+                  left: "65%",
                 }
           }
         >
@@ -70,7 +75,7 @@ export default function StartingZoneSelector({
               selected === AutoStartingZone.ONE ? "primary" : "secondary"
             }
             className="fw-bold"
-            style={{ width: "50px" }}
+            style={{ width: "40px" }}
             onMouseDown={() => handleSelection(AutoStartingZone.ONE)}
           >
             1
@@ -80,26 +85,26 @@ export default function StartingZoneSelector({
           style={
             alliance === Alliance.BLUE
               ? blueOnLeft
-                ? {
+                ? {//Blueside button #2
                     position: "absolute",
-                    top: "208px",
-                    left: "85px",
+                    top: "51%",
+                    left: "60%",
                   }
-                : {
+                : {//blueside button reverse
                     position: "absolute",
-                    top: "372px",
-                    left: "275px",
+                    top: "55%",
+                    left: "35%",
                   }
-              : blueOnLeft
+              : blueOnLeft //redside button #2
               ? {
                   position: "absolute",
-                  top: "203px",
-                  left: "274px",
+                  top: "52%",
+                  left: "30%",
                 }
-              : {
+              : {//redside button reverse
                   position: "absolute",
-                  top: "372px",
-                  left: "87px",
+                  top: "54%",
+                  left: "65%",
                 }
           }
         >
@@ -117,27 +122,27 @@ export default function StartingZoneSelector({
         <div
           style={
             alliance === Alliance.BLUE
-              ? blueOnLeft
+              ? blueOnLeft //Blueside button #3
                 ? {
                     position: "absolute",
-                    top: "350px",
-                    left: "55px",
+                    top: "76%",
+                    left: "60%",
                   }
-                : {
+                : { // Blueside button reverse 
                     position: "absolute",
-                    top: "220px",
-                    left: "295px",
+                    top: "30%",
+                    left: "35%",
                   }
-              : blueOnLeft
+              : blueOnLeft //Redside button #3
               ? {
                   position: "absolute",
-                  top: "350px",
-                  left: "295px",
+                  top: "77%",
+                  left: "30%",
                 }
-              : {
+              : { //redside button reverse
                   position: "absolute",
-                  top: "220px",
-                  left: "55px",
+                  top: "29%",
+                  left: "65%",
                 }
           }
         >
@@ -146,7 +151,7 @@ export default function StartingZoneSelector({
               selected == AutoStartingZone.THREE ? "primary" : "secondary"
             }
             className="fw-bold"
-            style={{ width: "50px" }}
+            style={{ width: "40px" }}
             onMouseDown={() => handleSelection(AutoStartingZone.THREE)}
           >
             3

@@ -22,7 +22,7 @@ export async function GET(req: Request) {
   return NextResponse.json({ ok: true, match });
 }
 
-// adminDataSlice/setActiveMatchAsync
+// mainDataSlice/setActiveMatchAsync
 //Sets active match.
 export async function POST(req: Request) {
   const data = await req.json();

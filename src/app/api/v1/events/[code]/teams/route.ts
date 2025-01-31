@@ -23,7 +23,7 @@ export async function GET(
   return NextResponse.json({ teams: event.teams, ok: true });
 }
 
-//Currently unimplemented, though I have plans for this.
+// adminDataSlice/addTeamToEventAsync
 //I think this adds existing teams into the specified event by number. 
 export async function POST(
   req: Request,

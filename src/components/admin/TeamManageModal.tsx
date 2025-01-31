@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { Button, Modal, ListGroup } from "react-bootstrap";
+import { Button, Modal, ListGroup, Form } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
 import DeleteButton from "./DeleteButton";
-import { Team } from "@/lib/enums"
-import { createTeamAsync, deleteTeamAsync } from "@/redux/adminDataSlice";
+import { createTeamAsync, deleteTeamAsync, addTeamToEventAsync } from "@/redux/adminDataSlice";
+import { Team } from "@/lib/enums";
 import NewTeamForm from "./NewTeamForm";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, ReduxState } from "@/redux/store";
 
 interface Props {
   show: boolean;
@@ -21,6 +21,7 @@ export default function TeamManageModal({
   handleClose
 }: Props) {
   const dispatch = useDispatch<AppDispatch>();
+  const mainData = useSelector((state: ReduxState) => state.mainData);
   const [showTeamNew, setShowTeamNew] = useState(false);
   const [loading, setLoading] = useState(false);
   return (
@@ -62,9 +63,9 @@ export default function TeamManageModal({
         )}
         <ListGroup>
           {teams.map((team: Team)=>(
-            <ListGroup.Item>
+            <ListGroup.Item key={team.id}>
               Team {team.number}: {team.name}
-              <Button disabled
+              <Button
                 className="mx-2"
                 size="sm"
                 variant={
@@ -74,15 +75,19 @@ export default function TeamManageModal({
                 }
                 onClick={
                   async () => {
+                    //Adds team to current event
                     setLoading(true);
-                    // await dispatch(
-                    //   deleteTeamAsync({ teamNumber: team.number })
-                    // );
+                    await dispatch(
+                      addTeamToEventAsync({
+                        eventCode: mainData.activeEvent?.code as string,
+                        teamNumber: team.number,
+                      })
+                    )
                     setLoading(false);
                   }
                 }
               >
-                Add to Event
+                Add to Event (TBA)
               </Button>
               <DeleteButton
                 variant={
@@ -99,7 +104,7 @@ export default function TeamManageModal({
                     setLoading(false);
                   }
                 }
-              /> 
+              />
             </ListGroup.Item>
           ))}
         </ListGroup>

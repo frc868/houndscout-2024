@@ -2,15 +2,17 @@
 
 interface Props {
   selected: boolean;
-  handleSelection: () => void;
+  // handleSelection: () => void;
   className?: string;
+  gamePiece: string;
 }
 
 //A picture of the game piece used to indicate an intake location in teleop.
-export default function AlgaeButton({
+export default function IntakeButton({
   selected,
-  handleSelection,
+  // handleSelection,
   className,
+  gamePiece,
 }: Props) {
   return (
     <div className={className || ""}>
@@ -19,9 +21,9 @@ export default function AlgaeButton({
           selected ? `intake-note-selected` : ""
         }`}
         style={{ width: "110px", height: "110px" }}
-        onMouseDown={handleSelection}
+        //onMouseDown={handleSelection}
       >
-        <img className="" alt="" src={`/assets/algae_object.png`} width={85} />
+        <img className="" alt="" src={gamePiece=="coral"?`/assets/coral_object.png`:`/assets/algae_object.png`} width={110} />
       </div>
     </div>
   );

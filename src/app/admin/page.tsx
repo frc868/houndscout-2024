@@ -6,6 +6,7 @@ import { AppDispatch, ReduxState } from "@/redux/store";
 import {
   getActiveEventAsync,
   getActiveMatchAsync,
+  getBlueOnLeftAsync
 } from "@/redux/mainDataSlice";
 import AdminStatusBar from "@/components/admin/AdminStatusBar";
 import {
@@ -24,9 +25,11 @@ import AdminControls from "@/components/admin/MatchControls";
 import { Event } from "@prisma/client";
 import EventDetails from "@/components/admin/EventDetails";
 import EventManageModal from "@/components/admin/EventManageModal";
-import {Match,
+import {
+  Match,
   Scouter,
-  Team } from "@/lib/enums";
+  Team
+} from "@/lib/enums";
 
 export default function Admin() {
   //Accesses Redux state. You can find more details in mainDataSlice and adminDataSlice.
@@ -45,6 +48,7 @@ export default function Admin() {
       await dispatch(getEventsAsync());
       await dispatch(getHeartbeatsAsync());
       await dispatch(getAllTeamsAsync());
+      // await dispatch(getBlueOnLeftAsync());
 
       //These two things only trigger after the event code has been loaded.
       //For some reason it errored when I put them in the same thing.
@@ -126,6 +130,7 @@ export default function Admin() {
                 scouters={adminData.scouters as Scouter[]}
                 teams={adminData.allTeams as Team[]}
                 eventCode={mainData.activeEvent?.code as string}
+                blueOnLeft={mainData.blueOnLeft as boolean}
               />
             </Col>
           </Row>
