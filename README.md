@@ -15,7 +15,7 @@ DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres"
 4. Create a row in Server.
 5. Create and fill in 6 Heartbeats, each set to a different station. Connect each of these to the Server you created.
 6. Create an Event, enter something in the "code" column, and connect it to the Server.
-7. Create a Team and connect it to the Event.
+7. Create a Team, enter something in the "number" column, and connect it to the Event.
 9. Use the Command Palette to rebuild the database.
 
 Finally, run the development server:
