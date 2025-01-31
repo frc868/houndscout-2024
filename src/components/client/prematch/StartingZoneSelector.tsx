@@ -49,24 +49,24 @@ export default function StartingZoneSelector({
               ? blueOnLeft
                 ? {// Blueside button #1
                     position: "absolute",
-                    top: "183px",
-                    left: "525px",
+                    top: "26%",
+                    left: "60%",
                   }
                 : {//Blueside button reverse
                     position: "absolute",
-                    top: "195px",
-                    left: "335px",
+                    top: "80%",
+                    left: "35%",
                   }
               : blueOnLeft //Redside button #1
               ? {
                   position: "absolute",
-                  top: "189px",
-                  left: "305px",
+                  top: "27%",
+                  left: "30%",
                 }
               : {//redside button reverse
                   position: "absolute",
-                  top: "425px",
-                  left: "565px",
+                  top: "79%",
+                  left: "65%",
                 }
           }
         >
@@ -75,7 +75,7 @@ export default function StartingZoneSelector({
               selected === AutoStartingZone.ONE ? "primary" : "secondary"
             }
             className="fw-bold"
-            style={{ width: "50px" }}
+            style={{ width: "40px" }}
             onMouseDown={() => handleSelection(AutoStartingZone.ONE)}
           >
             1
@@ -87,24 +87,24 @@ export default function StartingZoneSelector({
               ? blueOnLeft
                 ? {//Blueside button #2
                     position: "absolute",
-                    top: "289px",
-                    left: "525px",
+                    top: "51%",
+                    left: "60%",
                   }
                 : {//blueside button reverse
                     position: "absolute",
-                    top: "314px",
-                    left: "335px",
+                    top: "55%",
+                    left: "35%",
                   }
               : blueOnLeft //redside button #2
               ? {
                   position: "absolute",
-                  top: "297px",
-                  left: "305px",
+                  top: "52%",
+                  left: "30%",
                 }
               : {//redside button reverse
                   position: "absolute",
-                  top: "309px",
-                  left: "565px",
+                  top: "54%",
+                  left: "65%",
                 }
           }
         >
@@ -125,24 +125,24 @@ export default function StartingZoneSelector({
               ? blueOnLeft //Blueside button #3
                 ? {
                     position: "absolute",
-                    top: "400px",
-                    left: "525px",
+                    top: "76%",
+                    left: "60%",
                   }
                 : { // Blueside button reverse 
                     position: "absolute",
-                    top: "425px",
-                    left: "335px",
+                    top: "30%",
+                    left: "35%",
                   }
               : blueOnLeft //Redside button #3
               ? {
                   position: "absolute",
-                  top: "409px",
-                  left: "305px",
+                  top: "77%",
+                  left: "30%",
                 }
               : { //redside button reverse
                   position: "absolute",
-                  top: "195px",
-                  left: "565px",
+                  top: "29%",
+                  left: "65%",
                 }
           }
         >
@@ -151,7 +151,7 @@ export default function StartingZoneSelector({
               selected == AutoStartingZone.THREE ? "primary" : "secondary"
             }
             className="fw-bold"
-            style={{ width: "50px" }}
+            style={{ width: "40px" }}
             onMouseDown={() => handleSelection(AutoStartingZone.THREE)}
           >
             3
