@@ -73,13 +73,13 @@ export default function AutoContent({ show }: Props) {
     <div className={`${!show && "d-none"}`}>
       <Row className="my-5 d-flex justify-content-center">
         <Col className="d-flex justify-content-center" md={5}>
-          <AutoIntakePanel
+          {/* <AutoIntakePanel
             alliance={mainData.alliance}
             blueOnLeft={mainData.blueOnLeft}
             selected={selectedGamePieces}
             missing={missingGamePieces}
             handleSelection={handleIntakeSelection}
-          />
+          /> */}
         </Col>
         <Col className="d-flex flex-column" md={4}>
           <AutoScoringPanel

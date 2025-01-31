@@ -4,14 +4,16 @@
 /* eslint-disable @next/next/no-img-element */
 import { Alliance } from "@/lib/enums";
 import { Button, Col, Row } from "react-bootstrap";
-import IntakeButton from "@/components/sandbox/mini/IntakeButton";
+import ReefSideButton from "@/components/sandbox/mini/ReefSideButton";
+import AutoIntakeButton from "@/components/sandbox/mini/AutoIntakeButton";
+import TeleopIntakeButton from "@/components/sandbox/mini/TeleopIntakeButton";
 import FailButton from "@/components/sandbox/mini/FailButton";
 import ScoreButton from "@/components/sandbox/mini/ScoreButton";
 import LocationButton from "@/components/sandbox/mini/LocationButton";
 import DroppedButton from "@/components/sandbox/mini/DroppedButton";
 import { useState } from "react";
 
-export default function Data() {
+export default function Sandbox() {
     //Update these variables to change certain aspects of the boilerplate.
     const [allianceIsBlue, setAllianceIsBlue] = useState(true); //If running blue or red client
     const [blueOnLeft, setBlueOnLeft] = useState(true); //If blueOnLeft is enabled in database
@@ -383,16 +385,16 @@ export default function Data() {
                     </Row>
                 </div>
 
-                {/* Game Piece Selector */}
+                {/* Coral Game Piece Selector */}
                 <div className="d-flex flex-column align-items-center">
-                    <h1>Game Piece Selector</h1>
+                    <h1>Coral Game Piece Selector</h1>
                     <Row className="d-flex justify-content-center" style={{backgroundColor:"red"}}>
                         <Col className="d-flex flex-column" style={{backgroundColor:"orange"}}>
                             <h1 className="text-center mb-1">Intake</h1>
                             {/* Copy everything in this div. */}
                             <div className="d-flex flex-column">
                                 <h3 className="text-center">Ground</h3>
-                                <IntakeButton
+                                <TeleopIntakeButton
                                     className="mt-2"
                                     selected={selected}
                                     //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
@@ -401,7 +403,7 @@ export default function Data() {
                             </div>
                             <div className="d-flex flex-column">
                                 <h3 className = "text-center">Station</h3>
-                                <IntakeButton
+                                <TeleopIntakeButton
                                     className="mt-2"
                                     selected={selected}
                                     //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
@@ -419,10 +421,164 @@ export default function Data() {
                                     //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
                                     text="L1"
                                 />
+                                <LocationButton
+                                    className="mt-2"
+                                    active={active}
+                                    selected={selected}
+                                    //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                    text="L2"
+                                />
+                                <LocationButton
+                                    className="mt-2"
+                                    active={active}
+                                    selected={selected}
+                                    //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                    text="L3"
+                                />
+                                <LocationButton
+                                    className="mt-2"
+                                    active={active}
+                                    selected={selected}
+                                    //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                    text="L4"
+                                />
                             </div>
                         </Col>
                     </Row>
                 </div>
+
+                {/* Algae Game Piece Selector */}
+                <div className="d-flex flex-column align-items-center">
+                    <h1>Algae Game Piece Selector</h1>
+                    <Row className="d-flex justify-content-center" style={{backgroundColor:"red"}}>
+                        <Col className="d-flex flex-column" style={{backgroundColor:"orange"}}>
+                            <h1 className="text-center mb-1">Intake</h1>
+                            {/* Copy everything in this div. */}
+                            <div className="d-flex flex-column">
+                                <h3 className="text-center">Ground</h3>
+                                <TeleopIntakeButton
+                                    className="mt-2"
+                                    selected={selected}
+                                    //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                    gamePiece="algae"
+                                />
+                            </div>
+                            <div className="d-flex flex-column">
+                                <h3 className = "text-center">Reef</h3>
+                                <TeleopIntakeButton
+                                    className="mt-2"
+                                    selected={selected}
+                                    //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                    gamePiece="algae"
+                                />
+                            </div>
+                        </Col>
+                        <Col className="d-flex flex-column" style={{backgroundColor:"purple"}}>
+                            <h1 className="text-center mb-1">Scoring</h1>
+                            <div className="d-flex flex-column">
+                                <LocationButton
+                                    className="mt-2"
+                                    active={active}
+                                    selected={selected}
+                                    //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                    text="Net"
+                                />
+                                <LocationButton
+                                    className="mt-2"
+                                    active={active}
+                                    selected={selected}
+                                    //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                    text="Proc."
+                                />
+                            </div>
+                        </Col>
+                    </Row>
+                </div>
+
+                <Row className="d-flex flex-row">
+                    {/* Coral Reef in Auto */}
+                <div className="position-relative" style={{width: "25%"}}>
+                    <img
+                    className="mx-auto my-2"
+                    alt=""
+                    src={
+                        "/assets/coral_reef_auto.png"
+                    }
+                    width="100%"
+                    />
+
+                    <ReefSideButton
+                        active={active}
+                        className="mt-2"
+                        selected={selected}
+                        top="22%"
+                        left="15%"
+                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                        text="1"
+                    />
+                    <ReefSideButton
+                        active={active}
+                        className = "mt-2)"
+                        selected = {selected}
+                        top = "18%"
+                        left = "39%"
+                        text="2"
+                    />
+                    <ReefSideButton
+                        active={active}
+                        className = "mt-2)"
+                        selected = {selected}
+                        top = "24%"
+                        left = "65%"
+                        text="3"
+                    />
+                    <ReefSideButton
+                        active={active}
+                        className = "mt-2)"
+                        selected = {selected}
+                        top = "53%"
+                        left = "65%"
+                        text="4"
+                    />
+                    <ReefSideButton
+                        active={active}
+                        className = "mt-2)"
+                        selected = {selected}
+                        top = "53%"
+                        left = "15%"
+                        text="5"
+                    />
+                    <ReefSideButton
+                        active={active}
+                        className = "mt-2)"
+                        selected = {selected}
+                        top = "65%"
+                        left = "39%"
+                        text="6"
+                    />
+                </div>
+                
+                {/* Algae Reef in Auto */}
+                <div className="position-relative" style={{width: "25%"}}>
+                    <img
+                        className="mx-auto my-2"
+                        alt=""
+                        src={
+                            "/assets/algae_reef_auto.png"
+                        }
+                        width="100%"
+                    />
+                        
+                    <AutoIntakeButton
+                        className="mt-2"
+                        selected={selected}
+                        top="20%"
+                        left="5%"
+                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                        gamePiece="algae"
+                    />
+                    </div>
+                </Row>
                 
         </>
     )
