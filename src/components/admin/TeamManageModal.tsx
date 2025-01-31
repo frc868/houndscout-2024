@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Button, Modal, ListGroup } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
 import DeleteButton from "./DeleteButton";
-import { Team, createTeamAsync, deleteTeamAsync } from "@/redux/adminDataSlice";
+import { Team } from "@/lib/enums"
+import { createTeamAsync, deleteTeamAsync } from "@/redux/adminDataSlice";
 import NewTeamForm from "./NewTeamForm";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
@@ -37,10 +38,11 @@ export default function TeamManageModal({
       </Modal.Header>
       <Modal.Body>
         <Button
-        className="edit-button mx-3 mb-3"
-        onClick={() => setShowTeamNew(!showTeamNew)}
+          variant={showTeamNew?"danger":"primary"}
+          className="edit-button mx-3 mb-3"
+          onClick={() => setShowTeamNew(!showTeamNew)}
         >
-          {showTeamNew?"Hide":"Show"} New Team Form
+          {showTeamNew?"Cancel":"Add New Team"}
         </Button>
         {showTeamNew&&(
           <NewTeamForm

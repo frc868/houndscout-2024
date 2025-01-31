@@ -42,11 +42,12 @@ export default function EventManageModal({
       </Modal.Header>
       <Modal.Body>
         <Button
-        //This first part opens an extra form to create a new event.
-        className="edit-button mx-3 mb-3"
-        onClick={() => setShowEventNew(!showEventNew)}
+          //This first part opens an extra form to create a new event.
+          variant={showEventNew?"danger":"primary"}
+          className="edit-button mx-3 mb-3"
+          onClick={() => setShowEventNew(!showEventNew)}
         >
-          {showEventNew?"Hide":"Show"} New Event Form
+          {showEventNew?"Cancel":"Add New Event"}
         </Button>
         {showEventNew&&(
           <NewEventForm

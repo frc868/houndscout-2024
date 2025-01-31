@@ -62,7 +62,7 @@ export default function NewTeamModal({
 
       <Row>
         <Button
-          variant="primary"
+          variant="success"
           onClick={() =>
             handleSubmit({
               number: Number(number),

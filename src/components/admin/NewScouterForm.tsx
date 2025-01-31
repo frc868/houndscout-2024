@@ -29,7 +29,7 @@ export default function NewScouterModal({
       </Row>
       <Row>
         <Button
-          variant="primary"
+          variant="success"
           onClick={() =>
             handleSubmit({
               name: String(name)

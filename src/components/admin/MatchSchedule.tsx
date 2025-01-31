@@ -57,6 +57,7 @@ export default function MatchSchedule({
       // Create a new match
         teams={teams as Team[]}
         show={showMatchCreate}
+        submitVar="success"
         handleClose={() => setShowMatchCreate(false)}
         handleSubmit={async (payload) => {
           await dispatch(
@@ -78,6 +79,7 @@ export default function MatchSchedule({
         initialBlue1={matchEditData.blue1}
         initialBlue2={matchEditData.blue2}
         initialBlue3={matchEditData.blue3}
+        submitVar="primary"
         show={showMatchEdit}
         handleClose={() => setShowMatchEdit(false)}
         handleSubmit={async (payload) => {

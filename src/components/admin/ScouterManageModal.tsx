@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button, Modal, ListGroup } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
 import DeleteButton from "./DeleteButton";
-import { Scouter } from "@/redux/adminDataSlice";
+import { Scouter } from "@/lib/enums";
 import { createScouterAsync, deleteScouterAsync } from "@/redux/mainDataSlice";
 import NewScouterForm from "./NewScouterForm";
 import { useDispatch } from "react-redux";
@@ -38,10 +38,11 @@ export default function ScouterManageModal({
       </Modal.Header>
       <Modal.Body>
         <Button
-        className="edit-button mx-3 mb-3"
-        onClick={() => setShowScouterNew(!showScouterNew)}
+          variant={showScouterNew?"danger":"primary"}
+          className="mx-3 mb-3"
+          onClick={() => setShowScouterNew(!showScouterNew)}
         >
-          {showScouterNew?"Hide":"Show"} New Scouter Form
+          {showScouterNew?"Cancel":"Add New Scouter"}
         </Button>
         {showScouterNew&&(
           <NewScouterForm

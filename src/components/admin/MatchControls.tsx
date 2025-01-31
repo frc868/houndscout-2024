@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import TeamManageModal from "@/components/admin/TeamManageModal";
 import ScouterManageModal from "@/components/admin/ScouterManageModal";
-import TBADataModal from "./data/TBADataModal";
+import TBADataModal from "./TBADataModal";
 import { Scouter, Team } from "@/lib/enums"
 
 interface Props {

@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import React, { useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
-import TBADataModal from "./TBADataModal";
+import TBADataModal from "../TBADataModal";
 import { uploadTBADataAsync } from "@/redux/adminDataSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";

@@ -13,6 +13,7 @@ interface Props {
   initialBlue1?: number;
   initialBlue2?: number;
   initialBlue3?: number;
+  submitVar: string;
   teams: Team[];
   handleClose: () => void;
   handleSubmit: ({
@@ -34,7 +35,7 @@ interface Props {
   }) => void;
 }
 
-//A form to add a new match.
+//A form to add a new match or edit an existing one.
 export default function MatchAddModal({
   teams,
   initialMatch,
@@ -44,6 +45,7 @@ export default function MatchAddModal({
   initialBlue1,
   initialBlue2,
   initialBlue3,
+  submitVar,
   show,
   handleClose,
   handleSubmit,
@@ -81,7 +83,7 @@ export default function MatchAddModal({
   return (
     <Modal centered show={show} size="lg" onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Add New Match</Modal.Title>
+        <Modal.Title>{submitVar=="success"?"Add New":"Edit"} Match</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -176,7 +178,7 @@ export default function MatchAddModal({
           Clear
         </Button>
         <Button
-          variant="primary"
+          variant={submitVar}
           onClick={() =>
             {
               clearState();
