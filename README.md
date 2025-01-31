@@ -9,7 +9,8 @@ Please note that usage of Codespaces is limited by GitHub.
 # Finish Setup
 1. Create a .env file and enter the following to connect the database to your server:
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres"
-2. Run "npx prisma migrate dev" in the terminal to create the necessary framework in the database.
+2. Run "npm install" in the terminal to install all necessary frameworks.
+3. Run "npx prisma generate" in the terminal to create the database.
 3. Run "npx prisma studio" to open Prisma Studio.
 4. Create a row in Server.
 5. Create and fill in 6 Heartbeats, each set to a different station. Connect each of these to the Server you created.
@@ -34,6 +35,7 @@ Client: Update all interfaces to match Reefscape.
 Scoring Events: Add timestamp support.
 Viewer: Complete data viewer page.
 Admin: Add function that aren't the scouter schedule, including a button to switch orientation.
+Pit: Add this page.
 ## Secondary
 Admin: Add algorithm to generate scouter schedule.
 Comments: Improve comments.

@@ -137,6 +137,7 @@ export default function MatchSchedule({
                     type="radio"
                     label="Active"
                     name="active"
+                    checked={match.name === activeMatchName}
                     onChange={async () => {
                       //Sets the match as the active one if it isn't already.
                       setLoading(true);

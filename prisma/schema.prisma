@@ -78,7 +78,8 @@ model Team {
   blue2Matches Match[]     @relation("Blue2Team")
   blue3Matches Match[]     @relation("Blue3Team")
   teamScores   TeamScore[]
-  //picklist     Boolean     @default(true)
+  
+  picklist     Boolean     @default(true)
 }
 
 //Represents a match in an event. Should be auto-filled using The Blue Alliance API.
