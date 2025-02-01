@@ -78,10 +78,6 @@ export default function ScouterManageModal({
           ))}
         </ListGroup>
       </Modal.Body>
-
-      <Modal.Footer>
-        <p>Note: WIP</p>
-      </Modal.Footer>
     </Modal>
   );
 }
