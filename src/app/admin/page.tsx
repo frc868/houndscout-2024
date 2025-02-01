@@ -48,7 +48,7 @@ export default function Admin() {
       await dispatch(getEventsAsync());
       await dispatch(getHeartbeatsAsync());
       await dispatch(getAllTeamsAsync());
-      // await dispatch(getBlueOnLeftAsync());
+      await dispatch(getBlueOnLeftAsync());
 
       //These two things only trigger after the event code has been loaded.
       //For some reason it errored when I put them in the same thing.
@@ -62,7 +62,7 @@ export default function Admin() {
         ));
     }, 1000);
     return () => clearInterval(interval);
-  }, [dispatch, mainData.activeEvent?.code, mainData.activeMatchName]);
+  }, [dispatch, mainData.activeEvent?.code, mainData.activeMatchName, mainData.blueOnLeft]);
 
   const ready = mainData.activeEvent?.code && adminData.matches && adminData.teams;
   //Displays a loading screen if these haven't been filled in the state yet.

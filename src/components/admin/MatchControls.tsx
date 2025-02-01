@@ -65,7 +65,7 @@ export default function Controls({ scouters, teams, eventCode, blueOnLeft }: Pro
       </Row>
       <Row className="">
         <Button
-          disabled
+          // disabled
           variant="secondary"
           className="mb-2"
           onClick={async (payload) => {
@@ -75,7 +75,7 @@ export default function Controls({ scouters, teams, eventCode, blueOnLeft }: Pro
             }));
           }}
         >
-          Toggle Orientation (TBA) <br></br>(Currently: {blueOnLeft?"Blue on Left":"Blue on Right"})
+          Toggle Orientation <br />(Currently: {blueOnLeft?"Blue on Left":"Blue on Right"})
         </Button>
       </Row>
       <Row className="">

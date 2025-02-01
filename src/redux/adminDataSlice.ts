@@ -198,7 +198,6 @@ export const getAllTeamsAsync = createAsyncThunk(
   "adminData/getAllTeamsAsync",
   async () => {
     const res = await axios.get(`/api/v1/teams`);
-    console.log(res.data);
     return res.data.teams;
   }
 );
