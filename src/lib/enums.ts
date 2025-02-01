@@ -72,6 +72,7 @@ export interface Team {
   id: number;
   number: number;
   name: string;
+  location: string;
   events?: Event[];
 }
 

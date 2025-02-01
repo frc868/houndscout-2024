@@ -141,12 +141,11 @@ export default function Client({ station }: Props) {
           <h1>Waiting...</h1>
         </div>
         <div className="vh-3 d-flex justify-content-center mt-5">
-          <h5>If this screen persists, please have the lead scouter consult Prisma Studio and ensure the following are true (Current Station: {station}):</h5>
+          <h5>If this screen persists, please have the lead scouter ensure the following has been done:</h5>
         </div>
         <ul className="vh-1 d-flex flex-column justify-content-center mt-3">
-          <li className="vh-1 d-flex justify-content-center mt-1">1. In Server, activeMatch has been set to a created Match. </li>
-          <li className="vh-1 d-flex justify-content-center mt-1">2. In the current activeMatch, a Team has been linked to this station.</li>
-          <li className="vh-1 d-flex justify-content-center mt-1">3. In the current activeMatch, a TeamScore has has been linked to this station, and a Scouter is linked to it.</li>
+          <li className="vh-1 d-flex justify-content-center mt-1">1. Set an active match. </li>
+          <li className="vh-1 d-flex justify-content-center mt-1">2. Scouters and teams have been assigned to each station in each match.</li>
         </ul>
       </>
       )}
