@@ -2,11 +2,13 @@ import { Alliance } from "@/lib/enums";
 import { Event, Section, Station } from "@prisma/client";
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { Console } from "console";
 
 export interface MainData {
   station?: Station;
   alliance: Alliance;
   blueOnLeft: boolean;
+  blueOnLeftStatus: "idle" | "waiting" | "succeeded" | "failed";
   lastHeartbeat: number;
   activeEvent?: Event;
   activeMatchName?: string;
@@ -48,7 +50,7 @@ export const getBlueOnLeftAsync = createAsyncThunk(
   "mainData/getBlueOnLeft",
   async () => {
     const res = await axios.get(`/api/v1/server/stationData`);
-    return res.data.blueOnLeft;
+    return res.data.onLeft;
   }
 );
 export const setBlueOnLeftAsync = createAsyncThunk(
@@ -57,7 +59,7 @@ export const setBlueOnLeftAsync = createAsyncThunk(
     blueOnLeft,
   }: {
     blueOnLeft: boolean;
-  }) => {
+  }) => {;
     await axios.post(`/api/v1/server/stationData`, {
       onLeft: blueOnLeft
     });
@@ -165,6 +167,7 @@ const initialState: MainData = {
   station: undefined,
   alliance: Alliance.BLUE,
   blueOnLeft: true,
+  blueOnLeftStatus: "idle",
   lastHeartbeat: 0,
   activeEvent: undefined,
   eventStatus: "idle",
@@ -203,6 +206,7 @@ export const mainData = createSlice({
         state.matchStatus = "waiting";
         state.teamNumberStatus = "waiting";
         state.scouterStatus = "waiting";
+        state.blueOnLeftStatus = "waiting";
       })
       .addCase(getStationData.fulfilled, (state, action) => {
         if (action.payload !== null) {
@@ -216,11 +220,13 @@ export const mainData = createSlice({
           state.matchStatus = "succeeded";
           state.teamNumberStatus = "succeeded";
           state.scouterStatus = "succeeded";
+          state.blueOnLeftStatus = "succeeded";
         } else {
           state.eventStatus = "idle";
           state.matchStatus = "idle";
           state.teamNumberStatus = "idle";
           state.scouterStatus = "idle";
+          state.blueOnLeftStatus = "idle";
         }
       })
       .addCase(getStationData.rejected, (state, action) => {
@@ -228,6 +234,24 @@ export const mainData = createSlice({
         state.matchStatus = "failed";
         state.teamNumberStatus = "failed";
         state.scouterStatus = "failed";
+        state.blueOnLeftStatus = "failed";
+        state.error = action.error.message || "";
+      });
+
+    builder
+      .addCase(getBlueOnLeftAsync.pending, (state) => {
+        state.blueOnLeftStatus = "waiting";
+      })
+      .addCase(getBlueOnLeftAsync.fulfilled, (state, action) => {
+        if (action.payload !== null) {
+          state.blueOnLeft = action.payload;
+          state.blueOnLeftStatus = "succeeded";
+        } else {
+          state.blueOnLeftStatus = "waiting";
+        }
+      })
+      .addCase(getBlueOnLeftAsync.rejected, (state, action) => {
+        state.blueOnLeftStatus = "failed";
         state.error = action.error.message || "";
       });
 
