@@ -12,13 +12,14 @@ import { Scouter, Team } from "@/lib/enums"
 
 interface Props {
   scouters: Scouter[];
-  teams: Team[];
+  allTeams: Team[];
+  eventTeams: Team[];
   eventCode: string;
   blueOnLeft: boolean;
 }
 
 //Many of these link to other modals, others call certain apis.
-export default function Controls({ scouters, teams, eventCode, blueOnLeft }: Props) {
+export default function Controls({ scouters, allTeams, eventTeams, eventCode, blueOnLeft }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const [showTeamManage, setShowTeamManage] = useState(false);
   const [showScouterManage, setShowScouterManage] = useState(false);
@@ -36,7 +37,8 @@ export default function Controls({ scouters, teams, eventCode, blueOnLeft }: Pro
       ></TBADataModal>
       <TeamManageModal
         show={showTeamManage}
-        teams={teams as Team[]}
+        allTeams={allTeams as Team[]}
+        eventTeams={eventTeams as Team[]}
         handleClose={() => setShowTeamManage(false)}
       ></TeamManageModal>
       <ScouterManageModal
