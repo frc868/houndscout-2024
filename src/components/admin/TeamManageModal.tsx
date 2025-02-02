@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button, Modal, ListGroup, Form } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
 import DeleteButton from "./DeleteButton";
-import { createTeamAsync, deleteTeamAsync, addTeamToEventAsync } from "@/redux/adminDataSlice";
+import { createTeamAsync, deleteTeamAsync, addTeamToEventAsync, removeTeamFromEventAsync } from "@/redux/adminDataSlice";
 import { Team } from "@/lib/enums";
 import NewTeamForm from "./NewTeamForm";
 import { useDispatch, useSelector } from "react-redux";
@@ -65,27 +65,36 @@ export default function TeamManageModal({
         )}
         <ListGroup>
           {allTeams.map((team: Team)=>(
-            <ListGroup.Item key={team.id} className={`${eventTeams.includes(team) && "fw-bold bg-secondary-subtle"}`}>
+            <ListGroup.Item key={team.id} className={`${eventTeams.some(item=>item.id==team.id) && "fw-bold bg-secondary-subtle"}`}>
               Team {team.number}: {team.name} from {team.location}
               <Form.Check
                 type="checkbox"
                 label="In Current Event (WIP)"
-                checked={eventTeams.includes(team)}
+                checked={eventTeams.some(item=>item.id==team.id)}
                 onChange={async () => {
                   //Sets the match as the active one if it isn't already.
                   setLoading(true);
-                  await dispatch(
-                    addTeamToEventAsync({
-                      eventCode: mainData.activeEvent?.code as string,
-                      teamNumber: team.number,
-                    })
-                  )
+                  if(eventTeams.some(item=>item.id==team.id)){
+                    await dispatch(
+                      removeTeamFromEventAsync({
+                        eventCode: mainData.activeEvent?.code as string,
+                        teamNumber: team.number,
+                      })
+                    )
+                  } else {
+                    await dispatch(
+                      addTeamToEventAsync({
+                        eventCode: mainData.activeEvent?.code as string,
+                        teamNumber: team.number,
+                      })
+                    )
+                  }
                   setLoading(false);
                 }}
               />
               <DeleteButton
                 variant={
-                  eventTeams.includes(team)
+                  eventTeams.some(item=>item.id==team.id)
                     ? "danger"
                     : "outline-danger"
                 }
@@ -103,10 +112,6 @@ export default function TeamManageModal({
           ))}
         </ListGroup>
       </Modal.Body>
-
-      <Modal.Footer>
-        <p>Note: WIP</p>
-      </Modal.Footer>
     </Modal>
   );
 }

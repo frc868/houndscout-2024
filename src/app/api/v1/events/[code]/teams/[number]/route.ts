@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-//Currently unimplemented, though I have plans for this.
+// adminDataSlice/removeTeamFromEventAsync
 //Removes a team from the specified event with the specified number.
 //Check api/v1/teams/[number] for deleting a team entirely.
 export async function DELETE(
@@ -10,13 +10,14 @@ export async function DELETE(
 ) {
   let event;
   try {
+    console.log(params.number);
     event = await prisma.event.update({
       where: {
         code: params.code,
       },
       data: {
         teams: {
-          delete: {
+          disconnect: {
             number: Number(params.number),
           },
         },
