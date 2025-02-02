@@ -25,6 +25,7 @@ import {
 import {
   sendCoralEvent,
   sendAlgaeEvent,
+  sendIncapSegment,
 } from "@/redux/scoresSlice";
 import { Section, Station } from "@prisma/client";
 
@@ -54,16 +55,40 @@ export default function Client({ station }: Props) {
     setTab(Section.PREMATCH);
   }, [mainData.activeMatchName]);
 
+  const [incapOn, setIncapOn] = useState(false);
+  const [incapStartTime, setIncapStartTime] = useState(0);
+
+  //triggers when intake location is selected
+  const handleIncapStart = () => {
+    //Add a timestamp creator at the first scoring input.
+    setIncapStartTime(Date.now());
+    setIncapOn(true);    
+  };
+  //triggers when scoring location is selected
+  const handleIncapEnd = async () => {
+    if (incapOn) {
+      const event = {
+        timestampStarted: incapStartTime,
+        timestampEnded: Date.now(),
+        full: true
+      }; //incapSegment creation.
+      setIncapOn(false);  
+
+      await dispatch(sendIncapSegment(event));
+    }
+  };
+
   //UPDATE CYCLE: Make sure everything down to handleScoringSelection is duplicated if there's multiple game pieces.
   //Also ensure the enums used are accurate; those are imported from Prisma, so update those as well.
   const [coralIntakeLocation, setCoralIntakeLocation] = useState<
     CoralIntakeLocation | undefined
   >(undefined);
   const [coralActiveSide, setCoralActiveSide] = useState("intaking");//This is set between intaking and scoring.
+  const [coralStartTime, setCoralStartTime] = useState(0);
   
   //triggers when intake location is selected
   const handleCoralIntakeSelection = (selection: CoralIntakeLocation) => {
-    //Add a timestamp creator at the first scoring input.
+    setCoralStartTime(Date.now());
     setCoralIntakeLocation(selection);
     setCoralActiveSide("scoring");    
   };
@@ -80,7 +105,8 @@ export default function Client({ station }: Props) {
         scoringLocation: location,
         failedScoring,
         dropped,
-        //Need to add timestampPickedUp and timestampScored here.
+        timestampPickedUp: coralStartTime,
+        timestampScored: Date.now(),
       }; //teleopScoringEvent creation.
       setCoralIntakeLocation(undefined);
       setCoralActiveSide("intaking");
@@ -94,10 +120,11 @@ export default function Client({ station }: Props) {
     AlgaeIntakeLocation | undefined
   >(undefined);
   const [algaeActiveSide, setAlgaeActiveSide] = useState("intaking");//This is set between intaking and scoring.
+  const [algaeStartTime, setAlgaeStartTime] = useState(0);
   
   //triggers when intake location is selected
   const handleAlgaeIntakeSelection = (selection: AlgaeIntakeLocation) => {
-    //Add a timestamp creator at the first scoring input.
+    setAlgaeStartTime(Date.now());
     setAlgaeIntakeLocation(selection);
     setAlgaeActiveSide("scoring");    
   };
@@ -114,7 +141,8 @@ export default function Client({ station }: Props) {
         scoringLocation: location,
         failedScoring,
         dropped,
-        //Need to add timestampPickedUp and timestampScored here.
+        timestampPickedUp: algaeStartTime,
+        timestampScored: Date.now(),
       }; //teleopScoringEvent creation.
       setAlgaeIntakeLocation(undefined);
       setAlgaeActiveSide("intaking");
@@ -134,6 +162,8 @@ export default function Client({ station }: Props) {
         team={mainData.activeTeamNumber}
         matchName={mainData.activeMatchName}
         isConnected={true}
+        incapActive={incapOn}
+        handleIncap={incapOn?handleIncapEnd:handleIncapStart}
       />
       {!ready && (
         <>

@@ -10,7 +10,6 @@ export async function DELETE(
 ) {
   let event;
   try {
-    console.log(params.number);
     event = await prisma.event.update({
       where: {
         code: params.code,

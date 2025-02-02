@@ -69,7 +69,7 @@ export default function TeamManageModal({
               Team {team.number}: {team.name} from {team.location}
               <Form.Check
                 type="checkbox"
-                label="In Current Event (WIP)"
+                label="In Current Event"
                 checked={eventTeams.some(item=>item.id==team.id)}
                 onChange={async () => {
                   //Sets the match as the active one if it isn't already.

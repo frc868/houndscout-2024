@@ -171,11 +171,11 @@ export default function MatchAddModal({
       </Modal.Body>
 
       <Modal.Footer>
-      <Button
+        <Button
           variant="danger"
           onClick={() => clearState()}
         >
-          Clear
+          Cancel
         </Button>
         <Button
           variant={submitVar}
