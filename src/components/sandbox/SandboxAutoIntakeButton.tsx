@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 interface Props {
+  active: boolean;
   selected: boolean;
   top: string;
   left: string;
@@ -11,6 +12,7 @@ interface Props {
 
 //A picture of the game piece used to indicate an intake location in teleop.
 export default function IntakeButton({
+  active,
   selected,
   top,
   left,
@@ -25,8 +27,12 @@ export default function IntakeButton({
       left: left,
     }}>
       <div
-        className={`mx-2 grow d-flex justify-content-center align-items-center rounded-4 ${
-          selected ? `intake-note-selected` : ""
+        className={`mx-2 grow d-flex justify-content-center align-items-center border border-5 rounded-4 ${
+          selected
+           ? `intake-note-selected`
+           : active
+             ? `intake-note-selected border-warning`
+             : ``
         }`}
         style={{ width: "75px", height: "75px"}}
         //onMouseDown={handleSelection}

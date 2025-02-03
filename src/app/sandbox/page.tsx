@@ -4,13 +4,13 @@
 /* eslint-disable @next/next/no-img-element */
 import { Alliance } from "@/lib/enums";
 import { Button, Col, Row } from "react-bootstrap";
-import ReefSideButton from "@/components/sandbox/mini/ReefSideButton";
-import AutoIntakeButton from "@/components/sandbox/mini/AutoIntakeButton";
-import TeleopIntakeButton from "@/components/sandbox/mini/TeleopIntakeButton";
-import FailButton from "@/components/sandbox/mini/FailButton";
-import ScoreButton from "@/components/sandbox/mini/ScoreButton";
-import LocationButton from "@/components/sandbox/mini/LocationButton";
-import DroppedButton from "@/components/sandbox/mini/DroppedButton";
+import ReefSideButton from "@/components/sandbox/SandboxReefSideButton";
+import AutoIntakeButton from "@/components/sandbox/SandboxAutoIntakeButton";
+import TeleopIntakeButton from "@/components/sandbox/SandboxTeleopIntakeButton";
+import FailButton from "@/components/sandbox/SandboxFailButton";
+import ScoreButton from "@/components/sandbox/SandboxScoreButton";
+import LocationButton from "@/components/sandbox/SandboxLocationButton";
+import DroppedButton from "@/components/sandbox/SandboxDroppedButton";
 import { useState } from "react";
 
 export default function Sandbox() {
@@ -46,7 +46,7 @@ export default function Sandbox() {
                             className="mx-auto"
                             alt=""
                             style={{
-                                width: "650%",
+                                width: "65%",
                                 height: "auto",
                                 transform: !blueOnLeft?'rotate(180deg)':"",
                             }}
@@ -346,6 +346,7 @@ export default function Sandbox() {
                             <h3 className="text-center">Ground</h3>
                             <TeleopIntakeButton
                                 className="mt-2"
+                                active={active}
                                 selected={selected}
                                 //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
                                 gamePiece="coral"
@@ -355,6 +356,7 @@ export default function Sandbox() {
                             <h3 className = "text-center">Station</h3>
                             <TeleopIntakeButton
                                 className="mt-2"
+                                active={active}
                                 selected={selected}
                                 //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
                                 gamePiece="coral"
@@ -408,6 +410,7 @@ export default function Sandbox() {
                             <h3 className="text-center">Ground</h3>
                             <TeleopIntakeButton
                                 className="mt-2"
+                                active={active}
                                 selected={selected}
                                 //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
                                 gamePiece="algae"
@@ -417,6 +420,7 @@ export default function Sandbox() {
                             <h3 className = "text-center">Reef</h3>
                             <TeleopIntakeButton
                                 className="mt-2"
+                                active={active}
                                 selected={selected}
                                 //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
                                 gamePiece="algae"
@@ -514,7 +518,7 @@ export default function Sandbox() {
                     />
                         
                     <AutoIntakeButton
-                        className="mt-2"
+                        active={active}
                         selected={selected}
                         top="20%"
                         left="5%"
@@ -522,7 +526,7 @@ export default function Sandbox() {
                         gamePiece="algae"
                     />
                     <AutoIntakeButton
-                        className="mt-2"
+                        active={active}
                         selected={selected}
                         top="5%"
                         left="37%"
@@ -530,7 +534,7 @@ export default function Sandbox() {
                         gamePiece="algae"
                     />
                     <AutoIntakeButton
-                        className="mt-2"
+                        active={active}
                         selected={selected}
                         top="20%"
                         left="70%"
@@ -538,7 +542,7 @@ export default function Sandbox() {
                         gamePiece="algae"
                     />
                     <AutoIntakeButton
-                        className="mt-2"
+                        active={active}
                         selected={selected}
                         top="55%"
                         left="70%"
@@ -546,7 +550,7 @@ export default function Sandbox() {
                         gamePiece="algae"
                     />
                     <AutoIntakeButton
-                        className="mt-2"
+                        active={active}
                         selected={selected}
                         top="71%"
                         left="37%"
@@ -554,7 +558,7 @@ export default function Sandbox() {
                         gamePiece="algae"
                     />
                     <AutoIntakeButton
-                        className="mt-2"
+                        active={active}
                         selected={selected}
                         top="55%"
                         left="5%"
