@@ -14,6 +14,7 @@ import {
   CoralIntakeLocation, 
   AlgaeIntakeLocation,
   CoralScoringLevel,
+  CoralScoringSide,
   AlgaeScoringLocation
 } from "@prisma/client";
 
@@ -22,19 +23,27 @@ interface Props {
     coralActiveSide: string;
     coralIntakeLocation?: CoralIntakeLocation;
     handleCoralIntakeSelection: (selection: CoralIntakeLocation) => void;
-    handleCoralScoringSelection: (
-        location?: CoralScoringLevel,
-        failed?: boolean,
+    handleCoralLevelSelection: (
+        level?: CoralScoringLevel,
         dropped?: boolean
+      ) => void;
+    handleCoralSideSelection: (
+        side: CoralScoringSide,
+      ) => void;
+    handleCoralResultSelection: (
+        failedScoring: boolean,
       ) => void;
     algaeActiveSide: string;
     algaeIntakeLocation?: AlgaeIntakeLocation;
     handleAlgaeIntakeSelection: (selection: AlgaeIntakeLocation) => void;
     handleAlgaeScoringSelection: (
         location?: AlgaeScoringLocation,
-        failed?: boolean,
         dropped?: boolean
       ) => void;
+    handleAlgaeResultSelection: (
+        failedScoring: boolean,
+      ) => void;
+    incapOn: boolean;
 }
 
 export default function AutoContent({
@@ -42,11 +51,15 @@ export default function AutoContent({
   coralActiveSide,
   coralIntakeLocation,
   handleCoralIntakeSelection,
-  handleCoralScoringSelection,
+  handleCoralLevelSelection,
+  handleCoralSideSelection,
+  handleCoralResultSelection,
   algaeActiveSide,
   algaeIntakeLocation,
   handleAlgaeIntakeSelection,
   handleAlgaeScoringSelection,
+  handleAlgaeResultSelection,
+  incapOn
 }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const mainData = useSelector((state: ReduxState) => state.mainData);

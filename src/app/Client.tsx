@@ -106,7 +106,6 @@ export default function Client({ station }: Props) {
   //triggers when scoring location is selected
   const handleCoralLevelSelection = async (
     level?: CoralScoringLevel,
-    failedScoring?: boolean,
     dropped?: boolean
   ) => {
     if (coralActiveSide == "level") {
@@ -278,11 +277,15 @@ export default function Client({ station }: Props) {
                   coralActiveSide={coralActiveSide}
                   coralIntakeLocation={coralIntakeLocation}
                   handleCoralIntakeSelection={handleCoralIntakeSelection}
-                  handleCoralScoringSelection={handleCoralLevelSelection}
+                  handleCoralLevelSelection={handleCoralLevelSelection}
+                  handleCoralSideSelection={handleCoralSideSelection}
+                  handleCoralResultSelection={handleCoralResultSelection}
                   algaeActiveSide={algaeActiveSide}
                   algaeIntakeLocation={algaeIntakeLocation}
                   handleAlgaeIntakeSelection={handleAlgaeIntakeSelection}
                   handleAlgaeScoringSelection={handleAlgaeScoringSelection}
+                  handleAlgaeResultSelection={handleAlgaeResultSelection}
+                  incapOn={incapOn}
                 />
                 <TeleopContent
                   show={tab === Section.TELEOP}
@@ -290,12 +293,15 @@ export default function Client({ station }: Props) {
                   coralIntakeLocation={coralIntakeLocation}
                   handleCoralIntakeSelection={handleCoralIntakeSelection}
                   handleCoralScoringSelection={handleCoralLevelSelection}
+                  handleCoralResultSelection={handleCoralResultSelection}
                   algaeActiveSide={algaeActiveSide}
                   algaeIntakeLocation={algaeIntakeLocation}
                   handleAlgaeIntakeSelection={handleAlgaeIntakeSelection}
                   handleAlgaeScoringSelection={handleAlgaeScoringSelection}
+                  handleAlgaeResultSelection={handleAlgaeResultSelection}
+                  incapOn={incapOn}
                 />
-                <EndgameContent show={tab === Section.ENDGAME} />
+                <EndgameContent show={tab === Section.ENDGAME} incapOn={incapOn} />
                 <PostmatchContent
                   show={tab === Section.POSTMATCH}
                   handleSubmit={() => setSubmitted(true)}

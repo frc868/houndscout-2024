@@ -20,18 +20,23 @@ interface Props {
   coralIntakeLocation?: CoralIntakeLocation;
   handleCoralIntakeSelection: (selection: CoralIntakeLocation) => void;
   handleCoralScoringSelection: (
-      location?: CoralScoringLevel,
-      failed?: boolean,
+      level?: CoralScoringLevel,
       dropped?: boolean
+    ) => void;
+  handleCoralResultSelection: (
+      failedScoring: boolean,
     ) => void;
   algaeActiveSide: string;
   algaeIntakeLocation?: AlgaeIntakeLocation;
   handleAlgaeIntakeSelection: (selection: AlgaeIntakeLocation) => void;
   handleAlgaeScoringSelection: (
       location?: AlgaeScoringLocation,
-      failed?: boolean,
       dropped?: boolean
     ) => void;
+  handleAlgaeResultSelection: (
+      failedScoring: boolean,
+    ) => void;
+  incapOn: boolean;
 }
 
 //Teleop tab.
@@ -42,10 +47,13 @@ export default function TeleopContent({
   coralIntakeLocation,
   handleCoralIntakeSelection,
   handleCoralScoringSelection,
+  handleCoralResultSelection,
   algaeActiveSide,
   algaeIntakeLocation,
   handleAlgaeIntakeSelection,
   handleAlgaeScoringSelection,
+  handleAlgaeResultSelection,
+  incapOn,
 }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
