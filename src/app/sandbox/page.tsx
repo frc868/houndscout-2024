@@ -307,17 +307,332 @@ export default function Sandbox() {
                 <Row className="d-flex flex-row" style={{backgroundColor:"red"}}>
                     {/* Failed and Dropped buttons here */}
                     <div className="d-flex justify-content-center">
-                        <ScoreButton
+                        <DroppedButton
                         className="mx-3 my-2"
                         active={active}
+                        gamePiece="coral"
                         //handleClick={() => {handleSelection(ScoringLocation.SPEAKER);}}
                         />
-                        <FailButton
+                        <DroppedButton
                         className="mx-3 my-2"
                         active={active}
-                        //handleClick={() => {handleSelection(ScoringLocation.SPEAKER, true);}}
+                        gamePiece="algae"
+                        //handleClick={() => {handleSelection(ScoringLocation.SPEAKER);}}
                         />
                     </div>
+                </Row>
+            </div>
+
+            <Row className="d-flex flex-row">
+                
+                
+                
+            </Row>
+
+            {/* Auto Coral Game Piece Selector */}
+            <div className="d-flex flex-column align-items-center" style={{width: "50vw"}}>
+                <h1>Auto Coral Game Piece Selector</h1>
+                <Row className="d-flex justify-content-center">
+                    <Col className="d-flex flex-column flex-grow-1" style={{backgroundColor:"orange"}}>
+                        <h1 className="text-center mb-1">Intake</h1>
+                        {/* Copy everything in this div. */}
+                            <div className="d-flex flex-column">
+                                <h3 className="text-center">G1</h3>
+                                <TeleopIntakeButton
+                                    className="mt-2"
+                                    active={active}
+                                    selected={selected}
+                                    //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                    gamePiece="coral"
+                                />
+                            </div>
+                            <div className="d-flex flex-column">
+                                <h3 className="text-center">G2</h3>
+                                <TeleopIntakeButton
+                                    className="mt-2"
+                                    active={active}
+                                    selected={selected}
+                                    //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                    gamePiece="coral"
+                                />
+                            </div>
+                            <div className="d-flex flex-column">
+                                <h3 className="text-center">G3</h3>
+                                <TeleopIntakeButton
+                                    className="mt-2"
+                                    active={active}
+                                    selected={selected}
+                                    //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                    gamePiece="coral"
+                                />
+                            </div>
+                    </Col>
+                    <Col className="d-flex flex-column flex-shrink-1" style={{backgroundColor:"purple"}}>
+                        <h1 className="text-center mb-1">Scoring</h1>
+                        <Row>
+                            <Col>
+                                <div className="d-flex flex-column">
+                                    <LocationButton
+                                        className="mt-2"
+                                        active={active}
+                                        selected={selected}
+                                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                        text="L1"
+                                    />
+                                    <LocationButton
+                                        className="mt-2"
+                                        active={active}
+                                        selected={selected}
+                                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                        text="L2"
+                                    />
+                                    <LocationButton
+                                        className="mt-2"
+                                        active={active}
+                                        selected={selected}
+                                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                        text="L3"
+                                    />
+                                    <LocationButton
+                                        className="mt-2"
+                                        active={active}
+                                        selected={selected}
+                                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                        text="L4"
+                                    />
+                                </div>
+                            </Col>
+                            <Col className="flex-grow-1">
+                                {/* Coral Reef in Auto */}
+                                <div className="position-relative" style={{width: "100%"}}>
+                                    <img
+                                        className="mx-auto my-2"
+                                        alt=""
+                                        style={{
+                                            width: "65%",
+                                            height: "auto",
+                                            transform: !blueOnLeft?'rotate(180deg)':"",
+                                        }}
+                                        src={
+                                            allianceIsBlue //replace with "alliance === Alliance.BLUE"
+                                            ? "/assets/blue_start_prematch.png"
+                                            : "/assets/red_start_prematch.png"
+                                        }
+                                    />
+
+                                    <ReefSideButton
+                                        active={active}
+                                        selected={selected}
+                                        top="24%"
+                                        left="13%"
+                                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                        text="1"
+                                    />
+                                    <ReefSideButton
+                                        active={active}
+                                        selected = {selected}
+                                        top = "15%"
+                                        left = "37%"
+                                        text="2"
+                                    />
+                                    <ReefSideButton
+                                        active={active}
+                                        selected = {selected}
+                                        top = "24%"
+                                        left = "61%"
+                                        text="3"
+                                    />
+                                    <ReefSideButton
+                                        active={active}
+                                        selected = {selected}
+                                        top = "48%"
+                                        left = "61%"
+                                        text="4"
+                                    />
+                                    <ReefSideButton
+                                        active={active}
+                                        selected = {selected}
+                                        top = "56%"
+                                        left = "37%"
+                                        text="5"
+                                    />
+                                    <ReefSideButton
+                                        active={active}
+                                        selected = {selected}
+                                        top = "48%"
+                                        left = "13%"
+                                        text="6"
+                                    />
+                                </div>
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col className="d-flex flex-column flex-shrink-1" style={{backgroundColor:"gray"}}>
+                        <h1 className="text-center mb-1">Result</h1>
+                        <div className="d-flex flex-column">
+                            <ScoreButton
+                                className="mt-2"
+                                active={active}
+                                //handleClick={() => {handleSelection(ScoringLocation.SPEAKER);}}
+                            />
+                            <FailButton
+                                className="mt-2"
+                                active={active}
+                                //handleClick={() => {handleSelection(ScoringLocation.SPEAKER, true);}}
+                            />
+                        </div>
+                    </Col>
+                </Row>
+                
+            </div>
+
+            {/* Algae Game Piece Selector */}
+            <div className="d-flex flex-column align-items-center">
+                <h1>Auto Algae Game Piece Selector</h1>
+                <Row className="d-flex justify-content-center">
+                    <Col className="d-flex flex-column" style={{backgroundColor:"orange"}}>
+                        <h1 className="text-center mb-1">Intake</h1>
+                        {/* Copy everything in this div. */}
+                        <Row>
+                            <Col>
+                                <div className="d-flex flex-column">
+                                <h3 className="text-center">G1</h3>
+                                <TeleopIntakeButton
+                                    className="mt-2"
+                                    active={active}
+                                    selected={selected}
+                                    //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                    gamePiece="algae"
+                                />
+                            </div>
+                            <div className="d-flex flex-column">
+                                <h3 className = "text-center">G2</h3>
+                                <TeleopIntakeButton
+                                    className="mt-2"
+                                    active={active}
+                                    selected={selected}
+                                    //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                    gamePiece="algae"
+                                />
+                            </div>
+                            <div className="d-flex flex-column">
+                                <h3 className = "text-center">G3</h3>
+                                <TeleopIntakeButton
+                                    className="mt-2"
+                                    active={active}
+                                    selected={selected}
+                                    //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                    gamePiece="algae"
+                                />
+                            </div>
+                            </Col>
+                            <Col>
+                                {/* Algae Reef in Auto */}
+                                <div className="position-relative" style={{width: "25%"}}>
+                                    <img
+                                        className="mx-auto my-2"
+                                        alt=""
+                                        style={{
+                                            width: "65%",
+                                            height: "auto",
+                                            transform: !blueOnLeft?'rotate(180deg)':"",
+                                        }}
+                                        src={
+                                            allianceIsBlue //replace with "alliance === Alliance.BLUE"
+                                            ? "/assets/blue_start_prematch.png"
+                                            : "/assets/red_start_prematch.png"
+                                        }
+                                    />
+                                        
+                                    <AutoIntakeButton
+                                        active={active}
+                                        selected={selected}
+                                        top="20%"
+                                        left="5%"
+                                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                        gamePiece="algae"
+                                    />
+                                    <AutoIntakeButton
+                                        active={active}
+                                        selected={selected}
+                                        top="5%"
+                                        left="37%"
+                                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                        gamePiece="algae"
+                                    />
+                                    <AutoIntakeButton
+                                        active={active}
+                                        selected={selected}
+                                        top="20%"
+                                        left="70%"
+                                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                        gamePiece="algae"
+                                    />
+                                    <AutoIntakeButton
+                                        active={active}
+                                        selected={selected}
+                                        top="55%"
+                                        left="70%"
+                                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                        gamePiece="algae"
+                                    />
+                                    <AutoIntakeButton
+                                        active={active}
+                                        selected={selected}
+                                        top="71%"
+                                        left="37%"
+                                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                        gamePiece="algae"
+                                    />
+                                    <AutoIntakeButton
+                                        active={active}
+                                        selected={selected}
+                                        top="55%"
+                                        left="5%"
+                                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                        gamePiece="algae"
+                                    />
+                                </div>
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col className="d-flex flex-column" style={{backgroundColor:"purple"}}>
+                        <h1 className="text-center mb-1">Scoring</h1>
+                        <div className="d-flex flex-column">
+                            <LocationButton
+                                className="mt-2"
+                                active={active}
+                                selected={selected}
+                                //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                text="Net"
+                            />
+                            <LocationButton
+                                className="mt-2"
+                                active={active}
+                                selected={selected}
+                                //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
+                                text="Proc."
+                            />
+                        </div>
+                    </Col>
+                    <Col className="d-flex flex-column" style={{backgroundColor:"gray"}}>
+                        <h1 className="text-center mb-1">Result</h1>
+                        <div className="d-flex flex-column">
+                            <ScoreButton
+                                className="mt-2"
+                                active={active}
+                                //handleClick={() => {handleSelection(ScoringLocation.SPEAKER);}}
+                            />
+                            <FailButton
+                                className="mt-2"
+                                active={active}
+                                //handleClick={() => {handleSelection(ScoringLocation.SPEAKER, true);}}
+                            />
+                        </div>
+                    </Col>
+                </Row>
+                <Row className="d-flex flex-row" style={{backgroundColor:"red"}}>
+                    <h1 className="d-flex justify-content-center">Dropped:</h1>
                     <div className="d-flex justify-content-center">
                         <DroppedButton
                         className="mx-3 my-2"
@@ -337,8 +652,8 @@ export default function Sandbox() {
 
             {/* Coral Game Piece Selector */}
             <div className="d-flex flex-column align-items-center">
-                <h1>Coral Game Piece Selector</h1>
-                <Row className="d-flex justify-content-center" style={{backgroundColor:"red"}}>
+                <h1>Teleop Coral Game Piece Selector</h1>
+                <Row className="d-flex justify-content-center">
                     <Col className="d-flex flex-column" style={{backgroundColor:"orange"}}>
                         <h1 className="text-center mb-1">Intake</h1>
                         {/* Copy everything in this div. */}
@@ -396,13 +711,45 @@ export default function Sandbox() {
                             />
                         </div>
                     </Col>
+                    <Col className="d-flex flex-column" style={{backgroundColor:"gray"}}>
+                        <h1 className="text-center mb-1">Result</h1>
+                        <div className="d-flex flex-column">
+                            <ScoreButton
+                                className="mt-2"
+                                active={active}
+                                //handleClick={() => {handleSelection(ScoringLocation.SPEAKER);}}
+                            />
+                            <FailButton
+                                className="mt-2"
+                                active={active}
+                                //handleClick={() => {handleSelection(ScoringLocation.SPEAKER, true);}}
+                            />
+                        </div>
+                    </Col>
+                </Row>
+                <Row className="d-flex flex-row" style={{backgroundColor:"red"}}>
+                    <h1 className="d-flex justify-content-center">Dropped:</h1>
+                    <div className="d-flex justify-content-center">
+                        <DroppedButton
+                        className="mx-3 my-2"
+                        active={active}
+                        gamePiece="coral"
+                        //handleClick={() => {handleSelection(ScoringLocation.SPEAKER);}}
+                        />
+                        <DroppedButton
+                        className="mx-3 my-2"
+                        active={active}
+                        gamePiece="algae"
+                        //handleClick={() => {handleSelection(ScoringLocation.SPEAKER);}}
+                        />
+                    </div>
                 </Row>
             </div>
 
             {/* Algae Game Piece Selector */}
             <div className="d-flex flex-column align-items-center">
-                <h1>Algae Game Piece Selector</h1>
-                <Row className="d-flex justify-content-center" style={{backgroundColor:"red"}}>
+                <h1>Teleop Algae Game Piece Selector</h1>
+                <Row className="d-flex justify-content-center">
                     <Col className="d-flex flex-column" style={{backgroundColor:"orange"}}>
                         <h1 className="text-center mb-1">Intake</h1>
                         {/* Copy everything in this div. */}
@@ -446,127 +793,40 @@ export default function Sandbox() {
                             />
                         </div>
                     </Col>
+                    <Col className="d-flex flex-column" style={{backgroundColor:"gray"}}>
+                        <h1 className="text-center mb-1">Result</h1>
+                        <div className="d-flex flex-column">
+                            <ScoreButton
+                                className="mt-2"
+                                active={active}
+                                //handleClick={() => {handleSelection(ScoringLocation.SPEAKER);}}
+                            />
+                            <FailButton
+                                className="mt-2"
+                                active={active}
+                                //handleClick={() => {handleSelection(ScoringLocation.SPEAKER, true);}}
+                            />
+                        </div>
+                    </Col>
+                </Row>
+                <Row className="d-flex flex-row" style={{backgroundColor:"red"}}>
+                    <h1 className="d-flex justify-content-center">Dropped:</h1>
+                    <div className="d-flex justify-content-center">
+                        <DroppedButton
+                        className="mx-3 my-2"
+                        active={active}
+                        gamePiece="coral"
+                        //handleClick={() => {handleSelection(ScoringLocation.SPEAKER);}}
+                        />
+                        <DroppedButton
+                        className="mx-3 my-2"
+                        active={active}
+                        gamePiece="algae"
+                        //handleClick={() => {handleSelection(ScoringLocation.SPEAKER);}}
+                        />
+                    </div>
                 </Row>
             </div>
-
-            <Row className="d-flex flex-row">
-                {/* Coral Reef in Auto */}
-                <div className="position-relative" style={{width: "25%"}}>
-                    <img
-                    className="mx-auto my-2"
-                    alt=""
-                    src={
-                        "/assets/coral_reef_auto.png"
-                    }
-                    width="100%"
-                    />
-
-                    <ReefSideButton
-                        active={active}
-                        selected={selected}
-                        top="24%"
-                        left="13%"
-                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
-                        text="1"
-                    />
-                    <ReefSideButton
-                        active={active}
-                        selected = {selected}
-                        top = "15%"
-                        left = "37%"
-                        text="2"
-                    />
-                    <ReefSideButton
-                        active={active}
-                        selected = {selected}
-                        top = "24%"
-                        left = "61%"
-                        text="3"
-                    />
-                    <ReefSideButton
-                        active={active}
-                        selected = {selected}
-                        top = "48%"
-                        left = "61%"
-                        text="4"
-                    />
-                    <ReefSideButton
-                        active={active}
-                        selected = {selected}
-                        top = "56%"
-                        left = "37%"
-                        text="5"
-                    />
-                    <ReefSideButton
-                        active={active}
-                        selected = {selected}
-                        top = "48%"
-                        left = "13%"
-                        text="6"
-                    />
-                </div>
-                
-                {/* Algae Reef in Auto */}
-                <div className="position-relative" style={{width: "25%"}}>
-                    <img
-                        className="mx-auto my-2"
-                        alt=""
-                        src={
-                            "/assets/algae_reef_auto.png"
-                        }
-                        width="100%"
-                    />
-                        
-                    <AutoIntakeButton
-                        active={active}
-                        selected={selected}
-                        top="20%"
-                        left="5%"
-                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
-                        gamePiece="algae"
-                    />
-                    <AutoIntakeButton
-                        active={active}
-                        selected={selected}
-                        top="5%"
-                        left="37%"
-                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
-                        gamePiece="algae"
-                    />
-                    <AutoIntakeButton
-                        active={active}
-                        selected={selected}
-                        top="20%"
-                        left="70%"
-                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
-                        gamePiece="algae"
-                    />
-                    <AutoIntakeButton
-                        active={active}
-                        selected={selected}
-                        top="55%"
-                        left="70%"
-                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
-                        gamePiece="algae"
-                    />
-                    <AutoIntakeButton
-                        active={active}
-                        selected={selected}
-                        top="71%"
-                        left="37%"
-                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
-                        gamePiece="algae"
-                    />
-                    <AutoIntakeButton
-                        active={active}
-                        selected={selected}
-                        top="55%"
-                        left="5%"
-                        //handleSelection={() => handleSelection(CoralIntakeLocation.TELEOPGROUND)}
-                        gamePiece="algae"
-                    />
-                </div>
-            </Row>
         </>
     )
 }

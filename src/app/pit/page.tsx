@@ -3,10 +3,12 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
-import AdminStatusBar from "@/components/admin/AdminStatusBar";
+import { Form } from "react-bootstrap";
 import SubmitButton from "@/components/client/postmatch/SubmitButton";
+import TeamDropdown from "@/components/admin/TeamDropdown";
 import ToggleBox from "@/components/client/postmatch/ToggleBox";
 import SidewaysToggleBox from "@/components/client/mini/SidewaysToggleBox";
+import StatusBar from "@/components/client/common/StatusBar";
 import CommentsBox from "@/components/client/postmatch/CommentsBox";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { Event } from "@prisma/client";
@@ -16,12 +18,28 @@ import {
   Team
 } from "@/lib/enums";
 import { Result } from "@prisma/client";
+import { getEventTeamsAsync } from "@/redux/adminDataSlice";
+import { getActiveEventAsync } from "@/redux/mainDataSlice";
 
 export default function Pit() {
   const dispatch = useDispatch<AppDispatch>();
+  const mainData = useSelector((state: ReduxState) => state.mainData);
+  const adminData = useSelector((state: ReduxState) => state.adminData);
+
+  useEffect(() => {
+      const interval = setInterval(async () => {
+        await dispatch(getActiveEventAsync());
   
+        mainData.activeEvent?.code &&
+          (await dispatch(
+            getEventTeamsAsync({ eventCode: mainData.activeEvent?.code })
+          ));
+      }, 1000);
+      return () => clearInterval(interval);
+    }, [dispatch, mainData.activeEvent?.code, mainData.activeMatchName, mainData.blueOnLeft]);
+
   // State hooks to manage form data for different robot attributes
-  const [teamNumber, setTeamNumber] = useState<number | null>(null);
+  const [teamNumber, setTeamNumber] = useState<number | undefined>(undefined);
   const [drivetrain, setDrivetrain] = useState<string>("");
   const [wheelType, setWheelType] = useState<string>("");
   const [intakeType, setIntakeType] = useState<string>("");
@@ -46,27 +64,37 @@ export default function Pit() {
   const [canShallow, setCanShallow] = useState<boolean>(false);
   const [canDeep, setCanDeep] = useState<boolean>(false);
 
+  const ready = mainData.activeEvent?.code && adminData.eventTeams;
+
   //A form that's filled out after the match with supplementary info.
   //Based off of a layout provided by Michael and (possibly) ChatGPT.
   return (
-    <div>
+    <>
       <StatusBar isConnected={true} />
-      <h1 className="d-flex justify-content-center>Pit Scouting Form (WIP)</h1>
-      <Row className="d-flex justify-content-center mb-2">
-{/*         May replace with TeamDropdown */}
-        <Form.Group controlId="teamNumber">
-          <Form.Label>Team Number</Form.Label>
-          <Form.Control
-            type="number"
-            value={teamNumber}
-            onChange={(e) => setTeamNumber(e.target.value)} // Updates team number on input change
-          />
-        </Form.Group>
+      <h1 className="d-flex justify-content-center mt-5">Pit Scouting Form (WIP)</h1>
+      <Row className="d-flex justify-content-center">
+        {ready ? (
+          <div className="d-flex justify-content-center mt-5">
+            <h3>Team Number: </h3>
+            <TeamDropdown
+              red={false}
+              activeTeam={Number(teamNumber)}
+              teams={adminData.eventTeams as Team[]}
+              handleTeamSelect={(number) => setTeamNumber(number)}
+            />
+          </div>
+        ) : (
+          <>
+            <div className="d-flex justify-content-center mt-5">
+              <h3>Loading... (Requires an active Event and a at least Team in the event)</h3>
+            </div>
+          </>
+        )} 
       </Row>
-      <Row className="my-2">
-        <Col className="d-flex justify-content-start" md={2}>
+      <Row className="my-5">
+        <Col className="d-flex justify-content-start mx-5" md={4}>
 {/*           Probably going to make a dropdown component to save space. */}
-          <Form.Group controlId="drivetrain">
+          <Form.Group className="d-flex flex-column align-items-center" controlId="drivetrain">
             <Form.Label>Drivetrain Type</Form.Label>
             <Form.Control
               as="select"
@@ -82,7 +110,7 @@ export default function Pit() {
           </Form.Group>
         </Col>
 
-        <Col className="d-flex justify-content-center" md={2}>
+        <Col className="d-flex justify-content-center" md={5}>
           <Form.Group controlId="wheelType">
             <Form.Label>Wheel Type</Form.Label>
             <Form.Control
@@ -101,7 +129,7 @@ export default function Pit() {
           </Form.Group>
         </Col>
         
-        <Col className="d-flex justify-content-end" md={2}>
+        <Col className="d-flex justify-content-end" md={5}>
           <Form.Group controlId="intakeType">
             <Form.Label>Intake Type</Form.Label>
             <Form.Control
@@ -118,49 +146,106 @@ export default function Pit() {
         </Col>
       </Row>
       <Row className="my-2">
-        <Col className="d-flex justify-content-start" md={2}>
-{/*           I cannot currently verify this works, unfortunately. */}
+        <Col className="d-flex justify-content-start" md={5}>
           <h3>Intake: Can...</h3>
           <Form.Group>
-            ["IntakeGroundCoral", "IntakeStationCoral", "IntakeGroundAlgae", "IntakeReefAlgae", "RemoveReefAlgaeWithoutIntake"].map((area)=>{
-              <Form.Check
-                type="checkbox"
-                label={area.replace(/([A-Z])/g, " $1").trim()}//Adds spaces between each word
-                checked={canScore{area}}
-                onChange={() => setCan{area}(!can{area})}
-              />
-            })
-          />
+            <Form.Check
+              type="checkbox"
+              label="Intake Coral from Ground"
+              checked={canIntakeGroundCoral}
+              onChange={() => setCanIntakeGroundCoral(!canIntakeGroundCoral)}
+            />
+            <Form.Check
+              type="checkbox"
+              label="Intake Coral from Station"
+              checked={canIntakeStationCoral}
+              onChange={() => setCanIntakeStationCoral(!canIntakeStationCoral)}
+            />
+            <Form.Check
+              type="checkbox"
+              label="Intake Algae from Ground"
+              checked={canIntakeGroundAlgae}
+              onChange={() => setCanIntakeGroundAlgae(!canIntakeGroundAlgae)}
+            />
+            <Form.Check
+              type="checkbox"
+              label="Intake Algae from Reef"
+              checked={canIntakeReefAlgae}
+              onChange={() => setCanIntakeReefAlgae(!canIntakeReefAlgae)}
+            />
+            <Form.Check
+              type="checkbox"
+              label="Remove Algae from Reef without Intaking"
+              checked={canRemoveReefAlgaeWithoutIntake}
+              onChange={() => setCanRemoveReefAlgaeWithoutIntake(!canRemoveReefAlgaeWithoutIntake)}
+            />
+          </Form.Group>
         </Col>
     
-        <Col className="d-flex justify-content-start" md={2}>
-{/*           I cannot currently verify this works, unfortunately. */}
+        <Col className="d-flex justify-content-center" md={5}>
           <h3>Can Score In...</h3>
           <Form.Group>
-            ["ReefL1", "ReefL2", "ReefL3", "ReefL4", "Processor", "Net"].map((area)=>{
-              <Form.Check
-                type="checkbox"
-                label={area.replace(/([A-Z])/g, " $1").trim()}//Adds spaces between each word
-                checked={canScore{area}}
-                onChange={() => setCanScore{area}(!canScore{area})}
-              />
-            })
-          />
+            <Form.Check
+              type="checkbox"
+              label="Reef L1"
+              checked={canScoreReefL1}
+              onChange={() => setCanScoreReefL1(!canScoreReefL1)}
+            />
+            <Form.Check
+              type="checkbox"
+              label="Reef L2"
+              checked={canScoreReefL2}
+              onChange={() => setCanScoreReefL2(!canScoreReefL2)}
+            />
+            <Form.Check
+              type="checkbox"
+              label="Reef L3"
+              checked={canScoreReefL3}
+              onChange={() => setCanScoreReefL1(!canScoreReefL3)}
+            />
+            <Form.Check
+              type="checkbox"
+              label="Reef L4"
+              checked={canScoreReefL4}
+              onChange={() => setCanScoreReefL1(!canScoreReefL4)}
+            />
+            <Form.Check
+              type="checkbox"
+              label="Net"
+              checked={canScoreNet}
+              onChange={() => setCanScoreNet(!canScoreNet)}
+            />
+            <Form.Check
+              type="checkbox"
+              label="Processor"
+              checked={canScoreProcessor}
+              onChange={() => setCanScoreProcessor(!canScoreProcessor)}
+            />
+          </Form.Group>
         </Col>
 
-        <Col className="d-flex justify-content-start" md={2}>
-{/*           I cannot currently verify this works, unfortunately. */}
+        <Col className="d-flex justify-content-end" md={2}>
           <h3>Endgame: Can...</h3>
           <Form.Group>
-            ["Park", "Shallow", "Deep"].map((type)=>{
-              <Form.Check
-                type="checkbox"
-                label={type}
-                checked={can{type}}
-                onChange={() => setCan{type}(!can{type})}
-              />
-            })
-          />
+            <Form.Check
+              type="checkbox"
+              label="Park under Net"
+              checked={canPark}
+              onChange={() => setCanPark(!canPark)}
+            />
+            <Form.Check
+              type="checkbox"
+              label="Hang on Shallow Cage"
+              checked={canShallow}
+              onChange={() => setCanShallow(!canShallow)}
+            />
+            <Form.Check
+              type="checkbox"
+              label="Hang on Deep Cate"
+              checked={canDeep}
+              onChange={() => setCanDeep(!canDeep)}
+            />
+          </Form.Group>
         </Col>
       </Row>
       <Row className="my-2">
@@ -188,7 +273,7 @@ export default function Pit() {
 {/*         Need to figure out how to store this image; I didn't get enough details on this. */}
         <Form.Group controlId="robotPicture">
           <Form.Label>Upload Robot Picture</Form.Label>
-          <Form.Control type="file" accept="image/*" onChange={handleFileChange} />
+          {/* <Form.Control type="file" accept="image/*" onChange={handleFileChange} /> */}
         </Form.Group>
       </Row>
       <Row className="d-flex justify-content-center">
@@ -214,6 +299,6 @@ export default function Pit() {
           />
         </Col>
       </Row>
-    </div>
+    </>
   );
 }
