@@ -121,7 +121,7 @@ export default function AutoContent({
   return (
     <div className={`${!show && "d-none"}`}>
       <Row className="my-5 d-flex justify-content-center">
-        <Col className="d-flex justify-content-center" md={5}>
+        <Col className="d-flex justify-content-center" md={6}>
           <AutoCoralPanel
             activeSide={coralActiveSide}
             intakeSelected={coralIntakeLocation}
@@ -133,7 +133,7 @@ export default function AutoContent({
             handleResult={handleCoralResultSelection}
           />
         </Col>
-        <Col className="d-flex justify-content-center" md={4}>
+        <Col className="d-flex justify-content-center" md={6}>
           <AutoAlgaePanel
             activeSide={algaeActiveSide}
             intakeSelected={algaeIntakeLocation}
@@ -143,6 +143,14 @@ export default function AutoContent({
             handleResult={handleAlgaeResultSelection}
           />
         </Col>
+      </Row>
+      <Row className="my-5 d-flex justify-content-center">
+        <DroppedPanel
+          coralActive={coralActiveSide=="level"}
+          algaeActive={algaeActiveSide=="scoring"}
+          handleCoralDropped={handleCoralLevelSelection}
+          handleAlgaeDropped={handleAlgaeScoringSelection}
+        />
       </Row>
     </div>
   );

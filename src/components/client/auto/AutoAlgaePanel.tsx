@@ -23,12 +23,12 @@ interface Props {
 //The notes are clickable, each representing an enum choice that represents that position.
 //Click a note again to render it missing, and click again to indicate no pickup.
 export default function AutoAlgaePanel({
-  activeSide,
-  intakeSelected,
-  locationSelected,
-  handleIntake,
-  handleScoring,
-  handleResult,
+    activeSide,
+    intakeSelected,
+    locationSelected,
+    handleIntake,
+    handleScoring,
+    handleResult,
 }: Props) {
     const mainData = useSelector((state: ReduxState) => state.mainData);
   return (

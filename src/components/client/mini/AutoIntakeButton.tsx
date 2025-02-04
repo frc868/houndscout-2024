@@ -3,8 +3,8 @@
 interface Props {
   active: boolean;
   selected: boolean;
-  top: string;
-  left: string;
+  top?: string;
+  left?: string;
   handleSelection: () => void;
   className?: string;
   gamePiece: string;

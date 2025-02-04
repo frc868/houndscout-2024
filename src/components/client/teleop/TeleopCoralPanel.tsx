@@ -8,23 +8,19 @@ import ScoreButton from "../mini/ScoreButton";
 import FailButton from "../mini/FailButton";
 
 interface Props {
-  intakeActive: boolean;
-  levelActive: boolean;
-  resultActive: boolean;
-  intakeSelected: CoralIntakeLocation;
-  levelSelected: CoralScoringLevel;
-  handleIntake: (selection: CoralIntakeLocation) => void;
-  handleLevel: (selection: CoralScoringLevel) => void;
-  handleResult: (selection: boolean) => void,
+    activeSide: string;
+    intakeSelected?: CoralIntakeLocation;
+    levelSelected?: CoralScoringLevel;
+    handleIntake: (selection: CoralIntakeLocation) => void;
+    handleLevel: (selection: CoralScoringLevel) => void;
+    handleResult: (selection: boolean) => void,
 }
 
 //Displays a map of half of the field.
 //The notes are clickable, each representing an enum choice that represents that position.
 //Click a note again to render it missing, and click again to indicate no pickup.
 export default function AutoCoralPanel({
-  intakeActive,
-  levelActive,
-  resultActive,
+  activeSide,
   intakeSelected,
   levelSelected,
   handleIntake,
@@ -42,7 +38,7 @@ export default function AutoCoralPanel({
                       <h3 className="text-center">Ground</h3>
                       <TeleopIntakeButton
                           className="mt-2"
-                          active={intakeActive}
+                          active={activeSide=="intaking"}
                           selected={intakeSelected==CoralIntakeLocation.TELEOPGROUND}
                           handleSelection={() => handleIntake(CoralIntakeLocation.TELEOPGROUND)}
                           gamePiece="coral"
@@ -52,7 +48,7 @@ export default function AutoCoralPanel({
                       <h3 className="text-center">Station</h3>
                       <TeleopIntakeButton
                           className="mt-2"
-                          active={intakeActive}
+                          active={activeSide=="intaking"}
                           selected={intakeSelected==CoralIntakeLocation.TELEOPSTATION}
                           handleSelection={() => handleIntake(CoralIntakeLocation.TELEOPSTATION)}
                           gamePiece="coral"
@@ -64,28 +60,28 @@ export default function AutoCoralPanel({
                 <div className="d-flex flex-column">
                     <LocationButton
                         className="mt-2"
-                        active={levelActive}
+                        active={activeSide=="level"}
                         selected={levelSelected==CoralScoringLevel.LEVEL1}
                         handleSelection={() => handleLevel(CoralScoringLevel.LEVEL1)}
                         text="L1"
                     />
                     <LocationButton
                         className="mt-2"
-                        active={levelActive}
+                        active={activeSide=="level"}
                         selected={levelSelected==CoralScoringLevel.LEVEL2}
                         handleSelection={() => handleLevel(CoralScoringLevel.LEVEL2)}
                         text="L2"
                     />
                     <LocationButton
                         className="mt-2"
-                        active={levelActive}
+                        active={activeSide=="level"}
                         selected={levelSelected==CoralScoringLevel.LEVEL3}
                         handleSelection={() => handleLevel(CoralScoringLevel.LEVEL3)}
                         text="L3"
                     />
                     <LocationButton
                         className="mt-2"
-                        active={levelActive}
+                        active={activeSide=="level"}
                         selected={levelSelected==CoralScoringLevel.LEVEL4}
                         handleSelection={() => handleLevel(CoralScoringLevel.LEVEL4)}
                         text="L4"
@@ -97,12 +93,12 @@ export default function AutoCoralPanel({
               <div className="d-flex flex-column">
                   <ScoreButton
                       className="mt-2"
-                      active={resultActive}
+                      active={activeSide=="result"}
                       handleClick={() => handleResult(true)}
                   />
                   <FailButton
                       className="mt-2"
-                      active={resultActive}
+                      active={activeSide=="result"}
                       handleClick={() => handleResult(false)}
                   />
               </div>

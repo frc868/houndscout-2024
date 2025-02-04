@@ -9,28 +9,24 @@ import { Col, Row } from "react-bootstrap";
 import { AlgaeIntakeLocation, AlgaeScoringLocation } from "@prisma/client";
 
 interface Props {
-  intakeActive: boolean;
-  locationActive: boolean;
-  resultActive: boolean;
-  intakeSelected: AlgaeIntakeLocation;
-  locationSelected: AlgaeScoringLocation;
-  handleIntake: (selection: AlgaeIntakeLocation) => void;
-  handleLocation: (selection: AlgaeScoringLocation) => void;
-  handleResult: (selection: boolean) => void,
+    activeSide: string;
+    intakeSelected?: AlgaeIntakeLocation;
+    locationSelected?: AlgaeScoringLocation;
+    handleIntake: (selection: AlgaeIntakeLocation) => void;
+    handleScoring: (selection: AlgaeScoringLocation) => void;
+    handleResult: (selection: boolean) => void,
 }
 
 //Displays a map of half of the field.
 //The notes are clickable, each representing an enum choice that represents that position.
 //Click a note again to render it missing, and click again to indicate no pickup.
 export default function AutoAlgaePanel({
-  intakeActive,
-  locationActive,
-  resultActive,
-  intakeSelected,
-  locationSelected,
-  handleIntake,
-  handleLocation,
-  handleResult,
+    activeSide,
+    intakeSelected,
+    locationSelected,
+    handleIntake,
+    handleScoring,
+    handleResult,
 }: Props) {
   return (
     <div className="d-flex flex-column align-items-center">
@@ -43,7 +39,7 @@ export default function AutoAlgaePanel({
                     <h3 className = "text-center">Ground</h3>
                     <TeleopIntakeButton
                         className="mt-2"
-                        active={intakeActive}
+                        active={activeSide=="intaking"}
                         selected={intakeSelected == AlgaeIntakeLocation.TELEOPGROUND}
                         handleSelection={() => handleIntake(AlgaeIntakeLocation.TELEOPGROUND)}
                         gamePiece="algae"
@@ -53,7 +49,7 @@ export default function AutoAlgaePanel({
                     <h3 className = "text-center">Reef</h3>
                     <TeleopIntakeButton
                         className="mt-2"
-                        active={intakeActive}
+                        active={activeSide=="intaking"}
                         selected={intakeSelected == AlgaeIntakeLocation.TELEOPREEF}
                         handleSelection={() => handleIntake(AlgaeIntakeLocation.TELEOPREEF)}
                         gamePiece="algae"
@@ -65,16 +61,16 @@ export default function AutoAlgaePanel({
                 <div className="d-flex flex-column">
                     <LocationButton
                         className="mt-2"
-                        active={locationActive}
+                        active={activeSide=="scoring"}
                         selected={locationSelected == AlgaeScoringLocation.NET}
-                        handleSelection={() => handleLocation(AlgaeScoringLocation.NET)}
+                        handleSelection={() => handleScoring(AlgaeScoringLocation.NET)}
                         text="Net"
                     />
                     <LocationButton
                         className="mt-2"
-                        active={locationActive}
+                        active={activeSide=="scoring"}
                         selected={locationSelected == AlgaeScoringLocation.PROCESSOR}
-                        handleSelection={() => handleLocation(AlgaeScoringLocation.PROCESSOR)}
+                        handleSelection={() => handleScoring(AlgaeScoringLocation.PROCESSOR)}
                         text="Proc."
                     />
                 </div>
@@ -84,12 +80,12 @@ export default function AutoAlgaePanel({
                 <div className="d-flex flex-column">
                     <ScoreButton
                         className="mt-2"
-                        active={resultActive}
+                        active={activeSide=="result"}
                         handleClick={() => handleResult(true)}
                     />
                     <FailButton
                         className="mt-2"
-                        active={resultActive}
+                        active={activeSide=="result"}
                         handleClick={() => handleResult(false)}
                     />
                 </div>

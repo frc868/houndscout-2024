@@ -1,7 +1,8 @@
 "use client";
 
-import TeleopIntakePanel from "@/components/client/teleop/TeleopIntakePanel";
-import TeleopScoringPanel from "@/components/client/teleop/TeleopScoringPanel";
+import TeleopCoralPanel from "@/components/client/teleop/TeleopCoralPanel";
+import TeleopAlgaePanel from "@/components/client/teleop/TeleopAlgaePanel";
+import DroppedPanel from "@/components/client/common/DroppedPanel";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import {
   CoralIntakeLocation, 
@@ -18,6 +19,7 @@ interface Props {
   show: boolean;
   coralActiveSide: string;
   coralIntakeLocation?: CoralIntakeLocation;
+  coralScoringLevel?: CoralScoringLevel;
   handleCoralIntakeSelection: (selection: CoralIntakeLocation) => void;
   handleCoralScoringSelection: (
       level?: CoralScoringLevel,
@@ -28,6 +30,7 @@ interface Props {
     ) => void;
   algaeActiveSide: string;
   algaeIntakeLocation?: AlgaeIntakeLocation;
+  algaeScoringLocation?: AlgaeScoringLocation;
   handleAlgaeIntakeSelection: (selection: AlgaeIntakeLocation) => void;
   handleAlgaeScoringSelection: (
       location?: AlgaeScoringLocation,
@@ -45,11 +48,13 @@ export default function TeleopContent({
   show,
   coralActiveSide,
   coralIntakeLocation,
+  coralScoringLevel,
   handleCoralIntakeSelection,
   handleCoralScoringSelection,
   handleCoralResultSelection,
   algaeActiveSide,
   algaeIntakeLocation,
+  algaeScoringLocation,
   handleAlgaeIntakeSelection,
   handleAlgaeScoringSelection,
   handleAlgaeResultSelection,
@@ -62,20 +67,35 @@ export default function TeleopContent({
 
   return (
     <div className={`${!show && "d-none"}`}>
-      { /* We're probably going to redo this layout, but keep a copy of it for future reference.  */ }
-      <Row className="my-5">
-        <Col className="d-flex justify-content-end" md={3}>
-          <TeleopIntakePanel
-            selected={coralIntakeLocation}
-            handleSelection={handleCoralIntakeSelection}
+      <Row className="my-5 d-flex justify-content-center">
+        <Col className="d-flex justify-content-center" md={6}>
+          <TeleopCoralPanel
+            activeSide={coralActiveSide}
+            intakeSelected={coralIntakeLocation}
+            levelSelected={coralScoringLevel}
+            handleIntake={handleCoralIntakeSelection}
+            handleLevel={handleCoralScoringSelection}
+            handleResult={handleCoralResultSelection}
           />
         </Col>
-        <Col className="d-flex justify-content-end" md={4}>
-          <TeleopScoringPanel
-            active={coralActiveSide === "scoring"}
-            handleSelection={handleCoralScoringSelection}
+        <Col className="d-flex justify-content-center" md={6}>
+          <TeleopAlgaePanel
+            activeSide={algaeActiveSide}
+            intakeSelected={algaeIntakeLocation}
+            locationSelected={algaeScoringLocation}
+            handleIntake={handleAlgaeIntakeSelection}
+            handleScoring={handleAlgaeScoringSelection}
+            handleResult={handleAlgaeResultSelection}
           />
         </Col>
+      </Row>
+      <Row className="my-5 d-flex justify-content-center">
+        <DroppedPanel
+          coralActive={coralActiveSide=="level"}
+          algaeActive={algaeActiveSide=="scoring"}
+          handleCoralDropped={handleCoralScoringSelection}
+          handleAlgaeDropped={handleAlgaeScoringSelection}
+        />
       </Row>
     </div>
   );
