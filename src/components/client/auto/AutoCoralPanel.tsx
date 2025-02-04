@@ -7,41 +7,34 @@ import LocationButton from "../mini/LocationButton";
 import ReefSideButton from "../mini/ReefSideButton";
 import ScoreButton from "../mini/ScoreButton";
 import FailButton from "../mini/FailButton";
+import { useSelector } from "react-redux";
+import { ReduxState } from "@/redux/store";
 
 interface Props {
-  alliance: Alliance;
-  blueOnLeft: boolean;
-  intakeActive: boolean;
-  levelActive: boolean;
-  sideActive: boolean;
-  resultActive: boolean;
-  intakeSelected: CoralIntakeLocation;
-  levelSelected: CoralScoringLevel;
-  sideSelected: CoralScoringSide;
-  handleIntake: (selection: CoralIntakeLocation) => void;
-  handleLevel: (selection: CoralScoringLevel) => void;
-  handleSide: (selection: CoralScoringSide) => void;
-  handleResult: (selection: boolean) => void,
+    activeSide: string;
+    intakeSelected?: CoralIntakeLocation;
+    levelSelected?: CoralScoringLevel;
+    sideSelected?: CoralScoringSide;
+    handleIntake: (selection: CoralIntakeLocation) => void;
+    handleLevel: (selection: CoralScoringLevel) => void;
+    handleSide: (selection: CoralScoringSide) => void;
+    handleResult: (selection: boolean) => void,
 }
 
 //Displays a map of half of the field.
 //The notes are clickable, each representing an enum choice that represents that position.
 //Click a note again to render it missing, and click again to indicate no pickup.
 export default function AutoCoralPanel({
-  alliance,
-  blueOnLeft,
-  intakeActive,
-  levelActive,
-  sideActive,
-  resultActive,
-  intakeSelected,
-  levelSelected,
-  sideSelected,
-  handleIntake,
-  handleLevel,
-  handleSide,
-  handleResult,
+    activeSide,
+    intakeSelected,
+    levelSelected,
+    sideSelected,
+    handleIntake,
+    handleLevel,
+    handleSide,
+    handleResult,
 }: Props) {
+    const mainData = useSelector((state: ReduxState) => state.mainData);
   return (
     <div className="d-flex flex-column align-items-center">
       <h1>Coral</h1>
@@ -53,7 +46,7 @@ export default function AutoCoralPanel({
                       <h3 className="text-center">Station 1</h3>
                       <TeleopIntakeButton
                           className="mt-2"
-                          active={intakeActive}
+                          active={activeSide=="intaking"}
                           selected={intakeSelected==CoralIntakeLocation.AUTOSTATION1}
                           handleSelection={() => handleIntake(CoralIntakeLocation.AUTOSTATION1)}
                           gamePiece="coral"
@@ -63,7 +56,7 @@ export default function AutoCoralPanel({
                       <h3 className="text-center">G1</h3>
                       <TeleopIntakeButton
                           className="mt-2"
-                          active={intakeActive}
+                          active={activeSide=="intaking"}
                           selected={intakeSelected==CoralIntakeLocation.AUTOGROUND1}
                           handleSelection={() => handleIntake(CoralIntakeLocation.AUTOGROUND1)}
                           gamePiece="coral"
@@ -73,7 +66,7 @@ export default function AutoCoralPanel({
                       <h3 className="text-center">G2</h3>
                       <TeleopIntakeButton
                           className="mt-2"
-                          active={intakeActive}
+                          active={activeSide=="intaking"}
                           selected={intakeSelected==CoralIntakeLocation.AUTOGROUND2}
                           handleSelection={() => handleIntake(CoralIntakeLocation.AUTOGROUND2)}
                           gamePiece="coral"
@@ -83,7 +76,7 @@ export default function AutoCoralPanel({
                       <h3 className="text-center">G3</h3>
                       <TeleopIntakeButton
                           className="mt-2"
-                          active={intakeActive}
+                          active={activeSide=="intaking"}
                           selected={intakeSelected==CoralIntakeLocation.AUTOGROUND3}
                           handleSelection={() => handleIntake(CoralIntakeLocation.AUTOGROUND3)}
                           gamePiece="coral"
@@ -93,7 +86,7 @@ export default function AutoCoralPanel({
                       <h3 className="text-center">Station 2</h3>
                       <TeleopIntakeButton
                           className="mt-2"
-                          active={intakeActive}
+                          active={activeSide=="intaking"}
                           selected={intakeSelected==CoralIntakeLocation.AUTOSTATION2}
                           handleSelection={() => handleIntake(CoralIntakeLocation.AUTOSTATION2)}
                           gamePiece="coral"
@@ -107,28 +100,28 @@ export default function AutoCoralPanel({
                       <div className="d-flex flex-column">
                           <LocationButton
                               className="mt-2"
-                              active={levelActive}
+                              active={activeSide=="level"}
                               selected={levelSelected==CoralScoringLevel.LEVEL1}
                               handleSelection={() => handleLevel(CoralScoringLevel.LEVEL1)}
                               text="L1"
                           />
                           <LocationButton
                               className="mt-2"
-                              active={levelActive}
+                              active={activeSide=="level"}
                               selected={levelSelected==CoralScoringLevel.LEVEL2}
                               handleSelection={() => handleLevel(CoralScoringLevel.LEVEL2)}
                               text="L2"
                           />
                           <LocationButton
                               className="mt-2"
-                              active={levelActive}
+                              active={activeSide=="level"}
                               selected={levelSelected==CoralScoringLevel.LEVEL3}
                               handleSelection={() => handleLevel(CoralScoringLevel.LEVEL3)}
                               text="L3"
                           />
                           <LocationButton
                               className="mt-2"
-                              active={levelActive}
+                              active={activeSide=="level"}
                               selected={levelSelected==CoralScoringLevel.LEVEL4}
                               handleSelection={() => handleLevel(CoralScoringLevel.LEVEL4)}
                               text="L4"
@@ -144,17 +137,17 @@ export default function AutoCoralPanel({
                               style={{
                                   width: "65%",
                                   height: "auto",
-                                  transform: !blueOnLeft?'rotate(180deg)':"",
+                                  transform: mainData.blueOnLeft?"":"rotate(180deg)",
                               }}
                               src={
-                                  alliance === Alliance.BLUE
+                                mainData.station?.includes("red")
                                   ? "/assets/blue_start_prematch.png"
                                   : "/assets/red_start_prematch.png"
                               }
                           />
 
                           <ReefSideButton
-                              active={sideActive}
+                              active={activeSide=="side"}
                               selected={sideSelected==CoralScoringSide.SIDE1}
                               handleSelection={() => handleSide(CoralScoringSide.SIDE1)}
                               top="24%"
@@ -162,7 +155,7 @@ export default function AutoCoralPanel({
                               text="1"
                           />
                           <ReefSideButton
-                              active={sideActive}
+                              active={activeSide=="side"}
                               selected={sideSelected==CoralScoringSide.SIDE2}
                               handleSelection={() => handleSide(CoralScoringSide.SIDE2)}
                               top = "15%"
@@ -170,7 +163,7 @@ export default function AutoCoralPanel({
                               text="2"
                           />
                           <ReefSideButton
-                              active={sideActive}
+                              active={activeSide=="side"}
                               selected={sideSelected==CoralScoringSide.SIDE3}
                               handleSelection={() => handleSide(CoralScoringSide.SIDE3)}
                               top = "24%"
@@ -178,7 +171,7 @@ export default function AutoCoralPanel({
                               text="3"
                           />
                           <ReefSideButton
-                              active={sideActive}
+                              active={activeSide=="side"}
                               selected={sideSelected==CoralScoringSide.SIDE4}
                               handleSelection={() => handleSide(CoralScoringSide.SIDE4)}
                               top = "48%"
@@ -186,7 +179,7 @@ export default function AutoCoralPanel({
                               text="4"
                           />
                           <ReefSideButton
-                              active={sideActive}
+                              active={activeSide=="side"}
                               selected={sideSelected==CoralScoringSide.SIDE5}
                               handleSelection={() => handleSide(CoralScoringSide.SIDE5)}
                               top = "56%"
@@ -194,7 +187,7 @@ export default function AutoCoralPanel({
                               text="5"
                           />
                           <ReefSideButton
-                              active={sideActive}
+                              active={activeSide=="side"}
                               selected={sideSelected==CoralScoringSide.SIDE6}
                               handleSelection={() => handleSide(CoralScoringSide.SIDE6)}
                               top = "48%"
@@ -210,12 +203,12 @@ export default function AutoCoralPanel({
               <div className="d-flex flex-column">
                   <ScoreButton
                       className="mt-2"
-                      active={resultActive}
+                      active={activeSide=="result"}
                       handleClick={() => handleResult(true)}
                   />
                   <FailButton
                       className="mt-2"
-                      active={resultActive}
+                      active={activeSide=="result"}
                       handleClick={() => handleResult(false)}
                   />
               </div>

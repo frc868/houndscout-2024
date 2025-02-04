@@ -7,38 +7,33 @@ import ScoreButton from "../mini/ScoreButton";
 import FailButton from "../mini/FailButton";
 import { Col, Row } from "react-bootstrap";
 import { AlgaeIntakeLocation, AlgaeScoringLocation } from "@prisma/client";
+import { useSelector } from "react-redux";
+import { ReduxState } from "@/redux/store";
 
 interface Props {
-  alliance: Alliance;
-  blueOnLeft: boolean;
-  intakeActive: boolean;
-  locationActive: boolean;
-  resultActive: boolean;
-  intakeSelected: AlgaeIntakeLocation;
-  locationSelected: AlgaeScoringLocation;
-  handleIntake: (selection: AlgaeIntakeLocation) => void;
-  handleLocation: (selection: AlgaeScoringLocation) => void;
-  handleResult: (selection: boolean) => void,
+    activeSide: string;
+    intakeSelected?: AlgaeIntakeLocation;
+    locationSelected?: AlgaeScoringLocation;
+    handleIntake: (selection: AlgaeIntakeLocation) => void;
+    handleScoring: (selection: AlgaeScoringLocation) => void;
+    handleResult: (selection: boolean) => void,
 }
 
 //Displays a map of half of the field.
 //The notes are clickable, each representing an enum choice that represents that position.
 //Click a note again to render it missing, and click again to indicate no pickup.
 export default function AutoAlgaePanel({
-  alliance,
-  blueOnLeft,
-  intakeActive,
-  locationActive,
-  resultActive,
+  activeSide,
   intakeSelected,
   locationSelected,
   handleIntake,
-  handleLocation,
+  handleScoring,
   handleResult,
 }: Props) {
+    const mainData = useSelector((state: ReduxState) => state.mainData);
   return (
     <div className="d-flex flex-column align-items-center">
-        <h1>Auto Algae Game Piece Selector</h1>
+        <h1>Algae</h1>
         <Row className="d-flex justify-content-center">
             <Col className="d-flex flex-column" style={{backgroundColor:"orange"}}>
                 <h1 className="text-center mb-1">Intake</h1>
@@ -49,7 +44,7 @@ export default function AutoAlgaePanel({
                         <h3 className="text-center">G1</h3>
                         <TeleopIntakeButton
                             className="mt-2"
-                            active={intakeActive}
+                            active={activeSide=="intaking"}
                             selected={intakeSelected == AlgaeIntakeLocation.AUTOGROUND1}
                             handleSelection={() => handleIntake(AlgaeIntakeLocation.AUTOGROUND1)}
                             gamePiece="algae"
@@ -59,7 +54,7 @@ export default function AutoAlgaePanel({
                         <h3 className = "text-center">G2</h3>
                         <TeleopIntakeButton
                             className="mt-2"
-                            active={intakeActive}
+                            active={activeSide=="intaking"}
                             selected={intakeSelected == AlgaeIntakeLocation.AUTOGROUND2}
                             handleSelection={() => handleIntake(AlgaeIntakeLocation.AUTOGROUND2)}
                             gamePiece="algae"
@@ -69,7 +64,7 @@ export default function AutoAlgaePanel({
                         <h3 className = "text-center">G3</h3>
                         <TeleopIntakeButton
                             className="mt-2"
-                            active={intakeActive}
+                            active={activeSide=="intaking"}
                             selected={intakeSelected == AlgaeIntakeLocation.AUTOGROUND3}
                             handleSelection={() => handleIntake(AlgaeIntakeLocation.AUTOGROUND3)}
                             gamePiece="algae"
@@ -85,17 +80,17 @@ export default function AutoAlgaePanel({
                                 style={{
                                     width: "65%",
                                     height: "auto",
-                                    transform: !blueOnLeft?'rotate(180deg)':"",
+                                    transform: mainData.blueOnLeft?"":"rotate(180deg)",
                                 }}
                                 src={
-                                    alliance === Alliance.BLUE
+                                    mainData.station?.includes("red")
                                     ? "/assets/blue_start_prematch.png"
                                     : "/assets/red_start_prematch.png"
                                 }
                             />
                                 
                             <AutoIntakeButton
-                                active={intakeActive}
+                                active={activeSide=="intaking"}
                                 selected={intakeSelected == AlgaeIntakeLocation.AUTOREEF1}
                                 handleSelection={() => handleIntake(AlgaeIntakeLocation.AUTOREEF1)}
                                 gamePiece="algae"
@@ -103,7 +98,7 @@ export default function AutoAlgaePanel({
                                 left="5%"
                             />
                             <AutoIntakeButton
-                                active={intakeActive}
+                                active={activeSide=="intaking"}
                                 selected={intakeSelected == AlgaeIntakeLocation.AUTOREEF2}
                                 handleSelection={() => handleIntake(AlgaeIntakeLocation.AUTOREEF2)}
                                 gamePiece="algae"
@@ -111,7 +106,7 @@ export default function AutoAlgaePanel({
                                 left="37%"
                             />
                             <AutoIntakeButton
-                                active={intakeActive}
+                                active={activeSide=="intaking"}
                                 selected={intakeSelected == AlgaeIntakeLocation.AUTOREEF3}
                                 handleSelection={() => handleIntake(AlgaeIntakeLocation.AUTOREEF3)}
                                 gamePiece="algae"
@@ -119,7 +114,7 @@ export default function AutoAlgaePanel({
                                 left="70%"
                             />
                             <AutoIntakeButton
-                                active={intakeActive}
+                                active={activeSide=="intaking"}
                                 selected={intakeSelected == AlgaeIntakeLocation.AUTOREEF4}
                                 handleSelection={() => handleIntake(AlgaeIntakeLocation.AUTOREEF4)}
                                 gamePiece="algae"
@@ -127,7 +122,7 @@ export default function AutoAlgaePanel({
                                 left="70%"
                             />
                             <AutoIntakeButton
-                                active={intakeActive}
+                                active={activeSide=="intaking"}
                                 selected={intakeSelected == AlgaeIntakeLocation.AUTOREEF5}
                                 handleSelection={() => handleIntake(AlgaeIntakeLocation.AUTOREEF5)}
                                 gamePiece="algae"
@@ -135,7 +130,7 @@ export default function AutoAlgaePanel({
                                 left="37%"
                             />
                             <AutoIntakeButton
-                                active={intakeActive}
+                                active={activeSide=="intaking"}
                                 selected={intakeSelected == AlgaeIntakeLocation.AUTOREEF6}
                                 handleSelection={() => handleIntake(AlgaeIntakeLocation.AUTOREEF6)}
                                 gamePiece="algae"
@@ -151,16 +146,16 @@ export default function AutoAlgaePanel({
                 <div className="d-flex flex-column">
                     <LocationButton
                         className="mt-2"
-                        active={locationActive}
+                        active={activeSide=="scoring"}
                         selected={locationSelected == AlgaeScoringLocation.NET}
-                        handleSelection={() => handleLocation(AlgaeScoringLocation.NET)}
+                        handleSelection={() => handleScoring(AlgaeScoringLocation.NET)}
                         text="Net"
                     />
                     <LocationButton
                         className="mt-2"
-                        active={locationActive}
+                        active={activeSide=="scoring"}
                         selected={locationSelected == AlgaeScoringLocation.PROCESSOR}
-                        handleSelection={() => handleLocation(AlgaeScoringLocation.PROCESSOR)}
+                        handleSelection={() => handleScoring(AlgaeScoringLocation.PROCESSOR)}
                         text="Proc."
                     />
                 </div>
@@ -170,12 +165,12 @@ export default function AutoAlgaePanel({
                 <div className="d-flex flex-column">
                     <ScoreButton
                         className="mt-2"
-                        active={resultActive}
+                        active={activeSide=="result"}
                         handleClick={() => handleResult(true)}
                     />
                     <FailButton
                         className="mt-2"
-                        active={resultActive}
+                        active={activeSide=="result"}
                         handleClick={() => handleResult(false)}
                     />
                 </div>

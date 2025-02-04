@@ -1,7 +1,8 @@
 "use client";
 
-import AutoIntakePanel from "@/components/client/auto/AutoIntakePanel";
-import AutoScoringPanel from "@/components/client/auto/AutoScoringPanel";
+import AutoCoralPanel from "@/components/client/auto/AutoCoralPanel";
+import AutoAlgaePanel from "@/components/client/auto/AutoAlgaePanel";
+import DroppedPanel from "@/components/client/common/DroppedPanel";
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,42 +21,48 @@ import {
 
 interface Props {
   show: boolean;
-    coralActiveSide: string;
-    coralIntakeLocation?: CoralIntakeLocation;
-    handleCoralIntakeSelection: (selection: CoralIntakeLocation) => void;
-    handleCoralLevelSelection: (
-        level?: CoralScoringLevel,
-        dropped?: boolean
-      ) => void;
-    handleCoralSideSelection: (
-        side: CoralScoringSide,
-      ) => void;
-    handleCoralResultSelection: (
-        failedScoring: boolean,
-      ) => void;
-    algaeActiveSide: string;
-    algaeIntakeLocation?: AlgaeIntakeLocation;
-    handleAlgaeIntakeSelection: (selection: AlgaeIntakeLocation) => void;
-    handleAlgaeScoringSelection: (
-        location?: AlgaeScoringLocation,
-        dropped?: boolean
-      ) => void;
-    handleAlgaeResultSelection: (
-        failedScoring: boolean,
-      ) => void;
-    incapOn: boolean;
+  coralActiveSide: string;
+  coralIntakeLocation?: CoralIntakeLocation;
+  coralScoringLevel?: CoralScoringLevel;
+  coralScoringSide?: CoralScoringSide;
+  handleCoralIntakeSelection: (selection: CoralIntakeLocation) => void;
+  handleCoralLevelSelection: (
+      level?: CoralScoringLevel,
+      dropped?: boolean
+    ) => void;
+  handleCoralSideSelection: (
+      side: CoralScoringSide,
+    ) => void;
+  handleCoralResultSelection: (
+      failedScoring: boolean,
+    ) => void;
+  algaeActiveSide: string;
+  algaeIntakeLocation?: AlgaeIntakeLocation;
+  algaeScoringLocation?: AlgaeScoringLocation;
+  handleAlgaeIntakeSelection: (selection: AlgaeIntakeLocation) => void;
+  handleAlgaeScoringSelection: (
+      location?: AlgaeScoringLocation,
+      dropped?: boolean
+    ) => void;
+  handleAlgaeResultSelection: (
+      failedScoring: boolean,
+    ) => void;
+  incapOn: boolean;
 }
 
 export default function AutoContent({
   show,
   coralActiveSide,
   coralIntakeLocation,
+  coralScoringLevel,
+  coralScoringSide,
   handleCoralIntakeSelection,
   handleCoralLevelSelection,
   handleCoralSideSelection,
   handleCoralResultSelection,
   algaeActiveSide,
   algaeIntakeLocation,
+  algaeScoringLocation,
   handleAlgaeIntakeSelection,
   handleAlgaeScoringSelection,
   handleAlgaeResultSelection,
@@ -115,30 +122,26 @@ export default function AutoContent({
     <div className={`${!show && "d-none"}`}>
       <Row className="my-5 d-flex justify-content-center">
         <Col className="d-flex justify-content-center" md={5}>
-          {/* <AutoIntakePanel
-            alliance={mainData.alliance}
-            blueOnLeft={mainData.blueOnLeft}
-            selected={selectedGamePieces}
-            missing={missingGamePieces}
-            handleSelection={handleIntakeSelection}
-          /> */}
+          <AutoCoralPanel
+            activeSide={coralActiveSide}
+            intakeSelected={coralIntakeLocation}
+            levelSelected={coralScoringLevel}
+            sideSelected={coralScoringSide}
+            handleIntake={handleCoralIntakeSelection}
+            handleLevel={handleCoralLevelSelection}
+            handleSide={handleCoralSideSelection}
+            handleResult={handleCoralResultSelection}
+          />
         </Col>
-        <Col className="d-flex flex-column" md={4}>
-          {/* <AutoScoringPanel
-            numIntaked={
-              selectedGamePieces.length - missingGamePieces.length + 1
-            }
-            numSelected={numSelected === undefined ? -1 : numSelected}
-            handleSelection={handleScoringSelection}
-            leftStartingZoneEnabled={scores.leftStartingZone}
-            handleLeftStartingZoneClick={() =>
-              dispatch(
-                setLeftStartingZoneAsync({
-                  leftStartingZone: !scores.leftStartingZone,
-                })
-              )
-            }
-          /> */}
+        <Col className="d-flex justify-content-center" md={4}>
+          <AutoAlgaePanel
+            activeSide={algaeActiveSide}
+            intakeSelected={algaeIntakeLocation}
+            locationSelected={algaeScoringLocation}
+            handleIntake={handleAlgaeIntakeSelection}
+            handleScoring={handleAlgaeScoringSelection}
+            handleResult={handleAlgaeResultSelection}
+          />
         </Col>
       </Row>
     </div>

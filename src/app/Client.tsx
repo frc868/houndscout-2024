@@ -76,6 +76,7 @@ export default function Client({ station }: Props) {
         timestampEnded: Date.now(),
         full: true
       }; //incapSegment creation.
+      setIncapStartTime(0);
       setIncapOn(false);  
 
       await dispatch(sendIncapSegment(event));
@@ -119,8 +120,9 @@ export default function Client({ station }: Props) {
           timestampPickedUp: algaeStartTime,
           timestampScored: Date.now(),
         }; //teleopScoringEvent creation.
-        setAlgaeIntakeLocation(undefined);
-        setAlgaeActiveSide("intaking");
+        setCoralIntakeLocation(undefined);
+        setCoralStartTime(0);
+        setCoralActiveSide("intaking");
   
         await dispatch(sendCoralEvent(event));
       } else {
@@ -150,11 +152,14 @@ export default function Client({ station }: Props) {
         scoringSide: coralScoringSide as CoralScoringSide,
         failedScoring: failedScoring,
         dropped: false,
-        timestampPickedUp: algaeStartTime,
-        timestampScored: algaeEndTime,
+        timestampPickedUp: coralStartTime,
+        timestampScored: coralEndTime,
       }; //teleopScoringEvent creation.
       setCoralIntakeLocation(undefined);
+      setCoralScoringLevel(undefined);
       setCoralScoringSide(undefined);
+      setCoralStartTime(0);
+      setCoralEndTime(0);
       setCoralActiveSide("intaking");
 
       await dispatch(sendCoralEvent(event));
@@ -193,6 +198,7 @@ export default function Client({ station }: Props) {
           timestampScored: Date.now(),
         }; //teleopScoringEvent creation.
         setAlgaeIntakeLocation(undefined);
+        setAlgaeStartTime(0);
         setAlgaeActiveSide("intaking");
   
         await dispatch(sendAlgaeEvent(event));
@@ -217,6 +223,9 @@ export default function Client({ station }: Props) {
         timestampScored: algaeEndTime,
       }; //teleopScoringEvent creation.
       setAlgaeIntakeLocation(undefined);
+      setAlgaeScoringLocation(undefined);
+      setAlgaeStartTime(0);
+      setAlgaeEndTime(0);
       setAlgaeActiveSide("intaking");
 
       await dispatch(sendAlgaeEvent(event));
@@ -276,12 +285,15 @@ export default function Client({ station }: Props) {
                   show={tab === Section.AUTO}
                   coralActiveSide={coralActiveSide}
                   coralIntakeLocation={coralIntakeLocation}
+                  coralScoringLevel={coralScoringLevel}
+                  coralScoringSide={coralScoringSide}
                   handleCoralIntakeSelection={handleCoralIntakeSelection}
                   handleCoralLevelSelection={handleCoralLevelSelection}
                   handleCoralSideSelection={handleCoralSideSelection}
                   handleCoralResultSelection={handleCoralResultSelection}
                   algaeActiveSide={algaeActiveSide}
                   algaeIntakeLocation={algaeIntakeLocation}
+                  algaeScoringLocation={algaeScoringLocation}
                   handleAlgaeIntakeSelection={handleAlgaeIntakeSelection}
                   handleAlgaeScoringSelection={handleAlgaeScoringSelection}
                   handleAlgaeResultSelection={handleAlgaeResultSelection}
