@@ -51,7 +51,7 @@ export default function StartingZoneSelector({
           }
         >
           <Button
-            variant={ selected === AutoStartingZone.TWO ? "primary" : "secondary" }
+            variant={ selected === AutoStartingZone.ONE ? "primary" : "secondary" }
             className="fw-bold"
             style={{ width: "40px" }}
             onMouseDown={() => handleSelection(AutoStartingZone.ONE)}
@@ -93,7 +93,7 @@ export default function StartingZoneSelector({
           }
         >
           <Button
-            variant={ selected === AutoStartingZone.TWO ? "primary" : "secondary" }
+            variant={ selected === AutoStartingZone.THREE ? "primary" : "secondary" }
             className="fw-bold"
             style={{ width: "40px" }}
             onMouseDown={() => handleSelection(AutoStartingZone.THREE)}

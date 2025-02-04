@@ -36,7 +36,7 @@ export default function AutoAlgaePanel({
         <h1>Algae</h1>
         <Row className="d-flex justify-content-center">
             <Col className="d-flex flex-column" style={{backgroundColor:"orange"}}>
-                <h1 className="text-center mb-1">Intake</h1>
+                <h2 className="text-center mb-1">Intake</h2>
                 {/* Copy everything in this div. */}
                 <Row>
                     <Col>
@@ -142,7 +142,7 @@ export default function AutoAlgaePanel({
                 </Row>
             </Col>
             <Col className="d-flex flex-column" style={{backgroundColor:"purple"}}>
-                <h1 className="text-center mb-1">Scoring</h1>
+                <h2 className="text-center mb-1">Scoring</h2>
                 <div className="d-flex flex-column">
                     <LocationButton
                         className="mt-2"
@@ -161,7 +161,7 @@ export default function AutoAlgaePanel({
                 </div>
             </Col>
             <Col className="d-flex flex-column" style={{backgroundColor:"gray"}}>
-                <h1 className="text-center mb-1">Result</h1>
+                <h2 className="text-center mb-1">Result</h2>
                 <div className="d-flex flex-column">
                     <ScoreButton
                         className="mt-2"

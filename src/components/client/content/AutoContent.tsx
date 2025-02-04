@@ -48,6 +48,7 @@ interface Props {
       failedScoring: boolean,
     ) => void;
   incapOn: boolean;
+  handleIncap: () => void;
 }
 
 export default function AutoContent({
@@ -66,7 +67,8 @@ export default function AutoContent({
   handleAlgaeIntakeSelection,
   handleAlgaeScoringSelection,
   handleAlgaeResultSelection,
-  incapOn
+  incapOn,
+  handleIncap,
 }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const mainData = useSelector((state: ReduxState) => state.mainData);
@@ -120,7 +122,7 @@ export default function AutoContent({
 
   return (
     <div className={`${!show && "d-none"}`}>
-      <Row className="my-5 d-flex justify-content-center">
+      <Row className="d-flex justify-content-center">
         <Col className="d-flex justify-content-center" md={6}>
           <AutoCoralPanel
             activeSide={coralActiveSide}
@@ -146,8 +148,10 @@ export default function AutoContent({
       </Row>
       <Row className="my-5 d-flex justify-content-center">
         <DroppedPanel
+          incapActive={incapOn}
           coralActive={coralActiveSide=="level"}
           algaeActive={algaeActiveSide=="scoring"}
+          handleIncap={handleIncap}
           handleCoralDropped={handleCoralLevelSelection}
           handleAlgaeDropped={handleAlgaeScoringSelection}
         />

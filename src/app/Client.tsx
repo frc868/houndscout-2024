@@ -39,6 +39,29 @@ export default function Client({ station }: Props) {
   const [tab, setTab] = useState<Section>(Section.PREMATCH);
   const [submitted, setSubmitted] = useState(false);
 
+  const [coralIntakeLocation, setCoralIntakeLocation] = useState<
+    CoralIntakeLocation | undefined
+  >(undefined);
+  const [coralScoringLevel, setCoralScoringLevel] = useState<
+    CoralScoringLevel | undefined
+  >(undefined);
+  const [coralScoringSide, setCoralScoringSide] = useState<
+    CoralScoringSide | undefined
+  >(undefined);
+  const [coralActiveSide, setCoralActiveSide] = useState("intaking");//This is set between intaking, level, side, and result.
+  const [coralStartTime, setCoralStartTime] = useState(0);
+  const [coralEndTime, setCoralEndTime] = useState(0);
+
+  const [algaeIntakeLocation, setAlgaeIntakeLocation] = useState<
+    AlgaeIntakeLocation | undefined
+  >(undefined);
+  const [algaeScoringLocation, setAlgaeScoringLocation] = useState<
+    AlgaeScoringLocation | undefined
+  >(undefined);
+  const [algaeActiveSide, setAlgaeActiveSide] = useState("intaking");//This is set between intaking, scoring, and result.
+  const [algaeStartTime, setAlgaeStartTime] = useState(0);
+  const [algaeEndTime, setAlgaeEndTime] = useState(0);
+
   useEffect(() => {
     const update = async () => {
       await dispatch(setStation({ station }));
@@ -52,7 +75,7 @@ export default function Client({ station }: Props) {
     }
     const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
-  }, [dispatch, station, tab]);
+  }, [dispatch, station, tab, coralActiveSide]);
 
   useEffect(() => {
     setSubmitted(false);
@@ -83,20 +106,9 @@ export default function Client({ station }: Props) {
     }
   };
 
-  //UPDATE CYCLE: Make sure everything down to handleScoringSelection is duplicated if there's multiple game pieces.
+  //UPDATE CYCLE (out of date): Make sure everything down to handleScoringSelection is duplicated if there's multiple game pieces.
   //Also ensure the enums used are accurate; those are imported from Prisma, so update those as well.
-  const [coralIntakeLocation, setCoralIntakeLocation] = useState<
-    CoralIntakeLocation | undefined
-  >(undefined);
-  const [coralScoringLevel, setCoralScoringLevel] = useState<
-    CoralScoringLevel | undefined
-  >(undefined);
-  const [coralScoringSide, setCoralScoringSide] = useState<
-    CoralScoringSide | undefined
-  >(undefined);
-  const [coralActiveSide, setCoralActiveSide] = useState("intaking");//This is set between intaking, level, side, and result.
-  const [coralStartTime, setCoralStartTime] = useState(0);
-  const [coralEndTime, setCoralEndTime] = useState(0);
+  
 
   //triggers when intake location is selected
   const handleCoralIntakeSelection = (selection: CoralIntakeLocation) => {
@@ -165,16 +177,6 @@ export default function Client({ station }: Props) {
       await dispatch(sendCoralEvent(event));
     }
   };
-
-  const [algaeIntakeLocation, setAlgaeIntakeLocation] = useState<
-    AlgaeIntakeLocation | undefined
-  >(undefined);
-  const [algaeScoringLocation, setAlgaeScoringLocation] = useState<
-    AlgaeScoringLocation | undefined
-  >(undefined);
-  const [algaeActiveSide, setAlgaeActiveSide] = useState("intaking");//This is set between intaking, scoring, and result.
-  const [algaeStartTime, setAlgaeStartTime] = useState(0);
-  const [algaeEndTime, setAlgaeEndTime] = useState(0);
   
   //triggers when intake location is selected
   const handleAlgaeIntakeSelection = (selection: AlgaeIntakeLocation) => {
@@ -243,8 +245,6 @@ export default function Client({ station }: Props) {
         team={mainData.activeTeamNumber}
         matchName={mainData.activeMatchName}
         isConnected={true}
-        incapActive={incapOn}
-        handleIncap={incapOn?handleIncapEnd:handleIncapStart}
       />
       {!ready && (
         <>
@@ -298,6 +298,7 @@ export default function Client({ station }: Props) {
                   handleAlgaeScoringSelection={handleAlgaeScoringSelection}
                   handleAlgaeResultSelection={handleAlgaeResultSelection}
                   incapOn={incapOn}
+                  handleIncap={incapOn?handleIncapEnd:handleIncapStart}
                 />
                 <TeleopContent
                   show={tab === Section.TELEOP}
@@ -312,6 +313,7 @@ export default function Client({ station }: Props) {
                   handleAlgaeScoringSelection={handleAlgaeScoringSelection}
                   handleAlgaeResultSelection={handleAlgaeResultSelection}
                   incapOn={incapOn}
+                  handleIncap={incapOn?handleIncapEnd:handleIncapStart}
                 />
                 <EndgameContent show={tab === Section.ENDGAME} incapOn={incapOn} />
                 <PostmatchContent

@@ -3,6 +3,7 @@ import { Alliance } from "@/lib/enums";
 import { Col, Row } from "react-bootstrap";
 import { CoralIntakeLocation, CoralScoringLevel, CoralScoringSide } from "@prisma/client";
 import AutoIntakeButton from "../mini/AutoIntakeButton";
+import TeleopIntakeButton from "../mini/TeleopIntakeButton";
 import LocationButton from "../mini/LocationButton";
 import ReefSideButton from "../mini/ReefSideButton";
 import ScoreButton from "../mini/ScoreButton";
@@ -40,11 +41,11 @@ export default function AutoCoralPanel({
       <h1>Coral</h1>
       <Row className="d-flex justify-content-center">
           <Col className="d-flex flex-column flex-grow-1" style={{backgroundColor:"orange"}}>
-              <h1 className="text-center mb-1">Intake</h1>
+              <h2 className="text-center mb-1">Intake</h2>
               {/* Copy everything in this div. */}
                   <div className="d-flex flex-column">
                       <h3 className="text-center">Station 1</h3>
-                      <AutoIntakeButton
+                      <TeleopIntakeButton
                           className="mt-2"
                           active={activeSide=="intaking"}
                           selected={intakeSelected==CoralIntakeLocation.AUTOSTATION1}
@@ -54,7 +55,7 @@ export default function AutoCoralPanel({
                   </div>
                   <div className="d-flex flex-column">
                       <h3 className="text-center">G1</h3>
-                      <AutoIntakeButton
+                      <TeleopIntakeButton
                           className="mt-2"
                           active={activeSide=="intaking"}
                           selected={intakeSelected==CoralIntakeLocation.AUTOGROUND1}
@@ -64,7 +65,7 @@ export default function AutoCoralPanel({
                   </div>
                   <div className="d-flex flex-column">
                       <h3 className="text-center">G2</h3>
-                      <AutoIntakeButton
+                      <TeleopIntakeButton
                           className="mt-2"
                           active={activeSide=="intaking"}
                           selected={intakeSelected==CoralIntakeLocation.AUTOGROUND2}
@@ -74,7 +75,7 @@ export default function AutoCoralPanel({
                   </div>
                   <div className="d-flex flex-column">
                       <h3 className="text-center">G3</h3>
-                      <AutoIntakeButton
+                      <TeleopIntakeButton
                           className="mt-2"
                           active={activeSide=="intaking"}
                           selected={intakeSelected==CoralIntakeLocation.AUTOGROUND3}
@@ -84,7 +85,7 @@ export default function AutoCoralPanel({
                   </div>
                   <div className="d-flex flex-column">
                       <h3 className="text-center">Station 2</h3>
-                      <AutoIntakeButton
+                      <TeleopIntakeButton
                           className="mt-2"
                           active={activeSide=="intaking"}
                           selected={intakeSelected==CoralIntakeLocation.AUTOSTATION2}
@@ -94,7 +95,7 @@ export default function AutoCoralPanel({
                   </div>
           </Col>
           <Col className="d-flex flex-column flex-shrink-1" style={{backgroundColor:"purple"}}>
-              <h1 className="text-center mb-1">Scoring</h1>
+              <h2 className="text-center mb-1">Scoring</h2>
               <Row>
                   <Col>
                       <div className="d-flex flex-column">
@@ -199,7 +200,7 @@ export default function AutoCoralPanel({
               </Row>
           </Col>
           <Col className="d-flex flex-column flex-shrink-1" style={{backgroundColor:"gray"}}>
-              <h1 className="text-center mb-1">Result</h1>
+              <h2 className="text-center mb-1">Result</h2>
               <div className="d-flex flex-column">
                   <ScoreButton
                       className="mt-2"

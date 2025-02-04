@@ -40,6 +40,7 @@ interface Props {
       failedScoring: boolean,
     ) => void;
   incapOn: boolean;
+  handleIncap: () => void;
 }
 
 //Teleop tab.
@@ -59,6 +60,7 @@ export default function TeleopContent({
   handleAlgaeScoringSelection,
   handleAlgaeResultSelection,
   incapOn,
+  handleIncap,
 }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
@@ -67,7 +69,7 @@ export default function TeleopContent({
 
   return (
     <div className={`${!show && "d-none"}`}>
-      <Row className="my-5 d-flex justify-content-center">
+      <Row className="d-flex justify-content-center">
         <Col className="d-flex justify-content-center" md={6}>
           <TeleopCoralPanel
             activeSide={coralActiveSide}
@@ -91,8 +93,10 @@ export default function TeleopContent({
       </Row>
       <Row className="my-5 d-flex justify-content-center">
         <DroppedPanel
+          incapActive={incapOn}
           coralActive={coralActiveSide=="level"}
           algaeActive={algaeActiveSide=="scoring"}
+          handleIncap={handleIncap}
           handleCoralDropped={handleCoralScoringSelection}
           handleAlgaeDropped={handleAlgaeScoringSelection}
         />
