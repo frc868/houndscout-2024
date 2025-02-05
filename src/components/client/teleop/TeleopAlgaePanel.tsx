@@ -36,13 +36,12 @@ export default function AutoAlgaePanel({
         <div className="d-flex flex-column align-items-center">
             <h1>Algae</h1>
             <Row className="d-flex justify-content-center">
-                <Col className="d-flex flex-column" style={{backgroundColor:"orange"}}>
-                    <h1 className="text-center mb-1">Intake</h1>
+                <Col className="d-flex flex-column">
+                    <h2 className="text-center mb-1">Intake</h2>
                     {/* Copy everything in this div. */}
                     <div className="d-flex flex-column">
                         <h3 className = "text-center">Ground</h3>
                         <TeleopIntakeButton
-                            className="mt-2"
                             active={activeSide=="intaking"}
                             selected={intakeSelected == AlgaeIntakeLocation.TELEOPGROUND}
                             handleSelection={() => {
@@ -56,7 +55,6 @@ export default function AutoAlgaePanel({
                     <div className="d-flex flex-column">
                         <h3 className = "text-center">Reef</h3>
                         <TeleopIntakeButton
-                            className="mt-2"
                             active={activeSide=="intaking"}
                             selected={intakeSelected == AlgaeIntakeLocation.TELEOPREEF}
                             handleSelection={() => {
@@ -68,8 +66,8 @@ export default function AutoAlgaePanel({
                         />
                     </div>
                 </Col>
-                <Col className="d-flex flex-column" style={{backgroundColor:"purple"}}>
-                    <h1 className="text-center mb-1">Scoring</h1>
+                <Col className="d-flex flex-column">
+                    <h2 className="text-center mb-1">Scoring</h2>
                     <div className="d-flex flex-column">
                         <LocationButton
                             className="mt-2"
@@ -95,11 +93,10 @@ export default function AutoAlgaePanel({
                         />
                     </div>
                 </Col>
-                <Col className="d-flex flex-column" style={{backgroundColor:"gray"}}>
-                    <h1 className="text-center mb-1">Result</h1>
+                <Col className="d-flex flex-column">
+                    <h2 className="text-center mb-1">Result</h2>
                     <div className="d-flex flex-column">
                         <ScoreButton
-                            className="mt-2"
                             active={activeSide=="result"}
                             handleClick={() => {
                                 handleSelection("result",{

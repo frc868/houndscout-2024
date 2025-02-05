@@ -39,17 +39,17 @@ export default function AutoAlgaePanel({
         <div className="d-flex flex-column align-items-center">
             <h1>Algae</h1>
             <Row className="d-flex justify-content-center">
-                <Col className="d-flex flex-column" style={{backgroundColor:"orange"}}>
+                <Col className="d-flex flex-column" md={8}>
                     <h2 className="text-center mb-1">Intake</h2>
                     {/* Copy everything in this div. */}
                     <Row>
-                        <Col>
-                            <div className="d-flex flex-column">
-                                <h3 className="text-center">G1</h3>
+                        <Col md={4}>
+                            <div className="d-flex flex-column justify-content-center align-items-center">
+                                <h4>Ground</h4>
                                 <TeleopIntakeButton
                                     className="mt-2"
                                     active={activeSide=="intaking"}
-                                    selected={intakeSelected == AlgaeIntakeLocation.AUTOGROUND1}
+                                    selected={intakeSelected==AlgaeIntakeLocation.AUTOGROUND1}
                                     handleSelection={() => {
                                         handleSelection("intaking",{
                                             intakeSelection: AlgaeIntakeLocation.AUTOGROUND1
@@ -57,13 +57,10 @@ export default function AutoAlgaePanel({
                                     }}
                                     gamePiece="algae"
                                 />
-                            </div>
-                            <div className="d-flex flex-column">
-                                <h3 className = "text-center">G2</h3>
                                 <TeleopIntakeButton
                                     className="mt-2"
                                     active={activeSide=="intaking"}
-                                    selected={intakeSelected == AlgaeIntakeLocation.AUTOGROUND2}
+                                    selected={intakeSelected==AlgaeIntakeLocation.AUTOGROUND2}
                                     handleSelection={() => {
                                         handleSelection("intaking",{
                                             intakeSelection: AlgaeIntakeLocation.AUTOGROUND2
@@ -71,13 +68,10 @@ export default function AutoAlgaePanel({
                                     }}
                                     gamePiece="algae"
                                 />
-                            </div>
-                            <div className="d-flex flex-column">
-                                <h3 className = "text-center">G3</h3>
                                 <TeleopIntakeButton
                                     className="mt-2"
                                     active={activeSide=="intaking"}
-                                    selected={intakeSelected == AlgaeIntakeLocation.AUTOGROUND3}
+                                    selected={intakeSelected==AlgaeIntakeLocation.AUTOGROUND3}
                                     handleSelection={() => {
                                         handleSelection("intaking",{
                                             intakeSelection: AlgaeIntakeLocation.AUTOGROUND3
@@ -87,19 +81,18 @@ export default function AutoAlgaePanel({
                                 />
                             </div>
                         </Col>
-                        <Col>
+                        <Col md={8}>
                             {/* Algae Reef in Auto */}
-                            <div className="position-relative" style={{width: "25%"}}>
+                            <div className="position-relative" style={{width: "100%"}}>
                                 <img
-                                    className="mx-auto my-2"
                                     alt=""
                                     style={{
-                                        width: "65%",
+                                        width: "100%",
                                         height: "auto",
                                         transform: mainData.blueOnLeft?"":"rotate(180deg)",
                                     }}
                                     src={
-                                        mainData.station?.includes("red")
+                                        mainData.station?.includes("BLUE")
                                         ? "/assets/blue_start_prematch.png"
                                         : "/assets/red_start_prematch.png"
                                     }
@@ -181,9 +174,9 @@ export default function AutoAlgaePanel({
                         </Col>
                     </Row>
                 </Col>
-                <Col className="d-flex flex-column" style={{backgroundColor:"purple"}}>
+                <Col className="d-flex flex-column align-items-center" md={2}>
                     <h2 className="text-center mb-1">Scoring</h2>
-                    <div className="d-flex flex-column">
+                    <div className="d-flex flex-column align-items-center">
                         <LocationButton
                             className="mt-2"
                             active={activeSide=="scoring"}
@@ -210,7 +203,7 @@ export default function AutoAlgaePanel({
                         />
                     </div>
                 </Col>
-                <Col className="d-flex flex-column" style={{backgroundColor:"gray"}}>
+                <Col className="d-flex flex-column"  md={2}>
                     <h2 className="text-center mb-1">Result</h2>
                     <div className="d-flex flex-column">
                         <ScoreButton

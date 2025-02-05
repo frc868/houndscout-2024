@@ -14,6 +14,11 @@ import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import MiniToggleBox from "../mini/MiniToggleBox";
+import EndgamePanel from "@/components/client/teleop/EndgamePanel";
+import {
+  setEndgameTypeAsync,
+  setEndgameSuccessAsync,
+} from "@/redux/scoresSlice";
 
 interface Props {
   show: boolean;
@@ -62,13 +67,12 @@ export default function TeleopContent({
 }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
-
   
 
   return (
     <div className={`${!show && "d-none"}`}>
       <Row className="d-flex justify-content-center">
-        <Col className="d-flex justify-content-center" md={6}>
+        <Col className="d-flex justify-content-left" md={4}>
           <TeleopCoralPanel
             activeSide={coralActiveSide}
             intakeSelected={coralIntakeLocation}
@@ -76,7 +80,27 @@ export default function TeleopContent({
             handleSelection={handleCoral}
           />
         </Col>
-        <Col className="d-flex justify-content-center" md={6}>
+        <Col className="d-flex justify-content-center mx-3" md={1}>
+          <DroppedPanel
+            incapActive={incapOn}
+            coralActive={coralActiveSide=="level"}
+            algaeActive={algaeActiveSide=="scoring"}
+            handleIncap={handleIncap}
+            handleCoralDropped={() => {
+              handleCoral("level",{
+                scoringLevel: undefined,
+                dropped: true
+              })
+            }}
+            handleAlgaeDropped={() => {
+              handleAlgae("scoring",{
+                scoringLocation: undefined,
+                dropped: true
+              })
+            }}
+          />
+        </Col>
+        <Col className="d-flex justify-content-center" md={4}>
           <TeleopAlgaePanel
             activeSide={algaeActiveSide}
             intakeSelected={algaeIntakeLocation}
@@ -84,26 +108,22 @@ export default function TeleopContent({
             handleSelection={handleAlgae}
           />
         </Col>
+        <Col className="d-flex justify-content-right mx-3" md={1}>
+          <EndgamePanel
+            //Endgame content.
+              endgameType={scores.endgameType}
+              endgameSuccess={scores.endgameSuccess}
+              handleEndgameTypeSelection={async (endgameType) =>
+                await dispatch(setEndgameTypeAsync({ endgameType }))
+              }
+              handleSuccessSelection={async (endgameSuccess) =>
+                await dispatch(setEndgameSuccessAsync({ endgameSuccess }))
+              }
+            />
+        </Col>
       </Row>
-      <Row className="my-5 d-flex justify-content-center">
-        <DroppedPanel
-          incapActive={incapOn}
-          coralActive={coralActiveSide=="level"}
-          algaeActive={algaeActiveSide=="scoring"}
-          handleIncap={handleIncap}
-          handleCoralDropped={() => {
-            handleCoral("level",{
-              scoringLevel: undefined,
-              dropped: true
-            })
-          }}
-          handleAlgaeDropped={() => {
-            handleAlgae("scoring",{
-              scoringLocation: undefined,
-              dropped: true
-            })
-          }}
-        />
+      <Row className="d-flex justify-content-center">
+        
       </Row>
     </div>
   );

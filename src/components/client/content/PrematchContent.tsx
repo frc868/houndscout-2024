@@ -8,13 +8,16 @@ import { staticGenerationAsyncStorage } from "next/dist/client/components/static
 import { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import MiniToggleBox from "../mini/MiniToggleBox";
 
 interface Props {
   show: boolean;
+  coralActiveSide: string;
+  handlePreload: () => void;
 }
 
 //All the scouter really needs to do is put the approximate starting position; everything else is handled by the lead.
-export default function PrematchContent({ show }: Props) {
+export default function PrematchContent({ show, coralActiveSide, handlePreload }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
   const mainData = useSelector((state: ReduxState) => state.mainData);
@@ -45,6 +48,14 @@ export default function PrematchContent({ show }: Props) {
               </h1>
               <h1 className="text-center">Team {mainData.activeTeamNumber}</h1>
             </div>
+          </div>
+          <div className="d-flex flex-column justify-content-center">
+            <MiniToggleBox
+              className="mx-5"
+              name="Coral Preload?"
+              enabled={coralActiveSide=="level"}
+              handleClick={handlePreload}
+            />
           </div>
         </Col>
       </Row>

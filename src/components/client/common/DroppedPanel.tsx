@@ -23,25 +23,25 @@ export default function DroppedPanel({
   handleAlgaeDropped,
 }: Props) {
   return (
-    <div className="d-flex flex-row align-items-center justify-content-center h-100 mx-5" style={{backgroundColor:"red"}}>
+    <div className="d-flex flex-row align-items-center justify-content-center">
       <Row className="d-flex justify-content-center">
         <h1 className="d-flex justify-content-center">Dropped</h1>
         <Col className="d-flex justify-content-center">
             <DroppedButton
-                className="mx-3 my-2"
+                className="mx-3"
                 active={coralActive}
                 gamePiece="coral"
                 handleSelection={handleCoralDropped}
             />
             <DroppedButton
-                className="mx-3 my-2"
+                className="mx-3"
                 active={algaeActive}
                 gamePiece="algae"
                 handleSelection={handleAlgaeDropped}
             />
         </Col>
         <IncapButton
-          className="text-nowrap justify-self-end mx-4"
+          className="text-nowrap justify-self-end mx-4 my-3"
           active={incapActive}
           handleClick={handleIncap}
         />
