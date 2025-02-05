@@ -12,6 +12,8 @@ import StatusBar from "@/components/client/common/StatusBar";
 import CommentsBox from "@/components/client/postmatch/CommentsBox";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { Event } from "@prisma/client";
+import { sendPitData } from "@/redux/scoresSlice";
+
 import {
   Match,
   Scouter,
@@ -27,16 +29,18 @@ export default function Pit() {
   const adminData = useSelector((state: ReduxState) => state.adminData);
 
   useEffect(() => {
-      const interval = setInterval(async () => {
-        await dispatch(getActiveEventAsync());
-  
-        mainData.activeEvent?.code &&
-          (await dispatch(
-            getEventTeamsAsync({ eventCode: mainData.activeEvent?.code })
-          ));
-      }, 1000);
-      return () => clearInterval(interval);
-    }, [dispatch, mainData.activeEvent?.code, mainData.activeMatchName, mainData.blueOnLeft]);
+    const interval = setInterval(async () => {
+      await dispatch(getActiveEventAsync());
+
+      mainData.activeEvent?.code &&
+        (await dispatch(
+          getEventTeamsAsync({ eventCode: mainData.activeEvent?.code })
+        ));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [dispatch, mainData.activeEvent?.code, mainData.activeMatchName, mainData.blueOnLeft]);
+
+  const [submitted, setSubmitted] = useState<boolean>(false); //Local state, no need to put this in the submission thunk.
 
   // State hooks to manage form data for different robot attributes
   const [teamNumber, setTeamNumber] = useState<number | undefined>(undefined);
@@ -71,234 +75,244 @@ export default function Pit() {
   return (
     <>
       <StatusBar isConnected={true} />
-      <h1 className="d-flex justify-content-center mt-5">Pit Scouting Form (WIP)</h1>
-      <Row className="d-flex justify-content-center">
-        {ready ? (
-          <div className="d-flex justify-content-center mt-5">
-            <h3>Team Number: </h3>
-            <TeamDropdown
-              red={false}
-              activeTeam={Number(teamNumber)}
-              teams={adminData.eventTeams as Team[]}
-              handleTeamSelect={(number) => setTeamNumber(number)}
-            />
-          </div>
-        ) : (
-          <>
-            <div className="d-flex justify-content-center mt-5">
-              <h3>Loading... (Requires an active Event and a at least Team in the event)</h3>
-            </div>
-          </>
-        )} 
-      </Row>
-      <Row className="my-5">
-        <Col className="d-flex justify-content-start mx-5" md={4}>
-{/*           Probably going to make a dropdown component to save space. */}
-          <Form.Group className="d-flex flex-column align-items-center" controlId="drivetrain">
-            <Form.Label>Drivetrain Type</Form.Label>
-            <Form.Control
-              as="select"
-              value={drivetrain}
-              onChange={(e) => setDrivetrain(e.target.value)} // Updates drivetrain on selection
-            >
-              <option value="">Select...</option>
-              <option value="swerve">Swerve</option>
-              <option value="tank">Tank</option>
-              <option value="mecanum">Mecanum</option>
-              <option value="other">Other</option>
-            </Form.Control>
-          </Form.Group>
-        </Col>
+      {submitted ? (
+        <div className="d-flex justify-content-center align-items-center h-75 flex-column">
+          <h1 className="display-1 fw-bold">Submitted successfully!</h1>
+          <h1 className="mt-3">Waiting for next match...</h1>
+        </div>
+      ) : (
+        <>
+          <h1 className="d-flex justify-content-center mt-1">Pit Scouting Form (WIP)</h1>
+          <Row className="d-flex justify-content-center">
+            {ready ? (
+              <div className="d-flex justify-content-center mt-3">
+                <h3 className="mr-2">Team Number: </h3>
+                <TeamDropdown
+                  red={false}
+                  activeTeam={Number(teamNumber)}
+                  teams={adminData.eventTeams as Team[]}
+                  handleTeamSelect={(number) => setTeamNumber(number)}
+                />
+              </div>
+            ) : (
+              <>
+                <div className="d-flex justify-content-center mt-5">
+                  <h3>Loading... (Requires an active Event and a at least Team in the event)</h3>
+                </div>
+              </>
+            )} 
+          </Row>
+          <Row className="my-5">
+            <Col className="d-flex justify-content-start" md={3}>
+    {/*           Probably going to make a dropdown component to save space. */}
+              <Form.Group controlId="drivetrain">
+                <Form.Label>Drivetrain Type</Form.Label>
+                <Form.Control
+                  as="select"
+                  value={drivetrain}
+                  onChange={(e) => setDrivetrain(e.target.value)} // Updates drivetrain on selection
+                >
+                  <option value="">Select...</option>
+                  <option value="swerve">Swerve</option>
+                  <option value="tank">Tank</option>
+                  <option value="mecanum">Mecanum</option>
+                  <option value="other">Other</option>
+                </Form.Control>
+              </Form.Group>
+            </Col>
 
-        <Col className="d-flex justify-content-center" md={5}>
-          <Form.Group controlId="wheelType">
-            <Form.Label>Wheel Type</Form.Label>
-            <Form.Control
-              as="select"
-              value={wheelType}
-              onChange={(e) => setWheelType(e.target.value)} // Updates wheel type on selection
-            >
-              <option value="">Select...</option>
-              <option value="colsuns">Colsuns</option>
-              <option value="blackNitrite">Black Nitrite</option>
-              <option value="blueNitrite">Blue Nitrite</option>
-              <option value="tpy">TPY</option>
-              <option value="whiteAndymark">White AndyMark</option>
-              <option value="mecanum">Mecanum</option>
-            </Form.Control>
-          </Form.Group>
-        </Col>
+            <Col className="d-flex justify-content-center" md={3}>
+              <Form.Group controlId="wheelType">
+                <Form.Label>Wheel Type</Form.Label>
+                <Form.Control
+                  as="select"
+                  value={wheelType}
+                  onChange={(e) => setWheelType(e.target.value)} // Updates wheel type on selection
+                >
+                  <option value="">Select...</option>
+                  <option value="colsuns">Colsuns</option>
+                  <option value="blackNitrite">Black Nitrite</option>
+                  <option value="blueNitrite">Blue Nitrite</option>
+                  <option value="tpy">TPY</option>
+                  <option value="whiteAndymark">White AndyMark</option>
+                  <option value="mecanum">Mecanum</option>
+                </Form.Control>
+              </Form.Group>
+            </Col>
+            
+            <Col className="d-flex justify-content-end" md={3}>
+              <Form.Group controlId="intakeType">
+                <Form.Label>Intake Type</Form.Label>
+                <Form.Control
+                  as="select"
+                  value={intakeType}
+                  onChange={(e) => setIntakeType(e.target.value)} // Updates intake type on selection
+                >
+                  <option value="">Select...</option>
+                  <option value="mechanical">Mechanical</option>
+                  <option value="pneumatic">Pneumatic</option>
+                  <option value="other">Other</option>
+                </Form.Control>
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row className="my-2">
+            <Col className="d-flex justify-content-start" md={5}>
+              <h3>Intake: Can...</h3>
+              <Form.Group>
+                <Form.Check
+                  type="checkbox"
+                  label="Intake Coral from Ground"
+                  checked={canIntakeGroundCoral}
+                  onChange={() => setCanIntakeGroundCoral(!canIntakeGroundCoral)}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Intake Coral from Station"
+                  checked={canIntakeStationCoral}
+                  onChange={() => setCanIntakeStationCoral(!canIntakeStationCoral)}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Intake Algae from Ground"
+                  checked={canIntakeGroundAlgae}
+                  onChange={() => setCanIntakeGroundAlgae(!canIntakeGroundAlgae)}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Intake Algae from Reef"
+                  checked={canIntakeReefAlgae}
+                  onChange={() => setCanIntakeReefAlgae(!canIntakeReefAlgae)}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Remove Algae from Reef without Intaking"
+                  checked={canRemoveReefAlgaeWithoutIntake}
+                  onChange={() => setCanRemoveReefAlgaeWithoutIntake(!canRemoveReefAlgaeWithoutIntake)}
+                />
+              </Form.Group>
+            </Col>
         
-        <Col className="d-flex justify-content-end" md={5}>
-          <Form.Group controlId="intakeType">
-            <Form.Label>Intake Type</Form.Label>
-            <Form.Control
-              as="select"
-              value={intakeType}
-              onChange={(e) => setIntakeType(e.target.value)} // Updates intake type on selection
-            >
-              <option value="">Select...</option>
-              <option value="mechanical">Mechanical</option>
-              <option value="pneumatic">Pneumatic</option>
-              <option value="other">Other</option>
-            </Form.Control>
-          </Form.Group>
-        </Col>
-      </Row>
-      <Row className="my-2">
-        <Col className="d-flex justify-content-start" md={5}>
-          <h3>Intake: Can...</h3>
-          <Form.Group>
-            <Form.Check
-              type="checkbox"
-              label="Intake Coral from Ground"
-              checked={canIntakeGroundCoral}
-              onChange={() => setCanIntakeGroundCoral(!canIntakeGroundCoral)}
-            />
-            <Form.Check
-              type="checkbox"
-              label="Intake Coral from Station"
-              checked={canIntakeStationCoral}
-              onChange={() => setCanIntakeStationCoral(!canIntakeStationCoral)}
-            />
-            <Form.Check
-              type="checkbox"
-              label="Intake Algae from Ground"
-              checked={canIntakeGroundAlgae}
-              onChange={() => setCanIntakeGroundAlgae(!canIntakeGroundAlgae)}
-            />
-            <Form.Check
-              type="checkbox"
-              label="Intake Algae from Reef"
-              checked={canIntakeReefAlgae}
-              onChange={() => setCanIntakeReefAlgae(!canIntakeReefAlgae)}
-            />
-            <Form.Check
-              type="checkbox"
-              label="Remove Algae from Reef without Intaking"
-              checked={canRemoveReefAlgaeWithoutIntake}
-              onChange={() => setCanRemoveReefAlgaeWithoutIntake(!canRemoveReefAlgaeWithoutIntake)}
-            />
-          </Form.Group>
-        </Col>
-    
-        <Col className="d-flex justify-content-center" md={5}>
-          <h3>Can Score In...</h3>
-          <Form.Group>
-            <Form.Check
-              type="checkbox"
-              label="Reef L1"
-              checked={canScoreReefL1}
-              onChange={() => setCanScoreReefL1(!canScoreReefL1)}
-            />
-            <Form.Check
-              type="checkbox"
-              label="Reef L2"
-              checked={canScoreReefL2}
-              onChange={() => setCanScoreReefL2(!canScoreReefL2)}
-            />
-            <Form.Check
-              type="checkbox"
-              label="Reef L3"
-              checked={canScoreReefL3}
-              onChange={() => setCanScoreReefL1(!canScoreReefL3)}
-            />
-            <Form.Check
-              type="checkbox"
-              label="Reef L4"
-              checked={canScoreReefL4}
-              onChange={() => setCanScoreReefL1(!canScoreReefL4)}
-            />
-            <Form.Check
-              type="checkbox"
-              label="Net"
-              checked={canScoreNet}
-              onChange={() => setCanScoreNet(!canScoreNet)}
-            />
-            <Form.Check
-              type="checkbox"
-              label="Processor"
-              checked={canScoreProcessor}
-              onChange={() => setCanScoreProcessor(!canScoreProcessor)}
-            />
-          </Form.Group>
-        </Col>
+            <Col className="d-flex justify-content-center" md={1}>
+              <h3>Can Score In...</h3>
+              <Form.Group>
+                <Form.Check
+                  type="checkbox"
+                  label="Reef L1"
+                  checked={canScoreReefL1}
+                  onChange={() => setCanScoreReefL1(!canScoreReefL1)}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Reef L2"
+                  checked={canScoreReefL2}
+                  onChange={() => setCanScoreReefL2(!canScoreReefL2)}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Reef L3"
+                  checked={canScoreReefL3}
+                  onChange={() => setCanScoreReefL3(!canScoreReefL3)}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Reef L4"
+                  checked={canScoreReefL4}
+                  onChange={() => setCanScoreReefL4(!canScoreReefL4)}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Net"
+                  checked={canScoreNet}
+                  onChange={() => setCanScoreNet(!canScoreNet)}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Processor"
+                  checked={canScoreProcessor}
+                  onChange={() => setCanScoreProcessor(!canScoreProcessor)}
+                />
+              </Form.Group>
+            </Col>
 
-        <Col className="d-flex justify-content-end" md={2}>
-          <h3>Endgame: Can...</h3>
-          <Form.Group>
-            <Form.Check
-              type="checkbox"
-              label="Park under Net"
-              checked={canPark}
-              onChange={() => setCanPark(!canPark)}
-            />
-            <Form.Check
-              type="checkbox"
-              label="Hang on Shallow Cage"
-              checked={canShallow}
-              onChange={() => setCanShallow(!canShallow)}
-            />
-            <Form.Check
-              type="checkbox"
-              label="Hang on Deep Cate"
-              checked={canDeep}
-              onChange={() => setCanDeep(!canDeep)}
-            />
-          </Form.Group>
-        </Col>
-      </Row>
-      <Row className="my-2">
-         <Col className="d-flex justify-content-start" md={4}>
-          <Form.Group controlId="weight">
-            <Form.Label>Weight (lbs)</Form.Label>
-            <Form.Control
-              type="number"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)} // Updates weight on input change
-            />
-          </Form.Group>
-        </Col>
-        <Col className="d-flex justify-content-end" md={4}>
-          <ToggleBox
-            name="Has Auto Mode?"
-            enabled={auton}
-            handleClick={() =>
-              setAuton((auton) => !auton)
-            }
-          />
-        </Col>
-      </Row>
-      <Row className="d-flex justify-content-center my-2">
-{/*         Need to figure out how to store this image; I didn't get enough details on this. */}
-        <Form.Group controlId="robotPicture">
-          <Form.Label>Upload Robot Picture</Form.Label>
-          {/* <Form.Control type="file" accept="image/*" onChange={handleFileChange} /> */}
-        </Form.Group>
-      </Row>
-      <Row className="d-flex justify-content-center">
-        <Col md={3}>
-          <CommentsBox contents={comments} handleChange={setComments} />
-        </Col>
-      </Row>
-      <Row className="d-flex justify-content-center mt-2">
-        <Col md={3}>
-          <SubmitButton
-            handleClick={()=>{}}
-            // handleClick={async () => {
-            //   dispatch(
-            //     sendPostMatchData({
-            //       driverSkillRating: driverSkillRating as number,
-            //       result: result as Result,
-            //       playedDefense,
-            //       comments,
-            //     })
-            //   );
-            //   handleSubmit();
-            // }}
-          />
-        </Col>
-      </Row>
+            <Col className="d-flex justify-content-end" md={5}>
+              <h3>Endgame: Can...</h3>
+              <Form.Group>
+                <Form.Check
+                  type="checkbox"
+                  label="Park under Net"
+                  checked={canPark}
+                  onChange={() => setCanPark(!canPark)}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Hang on Shallow Cage"
+                  checked={canShallow}
+                  onChange={() => setCanShallow(!canShallow)}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Hang on Deep Cate"
+                  checked={canDeep}
+                  onChange={() => setCanDeep(!canDeep)}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+          <Row className="my-2">
+            <Col className="d-flex justify-content-start" md={4}>
+              <Form.Group controlId="weight">
+                <Form.Label>Weight (lbs)</Form.Label>
+                <Form.Control
+                  type="number"
+                  value={weight}
+                  onChange={(e) => setWeight(e.target.value)} // Updates weight on input change
+                />
+              </Form.Group>
+            </Col>
+            <Col className="d-flex justify-content-end" md={4}>
+              <SidewaysToggleBox
+                name="Has Auto Mode?"
+                enabled={auton}
+                handleClick={() =>
+                  setAuton((auton) => !auton)
+                }
+              />
+            </Col>
+          </Row>
+          <Row className="d-flex justify-content-center my-2">
+    {/*         Need to figure out how to store this image; I didn't get enough details on this. */}
+            <Form.Group controlId="robotPicture">
+              <Form.Label>Upload Robot Picture</Form.Label>
+              {/* <Form.Control type="file" accept="image/*" onChange={handleFileChange} /> */}
+            </Form.Group>
+          </Row>
+          <Row className="d-flex justify-content-center">
+            <Col md={3}>
+              <CommentsBox contents={comments} handleChange={setComments} />
+            </Col>
+          </Row>
+          <Row className="d-flex justify-content-center mt-2">
+            <Col md={3}>
+              <SubmitButton
+                handleClick={async () => {
+                  dispatch(
+                    sendPitData({
+                      teamNumber: teamNumber as number,
+                      // driverSkillRating: driverSkillRating as number,
+                      // result: result as Result,
+                      // playedDefense,
+                      comments,
+                    })
+                  );
+                  setSubmitted(true);
+                }}
+              />
+            </Col>
+          </Row>
+        </>
+      )}
     </>
   );
 }

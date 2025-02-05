@@ -147,6 +147,40 @@ export const sendPostMatchData = createAsyncThunk(
   }
 );
 
+//UPDATE CYCLE: This may need to be updated if pit scouting data changes.
+//If so, ensure all arguments match the pit part of the Team model in the schema. 
+//Note to Michael: Make sure you update all of this to match the state on the pit page.
+export const sendPitData = createAsyncThunk(
+  "scores/sendPitData",
+  async (
+    {
+      teamNumber,
+      // driverSkillRating,
+      // result,
+      // playedDefense,
+      comments,
+    }: {
+      teamNumber: number;
+      // driverSkillRating: number;
+      // result: Result;
+      // playedDefense: boolean;
+      comments: string;
+    },
+    { dispatch, getState }
+  ) => {
+    const state = getState() as ReduxState;
+    const mainData = state.mainData;
+    const res = await axios.patch(
+      `/api/v1/teams/${teamNumber}
+      }/scores/${mainData.station?.toLowerCase()}`,
+      {
+        comments,
+        submitted: true,
+      }
+    );
+  }
+);
+
 export const sendIncapSegment = createAsyncThunk(
   "scores/sendIncapSegment",
   async (

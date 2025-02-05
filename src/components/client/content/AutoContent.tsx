@@ -25,28 +25,28 @@ interface Props {
   coralIntakeLocation?: CoralIntakeLocation;
   coralScoringLevel?: CoralScoringLevel;
   coralScoringSide?: CoralScoringSide;
-  handleCoralIntakeSelection: (selection: CoralIntakeLocation) => void;
-  handleCoralLevelSelection: (
-      level?: CoralScoringLevel,
-      dropped?: boolean
-    ) => void;
-  handleCoralSideSelection: (
-      side: CoralScoringSide,
-    ) => void;
-  handleCoralResultSelection: (
-      failedScoring: boolean,
-    ) => void;
+  handleCoral: (
+    phrase: string,
+    data:{
+      intakeSelection?: CoralIntakeLocation,
+      scoringLevel?: CoralScoringLevel,
+      dropped?: boolean,
+      scoringSide?: CoralScoringSide,
+      failedScoring?: boolean,
+    },
+  ) => void;
   algaeActiveSide: string;
   algaeIntakeLocation?: AlgaeIntakeLocation;
   algaeScoringLocation?: AlgaeScoringLocation;
-  handleAlgaeIntakeSelection: (selection: AlgaeIntakeLocation) => void;
-  handleAlgaeScoringSelection: (
-      location?: AlgaeScoringLocation,
-      dropped?: boolean
-    ) => void;
-  handleAlgaeResultSelection: (
-      failedScoring: boolean,
-    ) => void;
+  handleAlgae: (
+    phrase: string,
+    data:{
+      intakeSelection?: AlgaeIntakeLocation,
+      scoringLocation?: AlgaeScoringLocation,
+      dropped?: boolean,
+      failedScoring?: boolean,
+    },
+  ) => void;
   incapOn: boolean;
   handleIncap: () => void;
 }
@@ -57,16 +57,11 @@ export default function AutoContent({
   coralIntakeLocation,
   coralScoringLevel,
   coralScoringSide,
-  handleCoralIntakeSelection,
-  handleCoralLevelSelection,
-  handleCoralSideSelection,
-  handleCoralResultSelection,
+  handleCoral,
   algaeActiveSide,
   algaeIntakeLocation,
   algaeScoringLocation,
-  handleAlgaeIntakeSelection,
-  handleAlgaeScoringSelection,
-  handleAlgaeResultSelection,
+  handleAlgae,
   incapOn,
   handleIncap,
 }: Props) {
@@ -129,10 +124,7 @@ export default function AutoContent({
             intakeSelected={coralIntakeLocation}
             levelSelected={coralScoringLevel}
             sideSelected={coralScoringSide}
-            handleIntake={handleCoralIntakeSelection}
-            handleLevel={handleCoralLevelSelection}
-            handleSide={handleCoralSideSelection}
-            handleResult={handleCoralResultSelection}
+            handleSelection={handleCoral}
           />
         </Col>
         <Col className="d-flex justify-content-center" md={6}>
@@ -140,9 +132,7 @@ export default function AutoContent({
             activeSide={algaeActiveSide}
             intakeSelected={algaeIntakeLocation}
             locationSelected={algaeScoringLocation}
-            handleIntake={handleAlgaeIntakeSelection}
-            handleScoring={handleAlgaeScoringSelection}
-            handleResult={handleAlgaeResultSelection}
+            handleSelection={handleAlgae}
           />
         </Col>
       </Row>
@@ -152,8 +142,18 @@ export default function AutoContent({
           coralActive={coralActiveSide=="level"}
           algaeActive={algaeActiveSide=="scoring"}
           handleIncap={handleIncap}
-          handleCoralDropped={handleCoralLevelSelection}
-          handleAlgaeDropped={handleAlgaeScoringSelection}
+          handleCoralDropped={() => {
+            handleCoral("level",{
+              scoringLevel: undefined,
+              dropped: true
+            })
+          }}
+          handleAlgaeDropped={() => {
+            handleAlgae("scoring",{
+              scoringLocation: undefined,
+              dropped: true
+            })
+          }}
         />
       </Row>
     </div>

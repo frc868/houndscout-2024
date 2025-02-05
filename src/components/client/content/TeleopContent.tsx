@@ -20,25 +20,27 @@ interface Props {
   coralActiveSide: string;
   coralIntakeLocation?: CoralIntakeLocation;
   coralScoringLevel?: CoralScoringLevel;
-  handleCoralIntakeSelection: (selection: CoralIntakeLocation) => void;
-  handleCoralScoringSelection: (
-      level?: CoralScoringLevel,
-      dropped?: boolean
-    ) => void;
-  handleCoralResultSelection: (
-      failedScoring: boolean,
-    ) => void;
+  handleCoral: (
+    phrase: string,
+    data:{
+      intakeSelection?: CoralIntakeLocation,
+      scoringLevel?: CoralScoringLevel,
+      dropped?: boolean,
+      failedScoring?: boolean,
+    },
+  ) => void;
   algaeActiveSide: string;
   algaeIntakeLocation?: AlgaeIntakeLocation;
   algaeScoringLocation?: AlgaeScoringLocation;
-  handleAlgaeIntakeSelection: (selection: AlgaeIntakeLocation) => void;
-  handleAlgaeScoringSelection: (
-      location?: AlgaeScoringLocation,
-      dropped?: boolean
-    ) => void;
-  handleAlgaeResultSelection: (
-      failedScoring: boolean,
-    ) => void;
+  handleAlgae: (
+    phrase: string,
+    data:{
+      intakeSelection?: AlgaeIntakeLocation,
+      scoringLocation?: AlgaeScoringLocation,
+      dropped?: boolean,
+      failedScoring?: boolean,
+    },
+  ) => void;
   incapOn: boolean;
   handleIncap: () => void;
 }
@@ -50,15 +52,11 @@ export default function TeleopContent({
   coralActiveSide,
   coralIntakeLocation,
   coralScoringLevel,
-  handleCoralIntakeSelection,
-  handleCoralScoringSelection,
-  handleCoralResultSelection,
+  handleCoral,
   algaeActiveSide,
   algaeIntakeLocation,
   algaeScoringLocation,
-  handleAlgaeIntakeSelection,
-  handleAlgaeScoringSelection,
-  handleAlgaeResultSelection,
+  handleAlgae,
   incapOn,
   handleIncap,
 }: Props) {
@@ -75,9 +73,7 @@ export default function TeleopContent({
             activeSide={coralActiveSide}
             intakeSelected={coralIntakeLocation}
             levelSelected={coralScoringLevel}
-            handleIntake={handleCoralIntakeSelection}
-            handleLevel={handleCoralScoringSelection}
-            handleResult={handleCoralResultSelection}
+            handleSelection={handleCoral}
           />
         </Col>
         <Col className="d-flex justify-content-center" md={6}>
@@ -85,9 +81,7 @@ export default function TeleopContent({
             activeSide={algaeActiveSide}
             intakeSelected={algaeIntakeLocation}
             locationSelected={algaeScoringLocation}
-            handleIntake={handleAlgaeIntakeSelection}
-            handleScoring={handleAlgaeScoringSelection}
-            handleResult={handleAlgaeResultSelection}
+            handleSelection={handleAlgae}
           />
         </Col>
       </Row>
@@ -97,8 +91,18 @@ export default function TeleopContent({
           coralActive={coralActiveSide=="level"}
           algaeActive={algaeActiveSide=="scoring"}
           handleIncap={handleIncap}
-          handleCoralDropped={handleCoralScoringSelection}
-          handleAlgaeDropped={handleAlgaeScoringSelection}
+          handleCoralDropped={() => {
+            handleCoral("level",{
+              scoringLevel: undefined,
+              dropped: true
+            })
+          }}
+          handleAlgaeDropped={() => {
+            handleAlgae("scoring",{
+              scoringLocation: undefined,
+              dropped: true
+            })
+          }}
         />
       </Row>
     </div>

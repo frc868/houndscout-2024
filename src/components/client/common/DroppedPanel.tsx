@@ -31,13 +31,13 @@ export default function DroppedPanel({
                 className="mx-3 my-2"
                 active={coralActive}
                 gamePiece="coral"
-                handleSelection={() => {handleCoralDropped}}
+                handleSelection={handleCoralDropped}
             />
             <DroppedButton
                 className="mx-3 my-2"
                 active={algaeActive}
                 gamePiece="algae"
-                handleSelection={() => {handleAlgaeDropped}}
+                handleSelection={handleAlgaeDropped}
             />
         </Col>
         <IncapButton
