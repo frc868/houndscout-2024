@@ -6,8 +6,6 @@ interface Props {
   team?: number;
   matchName?: string;
   isConnected: boolean;
-  incapActive?: boolean;
-  handleIncap?: () => void;
 }
 
 //Displays some info about the active event and match on the server.
@@ -17,8 +15,6 @@ export default function StatusBar({
   team,
   matchName,
   isConnected,
-  incapActive,
-  handleIncap,
 }: Props) {
   return (
     <Navbar bg="dark" variant="dark">
@@ -34,9 +30,10 @@ export default function StatusBar({
         )}
       </Navbar.Text>
 
-      <Navbar.Brand className="justify-self-center font-monospace w-25">HoundScout v2024.0</Navbar.Brand>
+      {/* UPDATE CYCLE "VERY IMPORTANT": Make sure the year is accurate. */}
+      <Navbar.Brand>HoundScout v2024.0</Navbar.Brand>
       
-      <Navbar.Text className="justify-self-end text-end me-4 w-25">
+      <Navbar.Text className="justify-self-end text-end me-4 w-50">
         {isConnected ? (
           <>
             <i className="bi bi-circle-fill text-success"></i> Connected
@@ -47,14 +44,6 @@ export default function StatusBar({
           </>
         )}
       </Navbar.Text>
-
-      {scouterName && team && matchName && (
-        <IncapButton
-          className="text-nowrap justify-self-end mx-4"
-          active={incapActive||false}
-          handleClick={handleIncap||undefined}
-        />
-      )}
 
     </Navbar>
   );

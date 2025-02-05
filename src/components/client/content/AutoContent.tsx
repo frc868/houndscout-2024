@@ -25,29 +25,30 @@ interface Props {
   coralIntakeLocation?: CoralIntakeLocation;
   coralScoringLevel?: CoralScoringLevel;
   coralScoringSide?: CoralScoringSide;
-  handleCoralIntakeSelection: (selection: CoralIntakeLocation) => void;
-  handleCoralLevelSelection: (
-      level?: CoralScoringLevel,
-      dropped?: boolean
-    ) => void;
-  handleCoralSideSelection: (
-      side: CoralScoringSide,
-    ) => void;
-  handleCoralResultSelection: (
-      failedScoring: boolean,
-    ) => void;
+  handleCoral: (
+    phrase: string,
+    data:{
+      intakeSelection?: CoralIntakeLocation,
+      scoringLevel?: CoralScoringLevel,
+      dropped?: boolean,
+      scoringSide?: CoralScoringSide,
+      failedScoring?: boolean,
+    },
+  ) => void;
   algaeActiveSide: string;
   algaeIntakeLocation?: AlgaeIntakeLocation;
   algaeScoringLocation?: AlgaeScoringLocation;
-  handleAlgaeIntakeSelection: (selection: AlgaeIntakeLocation) => void;
-  handleAlgaeScoringSelection: (
-      location?: AlgaeScoringLocation,
-      dropped?: boolean
-    ) => void;
-  handleAlgaeResultSelection: (
-      failedScoring: boolean,
-    ) => void;
+  handleAlgae: (
+    phrase: string,
+    data:{
+      intakeSelection?: AlgaeIntakeLocation,
+      scoringLocation?: AlgaeScoringLocation,
+      dropped?: boolean,
+      failedScoring?: boolean,
+    },
+  ) => void;
   incapOn: boolean;
+  handleIncap: () => void;
 }
 
 export default function AutoContent({
@@ -56,17 +57,13 @@ export default function AutoContent({
   coralIntakeLocation,
   coralScoringLevel,
   coralScoringSide,
-  handleCoralIntakeSelection,
-  handleCoralLevelSelection,
-  handleCoralSideSelection,
-  handleCoralResultSelection,
+  handleCoral,
   algaeActiveSide,
   algaeIntakeLocation,
   algaeScoringLocation,
-  handleAlgaeIntakeSelection,
-  handleAlgaeScoringSelection,
-  handleAlgaeResultSelection,
-  incapOn
+  handleAlgae,
+  incapOn,
+  handleIncap,
 }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const mainData = useSelector((state: ReduxState) => state.mainData);
@@ -120,17 +117,14 @@ export default function AutoContent({
 
   return (
     <div className={`${!show && "d-none"}`}>
-      <Row className="my-5 d-flex justify-content-center">
+      <Row className="d-flex justify-content-center">
         <Col className="d-flex justify-content-center" md={6}>
           <AutoCoralPanel
             activeSide={coralActiveSide}
             intakeSelected={coralIntakeLocation}
             levelSelected={coralScoringLevel}
             sideSelected={coralScoringSide}
-            handleIntake={handleCoralIntakeSelection}
-            handleLevel={handleCoralLevelSelection}
-            handleSide={handleCoralSideSelection}
-            handleResult={handleCoralResultSelection}
+            handleSelection={handleCoral}
           />
         </Col>
         <Col className="d-flex justify-content-center" md={6}>
@@ -138,18 +132,28 @@ export default function AutoContent({
             activeSide={algaeActiveSide}
             intakeSelected={algaeIntakeLocation}
             locationSelected={algaeScoringLocation}
-            handleIntake={handleAlgaeIntakeSelection}
-            handleScoring={handleAlgaeScoringSelection}
-            handleResult={handleAlgaeResultSelection}
+            handleSelection={handleAlgae}
           />
         </Col>
       </Row>
       <Row className="my-5 d-flex justify-content-center">
         <DroppedPanel
+          incapActive={incapOn}
           coralActive={coralActiveSide=="level"}
           algaeActive={algaeActiveSide=="scoring"}
-          handleCoralDropped={handleCoralLevelSelection}
-          handleAlgaeDropped={handleAlgaeScoringSelection}
+          handleIncap={handleIncap}
+          handleCoralDropped={() => {
+            handleCoral("level",{
+              scoringLevel: undefined,
+              dropped: true
+            })
+          }}
+          handleAlgaeDropped={() => {
+            handleAlgae("scoring",{
+              scoringLocation: undefined,
+              dropped: true
+            })
+          }}
         />
       </Row>
     </div>

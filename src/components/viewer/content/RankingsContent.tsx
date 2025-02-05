@@ -86,13 +86,13 @@ export default function RankingsContent({rankings}: Props) {
             {/* Clickable table headers for sorting */}
             {[
               "Team",
-              "Total Games",
+              "Games",
               "Mobility",
-              "Auto Coral",
-              "Auto Algae",
-              "Teleop Coral",
-              "Teleop Algae",
-              "Endgame",
+              "Coral Intake Data",
+              "Algae Intake Data",
+              "Coral Scoring Data",
+              "Algae Scoring Data",
+              "Endgame Data",
               "Incap",
               "Defense",
             ].map((header) => (
@@ -118,24 +118,42 @@ export default function RankingsContent({rankings}: Props) {
               <td>{r.total}</td>
               <td>{r.mobility}</td>
               <td>
-                L1: {r.autoCoralLevel1Scored}<br />
-                L2: {r.autoCoralLevel2Scored}<br />
-                L3: {r.autoCoralLevel3Scored}<br />
-                L4: {r.autoCoralLevel4Scored}<br />
+                S1 (Auto): {r.CoralAutoStation1Intaked}<br />
+                G1 (Auto): {r.CoralAutoGround1Intaked}<br />
+                G2 (Auto): {r.CoralAutoGround2Intaked}<br />
+                G3 (Auto): {r.CoralAutoGround3Intaked}<br />
+                S2 (Auto): {r.CoralAutoStation2Intaked}<br />
+                Ground (Teleop): {r.CoralTeleopGroundIntaked}<br />
+                Station (Teleop): {r.CoralTeleopStationIntaked}<br />
               </td>
               <td>
-                Net: {r.autoAlgaeNetScored}<br />
-                Processor: {r.autoAlgaeProcessorScored}<br />
+                G1 (Auto): {r.AlgaeAutoGround1Intaked}<br />
+                G2 (Auto): {r.AlgaeAutoGround2Intaked}<br />
+                G3 (Auto): {r.AlgaeAutoGround3Intaked}<br />
+                R1 (Auto): {r.AlgaeAutoReef1Intaked}<br />
+                R2 (Auto): {r.AlgaeAutoReef2Intaked}<br />
+                R3 (Auto): {r.AlgaeAutoReef3Intaked}<br />
+                R4 (Auto): {r.AlgaeAutoReef4Intaked}<br />
+                R5 (Auto): {r.AlgaeAutoReef5Intaked}<br />
+                R6 (Auto): {r.AlgaeAutoReef6Intaked}<br />
+                Ground (Teleop): {r.AlgaeTeleopGroundIntaked}<br />
+                Reef (Teleop): {r.AlgaeTeleopReefIntaked}<br />
               </td>
               <td>
-                L1: {r.teleopCoralLevel1Scored}<br />
-                L2: {r.teleopCoralLevel2Scored}<br />
-                L3: {r.teleopCoralLevel3Scored}<br />
-                L4: {r.teleopCoralLevel4Scored}<br />
+                L1: {r.CoralLevel1Scored}/{r.CoralLevel1Attempted}<br />
+                L2: {r.CoralLevel2Scored}/{r.CoralLevel2Attempted}<br />
+                L3: {r.CoralLevel3Scored}/{r.CoralLevel3Attempted}<br />
+                L4: {r.CoralLevel4Scored}/{r.CoralLevel4Attempted}<br />
+                Reef S1 (Auto): {r.CoralAutoSide1Scored}/{r.CoralAutoSide1Attempted}<br />
+                Reef S2 (Auto): {r.CoralAutoSide2Scored}/{r.CoralAutoSide2Attempted}<br />
+                Reef S3 (Auto): {r.CoralAutoSide3Scored}/{r.CoralAutoSide3Attempted}<br />
+                Reef S4 (Auto): {r.CoralAutoSide4Scored}/{r.CoralAutoSide4Attempted}<br />
+                Reef S5 (Auto): {r.CoralAutoSide5Scored}/{r.CoralAutoSide5Attempted}<br />
+                Reef S6 (Auto): {r.CoralAutoSide6Scored}/{r.CoralAutoSide6Attempted}<br />
               </td>
               <td>
-                Net: {r.teleopAlgaeNetScored}<br />
-                Processor: {r.teleopAlgaeProcessorScored}<br />
+                Net: {r.AlgaeNetScored}/{r.AlgaeNetAttempted}<br />
+                Processor: {r.AlgaeProcessorScored}/{r.AlgaeNetAttempted}<br />
               </td>
               <td>
                 Parked: {r.parked}<br />

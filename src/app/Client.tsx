@@ -39,6 +39,29 @@ export default function Client({ station }: Props) {
   const [tab, setTab] = useState<Section>(Section.PREMATCH);
   const [submitted, setSubmitted] = useState(false);
 
+  const [coralIntakeLocation, setCoralIntakeLocation] = useState<
+    CoralIntakeLocation | undefined
+  >(undefined);
+  const [coralScoringLevel, setCoralScoringLevel] = useState<
+    CoralScoringLevel | undefined
+  >(undefined);
+  const [coralScoringSide, setCoralScoringSide] = useState<
+    CoralScoringSide | undefined
+  >(undefined);
+  const [coralActiveSide, setCoralActiveSide] = useState("intaking");//This is set between intaking, level, side, and result.
+  const [coralStartTime, setCoralStartTime] = useState(0);
+  const [coralEndTime, setCoralEndTime] = useState(0);
+
+  const [algaeIntakeLocation, setAlgaeIntakeLocation] = useState<
+    AlgaeIntakeLocation | undefined
+  >(undefined);
+  const [algaeScoringLocation, setAlgaeScoringLocation] = useState<
+    AlgaeScoringLocation | undefined
+  >(undefined);
+  const [algaeActiveSide, setAlgaeActiveSide] = useState("intaking");//This is set between intaking, scoring, and result.
+  const [algaeStartTime, setAlgaeStartTime] = useState(0);
+  const [algaeEndTime, setAlgaeEndTime] = useState(0);
+
   useEffect(() => {
     const update = async () => {
       await dispatch(setStation({ station }));
@@ -52,7 +75,7 @@ export default function Client({ station }: Props) {
     }
     const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
-  }, [dispatch, station, tab]);
+  }, [dispatch, station, tab, coralActiveSide]);
 
   useEffect(() => {
     setSubmitted(false);
@@ -63,6 +86,23 @@ export default function Client({ station }: Props) {
   const [incapStartTime, setIncapStartTime] = useState(0);
 
   //triggers when intake location is selected
+  const handleIncap = async () => {
+    if(incapOn){
+      const event = {
+        timestampStarted: incapStartTime,
+        timestampEnded: Date.now(),
+        full: true
+      }; //incapSegment creation.
+      setIncapStartTime(0);
+      setIncapOn(false);  
+
+      await dispatch(sendIncapSegment(event));
+    } else {
+      setIncapStartTime(Date.now());
+      setIncapOn(true);   
+    }   
+  };
+
   const handleIncapStart = () => {
     //Add a timestamp creator at the first scoring input.
     setIncapStartTime(Date.now());
@@ -83,152 +123,125 @@ export default function Client({ station }: Props) {
     }
   };
 
-  //UPDATE CYCLE: Make sure everything down to handleScoringSelection is duplicated if there's multiple game pieces.
+  //UPDATE CYCLE (out of date): Make sure everything down to handleScoringSelection is duplicated if there's multiple game pieces.
   //Also ensure the enums used are accurate; those are imported from Prisma, so update those as well.
-  const [coralIntakeLocation, setCoralIntakeLocation] = useState<
-    CoralIntakeLocation | undefined
-  >(undefined);
-  const [coralScoringLevel, setCoralScoringLevel] = useState<
-    CoralScoringLevel | undefined
-  >(undefined);
-  const [coralScoringSide, setCoralScoringSide] = useState<
-    CoralScoringSide | undefined
-  >(undefined);
-  const [coralActiveSide, setCoralActiveSide] = useState("intaking");//This is set between intaking, level, side, and result.
-  const [coralStartTime, setCoralStartTime] = useState(0);
-  const [coralEndTime, setCoralEndTime] = useState(0);
-
-  //triggers when intake location is selected
-  const handleCoralIntakeSelection = (selection: CoralIntakeLocation) => {
-    setCoralStartTime(Date.now());
-    setCoralIntakeLocation(selection);
-    setCoralActiveSide("level");    
-  };
-  //triggers when scoring location is selected
-  const handleCoralLevelSelection = async (
-    level?: CoralScoringLevel,
-    dropped?: boolean
+  
+  const handleCoral = async (
+    phrase: string,
+    data:{
+      intakeSelection?: CoralIntakeLocation,
+      scoringLevel?: CoralScoringLevel,
+      dropped?: boolean,
+      scoringSide?: CoralScoringSide,
+      failedScoring?: boolean,
+    },
   ) => {
-    if (coralActiveSide == "level") {
-      if(dropped){
+    if(phrase==coralActiveSide){
+      if (phrase=="intaking"){
+        setCoralStartTime(Date.now());
+        setCoralIntakeLocation(data.intakeSelection);
+        setCoralActiveSide("level");  
+      } else if (phrase=="level"){
+        if(data.dropped){
+          const event = {
+            intakeLocation: coralIntakeLocation as CoralIntakeLocation,
+            scoringLevel: undefined,
+            scoringSide: undefined,
+            failedScoring: true,
+            dropped: true,
+            timestampPickedUp: algaeStartTime,
+            timestampScored: Date.now(),
+          }; //teleopScoringEvent creation.
+          setCoralIntakeLocation(undefined);
+          setCoralStartTime(0);
+          setCoralActiveSide("intaking");
+    
+          await dispatch(sendCoralEvent(event));
+        } else {
+          setCoralEndTime(Date.now());
+          setCoralScoringLevel(data.scoringLevel);
+          if(tab==Section.AUTO){
+            setCoralActiveSide("side"); 
+          } else {
+            setCoralActiveSide("result"); 
+          }
+        }
+      } else if (phrase == "side") {
+        setCoralScoringSide(data.scoringSide);
+        setCoralActiveSide("result");   
+      } else if (phrase == "result") {
         const event = {
           intakeLocation: coralIntakeLocation as CoralIntakeLocation,
-          scoringLevel: undefined,
-          scoringSide: undefined,
-          failedScoring: true,
-          dropped: true,
-          timestampPickedUp: algaeStartTime,
-          timestampScored: Date.now(),
+          scoringLevel: coralScoringLevel as CoralScoringLevel,
+          scoringSide: coralScoringSide as CoralScoringSide,
+          failedScoring: data.failedScoring,
+          dropped: false,
+          timestampPickedUp: coralStartTime,
+          timestampScored: coralEndTime,
         }; //teleopScoringEvent creation.
         setCoralIntakeLocation(undefined);
+        setCoralScoringLevel(undefined);
+        setCoralScoringSide(undefined);
         setCoralStartTime(0);
+        setCoralEndTime(0);
         setCoralActiveSide("intaking");
   
         await dispatch(sendCoralEvent(event));
-      } else {
-        setCoralEndTime(Date.now());
-        setCoralScoringLevel(level);
-        if(tab==Section.AUTO){
-          setCoralActiveSide("side"); 
-        } else {
-          setCoralActiveSide("result"); 
-        }
       }
     }
   };
-  const handleCoralSideSelection = (side: CoralScoringSide) => {
-    if (coralActiveSide == "side") {
-      setCoralScoringSide(side);
-      setCoralActiveSide("result");   
-    } 
-  };
-  const handleCoralResultSelection = async (
-    failedScoring?: boolean,
-  ) => {
-    if (coralActiveSide == "result") {
-      const event = {
-        intakeLocation: coralIntakeLocation as CoralIntakeLocation,
-        scoringLevel: coralScoringLevel as CoralScoringLevel,
-        scoringSide: coralScoringSide as CoralScoringSide,
-        failedScoring: failedScoring,
-        dropped: false,
-        timestampPickedUp: coralStartTime,
-        timestampScored: coralEndTime,
-      }; //teleopScoringEvent creation.
-      setCoralIntakeLocation(undefined);
-      setCoralScoringLevel(undefined);
-      setCoralScoringSide(undefined);
-      setCoralStartTime(0);
-      setCoralEndTime(0);
-      setCoralActiveSide("intaking");
 
-      await dispatch(sendCoralEvent(event));
-    }
-  };
-
-  const [algaeIntakeLocation, setAlgaeIntakeLocation] = useState<
-    AlgaeIntakeLocation | undefined
-  >(undefined);
-  const [algaeScoringLocation, setAlgaeScoringLocation] = useState<
-    AlgaeScoringLocation | undefined
-  >(undefined);
-  const [algaeActiveSide, setAlgaeActiveSide] = useState("intaking");//This is set between intaking, scoring, and result.
-  const [algaeStartTime, setAlgaeStartTime] = useState(0);
-  const [algaeEndTime, setAlgaeEndTime] = useState(0);
-  
-  //triggers when intake location is selected
-  const handleAlgaeIntakeSelection = (selection: AlgaeIntakeLocation) => {
-    setAlgaeStartTime(Date.now());
-    setAlgaeIntakeLocation(selection);
-    setAlgaeActiveSide("scoring");    
-  };
-  //triggers when scoring location is selected
-  const handleAlgaeScoringSelection = async (
-    location?: AlgaeScoringLocation,
-    dropped?: boolean
+  const handleAlgae = async (
+    phrase: string,
+    data:{
+      intakeSelection?: AlgaeIntakeLocation,
+      scoringLocation?: AlgaeScoringLocation,
+      dropped?: boolean,
+      failedScoring?: boolean,
+    },
   ) => {
-    if (algaeActiveSide == "scoring") {
-      if(dropped){
+    if(phrase==algaeActiveSide){
+      if (phrase=="intaking"){
+        setAlgaeStartTime(Date.now());
+        setAlgaeIntakeLocation(data.intakeSelection);
+        setAlgaeActiveSide("scoring");  
+      } else if (phrase=="scoring"){
+        if(data.dropped){
+          const event = {
+            intakeLocation: algaeIntakeLocation as AlgaeIntakeLocation,
+            scoringLocation: undefined,
+            failedScoring: true,
+            dropped: true,
+            timestampPickedUp: algaeStartTime,
+            timestampScored: Date.now(),
+          }; //scoring event creation.
+          setAlgaeIntakeLocation(undefined);
+          setAlgaeStartTime(0);
+          setAlgaeActiveSide("intaking");
+    
+          await dispatch(sendAlgaeEvent(event));
+        } else {
+          setAlgaeEndTime(Date.now());
+          setAlgaeScoringLocation(data.scoringLocation);
+          setAlgaeActiveSide("result"); 
+        }
+      } else if (phrase == "result") {
         const event = {
           intakeLocation: algaeIntakeLocation as AlgaeIntakeLocation,
-          scoringLocation: undefined,
-          failedScoring: true,
-          dropped,
+          scoringLocation: algaeScoringLocation as AlgaeScoringLocation,
+          failedScoring: data.failedScoring,
+          dropped: false,
           timestampPickedUp: algaeStartTime,
-          timestampScored: Date.now(),
-        }; //teleopScoringEvent creation.
+          timestampScored: algaeEndTime,
+        }; //scoring event creation.
         setAlgaeIntakeLocation(undefined);
+        setAlgaeScoringLocation(undefined);
         setAlgaeStartTime(0);
+        setAlgaeEndTime(0);
         setAlgaeActiveSide("intaking");
   
         await dispatch(sendAlgaeEvent(event));
-      } else {
-        setAlgaeEndTime(Date.now());
-        setAlgaeScoringLocation(location);
-        setAlgaeActiveSide("result"); 
       }
-    }
-  };
-  //triggers when scoring location is selected
-  const handleAlgaeResultSelection = async (
-    failedScoring?: boolean,
-  ) => {
-    if (algaeActiveSide == "result") {
-      const event = {
-        intakeLocation: algaeIntakeLocation as AlgaeIntakeLocation,
-        scoringLocation: algaeScoringLocation as AlgaeScoringLocation,
-        failedScoring,
-        dropped: false,
-        timestampPickedUp: algaeStartTime,
-        timestampScored: algaeEndTime,
-      }; //teleopScoringEvent creation.
-      setAlgaeIntakeLocation(undefined);
-      setAlgaeScoringLocation(undefined);
-      setAlgaeStartTime(0);
-      setAlgaeEndTime(0);
-      setAlgaeActiveSide("intaking");
-
-      await dispatch(sendAlgaeEvent(event));
     }
   };
 
@@ -243,8 +256,6 @@ export default function Client({ station }: Props) {
         team={mainData.activeTeamNumber}
         matchName={mainData.activeMatchName}
         isConnected={true}
-        incapActive={incapOn}
-        handleIncap={incapOn?handleIncapEnd:handleIncapStart}
       />
       {!ready && (
         <>
@@ -287,31 +298,24 @@ export default function Client({ station }: Props) {
                   coralIntakeLocation={coralIntakeLocation}
                   coralScoringLevel={coralScoringLevel}
                   coralScoringSide={coralScoringSide}
-                  handleCoralIntakeSelection={handleCoralIntakeSelection}
-                  handleCoralLevelSelection={handleCoralLevelSelection}
-                  handleCoralSideSelection={handleCoralSideSelection}
-                  handleCoralResultSelection={handleCoralResultSelection}
+                  handleCoral={handleCoral}
                   algaeActiveSide={algaeActiveSide}
                   algaeIntakeLocation={algaeIntakeLocation}
                   algaeScoringLocation={algaeScoringLocation}
-                  handleAlgaeIntakeSelection={handleAlgaeIntakeSelection}
-                  handleAlgaeScoringSelection={handleAlgaeScoringSelection}
-                  handleAlgaeResultSelection={handleAlgaeResultSelection}
+                  handleAlgae={handleAlgae}
                   incapOn={incapOn}
+                  handleIncap={incapOn?handleIncapEnd:handleIncapStart}
                 />
                 <TeleopContent
                   show={tab === Section.TELEOP}
                   coralActiveSide={coralActiveSide}
                   coralIntakeLocation={coralIntakeLocation}
-                  handleCoralIntakeSelection={handleCoralIntakeSelection}
-                  handleCoralScoringSelection={handleCoralLevelSelection}
-                  handleCoralResultSelection={handleCoralResultSelection}
+                  handleCoral={handleCoral}
+                  handleAlgae={handleAlgae}
                   algaeActiveSide={algaeActiveSide}
                   algaeIntakeLocation={algaeIntakeLocation}
-                  handleAlgaeIntakeSelection={handleAlgaeIntakeSelection}
-                  handleAlgaeScoringSelection={handleAlgaeScoringSelection}
-                  handleAlgaeResultSelection={handleAlgaeResultSelection}
                   incapOn={incapOn}
+                  handleIncap={incapOn?handleIncapEnd:handleIncapStart}
                 />
                 <EndgameContent show={tab === Section.ENDGAME} incapOn={incapOn} />
                 <PostmatchContent

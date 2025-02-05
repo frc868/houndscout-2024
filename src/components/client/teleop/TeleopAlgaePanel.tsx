@@ -12,9 +12,15 @@ interface Props {
     activeSide: string;
     intakeSelected?: AlgaeIntakeLocation;
     locationSelected?: AlgaeScoringLocation;
-    handleIntake: (selection: AlgaeIntakeLocation) => void;
-    handleScoring: (selection: AlgaeScoringLocation) => void;
-    handleResult: (selection: boolean) => void,
+    handleSelection: (
+        phrase: string,
+        data:{
+          intakeSelection?: AlgaeIntakeLocation,
+          scoringLocation?: AlgaeScoringLocation,
+          dropped?: boolean,
+          failedScoring?: boolean,
+        },
+      ) => void;
 }
 
 //Displays a map of half of the field.
@@ -24,73 +30,95 @@ export default function AutoAlgaePanel({
     activeSide,
     intakeSelected,
     locationSelected,
-    handleIntake,
-    handleScoring,
-    handleResult,
+    handleSelection,
 }: Props) {
-  return (
-    <div className="d-flex flex-column align-items-center">
-        <h1>Algae</h1>
-        <Row className="d-flex justify-content-center">
-            <Col className="d-flex flex-column" style={{backgroundColor:"orange"}}>
-                <h1 className="text-center mb-1">Intake</h1>
-                {/* Copy everything in this div. */}
-                <div className="d-flex flex-column">
-                    <h3 className = "text-center">Ground</h3>
-                    <TeleopIntakeButton
-                        className="mt-2"
-                        active={activeSide=="intaking"}
-                        selected={intakeSelected == AlgaeIntakeLocation.TELEOPGROUND}
-                        handleSelection={() => handleIntake(AlgaeIntakeLocation.TELEOPGROUND)}
-                        gamePiece="algae"
-                    />
-                </div>
-                <div className="d-flex flex-column">
-                    <h3 className = "text-center">Reef</h3>
-                    <TeleopIntakeButton
-                        className="mt-2"
-                        active={activeSide=="intaking"}
-                        selected={intakeSelected == AlgaeIntakeLocation.TELEOPREEF}
-                        handleSelection={() => handleIntake(AlgaeIntakeLocation.TELEOPREEF)}
-                        gamePiece="algae"
-                    />
-                </div>
-            </Col>
-            <Col className="d-flex flex-column" style={{backgroundColor:"purple"}}>
-                <h1 className="text-center mb-1">Scoring</h1>
-                <div className="d-flex flex-column">
-                    <LocationButton
-                        className="mt-2"
-                        active={activeSide=="scoring"}
-                        selected={locationSelected == AlgaeScoringLocation.NET}
-                        handleSelection={() => handleScoring(AlgaeScoringLocation.NET)}
-                        text="Net"
-                    />
-                    <LocationButton
-                        className="mt-2"
-                        active={activeSide=="scoring"}
-                        selected={locationSelected == AlgaeScoringLocation.PROCESSOR}
-                        handleSelection={() => handleScoring(AlgaeScoringLocation.PROCESSOR)}
-                        text="Proc."
-                    />
-                </div>
-            </Col>
-            <Col className="d-flex flex-column" style={{backgroundColor:"gray"}}>
-                <h1 className="text-center mb-1">Result</h1>
-                <div className="d-flex flex-column">
-                    <ScoreButton
-                        className="mt-2"
-                        active={activeSide=="result"}
-                        handleClick={() => handleResult(true)}
-                    />
-                    <FailButton
-                        className="mt-2"
-                        active={activeSide=="result"}
-                        handleClick={() => handleResult(false)}
-                    />
-                </div>
-            </Col>
-        </Row>
-    </div>
-  );
+    return (
+        <div className="d-flex flex-column align-items-center">
+            <h1>Algae</h1>
+            <Row className="d-flex justify-content-center">
+                <Col className="d-flex flex-column" style={{backgroundColor:"orange"}}>
+                    <h1 className="text-center mb-1">Intake</h1>
+                    {/* Copy everything in this div. */}
+                    <div className="d-flex flex-column">
+                        <h3 className = "text-center">Ground</h3>
+                        <TeleopIntakeButton
+                            className="mt-2"
+                            active={activeSide=="intaking"}
+                            selected={intakeSelected == AlgaeIntakeLocation.TELEOPGROUND}
+                            handleSelection={() => {
+                                handleSelection("intaking",{
+                                    intakeSelection: AlgaeIntakeLocation.TELEOPGROUND
+                                })
+                            }}
+                            gamePiece="algae"
+                        />
+                    </div>
+                    <div className="d-flex flex-column">
+                        <h3 className = "text-center">Reef</h3>
+                        <TeleopIntakeButton
+                            className="mt-2"
+                            active={activeSide=="intaking"}
+                            selected={intakeSelected == AlgaeIntakeLocation.TELEOPREEF}
+                            handleSelection={() => {
+                                handleSelection("intaking",{
+                                    intakeSelection: AlgaeIntakeLocation.TELEOPREEF
+                                })
+                            }}
+                            gamePiece="algae"
+                        />
+                    </div>
+                </Col>
+                <Col className="d-flex flex-column" style={{backgroundColor:"purple"}}>
+                    <h1 className="text-center mb-1">Scoring</h1>
+                    <div className="d-flex flex-column">
+                        <LocationButton
+                            className="mt-2"
+                            active={activeSide=="scoring"}
+                            selected={locationSelected == AlgaeScoringLocation.NET}
+                            handleSelection={() => {
+                                handleSelection("scoring",{
+                                    scoringLocation: AlgaeScoringLocation.NET
+                                })
+                            }}
+                            text="Net"
+                        />
+                        <LocationButton
+                            className="mt-2"
+                            active={activeSide=="scoring"}
+                            selected={locationSelected == AlgaeScoringLocation.PROCESSOR}
+                            handleSelection={() => {
+                                handleSelection("scoring",{
+                                    scoringLocation: AlgaeScoringLocation.PROCESSOR
+                                })
+                            }}
+                            text="Proc."
+                        />
+                    </div>
+                </Col>
+                <Col className="d-flex flex-column" style={{backgroundColor:"gray"}}>
+                    <h1 className="text-center mb-1">Result</h1>
+                    <div className="d-flex flex-column">
+                        <ScoreButton
+                            className="mt-2"
+                            active={activeSide=="result"}
+                            handleClick={() => {
+                                handleSelection("result",{
+                                    failedScoring: false
+                                })
+                            }}
+                        />
+                        <FailButton
+                            className="mt-2"
+                            active={activeSide=="result"}
+                            handleClick={() => {
+                                handleSelection("result",{
+                                    failedScoring: true
+                                })
+                            }}
+                        />
+                    </div>
+                </Col>
+            </Row>
+        </div>
+    );
 }

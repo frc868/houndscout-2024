@@ -3,6 +3,7 @@ import { Alliance } from "@/lib/enums";
 import { Col, Row } from "react-bootstrap";
 import { CoralIntakeLocation, CoralScoringLevel, CoralScoringSide } from "@prisma/client";
 import AutoIntakeButton from "../mini/AutoIntakeButton";
+import TeleopIntakeButton from "../mini/TeleopIntakeButton";
 import LocationButton from "../mini/LocationButton";
 import ReefSideButton from "../mini/ReefSideButton";
 import ScoreButton from "../mini/ScoreButton";
@@ -15,10 +16,16 @@ interface Props {
     intakeSelected?: CoralIntakeLocation;
     levelSelected?: CoralScoringLevel;
     sideSelected?: CoralScoringSide;
-    handleIntake: (selection: CoralIntakeLocation) => void;
-    handleLevel: (selection: CoralScoringLevel) => void;
-    handleSide: (selection: CoralScoringSide) => void;
-    handleResult: (selection: boolean) => void,
+    handleSelection: (
+        phrase: string,
+        data:{
+            intakeSelection?: CoralIntakeLocation,
+            scoringLevel?: CoralScoringLevel,
+            dropped?: boolean,
+            scoringSide?: CoralScoringSide,
+            failedScoring?: boolean,
+        },
+    ) => void;
 }
 
 //Displays a map of half of the field.
@@ -29,191 +36,260 @@ export default function AutoCoralPanel({
     intakeSelected,
     levelSelected,
     sideSelected,
-    handleIntake,
-    handleLevel,
-    handleSide,
-    handleResult,
+    handleSelection,
 }: Props) {
     const mainData = useSelector((state: ReduxState) => state.mainData);
-  return (
-    <div className="d-flex flex-column align-items-center">
-      <h1>Coral</h1>
-      <Row className="d-flex justify-content-center">
-          <Col className="d-flex flex-column flex-grow-1" style={{backgroundColor:"orange"}}>
-              <h1 className="text-center mb-1">Intake</h1>
-              {/* Copy everything in this div. */}
-                  <div className="d-flex flex-column">
-                      <h3 className="text-center">Station 1</h3>
-                      <AutoIntakeButton
-                          className="mt-2"
-                          active={activeSide=="intaking"}
-                          selected={intakeSelected==CoralIntakeLocation.AUTOSTATION1}
-                          handleSelection={() => handleIntake(CoralIntakeLocation.AUTOSTATION1)}
-                          gamePiece="coral"
-                      />
-                  </div>
-                  <div className="d-flex flex-column">
-                      <h3 className="text-center">G1</h3>
-                      <AutoIntakeButton
-                          className="mt-2"
-                          active={activeSide=="intaking"}
-                          selected={intakeSelected==CoralIntakeLocation.AUTOGROUND1}
-                          handleSelection={() => handleIntake(CoralIntakeLocation.AUTOGROUND1)}
-                          gamePiece="coral"
-                      />
-                  </div>
-                  <div className="d-flex flex-column">
-                      <h3 className="text-center">G2</h3>
-                      <AutoIntakeButton
-                          className="mt-2"
-                          active={activeSide=="intaking"}
-                          selected={intakeSelected==CoralIntakeLocation.AUTOGROUND2}
-                          handleSelection={() => handleIntake(CoralIntakeLocation.AUTOGROUND2)}
-                          gamePiece="coral"
-                      />
-                  </div>
-                  <div className="d-flex flex-column">
-                      <h3 className="text-center">G3</h3>
-                      <AutoIntakeButton
-                          className="mt-2"
-                          active={activeSide=="intaking"}
-                          selected={intakeSelected==CoralIntakeLocation.AUTOGROUND3}
-                          handleSelection={() => handleIntake(CoralIntakeLocation.AUTOGROUND3)}
-                          gamePiece="coral"
-                      />
-                  </div>
-                  <div className="d-flex flex-column">
-                      <h3 className="text-center">Station 2</h3>
-                      <AutoIntakeButton
-                          className="mt-2"
-                          active={activeSide=="intaking"}
-                          selected={intakeSelected==CoralIntakeLocation.AUTOSTATION2}
-                          handleSelection={() => handleIntake(CoralIntakeLocation.AUTOSTATION2)}
-                          gamePiece="coral"
-                      />
-                  </div>
-          </Col>
-          <Col className="d-flex flex-column flex-shrink-1" style={{backgroundColor:"purple"}}>
-              <h1 className="text-center mb-1">Scoring</h1>
-              <Row>
-                  <Col>
-                      <div className="d-flex flex-column">
-                          <LocationButton
-                              className="mt-2"
-                              active={activeSide=="level"}
-                              selected={levelSelected==CoralScoringLevel.LEVEL1}
-                              handleSelection={() => handleLevel(CoralScoringLevel.LEVEL1)}
-                              text="L1"
-                          />
-                          <LocationButton
-                              className="mt-2"
-                              active={activeSide=="level"}
-                              selected={levelSelected==CoralScoringLevel.LEVEL2}
-                              handleSelection={() => handleLevel(CoralScoringLevel.LEVEL2)}
-                              text="L2"
-                          />
-                          <LocationButton
-                              className="mt-2"
-                              active={activeSide=="level"}
-                              selected={levelSelected==CoralScoringLevel.LEVEL3}
-                              handleSelection={() => handleLevel(CoralScoringLevel.LEVEL3)}
-                              text="L3"
-                          />
-                          <LocationButton
-                              className="mt-2"
-                              active={activeSide=="level"}
-                              selected={levelSelected==CoralScoringLevel.LEVEL4}
-                              handleSelection={() => handleLevel(CoralScoringLevel.LEVEL4)}
-                              text="L4"
-                          />
-                      </div>
-                  </Col>
-                  <Col className="flex-grow-1">
-                      {/* Coral Reef in Auto */}
-                      <div className="position-relative" style={{width: "100%"}}>
-                          <img
-                              className="mx-auto my-2"
-                              alt=""
-                              style={{
-                                  width: "65%",
-                                  height: "auto",
-                                  transform: mainData.blueOnLeft?"":"rotate(180deg)",
-                              }}
-                              src={
-                                mainData.station?.includes("red")
-                                  ? "/assets/blue_start_prematch.png"
-                                  : "/assets/red_start_prematch.png"
-                              }
-                          />
+    return (
+        <div className="d-flex flex-column align-items-center">
+            <h1>Coral</h1>
+            <Row className="d-flex justify-content-center">
+                <Col className="d-flex flex-column flex-grow-1" style={{backgroundColor:"orange"}}>
+                    <h2 className="text-center mb-1">Intake</h2>
+                    {/* Copy everything in this div. */}
+                        <div className="d-flex flex-column">
+                            <h3 className="text-center">Station 1</h3>
+                            <TeleopIntakeButton
+                                className="mt-2"
+                                active={activeSide=="intaking"}
+                                selected={intakeSelected==CoralIntakeLocation.AUTOSTATION1}
+                                handleSelection={() => {
+                                    handleSelection("intaking",{
+                                        intakeSelection: CoralIntakeLocation.AUTOSTATION1
+                                    })
+                                }}
+                                gamePiece="coral"
+                            />
+                        </div>
+                        <div className="d-flex flex-column">
+                            <h3 className="text-center">G1</h3>
+                            <TeleopIntakeButton
+                                className="mt-2"
+                                active={activeSide=="intaking"}
+                                selected={intakeSelected==CoralIntakeLocation.AUTOGROUND1}
+                                handleSelection={() => {
+                                    handleSelection("intaking",{
+                                        intakeSelection: CoralIntakeLocation.AUTOGROUND1
+                                    })
+                                }}
+                                gamePiece="coral"
+                            />
+                        </div>
+                        <div className="d-flex flex-column">
+                            <h3 className="text-center">G2</h3>
+                            <TeleopIntakeButton
+                                className="mt-2"
+                                active={activeSide=="intaking"}
+                                selected={intakeSelected==CoralIntakeLocation.AUTOGROUND2}
+                                handleSelection={() => {
+                                    handleSelection("intaking",{
+                                        intakeSelection: CoralIntakeLocation.AUTOGROUND2
+                                    })
+                                }}
+                                gamePiece="coral"
+                            />
+                        </div>
+                        <div className="d-flex flex-column">
+                            <h3 className="text-center">G3</h3>
+                            <TeleopIntakeButton
+                                className="mt-2"
+                                active={activeSide=="intaking"}
+                                selected={intakeSelected==CoralIntakeLocation.AUTOGROUND3}
+                                handleSelection={() => {
+                                    handleSelection("intaking",{
+                                        intakeSelection: CoralIntakeLocation.AUTOGROUND3
+                                    })
+                                }}
+                                gamePiece="coral"
+                            />
+                        </div>
+                        <div className="d-flex flex-column">
+                            <h3 className="text-center">Station 2</h3>
+                            <TeleopIntakeButton
+                                className="mt-2"
+                                active={activeSide=="intaking"}
+                                selected={intakeSelected==CoralIntakeLocation.AUTOSTATION2}
+                                handleSelection={() => {
+                                    handleSelection("intaking",{
+                                        intakeSelection: CoralIntakeLocation.AUTOSTATION2
+                                    })
+                                }}
+                                gamePiece="coral"
+                            />
+                        </div>
+                </Col>
+                <Col className="d-flex flex-column flex-shrink-1" style={{backgroundColor:"purple"}}>
+                    <h2 className="text-center mb-1">Scoring</h2>
+                    <Row>
+                        <Col>
+                            <div className="d-flex flex-column">
+                                <LocationButton
+                                    className="mt-2"
+                                    active={activeSide=="level"}
+                                    selected={levelSelected==CoralScoringLevel.LEVEL1}
+                                    handleSelection={() => {
+                                        handleSelection("level",{
+                                            scoringLevel: CoralScoringLevel.LEVEL1,
+                                            dropped: false
+                                        })
+                                    }}
+                                    text="L1"
+                                />
+                                <LocationButton
+                                    className="mt-2"
+                                    active={activeSide=="level"}
+                                    selected={levelSelected==CoralScoringLevel.LEVEL2}
+                                    handleSelection={() => {
+                                        handleSelection("level",{
+                                            scoringLevel: CoralScoringLevel.LEVEL2,
+                                            dropped: false
+                                        })
+                                    }}
+                                    text="L2"
+                                />
+                                <LocationButton
+                                    className="mt-2"
+                                    active={activeSide=="level"}
+                                    selected={levelSelected==CoralScoringLevel.LEVEL3}
+                                    handleSelection={() => {
+                                        handleSelection("level",{
+                                            scoringLevel: CoralScoringLevel.LEVEL3,
+                                            dropped: false
+                                        })
+                                    }}
+                                    text="L3"
+                                />
+                                <LocationButton
+                                    className="mt-2"
+                                    active={activeSide=="level"}
+                                    selected={levelSelected==CoralScoringLevel.LEVEL4}
+                                    handleSelection={() => {
+                                        handleSelection("level",{
+                                            scoringLevel: CoralScoringLevel.LEVEL4,
+                                            dropped: false
+                                        })
+                                    }}
+                                    text="L4"
+                                />
+                            </div>
+                        </Col>
+                        <Col className="flex-grow-1">
+                            {/* Coral Reef in Auto */}
+                            <div className="position-relative" style={{width: "100%"}}>
+                                <img
+                                    className="mx-auto my-2"
+                                    alt=""
+                                    style={{
+                                        width: "65%",
+                                        height: "auto",
+                                        transform: mainData.blueOnLeft?"":"rotate(180deg)",
+                                    }}
+                                    src={
+                                        mainData.station?.includes("red")
+                                        ? "/assets/blue_start_prematch.png"
+                                        : "/assets/red_start_prematch.png"
+                                    }
+                                />
 
-                          <ReefSideButton
-                              active={activeSide=="side"}
-                              selected={sideSelected==CoralScoringSide.SIDE1}
-                              handleSelection={() => handleSide(CoralScoringSide.SIDE1)}
-                              top="24%"
-                              left="13%"
-                              text="1"
-                          />
-                          <ReefSideButton
-                              active={activeSide=="side"}
-                              selected={sideSelected==CoralScoringSide.SIDE2}
-                              handleSelection={() => handleSide(CoralScoringSide.SIDE2)}
-                              top = "15%"
-                              left = "37%"
-                              text="2"
-                          />
-                          <ReefSideButton
-                              active={activeSide=="side"}
-                              selected={sideSelected==CoralScoringSide.SIDE3}
-                              handleSelection={() => handleSide(CoralScoringSide.SIDE3)}
-                              top = "24%"
-                              left = "61%"
-                              text="3"
-                          />
-                          <ReefSideButton
-                              active={activeSide=="side"}
-                              selected={sideSelected==CoralScoringSide.SIDE4}
-                              handleSelection={() => handleSide(CoralScoringSide.SIDE4)}
-                              top = "48%"
-                              left = "61%"
-                              text="4"
-                          />
-                          <ReefSideButton
-                              active={activeSide=="side"}
-                              selected={sideSelected==CoralScoringSide.SIDE5}
-                              handleSelection={() => handleSide(CoralScoringSide.SIDE5)}
-                              top = "56%"
-                              left = "37%"
-                              text="5"
-                          />
-                          <ReefSideButton
-                              active={activeSide=="side"}
-                              selected={sideSelected==CoralScoringSide.SIDE6}
-                              handleSelection={() => handleSide(CoralScoringSide.SIDE6)}
-                              top = "48%"
-                              left = "13%"
-                              text="6"
-                          />
-                      </div>
-                  </Col>
-              </Row>
-          </Col>
-          <Col className="d-flex flex-column flex-shrink-1" style={{backgroundColor:"gray"}}>
-              <h1 className="text-center mb-1">Result</h1>
-              <div className="d-flex flex-column">
-                  <ScoreButton
-                      className="mt-2"
-                      active={activeSide=="result"}
-                      handleClick={() => handleResult(true)}
-                  />
-                  <FailButton
-                      className="mt-2"
-                      active={activeSide=="result"}
-                      handleClick={() => handleResult(false)}
-                  />
-              </div>
-          </Col>
-      </Row>
-    </div>
-  );
+                                <ReefSideButton
+                                    active={activeSide=="side"}
+                                    selected={sideSelected==CoralScoringSide.SIDE1}
+                                    handleSelection={() => {
+                                        handleSelection("side",{
+                                            scoringSide: CoralScoringSide.SIDE1
+                                        })
+                                    }}
+                                    top="24%"
+                                    left="13%"
+                                    text="1"
+                                />
+                                <ReefSideButton
+                                    active={activeSide=="side"}
+                                    selected={sideSelected==CoralScoringSide.SIDE2}
+                                    handleSelection={() => {
+                                        handleSelection("side",{
+                                            scoringSide: CoralScoringSide.SIDE2
+                                        })
+                                    }}
+                                    top = "15%"
+                                    left = "37%"
+                                    text="2"
+                                />
+                                <ReefSideButton
+                                    active={activeSide=="side"}
+                                    selected={sideSelected==CoralScoringSide.SIDE3}
+                                    handleSelection={() => {
+                                        handleSelection("side",{
+                                            scoringSide: CoralScoringSide.SIDE3
+                                        })
+                                    }}
+                                    top = "24%"
+                                    left = "61%"
+                                    text="3"
+                                />
+                                <ReefSideButton
+                                    active={activeSide=="side"}
+                                    selected={sideSelected==CoralScoringSide.SIDE4}
+                                    handleSelection={() => {
+                                        handleSelection("side",{
+                                            scoringSide: CoralScoringSide.SIDE4
+                                        })
+                                    }}
+                                    top = "48%"
+                                    left = "61%"
+                                    text="4"
+                                />
+                                <ReefSideButton
+                                    active={activeSide=="side"}
+                                    selected={sideSelected==CoralScoringSide.SIDE5}
+                                    handleSelection={() => {
+                                        handleSelection("side",{
+                                            scoringSide: CoralScoringSide.SIDE5
+                                        })
+                                    }}
+                                    top = "56%"
+                                    left = "37%"
+                                    text="5"
+                                />
+                                <ReefSideButton
+                                    active={activeSide=="side"}
+                                    selected={sideSelected==CoralScoringSide.SIDE6}
+                                    handleSelection={() => {
+                                        handleSelection("side",{
+                                            scoringSide: CoralScoringSide.SIDE6
+                                        })
+                                    }}
+                                    top = "48%"
+                                    left = "13%"
+                                    text="6"
+                                />
+                            </div>
+                        </Col>
+                    </Row>
+                </Col>
+                <Col className="d-flex flex-column flex-shrink-1" style={{backgroundColor:"gray"}}>
+                    <h2 className="text-center mb-1">Result</h2>
+                    <div className="d-flex flex-column">
+                        <ScoreButton
+                            className="mt-2"
+                            active={activeSide=="result"}
+                            handleClick={() => {
+                                handleSelection("result",{
+                                    failedScoring: false
+                                })
+                            }}
+                        />
+                        <FailButton
+                            className="mt-2"
+                            active={activeSide=="result"}
+                            handleClick={() => {
+                                handleSelection("result",{
+                                    failedScoring: true
+                                })
+                            }}
+                        />
+                    </div>
+                </Col>
+            </Row>
+        </div>
+    );
 }

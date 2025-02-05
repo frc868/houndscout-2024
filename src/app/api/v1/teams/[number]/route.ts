@@ -25,9 +25,9 @@ export async function GET(
   return NextResponse.json({ ok: true, team });
 }
 
-//Currently unimplemented.
+// ScoresSlice/sendPitData
 // Updates info about a specified team.
-// As soon as a good place to put a team edit modal is found, use this.
+// Note to Michael: David actually made this API route for a variety of purposes, so I don't think there's any need to edit here.
 export async function PATCH(
   req: Request,
   { params }: { params: { number: string } }
