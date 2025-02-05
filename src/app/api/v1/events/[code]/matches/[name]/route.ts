@@ -51,19 +51,19 @@ export async function PATCH(
     updateData.red1Team = { connect: { number: data.red1 } };
   }
   if (data.red2) {
-    updateData.red1Team = { connect: { number: data.red2 } };
+    updateData.red2Team = { connect: { number: data.red2 } };
   }
   if (data.red3) {
-    updateData.red1Team = { connect: { number: data.red3 } };
+    updateData.red3Team = { connect: { number: data.red3 } };
   }
   if (data.blue1) {
     updateData.blue1Team = { connect: { number: data.blue1 } };
   }
   if (data.blue2) {
-    updateData.blue1Team = { connect: { number: data.blue2 } };
+    updateData.blue2Team = { connect: { number: data.blue2 } };
   }
   if (data.blue3) {
-    updateData.blue1Team = { connect: { number: data.blue3 } };
+    updateData.blue3Team = { connect: { number: data.blue3 } };
   }
   if (data.name) {
     updateData.name = data.name;
@@ -71,7 +71,6 @@ export async function PATCH(
   if (data.startTime) {
     updateData.startTime = data.startTime;
   }
-
   let match;
   try {
     match = await prisma.match.update({

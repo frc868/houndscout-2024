@@ -93,7 +93,7 @@ export const editMatchAsync = createAsyncThunk(
     blue2: number;
     blue3: number;
   }) => {
-    await axios.post(`/api/v1/events/${data.eventCode}/matches/${data.name}`, {
+    await axios.patch(`/api/v1/events/${data.eventCode}/matches/${data.name}`, {
       ...data,
     });
   }

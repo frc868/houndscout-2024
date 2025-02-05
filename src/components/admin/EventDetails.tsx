@@ -36,7 +36,7 @@ export default function EventDetails({ event }: Props) {
           setShowEventEdit(false);
         }
         }
-      ></EventEditModal>
+      />
       <h1 className="text-center mb-3">Event</h1>
       <Card className="mb-4">
         <Row className="g-0">
@@ -61,7 +61,7 @@ export default function EventDetails({ event }: Props) {
             className="edit-button mx-1"
             onClick={() => setShowEventEdit(true)}
             >
-              Edit Event
+              Edit Event (WIP)
             </Button>
           </Card.Footer>
         </Row>
