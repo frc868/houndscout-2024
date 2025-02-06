@@ -199,8 +199,16 @@ export default function AutoCoralPanel({
                                             scoringSide: CoralScoringSide.SIDE1
                                         })
                                     }}
-                                    top="24%"
-                                    left="13%"
+                                    top={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "5%" : "20%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "20%" : "20%" // Redside with BlueOnLeft/OnRight
+                                    }
+                                    left={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "-10%" : "10%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "10%" : "10%" // Redside with BlueOnLeft/OnRight
+                                    }
                                     text="1"
                                 />
                                 <ReefSideButton
@@ -211,8 +219,16 @@ export default function AutoCoralPanel({
                                             scoringSide: CoralScoringSide.SIDE2
                                         })
                                     }}
-                                    top = "15%"
-                                    left = "37%"
+                                    top={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "5%" : "20%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "20%" : "20%" // Redside with BlueOnLeft/OnRight
+                                    }
+                                    left={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "25%" : "40%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "40%" : "40%" // Redside with BlueOnLeft/OnRight
+                                    }
                                     text="2"
                                 />
                                 <ReefSideButton
@@ -223,8 +239,16 @@ export default function AutoCoralPanel({
                                             scoringSide: CoralScoringSide.SIDE3
                                         })
                                     }}
-                                    top = "24%"
-                                    left = "61%"
+                                    top={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "25%" : "20%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "20%" : "20%" // BlRedsideueside with BlueOnLeft/OnRight
+                                    }
+                                    left={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "40%" : "60%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "60%" : "60%" // Redside with BlueOnLeft/OnRight
+                                    }
                                     text="3"
                                 />
                                 <ReefSideButton
@@ -235,8 +259,16 @@ export default function AutoCoralPanel({
                                             scoringSide: CoralScoringSide.SIDE4
                                         })
                                     }}
-                                    top = "48%"
-                                    left = "61%"
+                                    top={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "60%" : "50%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "50%" : "50%" // Redside with BlueOnLeft/OnRight
+                                    }
+                                    left={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "30%" : "60%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "60%" : "60%" // Redside with BlueOnLeft/OnRight
+                                    }
                                     text="4"
                                 />
                                 <ReefSideButton
@@ -247,8 +279,16 @@ export default function AutoCoralPanel({
                                             scoringSide: CoralScoringSide.SIDE5
                                         })
                                     }}
-                                    top = "56%"
-                                    left = "37%"
+                                    top={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "60%" : "60%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "60%" : "60%" // Redside with BlueOnLeft/OnRight
+                                    }
+                                    left={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "-10%" : "40%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "40%" : "40%" // Redside with BlueOnLeft/OnRight
+                                    }
                                     text="5"
                                 />
                                 <ReefSideButton
@@ -259,8 +299,16 @@ export default function AutoCoralPanel({
                                             scoringSide: CoralScoringSide.SIDE6
                                         })
                                     }}
-                                    top = "48%"
-                                    left = "13%"
+                                    top={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "30%" : "50%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "50%" : "50%" // Redside with BlueOnLeft/OnRight
+                                    }
+                                    left={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "-10%" : "10%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "10%" : "10%" // Redside with BlueOnLeft/OnRight
+                                    }
                                     text="6"
                                 />
                             </div>
