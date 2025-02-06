@@ -40,11 +40,11 @@ export default function AutoCoralPanel({
 }: Props) {
     const mainData = useSelector((state: ReduxState) => state.mainData);
     return (
-        <div className="d-flex flex-column align-items-center">
+        <div className="d-flex flex-column align-items-center border border-2 border-secondary">
             <h1>Coral</h1>
             <Row className="d-flex flex-row justify-content-center">
                 <Col className="d-flex flex-column" md={4}>
-                    <h2 className="text-center mb-1">Intake</h2>
+                    <h2 className="text-center">Intake</h2>
                     <Row>
                         <Col>
                             <div className="d-flex flex-column justify-content-center align-items-center">
@@ -115,7 +115,7 @@ export default function AutoCoralPanel({
                     </Row> 
                 </Col>
                 <Col className="d-flex flex-column flex-grow-4">
-                    <h2 className="text-center mb-1">Scoring</h2>
+                    <h2 className="text-center">Scoring</h2>
                     <Row>
                         <Col md={2}>
                             <div className="d-flex flex-column">
@@ -175,14 +175,14 @@ export default function AutoCoralPanel({
                                 <img
                                     alt=""
                                     style={{
-                                        width: "100%",
+                                        width: "1000%",
                                         height: "auto",
                                         transform: mainData.blueOnLeft?"":"rotate(180deg)",
                                     }}
                                     src={ 
                                         mainData.station?.includes("BLUE")
-                                        ? "/assets/blue_start_prematch.png"
-                                        : "/assets/red_start_prematch.png"
+                                        ? "/assets/blue_side.png"
+                                        : "/assets/red_side.png"
                                     }
                                 />
 
@@ -263,7 +263,7 @@ export default function AutoCoralPanel({
                     </Row>
                 </Col>
                 <Col className="d-flex flex-column align-items-center" md={2}>
-                    <h2 className="text-center mb-1">Result</h2>
+                    <h2 className="text-center">Result</h2>
                         <ScoreButton
                             className="mt-2"
                             active={activeSide=="result"}

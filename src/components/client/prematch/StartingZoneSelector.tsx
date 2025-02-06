@@ -33,8 +33,8 @@ export default function StartingZoneSelector({
             }}
             src={
               alliance === Alliance.BLUE
-                ? "/assets/blue_start_prematch.png"
-                : "/assets/red_start_prematch.png"
+              ? "/assets/blue_side.png"
+              : "/assets/red_side.png"
             }
           />
         </div>

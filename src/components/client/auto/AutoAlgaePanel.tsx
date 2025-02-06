@@ -36,11 +36,11 @@ export default function AutoAlgaePanel({
 }: Props) {
     const mainData = useSelector((state: ReduxState) => state.mainData);
     return (
-        <div className="d-flex flex-column align-items-center">
+        <div className="d-flex flex-column align-items-center border border-2 border-secondary">
             <h1>Algae</h1>
             <Row className="d-flex justify-content-center">
                 <Col className="d-flex flex-column" md={8}>
-                    <h2 className="text-center mb-1">Intake</h2>
+                    <h2 className="text-center">Intake</h2>
                     {/* Copy everything in this div. */}
                     <Row>
                         <Col md={4}>
@@ -93,8 +93,8 @@ export default function AutoAlgaePanel({
                                     }}
                                     src={
                                         mainData.station?.includes("BLUE")
-                                        ? "/assets/blue_start_prematch.png"
-                                        : "/assets/red_start_prematch.png"
+                                        ? "/assets/blue_side.png"
+                                        : "/assets/red_side.png"
                                     }
                                 />
                                     
@@ -175,7 +175,7 @@ export default function AutoAlgaePanel({
                     </Row>
                 </Col>
                 <Col className="d-flex flex-column align-items-center" md={2}>
-                    <h2 className="text-center mb-1">Scoring</h2>
+                    <h2 className="text-center">Scoring</h2>
                     <div className="d-flex flex-column align-items-center">
                         <LocationButton
                             className="mt-2"
@@ -204,7 +204,7 @@ export default function AutoAlgaePanel({
                     </div>
                 </Col>
                 <Col className="d-flex flex-column"  md={2}>
-                    <h2 className="text-center mb-1">Result</h2>
+                    <h2 className="text-center">Result</h2>
                     <div className="d-flex flex-column">
                         <ScoreButton
                             className="mt-2"
