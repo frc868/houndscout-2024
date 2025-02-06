@@ -9,8 +9,8 @@ interface Props {
 //The tab selector that lets you switch between different parts of the client page.
 export default function SectionSelector({ selected, handleSelection }: Props) {
   return (
-    <div className="d-flex justify-content-evenly mx-5 py-4">
-      {[Section.PREMATCH, Section.AUTO, Section.TELEOP, Section.ENDGAME, Section.POSTMATCH].map(
+    <div className="d-flex justify-content-evenly mx-5 py-2">
+      {[Section.PREMATCH, Section.AUTO, Section.TELEOP, Section.POSTMATCH].map(
         (item) => (
           <Button
             key={item}

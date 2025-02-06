@@ -22,10 +22,7 @@ interface Props {
     ) => void;
 }
 
-//Displays a map of half of the field.
-//The notes are clickable, each representing an enum choice that represents that position.
-//Click a note again to render it missing, and click again to indicate no pickup.
-export default function AutoCoralPanel({
+export default function TeleopCoralPanel({
   activeSide,
   intakeSelected,
   levelSelected,
@@ -35,13 +32,12 @@ export default function AutoCoralPanel({
         <div className="d-flex flex-column align-items-center">
             <h1>Coral</h1>
             <Row className="d-flex justify-content-center">
-                <Col className="d-flex flex-column flex-grow-1" style={{backgroundColor:"orange"}}>
-                    <h1 className="text-center mb-1">Intake</h1>
+                <Col className="d-flex flex-column flex-grow-1">
+                    <h2 className="text-center mb-1">Intake</h2>
                     {/* Copy everything in this div. */}
                         <div className="d-flex flex-column">
                             <h3 className="text-center">Ground</h3>
                             <TeleopIntakeButton
-                                className="mt-2"
                                 active={activeSide=="intaking"}
                                 selected={intakeSelected==CoralIntakeLocation.TELEOPGROUND}
                                 handleSelection={() => {
@@ -55,7 +51,6 @@ export default function AutoCoralPanel({
                         <div className="d-flex flex-column">
                             <h3 className="text-center">Station</h3>
                             <TeleopIntakeButton
-                                className="mt-2"
                                 active={activeSide=="intaking"}
                                 selected={intakeSelected==CoralIntakeLocation.TELEOPSTATION}
                                 handleSelection={() => {
@@ -67,11 +62,10 @@ export default function AutoCoralPanel({
                             />
                         </div>
                 </Col>
-                <Col className="d-flex flex-column flex-shrink-1" style={{backgroundColor:"purple"}}>
-                    <h1 className="text-center mb-1">Scoring</h1>
+                <Col className="d-flex flex-column flex-shrink-1">
+                    <h2 className="text-center mb-1">Scoring</h2>
                         <div className="d-flex flex-column">
                             <LocationButton
-                                className="mt-2"
                                 active={activeSide=="level"}
                                 selected={levelSelected==CoralScoringLevel.LEVEL1}
                                 handleSelection={() => {
@@ -83,7 +77,7 @@ export default function AutoCoralPanel({
                                 text="L1"
                             />
                             <LocationButton
-                                className="mt-2"
+                                className="mt-1"
                                 active={activeSide=="level"}
                                 selected={levelSelected==CoralScoringLevel.LEVEL2}
                                 handleSelection={() => {
@@ -95,7 +89,7 @@ export default function AutoCoralPanel({
                                 text="L2"
                             />
                             <LocationButton
-                                className="mt-2"
+                                className="mt-1"
                                 active={activeSide=="level"}
                                 selected={levelSelected==CoralScoringLevel.LEVEL3}
                                 handleSelection={() => {
@@ -107,7 +101,7 @@ export default function AutoCoralPanel({
                                 text="L3"
                             />
                             <LocationButton
-                                className="mt-2"
+                                className="mt-1"
                                 active={activeSide=="level"}
                                 selected={levelSelected==CoralScoringLevel.LEVEL4}
                                 handleSelection={() => {
@@ -120,11 +114,10 @@ export default function AutoCoralPanel({
                             />
                         </div>
                 </Col>
-                <Col className="d-flex flex-column flex-shrink-1" style={{backgroundColor:"gray"}}>
-                    <h1 className="text-center mb-1">Result</h1>
+                <Col className="d-flex flex-column flex-shrink-1">
+                    <h2 className="text-center mb-1">Result</h2>
                     <div className="d-flex flex-column">
                         <ScoreButton
-                            className="mt-2"
                             active={activeSide=="result"}
                             handleClick={() => {
                                 handleSelection("result",{

@@ -48,7 +48,7 @@ export default function Client({ station }: Props) {
   const [coralScoringSide, setCoralScoringSide] = useState<
     CoralScoringSide | undefined
   >(undefined);
-  const [coralActiveSide, setCoralActiveSide] = useState("intaking");//This is set between intaking, level, side, and result.
+  const [coralActiveSide, setCoralActiveSide] = useState("level");//This is set between intaking, level, side, and result.
   const [coralStartTime, setCoralStartTime] = useState(0);
   const [coralEndTime, setCoralEndTime] = useState(0);
 
@@ -291,7 +291,15 @@ export default function Client({ station }: Props) {
             {ready && (
               <>
               {/* ...and now you'll have to go into each tab to look at everything. */}
-                <PrematchContent show={tab === Section.PREMATCH} />
+                <PrematchContent
+                  show={tab === Section.PREMATCH}
+                  coralActiveSide={coralActiveSide}
+                  handlePreload={()=>{
+                    if(coralActiveSide=="level"){
+                      setCoralActiveSide("intaking");
+                    } else setCoralActiveSide("level");
+                  }}
+                />
                 <AutoContent
                   show={tab === Section.AUTO}
                   coralActiveSide={coralActiveSide}

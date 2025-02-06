@@ -19,11 +19,11 @@ export default function IntakeButton({
   return (
     <div className={className || ""}>
       <div
-        className={`mx-2 grow d-flex justify-content-center align-items-center rounded-4 ${
+        className={`grow d-flex justify-content-center align-items-center rounded-4 ${
           selected
-           ? `intake-note-selected`
+           ? `intake-note-selected border border-5 border-warning`
            : active
-             ? `intake-note-selected border-warning`
+             ? `intake-note-selected`
              : ``
         }`}
         style={{ width: "75px", height: "75px" }}

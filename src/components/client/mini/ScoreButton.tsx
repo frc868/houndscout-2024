@@ -15,8 +15,8 @@ export default function ScoreButton({ active, handleClick, className }: Props) {
             : "bg-secondary-subtle border-secondary text-secondary"
         }`}
         style={{
-          width: "110px",
-          height: "110px",
+          width: "100px",
+          height: "100px",
           fontSize: "90pt",
         }}
         onMouseDown={handleClick}

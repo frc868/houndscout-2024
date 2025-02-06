@@ -22,7 +22,7 @@ export default function DroppedButton({
             ? "bg-danger-subtle border-danger"
             : "bg-secondary-subtle border-secondary"
         }`}
-        style={{ width: "110px", height: "110px" }}
+        style={{ width: "75px", height: "75px" }}
         onMouseDown={handleSelection}
       >
         <img className="" alt="" src={gamePiece=="coral"?`/assets/coral_object.png`:`/assets/algae_object.png`} width={85} />

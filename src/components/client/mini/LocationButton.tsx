@@ -19,17 +19,17 @@ export default function LocationButton({
   return (
     <div className={className || ""}>
       <div
-        className={`mx-2 grow d-flex justify-content-center align-items-center border border-5 rounded-4 ${
+        className={`grow d-flex justify-content-center align-items-center border border-5 rounded-4 ${
           selected
            ? `location-area-selected border-primary`
            : active
              ? `location-active border-secondary`
              : `bg-secondary-subtle border-secondary`
         }`}
-        style={{ width: "110px", height: "75px" }}
+        style={{ width: "75px", height: "55px" }}
         onMouseDown={handleSelection}
       >
-        <h3>{text}</h3>
+        <h4>{text}</h4>
       </div>
     </div>
   );

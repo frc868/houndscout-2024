@@ -34,7 +34,7 @@ export default function ReefSideButton({
              ? `location-active border-secondary`
              : `bg-secondary-subtle border-secondary`
         }`}
-        style={{ width: "75px", height: "75px" }}
+        style={{ width: "55px", height: "55px" }}
         onMouseDown={handleSelection}
       >
         <h3>{text}</h3>
