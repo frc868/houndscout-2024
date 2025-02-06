@@ -6,6 +6,7 @@ interface Props {
   handleSelection: () => void;
   className?: string;
   gamePiece: string;
+  number?: string;
 }
 
 //A picture of the game piece used to indicate an intake location in teleop.
@@ -15,6 +16,7 @@ export default function IntakeButton({
   handleSelection,
   className,
   gamePiece,
+  number,
 }: Props) {
   return (
     <div className={className || ""}>
@@ -26,10 +28,11 @@ export default function IntakeButton({
              ? `intake-note-selected`
              : ``
         }`}
-        style={{ width: "75px", height: "75px" }}
+        style={{ width: "75px", height: "75px", position: "relative" }}
         onMouseDown={handleSelection}
       >
         <img className="" alt="" src={gamePiece=="coral"?`/assets/coral_object.png`:`/assets/algae_object.png`} width={85} />
+        <p style={{position: "absolute", top: "25px"}}>{number}</p>
       </div>
     </div>
   );

@@ -56,6 +56,7 @@ export default function AutoAlgaePanel({
                                         })
                                     }}
                                     gamePiece="algae"
+                                    number="1"
                                 />
                                 <TeleopIntakeButton
                                     className="mt-2"
@@ -67,6 +68,7 @@ export default function AutoAlgaePanel({
                                         })
                                     }}
                                     gamePiece="algae"
+                                    number="2"
                                 />
                                 <TeleopIntakeButton
                                     className="mt-2"
@@ -78,6 +80,7 @@ export default function AutoAlgaePanel({
                                         })
                                     }}
                                     gamePiece="algae"
+                                    number="3"
                                 />
                             </div>
                         </Col>
@@ -109,6 +112,7 @@ export default function AutoAlgaePanel({
                                     gamePiece="algae"
                                     top="20%"
                                     left="5%"
+                                    number="1"
                                 />
                                 <AutoIntakeButton
                                     active={activeSide=="intaking"}
@@ -121,6 +125,7 @@ export default function AutoAlgaePanel({
                                     gamePiece="algae"
                                     top="5%"
                                     left="37%"
+                                    number="2"
                                 />
                                 <AutoIntakeButton
                                     active={activeSide=="intaking"}
@@ -133,6 +138,7 @@ export default function AutoAlgaePanel({
                                     gamePiece="algae"
                                     top="20%"
                                     left="70%"
+                                    number="3"
                                 />
                                 <AutoIntakeButton
                                     active={activeSide=="intaking"}
@@ -145,6 +151,7 @@ export default function AutoAlgaePanel({
                                     gamePiece="algae"
                                     top="55%"
                                     left="70%"
+                                    number="4"
                                 />
                                 <AutoIntakeButton
                                     active={activeSide=="intaking"}
@@ -157,6 +164,7 @@ export default function AutoAlgaePanel({
                                     gamePiece="algae"
                                     top="71%"
                                     left="37%"
+                                    number="5"
                                 />
                                 <AutoIntakeButton
                                     active={activeSide=="intaking"}
@@ -169,6 +177,7 @@ export default function AutoAlgaePanel({
                                     gamePiece="algae"
                                     top="55%"
                                     left="5%"
+                                    number="6"
                                 />
                             </div>
                         </Col>

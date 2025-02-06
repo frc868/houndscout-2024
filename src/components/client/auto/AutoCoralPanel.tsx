@@ -59,6 +59,7 @@ export default function AutoCoralPanel({
                                         })
                                     }}
                                     gamePiece="coral"
+                                    number="1"
                                 />
                                 <TeleopIntakeButton
                                     className="mt-2"
@@ -70,6 +71,7 @@ export default function AutoCoralPanel({
                                         })
                                     }}
                                     gamePiece="coral"
+                                    number="2"
                                 />
                             </div>
                         </Col>
@@ -87,6 +89,7 @@ export default function AutoCoralPanel({
                                         })
                                     }}
                                     gamePiece="coral"
+                                    number="1"
                                 />
                                 <TeleopIntakeButton
                                     className="mt-2"
@@ -98,6 +101,7 @@ export default function AutoCoralPanel({
                                         })
                                     }}
                                     gamePiece="coral"
+                                    number="2"
                                 />
                                 <TeleopIntakeButton
                                     className="mt-2"
@@ -109,6 +113,7 @@ export default function AutoCoralPanel({
                                         })
                                     }}
                                     gamePiece="coral"
+                                    number="3"
                                 />
                             </div>
                         </Col>
@@ -117,7 +122,7 @@ export default function AutoCoralPanel({
                 <Col className="d-flex flex-column flex-grow-4">
                     <h2 className="text-center">Scoring</h2>
                     <Row>
-                        <Col md={2}>
+                        <Col md={3}>
                             <div className="d-flex flex-column">
                                 <LocationButton
                                     className="mt-2"
@@ -169,13 +174,13 @@ export default function AutoCoralPanel({
                                 />
                             </div>
                         </Col>
-                        <Col md={10}>
+                        <Col md={9}>
                             {/* Coral Reef in Auto */}
                             <div className="position-relative" style={{width: "100%"}}>
                                 <img
                                     alt=""
                                     style={{
-                                        width: "1000%",
+                                        width: "100%",
                                         height: "auto",
                                         transform: mainData.blueOnLeft?"":"rotate(180deg)",
                                     }}
