@@ -29,13 +29,13 @@ export default function TeleopCoralPanel({
   handleSelection,
 }: Props) {
     return (
-        <div className="d-flex flex-column align-items-center">
+        <div className="d-flex flex-column align-items-center border border-2 border-secondary px-3">
             <h1>Coral</h1>
             <Row className="d-flex justify-content-center">
-                <Col className="d-flex flex-column flex-grow-1">
+                <Col className="d-flex flex-column align-items-center">
                     <h2 className="text-center mb-1">Intake</h2>
                     {/* Copy everything in this div. */}
-                        <div className="d-flex flex-column">
+                        <div className="d-flex flex-column align-items-center">
                             <h3 className="text-center">Ground</h3>
                             <TeleopIntakeButton
                                 active={activeSide=="intaking"}
@@ -48,7 +48,7 @@ export default function TeleopCoralPanel({
                                 gamePiece="coral"
                             />
                         </div>
-                        <div className="d-flex flex-column">
+                        <div className="d-flex flex-column align-items-center">
                             <h3 className="text-center">Station</h3>
                             <TeleopIntakeButton
                                 active={activeSide=="intaking"}
@@ -62,9 +62,9 @@ export default function TeleopCoralPanel({
                             />
                         </div>
                 </Col>
-                <Col className="d-flex flex-column flex-shrink-1">
+                <Col className="d-flex flex-column align-items-center">
                     <h2 className="text-center mb-1">Scoring</h2>
-                        <div className="d-flex flex-column">
+                        <div className="d-flex flex-column align-items-center">
                             <LocationButton
                                 active={activeSide=="level"}
                                 selected={levelSelected==CoralScoringLevel.LEVEL1}

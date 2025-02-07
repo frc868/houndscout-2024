@@ -136,7 +136,7 @@ export default function AutoContent({
           />
         </Col>
       </Row>
-      <Row className="my-5 d-flex justify-content-center">
+      <Row className="d-flex justify-content-center" md={12}>
         <DroppedPanel
           incapActive={incapOn}
           coralActive={coralActiveSide=="level"}

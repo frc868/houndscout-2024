@@ -32,7 +32,7 @@ export default function PostmatchContent({ show, handleSubmit }: Props) {
   //A form that's filled out after the match with supplementary info.
   return (
     <div className={`${!show && "d-none"}`}>
-      <Row className="my-5">
+      <Row className="my-3">
         <Col className="d-flex justify-content-end" md={4}>
           <DriverSkillSelector
             selected={driverSkillRating as number}
@@ -61,7 +61,7 @@ export default function PostmatchContent({ show, handleSubmit }: Props) {
           <CommentsBox contents={comments} handleChange={setComments} />
         </Col>
       </Row>
-      <Row className="d-flex justify-content-center mt-5">
+      <Row className="d-flex justify-content-center mt-3">
         <Col md={3}>
           <SubmitButton
             handleClick={async () => {

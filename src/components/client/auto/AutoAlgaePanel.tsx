@@ -9,6 +9,7 @@ import { Col, Row } from "react-bootstrap";
 import { AlgaeIntakeLocation, AlgaeScoringLocation } from "@prisma/client";
 import { useSelector } from "react-redux";
 import { ReduxState } from "@/redux/store";
+import { mainData } from "@/redux/adminDataSlice";
 
 interface Props {
     activeSide: string;
@@ -35,58 +36,62 @@ export default function AutoAlgaePanel({
     handleSelection,
 }: Props) {
     const mainData = useSelector((state: ReduxState) => state.mainData);
+
+    const flip = (mainData.blueOnLeft && mainData.station?.includes("RED")) || (!mainData.blueOnLeft && mainData.station?.includes("BLUE"));
     return (
-        <div className="d-flex flex-column align-items-center border border-2 border-secondary">
+        <div className="d-flex flex-column align-items-center border border-2 border-secondary px-3">
             <h1>Algae</h1>
             <Row className="d-flex justify-content-center">
                 <Col className="d-flex flex-column" md={8}>
                     <h2 className="text-center">Intake</h2>
                     {/* Copy everything in this div. */}
-                    <Row>
-                        <Col md={4}>
+                    <Row className={`d-flex ${flip?"flex-row-reverse":"flex-row"}`}>
+                        <Col className="d-flex flex-column" md={4}>
                             <div className="d-flex flex-column justify-content-center align-items-center">
                                 <h4>Ground</h4>
-                                <TeleopIntakeButton
-                                    className="mt-2"
-                                    active={activeSide=="intaking"}
-                                    selected={intakeSelected==AlgaeIntakeLocation.AUTOGROUND1}
-                                    handleSelection={() => {
-                                        handleSelection("intaking",{
-                                            intakeSelection: AlgaeIntakeLocation.AUTOGROUND1
-                                        })
-                                    }}
-                                    gamePiece="algae"
-                                    number="1"
-                                />
-                                <TeleopIntakeButton
-                                    className="mt-2"
-                                    active={activeSide=="intaking"}
-                                    selected={intakeSelected==AlgaeIntakeLocation.AUTOGROUND2}
-                                    handleSelection={() => {
-                                        handleSelection("intaking",{
-                                            intakeSelection: AlgaeIntakeLocation.AUTOGROUND2
-                                        })
-                                    }}
-                                    gamePiece="algae"
-                                    number="2"
-                                />
-                                <TeleopIntakeButton
-                                    className="mt-2"
-                                    active={activeSide=="intaking"}
-                                    selected={intakeSelected==AlgaeIntakeLocation.AUTOGROUND3}
-                                    handleSelection={() => {
-                                        handleSelection("intaking",{
-                                            intakeSelection: AlgaeIntakeLocation.AUTOGROUND3
-                                        })
-                                    }}
-                                    gamePiece="algae"
-                                    number="3"
-                                />
+                                <div className={`d-flex ${mainData.blueOnLeft?"flex-column":"flex-column-reverse"} justify-content-center align-items-center`}>
+                                    <TeleopIntakeButton
+                                        className="mt-2"
+                                        active={activeSide=="intaking"}
+                                        selected={intakeSelected==AlgaeIntakeLocation.AUTOGROUND1}
+                                        handleSelection={() => {
+                                            handleSelection("intaking",{
+                                                intakeSelection: AlgaeIntakeLocation.AUTOGROUND1
+                                            })
+                                        }}
+                                        gamePiece="algae"
+                                        number="1"
+                                    />
+                                    <TeleopIntakeButton
+                                        className="mt-2"
+                                        active={activeSide=="intaking"}
+                                        selected={intakeSelected==AlgaeIntakeLocation.AUTOGROUND2}
+                                        handleSelection={() => {
+                                            handleSelection("intaking",{
+                                                intakeSelection: AlgaeIntakeLocation.AUTOGROUND2
+                                            })
+                                        }}
+                                        gamePiece="algae"
+                                        number="2"
+                                    />
+                                    <TeleopIntakeButton
+                                        className="mt-2"
+                                        active={activeSide=="intaking"}
+                                        selected={intakeSelected==AlgaeIntakeLocation.AUTOGROUND3}
+                                        handleSelection={() => {
+                                            handleSelection("intaking",{
+                                                intakeSelection: AlgaeIntakeLocation.AUTOGROUND3
+                                            })
+                                        }}
+                                        gamePiece="algae"
+                                        number="3"
+                                    />
+                                </div>
                             </div>
                         </Col>
-                        <Col md={8}>
+                        <Col className="d-flex flex-column mt-3" md={8}>
                             {/* Algae Reef in Auto */}
-                            <div className="position-relative" style={{width: "100%"}}>
+                            <div className="position-relative mt-5" style={{width: "100%"}}>
                                 <img
                                     alt=""
                                     style={{

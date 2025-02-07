@@ -13,7 +13,7 @@ interface Props {
 export default function ResultSelector({ selected, handleSelection }: Props) {
   return (
     <div className="d-flex flex-column align-items-center">
-      <h1 className="text-center">Driver Skill</h1>
+      <h1 className="text-center">Match Result</h1>
 
       <ListGroup horizontal className="mt-3 fs-4 ">
         {[Result.WIN, Result.TIE, Result.LOSS].map((item, idx) => (

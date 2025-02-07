@@ -44,7 +44,7 @@ export default function EventManageModal({
         <Button
           //This first part opens an extra form to create a new event.
           variant={showEventNew?"danger":"primary"}
-          className="edit-button mx-3 mb-3"
+          className="edit-button w-100 mx-auto mb-3"
           onClick={() => setShowEventNew(!showEventNew)}
         >
           {showEventNew?"Cancel":"Add New Event"}

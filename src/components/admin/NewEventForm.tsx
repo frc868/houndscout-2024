@@ -33,7 +33,6 @@ export default function NewEventForm({
 
   return (
     <div>
-      <hr />
       <Row>
         <Form>
           <Form.Group className="mb-1">
@@ -101,6 +100,7 @@ export default function NewEventForm({
       <Row>
         <Button
           variant="success"
+          className="mt-2"
           onClick={() =>
             handleSubmit({
               name: String(name),

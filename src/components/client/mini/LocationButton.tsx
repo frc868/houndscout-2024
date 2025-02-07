@@ -29,7 +29,7 @@ export default function LocationButton({
         style={{ width: "75px", height: "55px" }}
         onMouseDown={handleSelection}
       >
-        <h4>{text}</h4>
+        <h4 className="text-center mt-2">{text}</h4>
       </div>
     </div>
   );

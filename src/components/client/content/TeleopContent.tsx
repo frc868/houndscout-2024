@@ -80,26 +80,6 @@ export default function TeleopContent({
             handleSelection={handleCoral}
           />
         </Col>
-        <Col className="d-flex justify-content-center mx-3" md={1}>
-          <DroppedPanel
-            incapActive={incapOn}
-            coralActive={coralActiveSide=="level"}
-            algaeActive={algaeActiveSide=="scoring"}
-            handleIncap={handleIncap}
-            handleCoralDropped={() => {
-              handleCoral("level",{
-                scoringLevel: undefined,
-                dropped: true
-              })
-            }}
-            handleAlgaeDropped={() => {
-              handleAlgae("scoring",{
-                scoringLocation: undefined,
-                dropped: true
-              })
-            }}
-          />
-        </Col>
         <Col className="d-flex justify-content-center" md={4}>
           <TeleopAlgaePanel
             activeSide={algaeActiveSide}
@@ -123,7 +103,24 @@ export default function TeleopContent({
         </Col>
       </Row>
       <Row className="d-flex justify-content-center">
-        
+      <DroppedPanel
+            incapActive={incapOn}
+            coralActive={coralActiveSide=="level"}
+            algaeActive={algaeActiveSide=="scoring"}
+            handleIncap={handleIncap}
+            handleCoralDropped={() => {
+              handleCoral("level",{
+                scoringLevel: undefined,
+                dropped: true
+              })
+            }}
+            handleAlgaeDropped={() => {
+              handleAlgae("scoring",{
+                scoringLocation: undefined,
+                dropped: true
+              })
+            }}
+          />
       </Row>
     </div>
   );

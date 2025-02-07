@@ -42,7 +42,7 @@ export default function TeamManageModal({
       <Modal.Body>
         <Button
           variant={showTeamNew?"danger":"primary"}
-          className="edit-button mx-3 mb-3"
+          className="edit-button w-100 mx-auto mb-3"
           onClick={() => setShowTeamNew(!showTeamNew)}
         >
           {showTeamNew?"Cancel":"Add New Team"}

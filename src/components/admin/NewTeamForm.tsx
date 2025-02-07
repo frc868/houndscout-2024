@@ -24,7 +24,6 @@ export default function NewTeamModal({
 
   return (
     <div>
-      <hr />
       <Row>
         <Form>
           <Row>
@@ -63,6 +62,7 @@ export default function NewTeamModal({
       <Row>
         <Button
           variant="success"
+          className="mt-2"
           onClick={() =>
             handleSubmit({
               number: Number(number),

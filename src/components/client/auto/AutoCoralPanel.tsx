@@ -39,90 +39,95 @@ export default function AutoCoralPanel({
     handleSelection,
 }: Props) {
     const mainData = useSelector((state: ReduxState) => state.mainData);
+
+    const flip = (mainData.blueOnLeft && mainData.station?.includes("RED")) || (!mainData.blueOnLeft && mainData.station?.includes("BLUE"));
     return (
-        <div className="d-flex flex-column align-items-center border border-2 border-secondary">
+        <div className="d-flex flex-column align-items-center border border-2 border-secondary px-3">
             <h1>Coral</h1>
             <Row className="d-flex flex-row justify-content-center">
-                <Col className="d-flex flex-column" md={4}>
+                <Col className="d-flex flex-column flex-nowrap" md={4}>
                     <h2 className="text-center">Intake</h2>
-                    <Row>
-                        <Col>
-                            <div className="d-flex flex-column justify-content-center align-items-center">
+                    <Row className={`d-flex ${flip?"flex-row-reverse":"flex-row"}`}>
+                        <Col className="d-flex flex-column">
+                            <div className="d-flex flex-column justify-items-center align-items-center">
                                 <h4>Station</h4>
-                                <TeleopIntakeButton
-                                    className="mt-2"
-                                    active={activeSide=="intaking"}
-                                    selected={intakeSelected==CoralIntakeLocation.AUTOSTATION1}
-                                    handleSelection={() => {
-                                        handleSelection("intaking",{
-                                            intakeSelection: CoralIntakeLocation.AUTOSTATION1
-                                        })
-                                    }}
-                                    gamePiece="coral"
-                                    number="1"
-                                />
-                                <TeleopIntakeButton
-                                    className="mt-2"
-                                    active={activeSide=="intaking"}
-                                    selected={intakeSelected==CoralIntakeLocation.AUTOSTATION2}
-                                    handleSelection={() => {
-                                        handleSelection("intaking",{
-                                            intakeSelection: CoralIntakeLocation.AUTOSTATION2
-                                        })
-                                    }}
-                                    gamePiece="coral"
-                                    number="2"
-                                />
+                                <div className={`d-flex ${mainData.blueOnLeft?"flex-column":"flex-column-reverse"} justify-content-center align-items-center`}>
+                                    <TeleopIntakeButton
+                                        className="my-4"
+                                        active={activeSide=="intaking"}
+                                        selected={intakeSelected==CoralIntakeLocation.AUTOSTATION1}
+                                        handleSelection={() => {
+                                            handleSelection("intaking",{
+                                                intakeSelection: CoralIntakeLocation.AUTOSTATION1
+                                            })
+                                        }}
+                                        gamePiece="coral"
+                                        number="1"
+                                    />
+                                    <TeleopIntakeButton
+                                        className="my-4"
+                                        active={activeSide=="intaking"}
+                                        selected={intakeSelected==CoralIntakeLocation.AUTOSTATION2}
+                                        handleSelection={() => {
+                                            handleSelection("intaking",{
+                                                intakeSelection: CoralIntakeLocation.AUTOSTATION2
+                                            })
+                                        }}
+                                        gamePiece="coral"
+                                        number="2"
+                                    />
+                                </div>
                             </div>
                         </Col>
-                        <Col
-                        >
+                        <Col className="d-flex flex-column">
                             <div className="d-flex flex-column justify-content-center align-items-center">
                                 <h4>Ground</h4>
-                                <TeleopIntakeButton
-                                    className="mt-2"
-                                    active={activeSide=="intaking"}
-                                    selected={intakeSelected==CoralIntakeLocation.AUTOGROUND1}
-                                    handleSelection={() => {
-                                        handleSelection("intaking",{
-                                            intakeSelection: CoralIntakeLocation.AUTOGROUND1
-                                        })
-                                    }}
-                                    gamePiece="coral"
-                                    number="1"
-                                />
-                                <TeleopIntakeButton
-                                    className="mt-2"
-                                    active={activeSide=="intaking"}
-                                    selected={intakeSelected==CoralIntakeLocation.AUTOGROUND2}
-                                    handleSelection={() => {
-                                        handleSelection("intaking",{
-                                            intakeSelection: CoralIntakeLocation.AUTOGROUND2
-                                        })
-                                    }}
-                                    gamePiece="coral"
-                                    number="2"
-                                />
-                                <TeleopIntakeButton
-                                    className="mt-2"
-                                    active={activeSide=="intaking"}
-                                    selected={intakeSelected==CoralIntakeLocation.AUTOGROUND3}
-                                    handleSelection={() => {
-                                        handleSelection("intaking",{
-                                            intakeSelection: CoralIntakeLocation.AUTOGROUND3
-                                        })
-                                    }}
-                                    gamePiece="coral"
-                                    number="3"
-                                />
+                                <div className={`d-flex ${mainData.blueOnLeft?"flex-column":"flex-column-reverse"} justify-content-center align-items-center`}>
+                                    <TeleopIntakeButton
+                                        className="mt-2"
+                                        active={activeSide=="intaking"}
+                                        selected={intakeSelected==CoralIntakeLocation.AUTOGROUND1}
+                                        handleSelection={() => {
+                                            handleSelection("intaking",{
+                                                intakeSelection: CoralIntakeLocation.AUTOGROUND1
+                                            })
+                                        }}
+                                        gamePiece="coral"
+                                        number="1"
+                                    />
+                                    <TeleopIntakeButton
+                                        className="mt-2"
+                                        active={activeSide=="intaking"}
+                                        selected={intakeSelected==CoralIntakeLocation.AUTOGROUND2}
+                                        handleSelection={() => {
+                                            handleSelection("intaking",{
+                                                intakeSelection: CoralIntakeLocation.AUTOGROUND2
+                                            })
+                                        }}
+                                        gamePiece="coral"
+                                        number="2"
+                                    />
+                                    <TeleopIntakeButton
+                                        className="mt-2"
+                                        active={activeSide=="intaking"}
+                                        selected={intakeSelected==CoralIntakeLocation.AUTOGROUND3}
+                                        handleSelection={() => {
+                                            handleSelection("intaking",{
+                                                intakeSelection: CoralIntakeLocation.AUTOGROUND3
+                                            })
+                                        }}
+                                        gamePiece="coral"
+                                        number="3"
+                                    />
+                                </div>
                             </div>
                         </Col>
                     </Row> 
                 </Col>
                 <Col className="d-flex flex-column flex-grow-4">
                     <h2 className="text-center">Scoring</h2>
-                    <Row>
-                        <Col md={3}>
+                    <Row className="d-flex flex-row">
+                        <Col className="d-flex flex-column" md={3}>
                             <div className="d-flex flex-column">
                                 <LocationButton
                                     className="mt-2"
@@ -174,9 +179,9 @@ export default function AutoCoralPanel({
                                 />
                             </div>
                         </Col>
-                        <Col md={9}>
+                        <Col className="d-flex flex-column mt-4" md={9}>
                             {/* Coral Reef in Auto */}
-                            <div className="position-relative" style={{width: "100%"}}>
+                            <div className="position-relative mt-4" style={{width: "100%"}}>
                                 <img
                                     alt=""
                                     style={{

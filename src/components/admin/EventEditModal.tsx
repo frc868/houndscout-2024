@@ -44,11 +44,12 @@ export default function EventEditModal({
       setName(event.name as string);
       setCode(event.code as string);
       setWeek(event.weekNumber?.toString() as string);
-      setStart(event.startDate?.toISOString() as string);
-      setEnd(event.endDate?.toISOString() as string);
+      setStart(event.startDate?.toISOString().substring(0, 10) as string);
+      setEnd(event.endDate?.toISOString().substring(0, 10) as string);
       setAddress(event.address as string);
     }
   }, [show]);
+
   return (
     <Modal centered show={show} size="lg" onHide={handleClose}>
       <Modal.Header closeButton>

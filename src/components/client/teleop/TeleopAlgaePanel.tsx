@@ -33,13 +33,13 @@ export default function AutoAlgaePanel({
     handleSelection,
 }: Props) {
     return (
-        <div className="d-flex flex-column align-items-center">
+        <div className="d-flex flex-column align-items-center border border-2 border-secondary px-3">
             <h1>Algae</h1>
             <Row className="d-flex justify-content-center">
-                <Col className="d-flex flex-column">
+                <Col className="d-flex flex-column align-items-center">
                     <h2 className="text-center mb-1">Intake</h2>
                     {/* Copy everything in this div. */}
-                    <div className="d-flex flex-column">
+                    <div className="d-flex flex-column align-items-center">
                         <h3 className = "text-center">Ground</h3>
                         <TeleopIntakeButton
                             active={activeSide=="intaking"}
@@ -52,7 +52,7 @@ export default function AutoAlgaePanel({
                             gamePiece="algae"
                         />
                     </div>
-                    <div className="d-flex flex-column">
+                    <div className="d-flex flex-column align-items-center">
                         <h3 className = "text-center">Reef</h3>
                         <TeleopIntakeButton
                             active={activeSide=="intaking"}
@@ -66,7 +66,7 @@ export default function AutoAlgaePanel({
                         />
                     </div>
                 </Col>
-                <Col className="d-flex flex-column">
+                <Col className="d-flex flex-column align-items-center">
                     <h2 className="text-center mb-1">Scoring</h2>
                     <div className="d-flex flex-column">
                         <LocationButton
