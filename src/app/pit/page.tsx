@@ -71,14 +71,14 @@ export default function Pit() {
   const ready = mainData.activeEvent?.code && adminData.eventTeams;
 
   //A form that's filled out after the match with supplementary info.
-  //Based off of a layout provided by Michael and (possibly) ChatGPT.
+  //Based off of a layout provided by Michael and ChatGPT.
   return (
     <>
       <StatusBar isConnected={true} />
       {submitted ? (
         <div className="d-flex justify-content-center align-items-center h-75 flex-column">
           <h1 className="display-1 fw-bold">Submitted successfully!</h1>
-          <h1 className="mt-3">Waiting for next match...</h1>
+          <h1 className="mt-3">Please reload to submit another entry.</h1>
         </div>
       ) : (
         <>
@@ -97,7 +97,7 @@ export default function Pit() {
             ) : (
               <>
                 <div className="d-flex justify-content-center mt-5">
-                  <h3>Loading... (Requires an active Event and a at least Team in the event)</h3>
+                  <h3>Loading... (Requires an active Event and at least one Team in that Event)</h3>
                 </div>
               </>
             )} 

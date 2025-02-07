@@ -50,8 +50,10 @@ export default function EventDetails({ event }: Props) {
               </Card.Subtitle>
               <div className="my-1">Week {event.weekNumber}</div>
               <div className="my-1">
-                {(event.startDate?.getDate() + 1).toDateString()} to{" "}
-                {(event.endDate?.getDate() + 1).toDateString()}
+                {event.startDate?.toDateString()} to{" "}
+                {event.endDate?.toDateString()}
+                <br />
+                (Please add 1 to each of these dates)
               </div>
               <div className="my-1">{event.address}</div>
             </Card.Body>
