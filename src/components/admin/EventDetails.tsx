@@ -25,10 +25,10 @@ export default function EventDetails({ event }: Props) {
           await dispatch(
             editEventAsync({
               name: payload.name,
-              newCode: payload.code,
-              week: payload.week,
-              start: payload.start,
-              end: payload.end,
+              code: payload.code,
+              weekNumber: payload.week,
+              startDate: payload.start,
+              endDate: payload.end,
               address: payload.address,
               eventCode: event.code,
             })
@@ -61,7 +61,7 @@ export default function EventDetails({ event }: Props) {
             className="edit-button mx-1"
             onClick={() => setShowEventEdit(true)}
             >
-              Edit Event (WIP)
+              Edit Event
             </Button>
           </Card.Footer>
         </Row>

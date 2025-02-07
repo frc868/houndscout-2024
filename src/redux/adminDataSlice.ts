@@ -52,10 +52,10 @@ export const editEventAsync = createAsyncThunk(
   "adminData/editEvent",
   async ({eventCode, ...data}: {
     name: string,
-    newCode: string,
-    week: number,
-    start: string,
-    end: string,
+    code: string,
+    weekNumber: number,
+    startDate: string,
+    endDate: string,
     address: string,
     eventCode: string
   }) => {
