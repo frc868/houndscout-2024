@@ -147,6 +147,61 @@ export const sendPostMatchData = createAsyncThunk(
   }
 );
 
+//UPDATE CYCLE: This may need to be updated if pit scouting data changes.
+//If so, ensure all arguments match the pit part of the Team model in the schema. 
+//Note to Michael: Make sure you update all of this to match the state on the pit page.
+export const sendPitData = createAsyncThunk(
+  "scores/sendPitData",
+  async (
+    {
+      teamNumber,
+      // driverSkillRating,
+      // result,
+      // playedDefense,
+      comments,
+    }: {
+      teamNumber: number;
+      // driverSkillRating: number;
+      // result: Result;
+      // playedDefense: boolean;
+      comments: string;
+    },
+    { dispatch, getState }
+  ) => {
+    const state = getState() as ReduxState;
+    const mainData = state.mainData;
+    const res = await axios.patch(
+      `/api/v1/teams/${teamNumber}
+      }/scores/${mainData.station?.toLowerCase()}`,
+      {
+        comments,
+        submitted: true,
+      }
+    );
+  }
+);
+
+export const sendIncapSegment = createAsyncThunk(
+  "scores/sendIncapSegment",
+  async (
+    data: {
+      timestampStarted: number,
+      timestampEnded: number,
+      full: boolean
+    },
+    { getState }
+  ) => {
+    const state = getState() as ReduxState;
+    const mainData = state.mainData;
+    const res = await axios.post(
+      `/api/v1/events/${mainData.activeEvent?.code}/matches/${
+        mainData.activeMatchName
+      }/scores/${mainData.station?.toLowerCase()}/incapSegment`,
+      data
+    );
+  }
+);
+
 //The following thunks create scoring events.
 //UPDATE CYCLE: Please ensure all scoring event models are accounted for, matching the format of the schema in the arguments.
 export const sendCoralEvent = createAsyncThunk(
@@ -158,13 +213,13 @@ export const sendCoralEvent = createAsyncThunk(
       scoringSide?: CoralScoringSide;
       dropped?: boolean;
       failedScoring?: boolean;
+      timestampPickedUp: number;
+      timestampScored: number;
     },
     { getState }
   ) => {
     const state = getState() as ReduxState;
     const mainData = state.mainData;
-    (data as any).timestampPickedUp = 0;
-    (data as any).timestampScored = 0;
     const res = await axios.post(
       `/api/v1/events/${mainData.activeEvent?.code}/matches/${
         mainData.activeMatchName
@@ -181,13 +236,13 @@ export const sendAlgaeEvent = createAsyncThunk(
       scoringLocation?: AlgaeScoringLocation;
       dropped?: boolean;
       failedScoring?: boolean;
+      timestampPickedUp: number;
+      timestampScored: number;
     },
     { getState }
   ) => {
     const state = getState() as ReduxState;
     const mainData = state.mainData;
-    (data as any).timestampPickedUp = 0;
-    (data as any).timestampScored = 0;
     const res = await axios.post(
       `/api/v1/events/${mainData.activeEvent?.code}/matches/${
         mainData.activeMatchName

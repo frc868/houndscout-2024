@@ -80,7 +80,12 @@ model Team {
   teamScores   TeamScore[]
   
   firstPicklist     Boolean     @default(false)
-  secondPicklist    Boolean     @default(false)
+  secondPicklist     Boolean     @default(false)
+
+//Pit
+//UPDATE CYCLE: Please review this section between years to ensure all necessary data is being tracked.
+//Note to Michael: Put all the variables from the pit page's state here. Make sure you migrate your changes.
+
 }
 
 //Represents a match in an event. Should be auto-filled using The Blue Alliance API.

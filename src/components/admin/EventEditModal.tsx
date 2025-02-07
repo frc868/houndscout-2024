@@ -39,20 +39,31 @@ export default function EventEditModal({
   const [end, setEnd] = useState("");
   const [address, setAddress] = useState("");
 
+  const [loading, setLoading] = useState(false); //I put a small loading animation jsut for user feedback.
+
   useEffect(() => {
     if (show) {
       setName(event.name as string);
       setCode(event.code as string);
       setWeek(event.weekNumber?.toString() as string);
-      setStart(event.startDate?.toISOString() as string);
-      setEnd(event.endDate?.toISOString() as string);
+      setStart(event.startDate?.toISOString().substring(0, 10) as string);
+      setEnd(event.endDate?.toISOString().substring(0, 10) as string);
       setAddress(event.address as string);
     }
   }, [show]);
+
   return (
     <Modal centered show={show} size="lg" onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>Edit Event</Modal.Title>
+        <MoonLoader
+          className="mx-2"
+          color={"black"}
+          loading={loading}
+          size={25}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
       </Modal.Header>
       <Modal.Body>
         <Form>
@@ -127,16 +138,18 @@ export default function EventEditModal({
         </Button>
         <Button
           variant="primary"
-          onClick={() =>
+          onClick={() => {
+            setLoading(true);
             handleSubmit({
               name: String(name),
               code: String(code),
               week: Number(week),
-              start: String(start),
-              end: String(end),
+              start: String(start+"T00:00:00.000Z"),
+              end: String(end+"T00:00:00.000Z"),
               address: String(address)
             })
-          }
+            setLoading(false);
+          }}
         >
           Save changes
         </Button>

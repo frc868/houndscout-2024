@@ -1,7 +1,8 @@
 "use client";
 
-import AutoIntakePanel from "@/components/client/auto/AutoIntakePanel";
-import AutoScoringPanel from "@/components/client/auto/AutoScoringPanel";
+import AutoCoralPanel from "@/components/client/auto/AutoCoralPanel";
+import AutoAlgaePanel from "@/components/client/auto/AutoAlgaePanel";
+import DroppedPanel from "@/components/client/common/DroppedPanel";
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,39 +15,55 @@ import {
   CoralIntakeLocation, 
   AlgaeIntakeLocation,
   CoralScoringLevel,
+  CoralScoringSide,
   AlgaeScoringLocation
 } from "@prisma/client";
 
 interface Props {
   show: boolean;
-    coralActiveSide: string;
-    coralIntakeLocation?: CoralIntakeLocation;
-    handleCoralIntakeSelection: (selection: CoralIntakeLocation) => void;
-    handleCoralScoringSelection: (
-        location?: CoralScoringLevel,
-        failed?: boolean,
-        dropped?: boolean
-      ) => void;
-    algaeActiveSide: string;
-    algaeIntakeLocation?: AlgaeIntakeLocation;
-    handleAlgaeIntakeSelection: (selection: AlgaeIntakeLocation) => void;
-    handleAlgaeScoringSelection: (
-        location?: AlgaeScoringLocation,
-        failed?: boolean,
-        dropped?: boolean
-      ) => void;
+  coralActiveSide: string;
+  coralIntakeLocation?: CoralIntakeLocation;
+  coralScoringLevel?: CoralScoringLevel;
+  coralScoringSide?: CoralScoringSide;
+  handleCoral: (
+    phrase: string,
+    data:{
+      intakeSelection?: CoralIntakeLocation,
+      scoringLevel?: CoralScoringLevel,
+      dropped?: boolean,
+      scoringSide?: CoralScoringSide,
+      failedScoring?: boolean,
+    },
+  ) => void;
+  algaeActiveSide: string;
+  algaeIntakeLocation?: AlgaeIntakeLocation;
+  algaeScoringLocation?: AlgaeScoringLocation;
+  handleAlgae: (
+    phrase: string,
+    data:{
+      intakeSelection?: AlgaeIntakeLocation,
+      scoringLocation?: AlgaeScoringLocation,
+      dropped?: boolean,
+      failedScoring?: boolean,
+    },
+  ) => void;
+  incapOn: boolean;
+  handleIncap: () => void;
 }
 
 export default function AutoContent({
   show,
   coralActiveSide,
   coralIntakeLocation,
-  handleCoralIntakeSelection,
-  handleCoralScoringSelection,
+  coralScoringLevel,
+  coralScoringSide,
+  handleCoral,
   algaeActiveSide,
   algaeIntakeLocation,
-  handleAlgaeIntakeSelection,
-  handleAlgaeScoringSelection,
+  algaeScoringLocation,
+  handleAlgae,
+  incapOn,
+  handleIncap,
 }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const mainData = useSelector((state: ReduxState) => state.mainData);
@@ -100,33 +117,44 @@ export default function AutoContent({
 
   return (
     <div className={`${!show && "d-none"}`}>
-      <Row className="my-5 d-flex justify-content-center">
-        <Col className="d-flex justify-content-center" md={5}>
-          {/* <AutoIntakePanel
-            alliance={mainData.alliance}
-            blueOnLeft={mainData.blueOnLeft}
-            selected={selectedGamePieces}
-            missing={missingGamePieces}
-            handleSelection={handleIntakeSelection}
-          /> */}
+      <Row className="d-flex justify-content-center">
+        <Col className="d-flex justify-content-center" md={6}>
+          <AutoCoralPanel
+            activeSide={coralActiveSide}
+            intakeSelected={coralIntakeLocation}
+            levelSelected={coralScoringLevel}
+            sideSelected={coralScoringSide}
+            handleSelection={handleCoral}
+          />
         </Col>
-        <Col className="d-flex flex-column" md={4}>
-          {/* <AutoScoringPanel
-            numIntaked={
-              selectedGamePieces.length - missingGamePieces.length + 1
-            }
-            numSelected={numSelected === undefined ? -1 : numSelected}
-            handleSelection={handleScoringSelection}
-            leftStartingZoneEnabled={scores.leftStartingZone}
-            handleLeftStartingZoneClick={() =>
-              dispatch(
-                setLeftStartingZoneAsync({
-                  leftStartingZone: !scores.leftStartingZone,
-                })
-              )
-            }
-          /> */}
+        <Col className="d-flex justify-content-center" md={6}>
+          <AutoAlgaePanel
+            activeSide={algaeActiveSide}
+            intakeSelected={algaeIntakeLocation}
+            locationSelected={algaeScoringLocation}
+            handleSelection={handleAlgae}
+          />
         </Col>
+      </Row>
+      <Row className="d-flex justify-content-center" md={12}>
+        <DroppedPanel
+          incapActive={incapOn}
+          coralActive={coralActiveSide=="level"}
+          algaeActive={algaeActiveSide=="scoring"}
+          handleIncap={handleIncap}
+          handleCoralDropped={() => {
+            handleCoral("level",{
+              scoringLevel: undefined,
+              dropped: true
+            })
+          }}
+          handleAlgaeDropped={() => {
+            handleAlgae("scoring",{
+              scoringLocation: undefined,
+              dropped: true
+            })
+          }}
+        />
       </Row>
     </div>
   );

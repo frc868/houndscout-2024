@@ -25,10 +25,10 @@ export default function EventDetails({ event }: Props) {
           await dispatch(
             editEventAsync({
               name: payload.name,
-              newCode: payload.code,
-              week: payload.week,
-              start: payload.start,
-              end: payload.end,
+              code: payload.code,
+              weekNumber: payload.week,
+              startDate: payload.start,
+              endDate: payload.end,
               address: payload.address,
               eventCode: event.code,
             })
@@ -36,7 +36,7 @@ export default function EventDetails({ event }: Props) {
           setShowEventEdit(false);
         }
         }
-      ></EventEditModal>
+      />
       <h1 className="text-center mb-3">Event</h1>
       <Card className="mb-4">
         <Row className="g-0">
@@ -51,7 +51,7 @@ export default function EventDetails({ event }: Props) {
               <div className="my-1">Week {event.weekNumber}</div>
               <div className="my-1">
                 {event.startDate?.toDateString()} to{" "}
-                {event.endDate?.toDateString()}
+                {event.endDate?.toDateString()} (shift forwared by 1 day)
               </div>
               <div className="my-1">{event.address}</div>
             </Card.Body>

@@ -9,17 +9,13 @@ export async function GET(req: Request) {
     const server = await prisma.server.findUnique({
       where: {
         id: 1,
-      },
-      include: {
-        blueOnLeft: true,
-      },
+      }
     });
     onLeft = server?.blueOnLeft;
   } catch (e) {
     console.error(e);
     return NextResponse.json({ ok: false });
   }
-
   return NextResponse.json({ ok: true, onLeft });
 }
 
@@ -27,7 +23,6 @@ export async function GET(req: Request) {
 //Sets field orientation.
 export async function POST(req: Request) {
   const data = await req.json();
-
   let onLeft;
   try {
     const server = await prisma.server.update({
@@ -36,10 +31,7 @@ export async function POST(req: Request) {
       },
       data: {
         blueOnLeft: data.onLeft,
-      },
-      include: {
-        blueOnLeft: true,
-      },
+      }
     });
     onLeft = server.blueOnLeft;
   } catch (e) {

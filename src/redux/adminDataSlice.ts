@@ -6,12 +6,12 @@ import { Match, Scouter, Team, Heartbeat } from "@/lib/enums";
 export interface AdminData {
   matches?: Match[];
   scouters?: Scouter[];
-  teams?: Team[];
+  eventTeams?: Team[];
   allTeams?: Team[];
   eventList?: Event[];
   matchesStatus: "idle" | "waiting" | "succeeded" | "failed";
   scoutersStatus: "idle" | "waiting" | "succeeded" | "failed";
-  teamsStatus: "idle" | "waiting" | "succeeded" | "failed";
+  eventTeamsStatus: "idle" | "waiting" | "succeeded" | "failed";
   allTeamsStatus: "idle" | "waiting" | "succeeded" | "failed";
   eventListStatus: "idle" | "waiting" | "succeeded" | "failed";
   error?: string;
@@ -52,10 +52,10 @@ export const editEventAsync = createAsyncThunk(
   "adminData/editEvent",
   async ({eventCode, ...data}: {
     name: string,
-    newCode: string,
-    week: number,
-    start: string,
-    end: string,
+    code: string,
+    weekNumber: number,
+    startDate: string,
+    endDate: string,
     address: string,
     eventCode: string
   }) => {
@@ -93,7 +93,7 @@ export const editMatchAsync = createAsyncThunk(
     blue2: number;
     blue3: number;
   }) => {
-    await axios.post(`/api/v1/events/${data.eventCode}/matches/${data.name}`, {
+    await axios.patch(`/api/v1/events/${data.eventCode}/matches/${data.name}`, {
       ...data,
     });
   }
@@ -171,7 +171,7 @@ export const addTeamToEventAsync = createAsyncThunk(
     teamNumber: number;
   }) => {
     await axios.post(`/api/v1/events/${eventCode}/teams`,{
-      ...data
+      number: data.teamNumber
     });
   }
 );
@@ -187,8 +187,8 @@ export const removeTeamFromEventAsync = createAsyncThunk(
     await axios.delete(`/api/v1/events/${eventCode}/teams/${teamNumber}`);
   }
 );
-export const getTeamsAsync = createAsyncThunk(
-  "adminData/getTeamsAsync",
+export const getEventTeamsAsync = createAsyncThunk(
+  "adminData/getEventTeamsAsync",
   async ({ eventCode }: { eventCode: string }) => {
     const res = await axios.get(`/api/v1/events/${eventCode}/teams`);
     return res.data.teams;
@@ -198,7 +198,6 @@ export const getAllTeamsAsync = createAsyncThunk(
   "adminData/getAllTeamsAsync",
   async () => {
     const res = await axios.get(`/api/v1/teams`);
-    console.log(res.data);
     return res.data.teams;
   }
 );
@@ -255,8 +254,8 @@ const initialState: AdminData = {
   matchesStatus: "idle",
   scouters: undefined,
   scoutersStatus: "idle",
-  teams: undefined,
-  teamsStatus: "idle",
+  eventTeams: undefined,
+  eventTeamsStatus: "idle",
   allTeams: undefined,
   allTeamsStatus: "idle",
   eventList: undefined,
@@ -357,21 +356,21 @@ export const mainData = createSlice({
         state.error = action.error.message || "";
       });
     builder
-      .addCase(getTeamsAsync.pending, (state) => {
-        state.teamsStatus = "waiting";
+      .addCase(getEventTeamsAsync.pending, (state) => {
+        state.eventTeamsStatus = "waiting";
       })
-      .addCase(getTeamsAsync.fulfilled, (state, action) => {
+      .addCase(getEventTeamsAsync.fulfilled, (state, action) => {
         if (action.payload !== null) {
-          state.teams = action.payload;
-          state.teams?.sort((a, b) => a.id - b.id);
+          state.eventTeams = action.payload;
+          state.eventTeams?.sort((a, b) => a.id - b.id);
 
-          state.teamsStatus = "succeeded";
+          state.eventTeamsStatus = "succeeded";
         } else {
-          state.teamsStatus = "idle";
+          state.eventTeamsStatus = "idle";
         }
       })
-      .addCase(getTeamsAsync.rejected, (state, action) => {
-        state.teamsStatus = "failed";
+      .addCase(getEventTeamsAsync.rejected, (state, action) => {
+        state.eventTeamsStatus = "failed";
         state.error = action.error.message || "";
       });
     builder

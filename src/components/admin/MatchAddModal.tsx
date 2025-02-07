@@ -6,6 +6,7 @@ import { Team } from "@/lib/enums";
 
 interface Props {
   show: boolean;
+  showMatchNumber: boolean;
   initialMatch?: number;
   initialRed1?: number;
   initialRed2?: number;
@@ -38,6 +39,7 @@ interface Props {
 //A form to add a new match or edit an existing one.
 export default function MatchAddModal({
   teams,
+  showMatchNumber,
   initialMatch,
   initialRed1,
   initialRed2,
@@ -57,6 +59,8 @@ export default function MatchAddModal({
   const [blue1, setBlue1] = useState<number | undefined>(undefined);
   const [blue2, setBlue2] = useState<number | undefined>(undefined);
   const [blue3, setBlue3] = useState<number | undefined>(undefined);
+
+  const [loading, setLoading] = useState(false); //I put a small loading animation jsut for user feedback.
 
   //load function to set the initial values of the edit version of this modal
   useEffect(() => {
@@ -84,11 +88,20 @@ export default function MatchAddModal({
     <Modal centered show={show} size="lg" onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>{submitVar=="success"?"Add New":"Edit"} Match</Modal.Title>
+        <MoonLoader
+          className="mx-2"
+          color={"black"}
+          loading={loading}
+          size={25}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
       </Modal.Header>
 
       <Modal.Body>
         <Form>
-          <Form.Group className="mb-3">
+          {showMatchNumber && (
+            <Form.Group className="mb-3">
             <Form.Label>Match Number</Form.Label>
             <Form.Control
               placeholder="e.g. 1"
@@ -97,6 +110,7 @@ export default function MatchAddModal({
               onChange={(e) => setMatch(Number(e.target.value))}
             />
           </Form.Group>
+          )}
           <Row>
             <Col>
               <Form.Group className="mb-3">
@@ -171,17 +185,18 @@ export default function MatchAddModal({
       </Modal.Body>
 
       <Modal.Footer>
-      <Button
+        <Button
           variant="danger"
           onClick={() => clearState()}
         >
-          Clear
+          Cancel
         </Button>
         <Button
           variant={submitVar}
           onClick={() =>
             {
               clearState();
+              setLoading(true);
               handleSubmit({
                 number: Number(match),
                 red1: Number(red1),
@@ -191,10 +206,11 @@ export default function MatchAddModal({
                 blue2: Number(blue2),
                 blue3: Number(blue3),
               });
+              setLoading(false);
             }
           }
         >
-          Save changes
+          {showMatchNumber?"Save changes":"Create Match"}
         </Button>
       </Modal.Footer>
     </Modal>

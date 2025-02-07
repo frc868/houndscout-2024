@@ -14,7 +14,7 @@ import {
   getHeartbeatsAsync,
   getMatchesAsync,
   getScoutersAsync,
-  getTeamsAsync,
+  getEventTeamsAsync,
   setMatchScouterAsync,
   getAllTeamsAsync
 } from "@/redux/adminDataSlice";
@@ -48,7 +48,7 @@ export default function Admin() {
       await dispatch(getEventsAsync());
       await dispatch(getHeartbeatsAsync());
       await dispatch(getAllTeamsAsync());
-      // await dispatch(getBlueOnLeftAsync());
+      await dispatch(getBlueOnLeftAsync());
 
       //These two things only trigger after the event code has been loaded.
       //For some reason it errored when I put them in the same thing.
@@ -58,13 +58,13 @@ export default function Admin() {
         ));
       mainData.activeEvent?.code &&
         (await dispatch(
-          getTeamsAsync({ eventCode: mainData.activeEvent?.code })
+          getEventTeamsAsync({ eventCode: mainData.activeEvent?.code })
         ));
     }, 1000);
     return () => clearInterval(interval);
-  }, [dispatch, mainData.activeEvent?.code, mainData.activeMatchName]);
+  }, [dispatch, mainData.activeEvent?.code, mainData.activeMatchName, mainData.blueOnLeft]);
 
-  const ready = mainData.activeEvent?.code && adminData.matches && adminData.teams;
+  const ready = mainData.activeEvent?.code && adminData.matches && adminData.eventTeams;
   //Displays a loading screen if these haven't been filled in the state yet.
   //This prevents errors from trying to render things too early.
 
@@ -128,7 +128,8 @@ export default function Admin() {
             <Col md={3}>
               <AdminControls
                 scouters={adminData.scouters as Scouter[]}
-                teams={adminData.allTeams as Team[]}
+                allTeams={adminData.allTeams as Team[]}
+                eventTeams={adminData.eventTeams as Team[]}
                 eventCode={mainData.activeEvent?.code as string}
                 blueOnLeft={mainData.blueOnLeft as boolean}
               />
@@ -137,7 +138,7 @@ export default function Admin() {
           <Row>
             <MatchSchedule
               matches={adminData.matches as Match[]}
-              teams={adminData.teams as Team[]}
+              teams={adminData.eventTeams as Team[]}
               activeMatchName={mainData.activeMatchName as string}
               scouters={adminData.scouters as Scouter[]}
               handleScouterSelect={async (matchName, station, id) => {

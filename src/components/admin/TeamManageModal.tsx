@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button, Modal, ListGroup, Form } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
 import DeleteButton from "./DeleteButton";
-import { createTeamAsync, deleteTeamAsync, addTeamToEventAsync } from "@/redux/adminDataSlice";
+import { createTeamAsync, deleteTeamAsync, addTeamToEventAsync, removeTeamFromEventAsync } from "@/redux/adminDataSlice";
 import { Team } from "@/lib/enums";
 import NewTeamForm from "./NewTeamForm";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,14 +10,16 @@ import { AppDispatch, ReduxState } from "@/redux/store";
 
 interface Props {
   show: boolean;
-  teams: Team[];
+  allTeams: Team[];
+  eventTeams: Team[];
   handleClose: () => void;
 }
 
 //Lists teams and allows you to delete and create them. Add team to event function WIP.
 export default function TeamManageModal({
   show,
-  teams,
+  allTeams,
+  eventTeams,
   handleClose
 }: Props) {
   const dispatch = useDispatch<AppDispatch>();
@@ -40,7 +42,7 @@ export default function TeamManageModal({
       <Modal.Body>
         <Button
           variant={showTeamNew?"danger":"primary"}
-          className="edit-button mx-3 mb-3"
+          className="edit-button w-100 mx-auto mb-3"
           onClick={() => setShowTeamNew(!showTeamNew)}
         >
           {showTeamNew?"Cancel":"Add New Team"}
@@ -62,36 +64,37 @@ export default function TeamManageModal({
           ></NewTeamForm>
         )}
         <ListGroup>
-          {teams.map((team: Team)=>(
-            <ListGroup.Item key={team.id}>
-              Team {team.number}: {team.name}
-              <Button
-                className="mx-2"
-                size="sm"
-                variant={
-                  true
-                    ? "primary"
-                    : "outline-primary"
-                }
-                onClick={
-                  async () => {
-                    //Adds team to current event
-                    setLoading(true);
+          {allTeams.map((team: Team)=>(
+            <ListGroup.Item key={team.id} className={`${eventTeams.some(item=>item.id==team.id) && "fw-bold bg-secondary-subtle"}`}>
+              Team {team.number}: {team.name} from {team.location}
+              <Form.Check
+                type="checkbox"
+                label="In Current Event"
+                checked={eventTeams.some(item=>item.id==team.id)}
+                onChange={async () => {
+                  //Sets the match as the active one if it isn't already.
+                  setLoading(true);
+                  if(eventTeams.some(item=>item.id==team.id)){
+                    await dispatch(
+                      removeTeamFromEventAsync({
+                        eventCode: mainData.activeEvent?.code as string,
+                        teamNumber: team.number,
+                      })
+                    )
+                  } else {
                     await dispatch(
                       addTeamToEventAsync({
                         eventCode: mainData.activeEvent?.code as string,
                         teamNumber: team.number,
                       })
                     )
-                    setLoading(false);
                   }
-                }
-              >
-                Add to Event (TBA)
-              </Button>
+                  setLoading(false);
+                }}
+              />
               <DeleteButton
                 variant={
-                  true
+                  eventTeams.some(item=>item.id==team.id)
                     ? "danger"
                     : "outline-danger"
                 }
@@ -109,10 +112,6 @@ export default function TeamManageModal({
           ))}
         </ListGroup>
       </Modal.Body>
-
-      <Modal.Footer>
-        <p>Note: WIP</p>
-      </Modal.Footer>
     </Modal>
   );
 }

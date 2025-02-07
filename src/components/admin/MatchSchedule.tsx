@@ -57,6 +57,7 @@ export default function MatchSchedule({
       // Create a new match
         teams={teams as Team[]}
         show={showMatchCreate}
+        showMatchNumber={true}
         submitVar="success"
         handleClose={() => setShowMatchCreate(false)}
         handleSubmit={async (payload) => {
@@ -72,6 +73,7 @@ export default function MatchSchedule({
       <MatchAddModal
       // Edit an existing match
         teams={teams as Team[]}
+        showMatchNumber={false}
         initialMatch={matchEditData.match}
         initialRed1={matchEditData.red1}
         initialRed2={matchEditData.red2}
@@ -246,7 +248,7 @@ export default function MatchSchedule({
                     setShowMatchEdit(true);
                   }}
                   >
-                    Edit Event (TBA)
+                    Edit Event
                   </Button>
                   <DeleteButton
                     variant={

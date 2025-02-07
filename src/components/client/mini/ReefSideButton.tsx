@@ -3,33 +3,41 @@
 interface Props {
   active: boolean
   selected: boolean;
+  top: string;
+  left: string;
   handleSelection: () => void;
   className?: string;
   text: string;
 }
 
 //A picture of the game piece used to indicate an intake location in teleop.
-export default function LocationButton({
+export default function ReefSideButton({
   active,
   selected,
+  top,
+  left,
   handleSelection,
   className,
   text,
 }: Props) {
   return (
-    <div className={className || ""}>
+    <div className={className || ""} style={{
+      position: "absolute",
+      top: top,
+      left: left,
+    }}>
       <div
-        className={`grow d-flex justify-content-center align-items-center border border-5 rounded-4 ${
+        className={`mx-2 grow d-flex justify-content-center align-items-center border border-5 rounded-4 ${
           selected
            ? `location-area-selected border-primary`
            : active
              ? `location-active border-secondary`
              : `bg-secondary-subtle border-secondary`
         }`}
-        style={{ width: "75px", height: "55px" }}
+        style={{ width: "40px", height: "40px" }}
         onMouseDown={handleSelection}
       >
-        <h4 className="text-center mt-2">{text}</h4>
+        <h3 className="text-center mt-2">{text}</h3>
       </div>
     </div>
   );

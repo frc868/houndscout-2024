@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Modal, ListGroup } from "react-bootstrap";
+import { Button, Modal, ListGroup, Form } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
 import { Event } from "@prisma/client";
 import DeleteButton from "./DeleteButton";
@@ -44,7 +44,7 @@ export default function EventManageModal({
         <Button
           //This first part opens an extra form to create a new event.
           variant={showEventNew?"danger":"primary"}
-          className="edit-button mx-3 mb-3"
+          className="edit-button w-100 mx-auto mb-3"
           onClick={() => setShowEventNew(!showEventNew)}
         >
           {showEventNew?"Cancel":"Add New Event"}
@@ -68,24 +68,20 @@ export default function EventManageModal({
         <ListGroup>
           {eventList.map((event: Event)=>(
             //Each of these event is represented by some basic info and buttons to set as active and delete them.
-            <ListGroup.Item key={event.id} className={`${event.code === activeEvent && "fw-bold table-secondary"}`}>
+            <ListGroup.Item key={event.id} className={`${event.code === activeEvent && "fw-bold bg-secondary-subtle"}`}>
               Week {event.weekNumber}: {event.name} ({event.code})
-              <Button
-                className="mx-2"
-                size="sm"
-                variant={
-                  event.code === activeEvent
-                    ? "primary"
-                    : "outline-primary"
-                }
-                onClick={async () => {
+              <Form.Check
+                type="radio"
+                label="Active"
+                name="activeevent"
+                checked={event.code === activeEvent}
+                onChange={async () => {
+                  //Sets the match as the active one if it isn't already.
                   setLoading(true);
                   await dispatch(setActiveEventAsync({ eventCode: event.code }))
                   setLoading(false);
                 }}
-              >
-                {event.code === activeEvent?"Current Active Event":"Set As Active Event"}
-              </Button>
+              />
               <DeleteButton
                 variant={
                   event.code === activeEvent

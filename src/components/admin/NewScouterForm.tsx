@@ -14,7 +14,6 @@ export default function NewScouterModal({
 
   return (
     <div>
-      <hr />
       <Row>
         <Form>
           <Form.Group className="mb-3">
@@ -30,6 +29,7 @@ export default function NewScouterModal({
       <Row>
         <Button
           variant="success"
+          className="mt-2"
           onClick={() =>
             handleSubmit({
               name: String(name)

@@ -30,7 +30,6 @@ export async function POST(
   { params }: { params: { code: string } }
 ) {
   const data = await req.json();
-
   let numbers;
   if (data.number) {
     numbers = [{ number: data.number }];
@@ -41,7 +40,6 @@ export async function POST(
       };
     });
   }
-
   let event;
   try {
     event = await prisma.event.update({

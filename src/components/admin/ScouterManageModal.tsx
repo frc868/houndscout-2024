@@ -39,7 +39,7 @@ export default function ScouterManageModal({
       <Modal.Body>
         <Button
           variant={showScouterNew?"danger":"primary"}
-          className="mx-3 mb-3"
+          className="edit-button w-100 mx-auto mb-3"
           onClick={() => setShowScouterNew(!showScouterNew)}
         >
           {showScouterNew?"Cancel":"Add New Scouter"}
@@ -78,10 +78,6 @@ export default function ScouterManageModal({
           ))}
         </ListGroup>
       </Modal.Body>
-
-      <Modal.Footer>
-        <p>Note: WIP</p>
-      </Modal.Footer>
     </Modal>
   );
 }

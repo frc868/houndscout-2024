@@ -4,7 +4,7 @@ import { Button } from "react-bootstrap";
 
 interface Props {
   active: boolean;
-  handleClick: () => void;
+  handleClick?: () => void;
   className?: string;
 }
 

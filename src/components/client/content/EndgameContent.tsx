@@ -7,7 +7,7 @@ import { EndgameType } from "@prisma/client";
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import EndgamePanel from "@/components/client/endgame/EndgamePanel";
+import EndgamePanel from "@/components/client/teleop/EndgamePanel";
 import {
   setEndgameTypeAsync,
   setEndgameSuccessAsync,
@@ -16,11 +16,12 @@ import MiniToggleBox from "../mini/MiniToggleBox";
 
 interface Props {
   show: boolean;
+  incapOn: boolean;
 }
 
 //Teleop tab.
 //Most of this stuff will probably be copied onto the new auton page, and duplicated for each game piece.
-export default function TeleopContent({ show }: Props) {
+export default function TeleopContent({ show, incapOn }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
 
@@ -28,7 +29,6 @@ export default function TeleopContent({ show }: Props) {
   return (
     <div className={`${!show && "d-none"}`}>
       { /* We're probably going to redo this layout, but keep a copy of it for future reference.  */ }
-      <Row></Row>
       <Row className="my-5">
         <Col className="d-flex justify-content-start ms-5" md={4}>
           <EndgamePanel

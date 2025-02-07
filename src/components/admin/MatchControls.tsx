@@ -12,13 +12,14 @@ import { Scouter, Team } from "@/lib/enums"
 
 interface Props {
   scouters: Scouter[];
-  teams: Team[];
+  allTeams: Team[];
+  eventTeams: Team[];
   eventCode: string;
   blueOnLeft: boolean;
 }
 
 //Many of these link to other modals, others call certain apis.
-export default function Controls({ scouters, teams, eventCode, blueOnLeft }: Props) {
+export default function Controls({ scouters, allTeams, eventTeams, eventCode, blueOnLeft }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const [showTeamManage, setShowTeamManage] = useState(false);
   const [showScouterManage, setShowScouterManage] = useState(false);
@@ -36,7 +37,8 @@ export default function Controls({ scouters, teams, eventCode, blueOnLeft }: Pro
       ></TBADataModal>
       <TeamManageModal
         show={showTeamManage}
-        teams={teams as Team[]}
+        allTeams={allTeams as Team[]}
+        eventTeams={eventTeams as Team[]}
         handleClose={() => setShowTeamManage(false)}
       ></TeamManageModal>
       <ScouterManageModal
@@ -45,18 +47,15 @@ export default function Controls({ scouters, teams, eventCode, blueOnLeft }: Pro
         handleClose={() => setShowScouterManage(false)}
       ></ScouterManageModal>
       <h1 className="text-center mb-3">Controls</h1>
-      <Button size="lg" disabled className="d-flex mx-auto mb-3">
-        Start Match Timer
-      </Button>
       <Row className="">
-        <Col>
-          <Button variant="secondary" onClick={() => setShowScouterManage(true)} className="mb-2 mx-1">
-            Edit Scouters
-          </Button>
-          <Button variant="secondary" onClick={() => setShowTeamManage(true)} className="mb-2 mx-1">
-            Edit Teams
-          </Button>
-        </Col>
+        <Button variant="secondary" onClick={() => setShowScouterManage(true)} className="mb-2">
+          Manage Scouters
+        </Button>
+      </Row>
+      <Row className="">
+        <Button variant="secondary" onClick={() => setShowTeamManage(true)} className="mb-2">
+          Manage Teams
+        </Button>
       </Row>
       <Row className="">
         <Button variant="secondary" disabled className="mb-2">
@@ -65,7 +64,7 @@ export default function Controls({ scouters, teams, eventCode, blueOnLeft }: Pro
       </Row>
       <Row className="">
         <Button
-          disabled
+          // disabled
           variant="secondary"
           className="mb-2"
           onClick={async (payload) => {
@@ -75,7 +74,7 @@ export default function Controls({ scouters, teams, eventCode, blueOnLeft }: Pro
             }));
           }}
         >
-          Toggle Orientation (TBA) <br></br>(Currently: {blueOnLeft?"Blue on Left":"Blue on Right"})
+          Toggle Orientation <br />(Currently: {blueOnLeft?"Blue on Left":"Blue on Right"})
         </Button>
       </Row>
       <Row className="">

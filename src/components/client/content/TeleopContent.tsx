@@ -1,7 +1,8 @@
 "use client";
 
-import TeleopIntakePanel from "@/components/client/teleop/TeleopIntakePanel";
-import TeleopScoringPanel from "@/components/client/teleop/TeleopScoringPanel";
+import TeleopCoralPanel from "@/components/client/teleop/TeleopCoralPanel";
+import TeleopAlgaePanel from "@/components/client/teleop/TeleopAlgaePanel";
+import DroppedPanel from "@/components/client/common/DroppedPanel";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import {
   CoralIntakeLocation, 
@@ -13,25 +14,40 @@ import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import MiniToggleBox from "../mini/MiniToggleBox";
+import EndgamePanel from "@/components/client/teleop/EndgamePanel";
+import {
+  setEndgameTypeAsync,
+  setEndgameSuccessAsync,
+} from "@/redux/scoresSlice";
 
 interface Props {
   show: boolean;
   coralActiveSide: string;
   coralIntakeLocation?: CoralIntakeLocation;
-  handleCoralIntakeSelection: (selection: CoralIntakeLocation) => void;
-  handleCoralScoringSelection: (
-      location?: CoralScoringLevel,
-      failed?: boolean,
-      dropped?: boolean
-    ) => void;
+  coralScoringLevel?: CoralScoringLevel;
+  handleCoral: (
+    phrase: string,
+    data:{
+      intakeSelection?: CoralIntakeLocation,
+      scoringLevel?: CoralScoringLevel,
+      dropped?: boolean,
+      failedScoring?: boolean,
+    },
+  ) => void;
   algaeActiveSide: string;
   algaeIntakeLocation?: AlgaeIntakeLocation;
-  handleAlgaeIntakeSelection: (selection: AlgaeIntakeLocation) => void;
-  handleAlgaeScoringSelection: (
-      location?: AlgaeScoringLocation,
-      failed?: boolean,
-      dropped?: boolean
-    ) => void;
+  algaeScoringLocation?: AlgaeScoringLocation;
+  handleAlgae: (
+    phrase: string,
+    data:{
+      intakeSelection?: AlgaeIntakeLocation,
+      scoringLocation?: AlgaeScoringLocation,
+      dropped?: boolean,
+      failedScoring?: boolean,
+    },
+  ) => void;
+  incapOn: boolean;
+  handleIncap: () => void;
 }
 
 //Teleop tab.
@@ -40,34 +56,71 @@ export default function TeleopContent({
   show,
   coralActiveSide,
   coralIntakeLocation,
-  handleCoralIntakeSelection,
-  handleCoralScoringSelection,
+  coralScoringLevel,
+  handleCoral,
   algaeActiveSide,
   algaeIntakeLocation,
-  handleAlgaeIntakeSelection,
-  handleAlgaeScoringSelection,
+  algaeScoringLocation,
+  handleAlgae,
+  incapOn,
+  handleIncap,
 }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
-
   
 
   return (
     <div className={`${!show && "d-none"}`}>
-      { /* We're probably going to redo this layout, but keep a copy of it for future reference.  */ }
-      <Row className="my-5">
-        <Col className="d-flex justify-content-end" md={3}>
-          <TeleopIntakePanel
-            selected={coralIntakeLocation}
-            handleSelection={handleCoralIntakeSelection}
+      <Row className="d-flex justify-content-center">
+        <Col className="d-flex justify-content-left" md={4}>
+          <TeleopCoralPanel
+            activeSide={coralActiveSide}
+            intakeSelected={coralIntakeLocation}
+            levelSelected={coralScoringLevel}
+            handleSelection={handleCoral}
           />
         </Col>
-        <Col className="d-flex justify-content-end" md={4}>
-          <TeleopScoringPanel
-            active={coralActiveSide === "scoring"}
-            handleSelection={handleCoralScoringSelection}
+        <Col className="d-flex justify-content-center" md={4}>
+          <TeleopAlgaePanel
+            activeSide={algaeActiveSide}
+            intakeSelected={algaeIntakeLocation}
+            locationSelected={algaeScoringLocation}
+            handleSelection={handleAlgae}
           />
         </Col>
+        <Col className="d-flex justify-content-right mx-3" md={1}>
+          <EndgamePanel
+            //Endgame content.
+              endgameType={scores.endgameType}
+              endgameSuccess={scores.endgameSuccess}
+              handleEndgameTypeSelection={async (endgameType) =>
+                await dispatch(setEndgameTypeAsync({ endgameType }))
+              }
+              handleSuccessSelection={async (endgameSuccess) =>
+                await dispatch(setEndgameSuccessAsync({ endgameSuccess }))
+              }
+            />
+        </Col>
+      </Row>
+      <Row className="d-flex justify-content-center">
+      <DroppedPanel
+            incapActive={incapOn}
+            coralActive={coralActiveSide=="level"}
+            algaeActive={algaeActiveSide=="scoring"}
+            handleIncap={handleIncap}
+            handleCoralDropped={() => {
+              handleCoral("level",{
+                scoringLevel: undefined,
+                dropped: true
+              })
+            }}
+            handleAlgaeDropped={() => {
+              handleAlgae("scoring",{
+                scoringLocation: undefined,
+                dropped: true
+              })
+            }}
+          />
       </Row>
     </div>
   );
