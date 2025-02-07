@@ -2,7 +2,6 @@
 import { Col, ListGroup, Row } from "react-bootstrap";
 import ScoreButton from "../mini/ScoreButton";
 import FailButton from "../mini/FailButton";
-import { ScoringLocation } from "@prisma/client";
 import SidewaysToggleBox from "../mini/SidewaysToggleBox";
 
 interface Props {

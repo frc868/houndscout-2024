@@ -115,8 +115,16 @@ export default function AutoAlgaePanel({
                                         })
                                     }}
                                     gamePiece="algae"
-                                    top="20%"
-                                    left="5%"
+                                    top={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "0%" : "10%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "20%" : "20%" // Redside with BlueOnLeft/OnRight
+                                    }
+                                    left={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "25%" : "10%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "10%" : "10%" // Redside with BlueOnLeft/OnRight
+                                    }
                                     number="1"
                                 />
                                 <AutoIntakeButton
@@ -128,8 +136,16 @@ export default function AutoAlgaePanel({
                                         })
                                     }}
                                     gamePiece="algae"
-                                    top="5%"
-                                    left="37%"
+                                    top={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "0%" : "10%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "10%" : "10%" // Redside with BlueOnLeft/OnRight
+                                    }
+                                    left={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "-5%" : "40%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "40%" : "40%" // Redside with BlueOnLeft/OnRight
+                                    }
                                     number="2"
                                 />
                                 <AutoIntakeButton
@@ -141,8 +157,16 @@ export default function AutoAlgaePanel({
                                         })
                                     }}
                                     gamePiece="algae"
-                                    top="20%"
-                                    left="70%"
+                                    top={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "38%" : "20%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "20%" : "20%" // Redside with BlueOnLeft/OnRight
+                                    }
+                                    left={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "-20%" : "70%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "70%" : "70%" // Redside with BlueOnLeft/OnRight
+                                    }
                                     number="3"
                                 />
                                 <AutoIntakeButton
@@ -154,8 +178,16 @@ export default function AutoAlgaePanel({
                                         })
                                     }}
                                     gamePiece="algae"
-                                    top="55%"
-                                    left="70%"
+                                    top={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "70%" : "55%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "55%" : "55%" // Redside with BlueOnLeft/OnRight
+                                    }
+                                    left={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "-5%" : "70%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "70%" : "70%" // Redside with BlueOnLeft/OnRight
+                                    }
                                     number="4"
                                 />
                                 <AutoIntakeButton
@@ -166,9 +198,16 @@ export default function AutoAlgaePanel({
                                             intakeSelection: AlgaeIntakeLocation.AUTOREEF5
                                         })
                                     }}
-                                    gamePiece="algae"
-                                    top="71%"
-                                    left="37%"
+                                    gamePiece="algae"top={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "70%" : "70%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "70%" : "70%" // Redside with BlueOnLeft/OnRight
+                                    }
+                                    left={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "30%" : "40%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "40%" : "40%" // Redside with BlueOnLeft/OnRight
+                                    }
                                     number="5"
                                 />
                                 <AutoIntakeButton
@@ -180,8 +219,16 @@ export default function AutoAlgaePanel({
                                         })
                                     }}
                                     gamePiece="algae"
-                                    top="55%"
-                                    left="5%"
+                                    top={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "38%" : "60%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "60%" : "60%" // Redside with BlueOnLeft/OnRight
+                                    }
+                                    left={
+                                        mainData.station?.includes("BLUE")
+                                            ? mainData.blueOnLeft ? "40%" : "10%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "10%" : "10%" // Redside with BlueOnLeft/OnRight
+                                    }
                                     number="6"
                                 />
                             </div>
