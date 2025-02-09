@@ -48,6 +48,26 @@ export default function Controls({ scouters, allTeams, eventTeams, eventCode, bl
       ></ScouterManageModal>
       <h1 className="text-center mb-3">Controls</h1>
       <Row className="">
+        <Button
+          // disabled
+          variant="secondary"
+          style={blueOnLeft?{
+            backgroundImage: "linear-gradient(to right, blue , red)"
+          }:{
+            backgroundImage: "linear-gradient(to right, red , blue)"
+          }}
+          className="mb-2"
+          onClick={async (payload) => {
+            await dispatch(
+              setBlueOnLeftAsync({
+                blueOnLeft: !blueOnLeft,
+            }));
+          }}
+        >
+          Toggle Orientation <br />(Currently: {blueOnLeft?"Blue on Left":"Blue on Right"})
+        </Button>
+      </Row>
+      <Row className="">
         <Button variant="secondary" onClick={() => setShowScouterManage(true)} className="mb-2">
           Manage Scouters
         </Button>
@@ -60,21 +80,6 @@ export default function Controls({ scouters, allTeams, eventTeams, eventCode, bl
       <Row className="">
         <Button variant="secondary" disabled className="mb-2">
           Generate Scouter Schedule
-        </Button>
-      </Row>
-      <Row className="">
-        <Button
-          // disabled
-          variant="secondary"
-          className="mb-2"
-          onClick={async (payload) => {
-            await dispatch(
-              setBlueOnLeftAsync({
-                blueOnLeft: !blueOnLeft,
-            }));
-          }}
-        >
-          Toggle Orientation <br />(Currently: {blueOnLeft?"Blue on Left":"Blue on Right"})
         </Button>
       </Row>
       <Row className="">
