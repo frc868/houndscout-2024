@@ -69,13 +69,18 @@ export default function Client({ station }: Props) {
       await dispatch(sendHeartbeatAsync({ station, section: tab }));
     };
     update();
+    //If the bot is preloaded, sets the scoring event time to be when the tab was switched to auto and the intake location to preload.
+    if(tab===Section.AUTO&&coralActiveSide=="level"&&coralStartTime==0){
+      setCoralStartTime(Date.now());
+      setCoralIntakeLocation(CoralIntakeLocation.AUTOPRELOAD);
+    }
     //Skips the side selection if moving off of Auto with it on.
     if(tab!==Section.AUTO&&coralActiveSide=="side"){
       setCoralActiveSide("result");
     }
     const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
-  }, [dispatch, station, tab, coralActiveSide]);
+  }, [dispatch, station, tab]);
 
   useEffect(() => {
     setSubmitted(false);
