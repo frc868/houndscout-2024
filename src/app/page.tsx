@@ -7,9 +7,9 @@ export default function Home() {
   return (
     <>
       <StatusBar isConnected={true} />
-      <h1 className="text-center mt-3">Clients</h1>
-      <Row>
-        <Col className="d-flex justify-content-center flex-column align-items-end">
+      <Row className="d-flex justify-content-center flex-row align-items-end">
+        <Col className="d-flex justify-content-start flex-column align-items-end">
+          <h1 className="text-center mt-3">Red Alliance</h1>
           <Button
             className="mt-3"
             size="lg"
@@ -36,6 +36,7 @@ export default function Home() {
           </Button>
         </Col>
         <Col className="d-flex justify-content-center flex-column align-items-start">
+          <h1 className="text-center mt-3">Blue Alliance</h1>
           <Button
             className="mt-3"
             size="lg"
@@ -61,10 +62,9 @@ export default function Home() {
             Blue 3
           </Button>
         </Col>
-      </Row>
-      <Row>
-        <h1 className="text-center mt-4">Other</h1>
+        
         <Col className="d-flex justify-content-center flex-column align-items-center">
+          <h1 className="text-center mt-4">Other</h1>
           <Button
             className="mx-1 mt-2"
             size="lg"
