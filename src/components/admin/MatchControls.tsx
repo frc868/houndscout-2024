@@ -52,9 +52,9 @@ export default function Controls({ scouters, allTeams, eventTeams, eventCode, bl
           // disabled
           variant="secondary"
           style={blueOnLeft?{
-            backgroundImage: "linear-gradient(to right, blue , red)"
+            backgroundImage: "linear-gradient(to right, blue , gray , red)"
           }:{
-            backgroundImage: "linear-gradient(to right, red , blue)"
+            backgroundImage: "linear-gradient(to right, red , gray , blue)"
           }}
           className="mb-2"
           onClick={async (payload) => {

@@ -88,10 +88,10 @@ export default function RankingsContent({rankings}: Props) {
               "Team",
               "Games",
               "Mobility",
-              "Coral Intake Data",
-              "Algae Intake Data",
-              "Coral Scoring Data",
-              "Algae Scoring Data",
+              // "Coral Intake Data",
+              // "Algae Intake Data",
+              // "Coral Scoring Data",
+              // "Algae Scoring Data",
               "Endgame Data",
               "Incap",
               "Defense",
@@ -117,7 +117,7 @@ export default function RankingsContent({rankings}: Props) {
               <td>{r.teamNumber}</td>
               <td>{r.total}</td>
               <td>{r.mobility}</td>
-              <td>
+              {/* <td>
                 S1 (Auto): {r.CoralAutoStation1Intaked}<br />
                 G1 (Auto): {r.CoralAutoGround1Intaked}<br />
                 G2 (Auto): {r.CoralAutoGround2Intaked}<br />
@@ -154,7 +154,7 @@ export default function RankingsContent({rankings}: Props) {
               <td>
                 Net: {r.AlgaeNetScored}/{r.AlgaeNetAttempted}<br />
                 Processor: {r.AlgaeProcessorScored}/{r.AlgaeNetAttempted}<br />
-              </td>
+              </td> */}
               <td>
                 Parked: {r.parked}<br />
                 Shallow: {r.shallow}<br />

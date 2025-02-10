@@ -6,20 +6,12 @@ import { AppDispatch, ReduxState } from "@/redux/store";
 import { Form } from "react-bootstrap";
 import SubmitButton from "@/components/client/postmatch/SubmitButton";
 import TeamDropdown from "@/components/admin/TeamDropdown";
-import ToggleBox from "@/components/client/postmatch/ToggleBox";
 import SidewaysToggleBox from "@/components/client/mini/SidewaysToggleBox";
 import StatusBar from "@/components/client/common/StatusBar";
 import CommentsBox from "@/components/client/postmatch/CommentsBox";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { Event } from "@prisma/client";
 import { sendPitData } from "@/redux/scoresSlice";
-
-import {
-  Match,
-  Scouter,
-  Team
-} from "@/lib/enums";
-import { Result } from "@prisma/client";
+import { Team } from "@/lib/enums";
 import { getEventTeamsAsync } from "@/redux/adminDataSlice";
 import { getActiveEventAsync } from "@/redux/mainDataSlice";
 

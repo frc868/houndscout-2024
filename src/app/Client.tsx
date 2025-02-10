@@ -103,7 +103,6 @@ const coralFailRef = useRef<HTMLButtonElement | null>(null);
 const algaeScoreRef = useRef<HTMLButtonElement | null>(null);
 const algaeFailRef = useRef<HTMLButtonElement | null>(null);
 const pressedKeys = useRef(new Set<string>());
-
 useEffect(() => {
   const handleKeydown = (e: KeyboardEvent) => {
     e.preventDefault();

@@ -1,4 +1,4 @@
-import { Scouter } from "@/redux/adminDataSlice";
+import { Scouter } from "@/lib/enums";
 import { useState } from "react";
 import { Dropdown, Form } from "react-bootstrap";
 
