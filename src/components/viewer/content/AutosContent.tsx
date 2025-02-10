@@ -10,7 +10,17 @@ export default function HomeContent() {
     >
       <h1>Autos</h1>
       <p>WIP</p>
-      {/* Copy the Auto things here, then add things from the API. */}
+      <div className="position-relative mt-4" style={{width: "100%"}}>
+          <img
+              alt=""
+              style={{
+                  width: "60%",
+                  height: "auto",
+                  left: "20%",
+              }}
+              src={"/assets/blue_side.png"}
+          />
+      </div>
     </div>
   );
 }
