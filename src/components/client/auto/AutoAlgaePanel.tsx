@@ -49,7 +49,7 @@ export default function AutoAlgaePanel({
                         <Col className="d-flex flex-column" md={4}>
                             <div className="d-flex flex-column justify-content-center align-items-center">
                                 <h4>Ground</h4>
-                                <div className={`d-flex ${mainData.blueOnLeft?"flex-column":"flex-column-reverse"} justify-content-center align-items-center`}>
+                                <div className={`d-flex ${flip?"flex-column-reverse":"flex-column"} justify-content-center align-items-center`}>
                                     <TeleopIntakeButton
                                         className="mt-2"
                                         active={activeSide=="intaking"}
@@ -117,13 +117,13 @@ export default function AutoAlgaePanel({
                                     gamePiece="algae"
                                     top={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "0%" : "5%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "5%" : "5%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "0%" : "67%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "70%" : "5%" // Redside with BlueOnLeft/OnRight
                                     }
                                     left={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "25%" : "78%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "77%" : "30%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "-5%" : "78%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "77%" : "-5%" // Redside with BlueOnLeft/OnRight
                                     }
                                     number="1"
                                 />
@@ -138,13 +138,13 @@ export default function AutoAlgaePanel({
                                     gamePiece="algae"
                                     top={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "0%" : "5%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "4%" : "5%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "0%" : "68%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "70%" : "5%" // Redside with BlueOnLeft/OnRight
                                     }
                                     left={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "-5%" : "46%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "45%" : "-5%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "25%" : "46%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "45%" : "30%" // Redside with BlueOnLeft/OnRight
                                     }
                                     number="2"
                                 />
@@ -164,8 +164,8 @@ export default function AutoAlgaePanel({
                                     }
                                     left={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "-20%" : "32%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "30%" : "-16%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "40%" : "32%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "30%" : "40%" // Redside with BlueOnLeft/OnRight
                                     }
                                     number="3"
                                 />
@@ -180,13 +180,13 @@ export default function AutoAlgaePanel({
                                     gamePiece="algae"
                                     top={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "70%" : "67%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "70%" : "65%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "70%" : "5%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "4%" : "65%" // Redside with BlueOnLeft/OnRight
                                     }
                                     left={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "-5%" : "46%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "45%" : "-5%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "30%" : "46%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "45%" : "30%" // Redside with BlueOnLeft/OnRight
                                     }
                                     number="4"
                                 />
@@ -200,13 +200,13 @@ export default function AutoAlgaePanel({
                                     }}
                                     gamePiece="algae"top={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "70%" : "68%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "70%" : "65%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "70%" : "5%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "5%" : "65%" // Redside with BlueOnLeft/OnRight
                                     }
                                     left={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "30%" : "78%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "75%" : "30%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "-5%" : "78%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "75%" : "-5%" // Redside with BlueOnLeft/OnRight
                                     }
                                     number="5"
                                 />
@@ -226,8 +226,8 @@ export default function AutoAlgaePanel({
                                     }
                                     left={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "40%" : "93%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "91%" : "40%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "-20%" : "93%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "91%" : "-16%" // Redside with BlueOnLeft/OnRight
                                     }
                                     number="6"
                                 />
