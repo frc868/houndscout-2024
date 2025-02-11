@@ -51,7 +51,7 @@ export default function AutoCoralPanel({
                         <Col className="d-flex flex-column">
                             <div className="d-flex flex-column justify-items-center align-items-center">
                                 <h4>Station</h4>
-                                <div className={`d-flex ${mainData.blueOnLeft?"flex-column":"flex-column-reverse"} justify-content-center align-items-center`}>
+                                <div className={`d-flex ${flip?"flex-column-reverse":"flex-column"} justify-content-center align-items-center`}>
                                     <TeleopIntakeButton
                                         className="my-4"
                                         active={activeSide=="intaking"}
@@ -82,7 +82,7 @@ export default function AutoCoralPanel({
                         <Col className="d-flex flex-column">
                             <div className="d-flex flex-column justify-content-center align-items-center">
                                 <h4>Ground</h4>
-                                <div className={`d-flex ${mainData.blueOnLeft?"flex-column":"flex-column-reverse"} justify-content-center align-items-center`}>
+                                <div className={`d-flex ${flip?"flex-column-reverse":"flex-column"} justify-content-center align-items-center`}>
                                     <TeleopIntakeButton
                                         className="mt-2"
                                         active={activeSide=="intaking"}
@@ -206,13 +206,13 @@ export default function AutoCoralPanel({
                                     }}
                                     top={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "5%" : "9%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "7%" : "7%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "5%" : "65%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "68%" : "7%" // Redside with BlueOnLeft/OnRight
                                     }
                                     left={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "-10%" : "45%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "45%" : "-3%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "0%" : "79%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "74%" : "-3%" // Redside with BlueOnLeft/OnRight
                                     }
                                     text="1"
                                 />
@@ -226,13 +226,13 @@ export default function AutoCoralPanel({
                                     }}
                                     top={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "5%" : "9%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "7%" : "7%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "5%" : "65%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "68%" : "7%" // Redside with BlueOnLeft/OnRight
                                     }
                                     left={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "25%" : "79%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "74%" : "27%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "25%" : "45%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "46%" : "27%" // Redside with BlueOnLeft/OnRight
                                     }
                                     text="2"
                                 />
@@ -247,12 +247,12 @@ export default function AutoCoralPanel({
                                     top={
                                         mainData.station?.includes("BLUE")
                                             ? mainData.blueOnLeft ? "35%" : "35%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "35%" : "35%" // BlRedsideueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "35%" : "35%" // Redside with BlueOnLeft/OnRight
                                     }
                                     left={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "40%" : "90%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "90%" : "40%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "35%" : "35%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "30%" : "40%" // Redside with BlueOnLeft/OnRight
                                     }
                                     text="3"
                                 />
@@ -266,13 +266,13 @@ export default function AutoCoralPanel({
                                     }}
                                     top={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "65%" : "65%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "68%" : "67%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "65%" : "9%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "7%" : "67%" // Redside with BlueOnLeft/OnRight
                                     }
                                     left={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "25%" : "79%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "74%" : "27%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "25%" : "45%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "45%" : "27%" // Redside with BlueOnLeft/OnRight
                                     }
                                     text="4"
                                 />
@@ -286,13 +286,13 @@ export default function AutoCoralPanel({
                                     }}
                                     top={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "65%" : "65%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "68%" : "67%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "65%" : "9%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "7%" : "67%" // Redside with BlueOnLeft/OnRight
                                     }
                                     left={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "-5%" : "45%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "46%" : "-3%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "0%" : "79%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "74%" : "-3%" // Redside with BlueOnLeft/OnRight
                                     }
                                     text="5"
                                 />
@@ -311,8 +311,8 @@ export default function AutoCoralPanel({
                                     }
                                     left={
                                         mainData.station?.includes("BLUE")
-                                            ? mainData.blueOnLeft ? "-10%" : "35%" // Blueside with BlueOnLeft/OnRight
-                                            : mainData.blueOnLeft ? "30%" : "-15%" // Redside with BlueOnLeft/OnRight
+                                            ? mainData.blueOnLeft ? "-10%" : "90%" // Blueside with BlueOnLeft/OnRight
+                                            : mainData.blueOnLeft ? "90%" : "-15%" // Redside with BlueOnLeft/OnRight
                                     }
                                     text="6"
                                 />
