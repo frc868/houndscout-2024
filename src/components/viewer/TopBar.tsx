@@ -14,7 +14,7 @@ export default function TopBar({ eventCode }: Props) {
           HoundScout Viewer
         </Navbar.Brand>
         <Navbar.Text className="justify-self-end text-end me-4 w-100 fs-6 fw-medium font-monospace">
-          Event Code: {eventCode}
+          {eventCode?"Event Code: " + eventCode:"Loading..."}
         </Navbar.Text>
       </Navbar>
     </>

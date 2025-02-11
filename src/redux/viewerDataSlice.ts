@@ -1,5 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { ReduxState } from "./store";
 import { Ranking } from "@/lib/enums";
 
 export interface ViewerData {
@@ -14,6 +15,32 @@ export const getRankingsAsync = createAsyncThunk(
       `/api/v1/events/${eventCode}/statistics/rankings`
     );
     return res.data.rankings;
+  }
+);
+
+export const updatePicklistsAsync = createAsyncThunk(
+  "viewer/updatePicklistsAsync",
+  async (
+    {
+      teamNumber,
+      firstPicklist,
+      secondPicklist,
+    }: {
+      teamNumber: number;
+      firstPicklist: boolean;
+      secondPicklist: boolean;
+    },
+    { dispatch, getState }
+  ) => {
+    const state = getState() as ReduxState;
+    const res = await axios.patch(
+      `/api/v1/teams/${teamNumber}`,
+      {
+        firstPicklist,
+        secondPicklist,
+        submitted: true,
+      }
+    );
   }
 );
 

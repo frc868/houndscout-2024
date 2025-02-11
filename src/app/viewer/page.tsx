@@ -9,9 +9,10 @@ import TopBar from "@/components/viewer/TopBar";
 import { ViewerTab } from "@/components/viewer/ViewerEnums";
 import MenuBar from "@/components/viewer/MenuBar";
 import { Col, Row } from "react-bootstrap";
-import HomeContent from "@/components/viewer/content/HomeContent";
+import HomeContent from "@/components/viewer/content/PitContent";
 import RankingsContent from "@/components/viewer/content/RankingsContent";
 import ImportContent from "@/components/viewer/content/ImportContent";
+import PitContent from "@/components/viewer/content/PitContent";
 import AutosContent from "@/components/viewer/content/AutosContent";
 import SettingsContent from "@/components/viewer/content/SettingsContent";
 import { getRankingsAsync } from "@/redux/viewerDataSlice";
@@ -69,6 +70,7 @@ export default function Viewer() {
             <Col className="ps-0">
               {tab === ViewerTab.RANKINGS && <RankingsContent rankings={viewerData.rankings as Ranking[]} />}
               {tab === ViewerTab.AUTOS && <AutosContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
+              {tab === ViewerTab.PIT && <PitContent rankings={viewerData.rankings as Ranking[]} />}
               {tab === ViewerTab.IMPORT && <ImportContent />}
               {tab === ViewerTab.SETTINGS && <SettingsContent />}
             </Col>

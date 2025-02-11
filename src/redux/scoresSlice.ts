@@ -169,13 +169,10 @@ export const sendPitData = createAsyncThunk(
     { dispatch, getState }
   ) => {
     const state = getState() as ReduxState;
-    const mainData = state.mainData;
     const res = await axios.patch(
-      `/api/v1/teams/${teamNumber}
-      }/scores/${mainData.station?.toLowerCase()}`,
+      `/api/v1/teams/${teamNumber}`,
       {
         comments,
-        submitted: true,
       }
     );
   }

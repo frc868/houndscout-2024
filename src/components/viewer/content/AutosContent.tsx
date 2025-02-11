@@ -21,6 +21,103 @@ export default function HomeContent({rankings, teams}: Props) {
   const [algaeIntake, setAlgaeIntake] = useState("");
   const [algaeScoring, setAlgaeScoring] = useState("");
 
+  const calculateCoralPieces=()=>{
+    const team=rankings.filter(team=>team.teamNumber===teamNumber);
+    return team[0].teamScores.reduce((total, score) => {
+      const gameAmount = score.CoralScoringEvents.filter(
+        (event) =>
+          event.scoringLevel === CoralScoringLevel.LEVEL1
+      ).length;
+      return total + gameAmount;
+    }, 0) / team[0].teamScores.length;
+  }
+  const calculateCoralSuccesses=()=>{
+    const team=rankings.filter(team=>team.teamNumber===teamNumber);
+    return team[0].teamScores.reduce((total, score) => {
+      const gameAmount = score.CoralScoringEvents.filter(
+        (event) =>
+          event.scoringLevel === CoralScoringLevel.LEVEL1 && !event.failedScoring
+      ).length;
+      return total + gameAmount;
+    }, 0) / team[0].teamScores.length;
+  }
+  const calculateCoralCycle=()=>{
+    const team=rankings.filter(team=>team.teamNumber===teamNumber);
+    return team[0].teamScores.reduce((total, score) => {
+      const gameAmount = score.CoralScoringEvents.filter(
+        (event) =>
+          event.scoringLevel === CoralScoringLevel.LEVEL1 && !event.failedScoring
+      ).reduce(
+        (total, event) => {
+          return total + (Number(event.timestampScored) - Number(event.timestampPickedUp));
+        }, 0
+      );
+      return total + gameAmount;
+    }, 0) / team[0].teamScores.length;
+  }
+
+  const calculateAlgaePieces=()=>{
+    const team=rankings.filter(team=>team.teamNumber===teamNumber);
+    return team[0].teamScores.reduce((total, score) => {
+      const gameAmount = score.AlgaeScoringEvents.filter(
+        (event) =>
+          event.scoringLocation === AlgaeScoringLocation.NET
+      ).length;
+      return total + gameAmount;
+    }, 0) / team[0].teamScores.length;
+  }
+  const calculateAlgaeSuccesses=()=>{
+    const team=rankings.filter(team=>team.teamNumber===teamNumber);
+    return team[0].teamScores.reduce((total, score) => {
+      const gameAmount = score.AlgaeScoringEvents.filter(
+        (event) =>
+          event.scoringLocation === AlgaeScoringLocation.NET && !event.failedScoring
+      ).length;
+      return total + gameAmount;
+    }, 0) / team[0].teamScores.length;
+  }
+  const calculateAlgaeCycle=()=>{
+    const team=rankings.filter(team=>team.teamNumber===teamNumber);
+    return team[0].teamScores.reduce((total, score) => {
+      const gameAmount = score.AlgaeScoringEvents.filter(
+        (event) =>
+          event.scoringLocation === AlgaeScoringLocation.NET && !event.failedScoring
+      ).reduce(
+        (total, event) => {
+          return total + (Number(event.timestampScored) - Number(event.timestampPickedUp));
+        }, 0
+      );
+      return total + gameAmount;
+    }, 0) / team[0].teamScores.length;
+  }
+
+  // const CoralLevel1Attempted =
+  //       teamScores.reduce((total, score) => {
+  //         const gameAmount = score.CoralScoringEvents.filter(
+  //           (event) =>
+  //             event.scoringLevel === CoralScoringLevel.LEVEL1
+  //         ).length;
+  //         return total + gameAmount;
+  //       }, 0) / teamScores.length;
+
+  // const CoralLevel1Scored =
+  //       teamScores.reduce((total, score) => {
+  //         const gameAmount = score.CoralScoringEvents.filter(
+  //           (event) =>
+  //             event.scoringLevel === CoralScoringLevel.LEVEL1 && !event.failedScoring
+  //         ).length;
+  //         return total + gameAmount;
+  //       }, 0) / teamScores.length;
+
+  // const CoralLevel1Cycle =
+  //       teamScores.reduce((total, score) => {
+  //         const gameAmount = score.CoralScoringEvents.reduce(
+  //           (time, event) =>
+  //             return time + event.timestampScored - event.timestampPickedUp
+  //         );
+  //         return total + gameAmount;
+  //       }, 0) / teamScores.length;
+
   return (
     <div
       style={{
@@ -30,15 +127,14 @@ export default function HomeContent({rankings, teams}: Props) {
       }}
       className="m-4 bg-dark rounded-3 font-monospace text-center"
     >
-      <h1>Autos</h1>
-      <p>WIP</p>
+      <h1>Scoring Event Data (WIP)</h1>
       <div className="position-relative mt-4" style={{width: "100%"}}>
           <img
               alt=""
               style={{
-                  width: "60%",
+                  width: "40%",
                   height: "auto",
-                  left: "20%",
+                  left: "30%",
               }}
               src={"/assets/blue_side.png"}
           />
@@ -51,6 +147,14 @@ export default function HomeContent({rankings, teams}: Props) {
           teams={teams as Team[]}
           handleTeamSelect={(number) => setTeamNumber(number)}
         />
+      </Row>
+      <Row className="d-flex flex-row">
+        <Col md={6}>
+          <h3 className="mr-2">Coral Scoring Events:</h3>
+        </Col>
+        <Col md={6}>
+          <h3 className="mr-2">Algae Scoring Events:</h3>
+        </Col>
       </Row>
       <Row className="d-flex flex-row">
         <Col md={2}>
@@ -158,6 +262,18 @@ export default function HomeContent({rankings, teams}: Props) {
               </ul>
             </Dropdown.Menu>
           </Dropdown>
+        </Col>
+      </Row>
+      <Row className="d-flex flex-row">
+        <Col md={6}>
+          <h4 className="mr-2">Avg Pieces/Game:</h4>
+          <h4 className="mr-2">Avg Successes/Game:</h4>
+          <h4 className="mr-2">Avg Time Held/Game (Successes Only):</h4>
+        </Col>
+        <Col md={6}>
+          <h4 className="mr-2">Avg Pieces/Game:</h4>
+          <h4 className="mr-2">Avg Successes/Game:</h4>
+          <h4 className="mr-2">Avg Time Held/Game (Successes Only):</h4>
         </Col>
       </Row>
     </div>
