@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 // adminDataSlice/removeTeamFromEventAsync
 //Removes a team from the specified event with the specified number.
-//Check api/v1/teams/[number] for deleting a team entirely.
+//See api/v1/teams/[number] for deleting a team entirely.
 export async function DELETE(
   req: Request,
   { params }: { params: { code: string; number: string } }

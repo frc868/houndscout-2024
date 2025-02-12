@@ -3,8 +3,12 @@ import {
   TeamScore,
   CoralScoringEvent,
   AlgaeScoringEvent,
-  IncapSegment
+  IncapSegment,
+  DrivetrainType,
+  WheelType,
+  IntakeType,
 } from "@prisma/client";
+import { Decimal } from "@prisma/client/runtime/library";
 
 export enum Alliance {
   RED,
@@ -31,6 +35,26 @@ export interface Ranking {
   incap: number;
   defense: number;
   total: number;
+  drivetrain?: DrivetrainType | null;
+  wheels?: WheelType | null;
+  intake?: IntakeType | null;
+  weight?: Decimal | null;
+  hasAuton?: boolean | null;
+  comments?: string | null;
+  canIntakeGroundCoral?: boolean | null;
+  canIntakeStationCoral?: boolean | null;
+  canIntakeGroundAlgae?: boolean | null;
+  canIntakeReefAlgae?: boolean | null;
+  canRemoveReefAlgaeWithoutIntake?: boolean | null;
+  canScoreReefL1?: boolean | null;
+  canScoreReefL2?: boolean | null;
+  canScoreReefL3?: boolean | null;
+  canScoreReefL4?: boolean | null;
+  canScoreNet?: boolean | null;
+  canScoreProcessor?: boolean | null;
+  canPark?: boolean | null;
+  canShallow?: boolean | null;
+  canDeep?: boolean | null;
 }
 
 export interface Match {

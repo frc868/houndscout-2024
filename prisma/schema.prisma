@@ -80,12 +80,36 @@ model Team {
   teamScores   TeamScore[]
   
   firstPicklist     Boolean     @default(false)
-  secondPicklist     Boolean     @default(false)
+  secondPicklist    Boolean     @default(false)
 
 //Pit
 //UPDATE CYCLE: Please review this section between years to ensure all necessary data is being tracked.
-//Note to Michael: Put all the variables from the pit page's state here. Make sure you migrate your changes.
+  drivetrain  DrivetrainType?
+  wheels      WheelType?
+  intake      IntakeType?
+  weight      Decimal?
+  hasAuton    Boolean?
+  comments    String?
 
+//intake capabilities
+  canIntakeGroundCoral               Boolean?
+  canIntakeStationCoral              Boolean?
+  canIntakeGroundAlgae               Boolean?
+  canIntakeReefAlgae                 Boolean?
+  canRemoveReefAlgaeWithoutIntake    Boolean?
+
+//scoring capabilities
+  canScoreReefL1      Boolean?
+  canScoreReefL2      Boolean?
+  canScoreReefL3      Boolean?
+  canScoreReefL4      Boolean?
+  canScoreNet         Boolean?
+  canScoreProcessor   Boolean?
+
+//endgame capabilities
+  canPark      Boolean?
+  canShallow   Boolean?
+  canDeep      Boolean?
 }
 
 //Represents a match in an event. Should be auto-filled using The Blue Alliance API.
@@ -308,6 +332,27 @@ enum Station {
   BLUE1
   BLUE2
   BLUE3
+}
+
+enum DrivetrainType {
+  SWERVE
+  TANK
+  MECANUM
+  OTHER
+}
+enum WheelType {
+  COLSUNS
+  BLACKNITRITE
+  BLUENITRITE
+  TPY
+  WHITEANDYMARK
+  MECANUM
+  OTHER
+}
+enum IntakeType {
+  MECHANICAL
+  PNEUMATIC
+  OTHER
 }
 
 //If the game involves multiple game pieces with similar intakes and scoring, use the following as a framework:

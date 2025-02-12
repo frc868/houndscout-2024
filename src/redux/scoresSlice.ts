@@ -10,6 +10,9 @@ import {
   CoralScoringSide,
   AlgaeScoringLocation,
   Result,
+  DrivetrainType,
+  WheelType,
+  IntakeType,
 } from "@prisma/client";
 
 export interface Scores {
@@ -155,24 +158,77 @@ export const sendPitData = createAsyncThunk(
   async (
     {
       teamNumber,
-      // driverSkillRating,
-      // result,
-      // playedDefense,
+      drivetrain,
+      wheels,
+      intake,
+      weight,
+      hasAuton,
       comments,
+      canIntakeGroundCoral,
+      canIntakeStationCoral,
+      canIntakeGroundAlgae,
+      canIntakeReefAlgae,
+      canRemoveReefAlgaeWithoutIntake,
+      canScoreReefL1,
+      canScoreReefL2,
+      canScoreReefL3,
+      canScoreReefL4,
+      canScoreNet,
+      canScoreProcessor,
+      canPark,
+      canShallow,
+      canDeep,
     }: {
       teamNumber: number;
-      // driverSkillRating: number;
-      // result: Result;
-      // playedDefense: boolean;
-      comments: string;
+      drivetrain?: DrivetrainType;
+      wheels?: WheelType;
+      intake?: IntakeType;
+      weight?: number;
+      hasAuton?: boolean;
+      comments?: string;
+      canIntakeGroundCoral?: boolean;
+      canIntakeStationCoral?: boolean;
+      canIntakeGroundAlgae?: boolean;
+      canIntakeReefAlgae?: boolean;
+      canRemoveReefAlgaeWithoutIntake?: boolean;
+      canScoreReefL1?: boolean;
+      canScoreReefL2?: boolean;
+      canScoreReefL3?: boolean;
+      canScoreReefL4?: boolean;
+      canScoreNet?: boolean;
+      canScoreProcessor?: boolean;
+      canPark?: boolean;
+      canShallow?: boolean;
+      canDeep?: boolean;
     },
     { dispatch, getState }
   ) => {
-    const state = getState() as ReduxState;
+    const drivetrainInput=drivetrain==undefined?null:drivetrain;
+    const wheelsInput=wheels==undefined?null:wheels;
+    const intakeInput=intake==undefined?null:intake;
     const res = await axios.patch(
       `/api/v1/teams/${teamNumber}`,
       {
+        drivetrain: drivetrainInput,
+        wheels: wheelsInput,
+        intake: intakeInput,
+        weight,
+        hasAuton,
         comments,
+        canIntakeGroundCoral,
+        canIntakeStationCoral,
+        canIntakeGroundAlgae,
+        canIntakeReefAlgae,
+        canRemoveReefAlgaeWithoutIntake,
+        canScoreReefL1,
+        canScoreReefL2,
+        canScoreReefL3,
+        canScoreReefL4,
+        canScoreNet,
+        canScoreProcessor,
+        canPark,
+        canShallow,
+        canDeep,
       }
     );
   }

@@ -1,28 +1,32 @@
 import React, { useMemo, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { ReduxState } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, ReduxState } from "@/redux/store";
 import { Table } from "react-bootstrap";
 import { Ranking } from "@/lib/enums";
+import { updatePicklistsAsync } from "@/redux/viewerDataSlice";
 
 interface Props {
   rankings: Ranking[];
 }
 export default function PitContent({rankings}: Props) {
+  const dispatch = useDispatch<AppDispatch>();
+
   const [sortField, setSortField] = useState<keyof Ranking | null>(null);
     const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   
     // Sorting function
     const sortedRankings = useMemo(() => {
-      if (!sortField) return rankings;
+      return rankings;
+      // if (!sortField) return rankings;
   
-      return [...rankings].sort((a, b) => {
-        const valueA = a[sortField];
-        const valueB = b[sortField];
+      // return [...rankings].sort((a, b) => {
+      //   const valueA = a[sortField];
+      //   const valueB = b[sortField];
   
-        if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
-        if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
-        return 0;
-      });
+      //   if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
+      //   if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
+      //   return 0;
+      // });
       
     }, [rankings, sortField, sortDirection]);
   
@@ -83,17 +87,24 @@ export default function PitContent({rankings}: Props) {
           <thead>
             <tr>
               {/* Clickable table headers for sorting */}
+              <th
+                key={"Team"}
+                onClick={() =>
+                  handleSort(
+                    "Team".toLowerCase().replace(/ /g, "") as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                Team
+              </th>
               {[
-                "Team",
-                "Games",
-                "Mobility",
-                // "Coral Intake Data",
-                // "Algae Intake Data",
-                // "Coral Scoring Data",
-                // "Algae Scoring Data",
-                "Endgame Data",
-                "Incap",
-                "Defense",
+                "Structure",
+                "Intake",
+                "Scoring",
+                "Endgame",
+                "Comments",
+                "Picklist",
               ].map((header) => (
                 <th
                   key={header}
@@ -112,67 +123,78 @@ export default function PitContent({rankings}: Props) {
           <tbody>
             {/* Once the team selection function in admin is working, that can be modified for the picklist. */}
             {sortedRankings.map((r, idx) => (
-              <tr key={r.teamNumber}>
+              <tr key={r.teamNumber} style={{fontSize: "12px"}}>
                 <td>{r.teamNumber}</td>
-                <td>{r.total}</td>
-                <td>{r.mobility}</td>
-                {/* <td>
-                  S1 (Auto): {r.CoralAutoStation1Intaked}<br />
-                  G1 (Auto): {r.CoralAutoGround1Intaked}<br />
-                  G2 (Auto): {r.CoralAutoGround2Intaked}<br />
-                  G3 (Auto): {r.CoralAutoGround3Intaked}<br />
-                  S2 (Auto): {r.CoralAutoStation2Intaked}<br />
-                  Ground (Teleop): {r.CoralTeleopGroundIntaked}<br />
-                  Station (Teleop): {r.CoralTeleopStationIntaked}<br />
+                <td>
+                  Drivetrain: {r.drivetrain}<br />
+                  Wheels: {r.wheels}<br />
+                  Intake: {r.intake}<br />
                 </td>
                 <td>
-                  G1 (Auto): {r.AlgaeAutoGround1Intaked}<br />
-                  G2 (Auto): {r.AlgaeAutoGround2Intaked}<br />
-                  G3 (Auto): {r.AlgaeAutoGround3Intaked}<br />
-                  R1 (Auto): {r.AlgaeAutoReef1Intaked}<br />
-                  R2 (Auto): {r.AlgaeAutoReef2Intaked}<br />
-                  R3 (Auto): {r.AlgaeAutoReef3Intaked}<br />
-                  R4 (Auto): {r.AlgaeAutoReef4Intaked}<br />
-                  R5 (Auto): {r.AlgaeAutoReef5Intaked}<br />
-                  R6 (Auto): {r.AlgaeAutoReef6Intaked}<br />
-                  Ground (Teleop): {r.AlgaeTeleopGroundIntaked}<br />
-                  Reef (Teleop): {r.AlgaeTeleopReefIntaked}<br />
+                  Can Intake Coral from Ground: {r.canIntakeGroundCoral}<br />
+                  Can Intake Coral from Station: {r.canIntakeStationCoral}<br />
+                  Can Intake Algae from Ground: {r.canIntakeGroundAlgae}<br />
+                  Can Intake Algae from Reef: {r.canIntakeReefAlgae}<br />
+                  Can Remove Algae from Reef without Intaking: {r.canRemoveReefAlgaeWithoutIntake}<br />
                 </td>
                 <td>
-                  L1: {r.CoralLevel1Scored}/{r.CoralLevel1Attempted}<br />
-                  L2: {r.CoralLevel2Scored}/{r.CoralLevel2Attempted}<br />
-                  L3: {r.CoralLevel3Scored}/{r.CoralLevel3Attempted}<br />
-                  L4: {r.CoralLevel4Scored}/{r.CoralLevel4Attempted}<br />
-                  Reef S1 (Auto): {r.CoralAutoSide1Scored}/{r.CoralAutoSide1Attempted}<br />
-                  Reef S2 (Auto): {r.CoralAutoSide2Scored}/{r.CoralAutoSide2Attempted}<br />
-                  Reef S3 (Auto): {r.CoralAutoSide3Scored}/{r.CoralAutoSide3Attempted}<br />
-                  Reef S4 (Auto): {r.CoralAutoSide4Scored}/{r.CoralAutoSide4Attempted}<br />
-                  Reef S5 (Auto): {r.CoralAutoSide5Scored}/{r.CoralAutoSide5Attempted}<br />
-                  Reef S6 (Auto): {r.CoralAutoSide6Scored}/{r.CoralAutoSide6Attempted}<br />
+                  Can Score Coral in Reef L1: {r.canScoreReefL1}<br />
+                  Can Score Coral in Reef L2: {r.canScoreReefL2}<br />
+                  Can Score Coral in Reef L3: {r.canScoreReefL3}<br />
+                  Can Score Coral in Reef L4: {r.canScoreReefL4}<br />
+                  Can Score Algae in Net: {r.canScoreNet}<br />
+                  Can Score Algae in Processor: {r.canScoreProcessor}<br />
                 </td>
                 <td>
-                  Net: {r.AlgaeNetScored}/{r.AlgaeNetAttempted}<br />
-                  Processor: {r.AlgaeProcessorScored}/{r.AlgaeNetAttempted}<br />
-                </td> */}
-                <td>
-                  Parked: {r.parked}<br />
-                  Shallow: {r.shallow}<br />
-                  Deep: {r.deep}<br />
+                  Can Park under Net: {r.canPark}<br />
+                  Can Hang on Shallow Cage: {r.canShallow}<br />
+                  Can Hang on Deep Cage: {r.canDeep}<br />
                 </td>
-                <td>{r.incap}</td>
-                <td>{r.defense}</td>
-                {/* {Object.entries(r).map(([key, value]) =>
-                  key !== "team" ? (
-                    <td
-                      key={key}
-                      style={getColor(value as number, maxValues[key], key)}
-                    >
-                      {value}
-                    </td>
-                  ) : (
-                    <td key={key}>{value}</td>
-                  )
-                )} */}
+                <td>{r.comments}</td>
+                <td className="d-flex flex-row justify-content-center align-items-stretch">
+                  <div
+                    className={"d-flex justify-content-start align-items-center"}
+                    style={{
+                      width: "auto",
+                      height: "100%",
+                      fontSize: "35pt",
+                      color: "gold",
+                      cursor: "pointer",
+                    }}
+                    onMouseDown={async () => {
+                      await dispatch(
+                        updatePicklistsAsync({
+                          teamNumber: r.teamNumber as number,
+                          firstPicklist: !r.firstPicklist,
+                          secondPicklist: r.secondPicklist
+                        })
+                      );
+                    }}
+                  >
+                    <i className={`bi ${r.firstPicklist ? "bi-star-fill" : "bi-star"}`} />
+                  </div>
+                  <div
+                    className={"d-flex justify-content-end align-items-center"}
+                    style={{
+                      width: "auto",
+                      height: "100%",
+                      fontSize: "35pt",
+                      color: "silver",
+                      cursor: "pointer",
+                    }}
+                    onMouseDown={async () => {
+                      await dispatch(
+                        updatePicklistsAsync({
+                          teamNumber: r.teamNumber as number,
+                          firstPicklist: r.firstPicklist,
+                          secondPicklist: !r.secondPicklist
+                        })
+                      );
+                    }}
+                  >
+                    <i className={`bi ${r.secondPicklist ? "bi-star-fill" : "bi-star"}`} />
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>

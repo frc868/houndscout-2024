@@ -14,6 +14,7 @@ import { sendPitData } from "@/redux/scoresSlice";
 import { Team } from "@/lib/enums";
 import { getEventTeamsAsync } from "@/redux/adminDataSlice";
 import { getActiveEventAsync } from "@/redux/mainDataSlice";
+import { DrivetrainType, IntakeType, WheelType } from "@prisma/client";
 
 export default function Pit() {
   const dispatch = useDispatch<AppDispatch>();
@@ -36,11 +37,12 @@ export default function Pit() {
 
   // State hooks to manage form data for different robot attributes
   const [teamNumber, setTeamNumber] = useState<number | undefined>(undefined);
-  const [drivetrain, setDrivetrain] = useState<string>("");
-  const [wheelType, setWheelType] = useState<string>("");
-  const [intakeType, setIntakeType] = useState<string>("");
-  const [weight, setWeight] = useState<number | string>("");
-  const [auton, setAuton] = useState<boolean>(false);
+
+  const [drivetrain, setDrivetrain] = useState<DrivetrainType|undefined>(undefined);
+  const [wheels, setWheels] = useState<WheelType|undefined>(undefined);
+  const [intake, setIntake] = useState<IntakeType|undefined>(undefined);
+  const [weight, setWeight] = useState<number>(0);
+  const [hasAuton, setHasAuton] = useState<boolean>(false);
   const [comments, setComments] = useState(""); // Additional comments field
 
   const [canIntakeGroundCoral, setCanIntakeGroundCoral] = useState<boolean>(false);
@@ -102,32 +104,33 @@ export default function Pit() {
                 <Form.Control
                   as="select"
                   value={drivetrain}
-                  onChange={(e) => setDrivetrain(e.target.value)} // Updates drivetrain on selection
+                  onChange={(e) => setDrivetrain(e.target.value as DrivetrainType|undefined)} // Updates drivetrain on selection
                 >
-                  <option value="">Select...</option>
-                  <option value="swerve">Swerve</option>
-                  <option value="tank">Tank</option>
-                  <option value="mecanum">Mecanum</option>
-                  <option value="other">Other</option>
+                  <option value={undefined}>Select...</option>
+                  <option value={DrivetrainType.SWERVE}>Swerve</option>
+                  <option value={DrivetrainType.TANK}>Tank</option>
+                  <option value={DrivetrainType.MECANUM}>Mecanum</option>
+                  <option value={DrivetrainType.OTHER}>Other</option>
                 </Form.Control>
               </Form.Group>
             </Col>
 
             <Col className="d-flex justify-content-center" md={3}>
               <Form.Group controlId="wheelType">
-                <Form.Label>Wheel Type</Form.Label>
+                <Form.Label>Wheels</Form.Label>
                 <Form.Control
                   as="select"
-                  value={wheelType}
-                  onChange={(e) => setWheelType(e.target.value)} // Updates wheel type on selection
+                  value={wheels}
+                  onChange={(e) => setWheels(e.target.value as WheelType|undefined)} // Updates wheel type on selection
                 >
-                  <option value="">Select...</option>
-                  <option value="colsuns">Colsuns</option>
-                  <option value="blackNitrite">Black Nitrite</option>
-                  <option value="blueNitrite">Blue Nitrite</option>
-                  <option value="tpy">TPY</option>
-                  <option value="whiteAndymark">White AndyMark</option>
-                  <option value="mecanum">Mecanum</option>
+                  <option value={undefined}>Select...</option>
+                  <option value={WheelType.COLSUNS}>Colsuns</option>
+                  <option value={WheelType.BLACKNITRITE}>Black Nitrite</option>
+                  <option value={WheelType.BLUENITRITE}>Blue Nitrite</option>
+                  <option value={WheelType.TPY}>TPY</option>
+                  <option value={WheelType.WHITEANDYMARK}>White AndyMark</option>
+                  <option value={WheelType.MECANUM}>Mecanum</option>
+                  <option value={WheelType.OTHER}>Other</option>
                 </Form.Control>
               </Form.Group>
             </Col>
@@ -137,13 +140,13 @@ export default function Pit() {
                 <Form.Label>Intake Type</Form.Label>
                 <Form.Control
                   as="select"
-                  value={intakeType}
-                  onChange={(e) => setIntakeType(e.target.value)} // Updates intake type on selection
+                  value={intake}
+                  onChange={(e) => setIntake(e.target.value as IntakeType|undefined)} // Updates intake type on selection
                 >
-                  <option value="">Select...</option>
-                  <option value="mechanical">Mechanical</option>
-                  <option value="pneumatic">Pneumatic</option>
-                  <option value="other">Other</option>
+                  <option value={undefined}>Select...</option>
+                  <option value={IntakeType.MECHANICAL}>Mechanical</option>
+                  <option value={IntakeType.PNEUMATIC}>Pneumatic</option>
+                  <option value={IntakeType.OTHER}>Other</option>
                 </Form.Control>
               </Form.Group>
             </Col>
@@ -258,28 +261,28 @@ export default function Pit() {
                 <Form.Label>Weight (lbs)</Form.Label>
                 <Form.Control
                   type="number"
-                  value={weight}
-                  onChange={(e) => setWeight(e.target.value)} // Updates weight on input change
+                  value={Number(weight)}
+                  onChange={(e) => setWeight(Number(e.target.value))} // Updates weight on input change
                 />
               </Form.Group>
             </Col>
             <Col className="d-flex justify-content-end" md={4}>
               <SidewaysToggleBox
                 name="Has Auto Mode?"
-                enabled={auton}
+                enabled={hasAuton}
                 handleClick={() =>
-                  setAuton((auton) => !auton)
+                  setHasAuton((hasAuton) => !hasAuton)
                 }
               />
             </Col>
           </Row>
-          <Row className="d-flex justify-content-center my-2">
+          {/* <Row className="d-flex justify-content-center my-2"> */}
     {/*         Need to figure out how to store this image; I didn't get enough details on this. */}
-            <Form.Group controlId="robotPicture">
-              <Form.Label>Upload Robot Picture</Form.Label>
+            {/* <Form.Group controlId="robotPicture"> */}
+              {/* <Form.Label>Upload Robot Picture</Form.Label> */}
               {/* <Form.Control type="file" accept="image/*" onChange={handleFileChange} /> */}
-            </Form.Group>
-          </Row>
+            {/* </Form.Group> */}
+          {/* </Row> */}
           <Row className="d-flex justify-content-center">
             <Col md={3}>
               <CommentsBox contents={comments} handleChange={setComments} />
@@ -292,10 +295,26 @@ export default function Pit() {
                   dispatch(
                     sendPitData({
                       teamNumber: teamNumber as number,
-                      // driverSkillRating: driverSkillRating as number,
-                      // result: result as Result,
-                      // playedDefense,
-                      comments,
+                      drivetrain: drivetrain as DrivetrainType,
+                      wheels: wheels as WheelType,
+                      intake: intake as IntakeType,
+                      weight: weight as number,
+                      hasAuton: hasAuton as boolean,
+                      comments: comments as string,
+                      canIntakeGroundCoral: canIntakeGroundCoral as boolean,
+                      canIntakeStationCoral: canIntakeStationCoral as boolean,
+                      canIntakeGroundAlgae: canIntakeGroundAlgae as boolean,
+                      canIntakeReefAlgae: canIntakeReefAlgae as boolean,
+                      canRemoveReefAlgaeWithoutIntake: canRemoveReefAlgaeWithoutIntake as boolean,
+                      canScoreReefL1: canScoreReefL1 as boolean,
+                      canScoreReefL2: canScoreReefL2 as boolean,
+                      canScoreReefL3: canScoreReefL3 as boolean,
+                      canScoreReefL4: canScoreReefL4 as boolean,
+                      canScoreNet: canScoreNet as boolean,
+                      canScoreProcessor: canScoreProcessor as boolean,
+                      canPark: canPark as boolean,
+                      canShallow: canShallow as boolean,
+                      canDeep: canDeep as boolean,
                     })
                   );
                   setSubmitted(true);

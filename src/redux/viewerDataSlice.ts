@@ -38,7 +38,6 @@ export const updatePicklistsAsync = createAsyncThunk(
       {
         firstPicklist,
         secondPicklist,
-        submitted: true,
       }
     );
   }

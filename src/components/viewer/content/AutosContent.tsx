@@ -5,15 +5,17 @@ import { CoralIntakeLocation, CoralScoringLevel, CoralScoringSide, AlgaeIntakeLo
 import { Row, Col } from "react-bootstrap";
 import { Team, Ranking } from "@/lib/enums";
 import TeamDropdown from "@/components/admin/TeamDropdown";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, ReduxState } from "@/redux/store";
+import { updatePicklistsAsync } from "@/redux/viewerDataSlice";
 
 interface Props {
   rankings: Ranking[];
   teams: Team[]
 }
 
-export default function HomeContent({rankings, teams}: Props) {
-
-  const [teamNumber, setTeamNumber] = useState<number | undefined>(undefined);
+export default function AutosContent({rankings, teams}: Props) {
+  const dispatch = useDispatch<AppDispatch>();
 
   const [coralIntake, setCoralIntake] = useState("");
   const [coralLevel, setCoralLevel] = useState("");
@@ -21,102 +23,83 @@ export default function HomeContent({rankings, teams}: Props) {
   const [algaeIntake, setAlgaeIntake] = useState("");
   const [algaeScoring, setAlgaeScoring] = useState("");
 
+  const [team, setTeam]=useState<Ranking | undefined>();
+
   const calculateCoralPieces=()=>{
-    const team=rankings.filter(team=>team.teamNumber===teamNumber);
-    return team[0].teamScores.reduce((total, score) => {
-      const gameAmount = score.CoralScoringEvents.filter(
-        (event) =>
-          event.scoringLevel === CoralScoringLevel.LEVEL1
-      ).length;
-      return total + gameAmount;
-    }, 0) / team[0].teamScores.length;
+    if(team){
+      return team.teamScores.reduce((total, score) => {
+        const gameAmount = score.CoralScoringEvents.filter(
+          (event) =>
+            event.scoringLevel === CoralScoringLevel.LEVEL1
+        ).length;
+        return total + gameAmount;
+      }, 0) / team.teamScores.length;
+    }
   }
   const calculateCoralSuccesses=()=>{
-    const team=rankings.filter(team=>team.teamNumber===teamNumber);
-    return team[0].teamScores.reduce((total, score) => {
-      const gameAmount = score.CoralScoringEvents.filter(
-        (event) =>
-          event.scoringLevel === CoralScoringLevel.LEVEL1 && !event.failedScoring
-      ).length;
-      return total + gameAmount;
-    }, 0) / team[0].teamScores.length;
+    if(team){
+      return team.teamScores.reduce((total, score) => {
+        const gameAmount = score.CoralScoringEvents.filter(
+          (event) =>
+            event.scoringLevel === CoralScoringLevel.LEVEL1 && !event.failedScoring
+        ).length;
+        return total + gameAmount;
+      }, 0) / team.teamScores.length;
+    }
   }
   const calculateCoralCycle=()=>{
-    const team=rankings.filter(team=>team.teamNumber===teamNumber);
-    return team[0].teamScores.reduce((total, score) => {
-      const gameAmount = score.CoralScoringEvents.filter(
-        (event) =>
-          event.scoringLevel === CoralScoringLevel.LEVEL1 && !event.failedScoring
-      ).reduce(
-        (total, event) => {
-          return total + (Number(event.timestampScored) - Number(event.timestampPickedUp));
-        }, 0
-      );
-      return total + gameAmount;
-    }, 0) / team[0].teamScores.length;
+    if(team){
+      return team.teamScores.reduce((total, score) => {
+        const gameAmount = score.CoralScoringEvents.filter(
+          (event) =>
+            event.scoringLevel === CoralScoringLevel.LEVEL1 && !event.failedScoring
+        ).reduce(
+          (total, event) => {
+            return total + (Number(event.timestampScored) - Number(event.timestampPickedUp));
+          }, 0
+        );
+        return total + gameAmount;
+      }, 0) / team.teamScores.length;
+    }
   }
 
   const calculateAlgaePieces=()=>{
-    const team=rankings.filter(team=>team.teamNumber===teamNumber);
-    return team[0].teamScores.reduce((total, score) => {
-      const gameAmount = score.AlgaeScoringEvents.filter(
-        (event) =>
-          event.scoringLocation === AlgaeScoringLocation.NET
-      ).length;
-      return total + gameAmount;
-    }, 0) / team[0].teamScores.length;
+    if(team){
+      return team.teamScores.reduce((total, score) => {
+        const gameAmount = score.AlgaeScoringEvents.filter(
+          (event) =>
+            event.scoringLocation === AlgaeScoringLocation.NET
+        ).length;
+        return total + gameAmount;
+      }, 0) / team.teamScores.length;
+    }
   }
   const calculateAlgaeSuccesses=()=>{
-    const team=rankings.filter(team=>team.teamNumber===teamNumber);
-    return team[0].teamScores.reduce((total, score) => {
-      const gameAmount = score.AlgaeScoringEvents.filter(
-        (event) =>
-          event.scoringLocation === AlgaeScoringLocation.NET && !event.failedScoring
-      ).length;
-      return total + gameAmount;
-    }, 0) / team[0].teamScores.length;
+    if(team){
+      return team.teamScores.reduce((total, score) => {
+        const gameAmount = score.AlgaeScoringEvents.filter(
+          (event) =>
+            event.scoringLocation === AlgaeScoringLocation.NET && !event.failedScoring
+        ).length;
+        return total + gameAmount;
+      }, 0) / team.teamScores.length;
+    }
   }
   const calculateAlgaeCycle=()=>{
-    const team=rankings.filter(team=>team.teamNumber===teamNumber);
-    return team[0].teamScores.reduce((total, score) => {
-      const gameAmount = score.AlgaeScoringEvents.filter(
-        (event) =>
-          event.scoringLocation === AlgaeScoringLocation.NET && !event.failedScoring
-      ).reduce(
-        (total, event) => {
-          return total + (Number(event.timestampScored) - Number(event.timestampPickedUp));
-        }, 0
-      );
-      return total + gameAmount;
-    }, 0) / team[0].teamScores.length;
+    if(team){
+      return team.teamScores.reduce((total, score) => {
+        const gameAmount = score.AlgaeScoringEvents.filter(
+          (event) =>
+            event.scoringLocation === AlgaeScoringLocation.NET && !event.failedScoring
+        ).reduce(
+          (total, event) => {
+            return total + (Number(event.timestampScored) - Number(event.timestampPickedUp));
+          }, 0
+        );
+        return total + gameAmount;
+      }, 0) / team.teamScores.length;
+    }
   }
-
-  // const CoralLevel1Attempted =
-  //       teamScores.reduce((total, score) => {
-  //         const gameAmount = score.CoralScoringEvents.filter(
-  //           (event) =>
-  //             event.scoringLevel === CoralScoringLevel.LEVEL1
-  //         ).length;
-  //         return total + gameAmount;
-  //       }, 0) / teamScores.length;
-
-  // const CoralLevel1Scored =
-  //       teamScores.reduce((total, score) => {
-  //         const gameAmount = score.CoralScoringEvents.filter(
-  //           (event) =>
-  //             event.scoringLevel === CoralScoringLevel.LEVEL1 && !event.failedScoring
-  //         ).length;
-  //         return total + gameAmount;
-  //       }, 0) / teamScores.length;
-
-  // const CoralLevel1Cycle =
-  //       teamScores.reduce((total, score) => {
-  //         const gameAmount = score.CoralScoringEvents.reduce(
-  //           (time, event) =>
-  //             return time + event.timestampScored - event.timestampPickedUp
-  //         );
-  //         return total + gameAmount;
-  //       }, 0) / teamScores.length;
 
   return (
     <div
@@ -134,19 +117,133 @@ export default function HomeContent({rankings, teams}: Props) {
               style={{
                   width: "40%",
                   height: "auto",
-                  left: "30%",
+                  left: "60%",
               }}
               src={"/assets/blue_side.png"}
           />
+          <p 
+            className="position-absolute"
+            style={{ top: "22%", left: "33%" }}
+          >
+            R1
+          </p>
+          <p 
+            className="position-absolute"
+            style={{ top: "22%", left: "44%" }}
+          >
+            R2
+          </p>
+          <p 
+            className="position-absolute"
+            style={{ top: "46%", left: "48%" }}
+          >
+            R3
+          </p>
+          <p 
+            className="position-absolute"
+            style={{ top: "70%", left: "44%" }}
+          >
+            R4
+          </p>
+          <p 
+            className="position-absolute"
+            style={{ top: "70%", left: "33%" }}
+          >
+            R5
+          </p>
+          <p 
+            className="position-absolute"
+            style={{ top: "46%", left: "29%" }}
+          >
+            R6
+          </p>
+          <p 
+            className="position-absolute"
+            style={{ top: "22%", left: "22%" }}
+          >
+            G1
+          </p>
+          <p 
+            className="position-absolute"
+            style={{ top: "46%", left: "22%" }}
+          >
+            G2
+          </p>
+          <p 
+            className="position-absolute"
+            style={{ top: "70%", left: "22%" }}
+          >
+            G3
+          </p>
+          <p 
+            className="position-absolute"
+            style={{ top: "17%", left: "15%" }}
+          >
+            S1
+          </p>
+          <p 
+            className="position-absolute"
+            style={{ top: "75%", left: "15%" }}
+          >
+            S2
+          </p>
       </div>
-      <Row className="d-flex flex-row">
+      <Row className="d-flex flex-row justify-content-center align-items-center">
         <h3 className="mr-2">Team Number: </h3>
         <TeamDropdown
           red={false}
-          activeTeam={Number(teamNumber)}
+          activeTeam={Number(team?.teamNumber)}
           teams={teams as Team[]}
-          handleTeamSelect={(number) => setTeamNumber(number)}
+          handleTeamSelect={(number) => {
+            setTeam(rankings.filter(team=>team.teamNumber===number)[0]);
+          }}
         />
+        {team && (<>
+          <div
+            className={"d-flex justify-content-start align-items-center"}
+            style={{
+              width: "auto",
+              height: "100%",
+              fontSize: "35pt",
+              color: "gold",
+              cursor: "pointer",
+            }}
+            onMouseDown={async () => {
+              await dispatch(
+                updatePicklistsAsync({
+                  teamNumber: team.teamNumber as number,
+                  firstPicklist: !(team.firstPicklist),
+                  secondPicklist: team.secondPicklist
+                })
+              );
+              setTeam({...team, firstPicklist: !team.firstPicklist});
+            }}
+          >
+            <i className={`bi ${team.firstPicklist ? "bi-star-fill" : "bi-star"}`} />
+          </div>
+          <div
+            className={"d-flex justify-content-end align-items-center"}
+            style={{
+              width: "auto",
+              height: "100%",
+              fontSize: "35pt",
+              color: "silver",
+              cursor: "pointer",
+            }}
+            onMouseDown={async () => {
+              await dispatch(
+                updatePicklistsAsync({
+                  teamNumber: team.teamNumber as number,
+                  firstPicklist: team.firstPicklist,
+                  secondPicklist: !(team.secondPicklist)
+                })
+              );
+              setTeam({...team, secondPicklist: !team.secondPicklist});
+            }}
+          >
+            <i className={`bi ${team.secondPicklist ? "bi-star-fill" : "bi-star"}`} />
+          </div>
+        </>)}
       </Row>
       <Row className="d-flex flex-row">
         <Col md={6}>

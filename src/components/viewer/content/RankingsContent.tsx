@@ -5,6 +5,9 @@ import { Table } from "react-bootstrap";
 import { Ranking } from "@/lib/enums";
 import { updatePicklistsAsync } from "@/redux/viewerDataSlice";
 
+// bar sorter:
+// <i className={` bi ${(header.toLowerCase().replace(/ /g, "") as keyof Ranking!=sortField) ? "bi-chevron-bar-contract" : sortDirection=="asc" ? "bi-chevron-bar-up" : "bi-chevron-bar-down"}`} />
+
 interface Props {
   rankings: Ranking[];
 }
@@ -16,16 +19,18 @@ export default function RankingsContent({rankings}: Props) {
 
   // Sorting function
   const sortedRankings = useMemo(() => {
-    if (!sortField) return rankings;
+    return rankings;
+    
+    // if (!sortField) return rankings;
 
-    return [...rankings].sort((a, b) => {
-      const valueA = a[sortField];
-      const valueB = b[sortField];
+    // return [...rankings].sort((a, b) => {
+    //   const valueA = a[sortField];
+    //   const valueB = b[sortField];
 
-      if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
-      if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
-      return 0;
-    });
+    //   if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
+    //   if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
+    //   return 0;
+    // });
     
   }, [rankings, sortField, sortDirection]);
 
@@ -91,8 +96,7 @@ export default function RankingsContent({rankings}: Props) {
               "Team",
               "Games",
               "Mobility",
-              "Coral Dropped",
-              "Algae Dropped",
+              "Dropped Pieces",
               "Endgame Data",
               "Incap",
               "Defense",
@@ -100,15 +104,14 @@ export default function RankingsContent({rankings}: Props) {
             ].map((header) => (
               <th
                 key={header}
-                onClick={() =>
-                  handleSort(
-                    header.toLowerCase().replace(/ /g, "") as keyof Ranking
-                  )
-                }
+                // onClick={() =>
+                //   handleSort(
+                //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
+                //   )
+                // }
                 style={{ cursor: "pointer" }}
               >
                 {header}
-                <i className={` bi ${(header.toLowerCase().replace(/ /g, "") as keyof Ranking!=sortField) ? "bi-chevron-bar-contract" : sortDirection=="asc" ? "bi-chevron-bar-up" : "bi-chevron-bar-down"}`} />
               </th>
             ))}
           </tr>
@@ -125,8 +128,10 @@ export default function RankingsContent({rankings}: Props) {
               </td>
               <td>{r.total}</td>
               <td>{r.mobility}</td>
-              <td>{r.CoralDropped}</td>
-              <td>{r.AlgaeDropped}</td>
+              <td>
+                Coral: {r.CoralDropped} per match<br />
+                Algae: {r.AlgaeDropped} per match<br />
+              </td>
               <td>
                 Parked: {r.parked}<br />
                 Shallow: {r.shallow}<br />

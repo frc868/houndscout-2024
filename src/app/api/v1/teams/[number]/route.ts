@@ -26,6 +26,7 @@ export async function GET(
 }
 
 // ScoresSlice/sendPitData
+// ViewerDataSlice/updatePicklistsAsync
 // Updates info about a specified team.
 // Note to Michael: David actually made this API route for a variety of purposes, so I don't think there's any need to edit here.
 export async function PATCH(
@@ -41,7 +42,32 @@ export async function PATCH(
         number: Number(params.number),
       },
       data: {
-        ...data,
+        firstPicklist: data.firstPicklist,
+        secondPicklist: data.secondPicklist,
+
+        drivetrain: data.drivetrain,
+        wheels: data.wheels,
+        intake: data.intake,
+        weight: data.weight,
+        hasAuton: data.hasAuton,
+        comments: data.comments,
+
+        canIntakeGroundCoral: data.canIntakeGroundCoral,
+        canIntakeStationCoral: data.canIntakeStationCoral,
+        canIntakeGroundAlgae: data.canIntakeGroundAlgae,
+        canIntakeReefAlgae: data.canIntakeReefAlgae,
+        canRemoveReefAlgaeWithoutIntake: data.canRemoveReefAlgaeWithoutIntake,
+
+        canScoreReefL1: data.canScoreReefL1,
+        canScoreReefL2: data.canScoreReefL2,
+        canScoreReefL3: data.canScoreReefL3,
+        canScoreReefL4: data.canScoreReefL4,
+        canScoreNet: data.canScoreNet,
+        canScoreProcessor: data.canScoreProcessor,
+
+        canPark: data.canPark,
+        canShallow: data.canShallow,
+        canDeep: data.canDeep,
       },
     });
   } catch {
