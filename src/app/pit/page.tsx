@@ -315,13 +315,7 @@ export default function Pit() {
               />
             </Col>
           </Row>
-          {/* <Row className="d-flex justify-content-center my-2"> */}
-    {/*         Need to figure out how to store this image; I didn't get enough details on this. */}
-            {/* <Form.Group controlId="robotPicture"> */}
-              {/* <Form.Label>Upload Robot Picture</Form.Label> */}
-              {/* <Form.Control type="file" accept="image/*" onChange={handleFileChange} /> */}
-            {/* </Form.Group> */}
-          {/* </Row> */}
+          
           <Row className="d-flex justify-content-center">
             <Col md={3}>
               <CommentsBox contents={comments} handleChange={setComments} />
