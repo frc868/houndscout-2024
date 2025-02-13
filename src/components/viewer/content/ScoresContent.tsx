@@ -139,118 +139,62 @@ export default function ScoresContent({rankings, teams}: Props) {
             </div>
           </>)}
         </Row>
-        <Table
-          bordered
-          hover
-          variant="dark"
-          className="table-responsive"
-        >
-          <thead>
-            <tr>
-              {/* Clickable table headers for sorting */}
-              {[
-                "Match Number",
-                "Preload",
-                "Mobility Bonus",
-                "Incap Segments",
-                "Endgame Data",
-                "Driver Skill",
-                "Result",
-                "Played Defense",
-              ].map((header) => (
-                <th
-                  key={header}
-                  onClick={() =>
-                    handleSort(
-                      header.toLowerCase().replace(/ /g, "") as keyof Ranking
-                    )
-                  }
-                  style={{ cursor: "pointer" }}
-                >
-                  {header}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {/* Once the team selection function in admin is working, that can be modified for the picklist. */}
-            {sortedRankings.map((r, idx) => (
-              <tr key={r.teamNumber} style={{fontSize: "12px"}}>
-                <td>{r.teamNumber}</td>
-                <td>
-                  Drivetrain: {r.drivetrain}<br />
-                  Wheels: {r.wheels}<br />
-                  Intake: {r.intake}<br />
-                </td>
-                <td>
-                  Can Intake Coral from Ground: {r.canIntakeGroundCoral}<br />
-                  Can Intake Coral from Station: {r.canIntakeStationCoral}<br />
-                  Can Intake Algae from Ground: {r.canIntakeGroundAlgae}<br />
-                  Can Intake Algae from Reef: {r.canIntakeReefAlgae}<br />
-                  Can Remove Algae from Reef without Intaking: {r.canRemoveReefAlgaeWithoutIntake}<br />
-                </td>
-                <td>
-                  Can Score Coral in Reef L1: {r.canScoreReefL1}<br />
-                  Can Score Coral in Reef L2: {r.canScoreReefL2}<br />
-                  Can Score Coral in Reef L3: {r.canScoreReefL3}<br />
-                  Can Score Coral in Reef L4: {r.canScoreReefL4}<br />
-                  Can Score Algae in Net: {r.canScoreNet}<br />
-                  Can Score Algae in Processor: {r.canScoreProcessor}<br />
-                </td>
-                <td>
-                  Can Park under Net: {r.canPark}<br />
-                  Can Hang on Shallow Cage: {r.canShallow}<br />
-                  Can Hang on Deep Cage: {r.canDeep}<br />
-                </td>
-                <td>{r.comments}</td>
-                <td className="d-flex flex-row justify-content-center align-items-stretch">
-                  <div
-                    className={"d-flex justify-content-start align-items-center"}
-                    style={{
-                      width: "auto",
-                      height: "100%",
-                      fontSize: "35pt",
-                      color: "gold",
-                      cursor: "pointer",
-                    }}
-                    onMouseDown={async () => {
-                      await dispatch(
-                        updatePicklistsAsync({
-                          teamNumber: r.teamNumber as number,
-                          firstPicklist: !r.firstPicklist,
-                          secondPicklist: r.secondPicklist
-                        })
-                      );
-                    }}
+        {team &&(
+          <Table
+            bordered
+            hover
+            variant="dark"
+            className="table-responsive"
+          >
+            <thead>
+              <tr>
+                {/* Clickable table headers for sorting */}
+                {[
+                  "Match Number",
+                  "Preload",
+                  "Mobility Bonus",
+                  "Incap Segments",
+                  "Endgame Data",
+                  "Driver Skill",
+                  "Result",
+                  "Played Defense",
+                ].map((header) => (
+                  <th
+                    key={header}
+                    onClick={() =>
+                      handleSort(
+                        header.toLowerCase().replace(/ /g, "") as keyof Ranking
+                      )
+                    }
+                    style={{ cursor: "pointer" }}
                   >
-                    <i className={`bi ${r.firstPicklist ? "bi-star-fill" : "bi-star"}`} />
-                  </div>
-                  <div
-                    className={"d-flex justify-content-end align-items-center"}
-                    style={{
-                      width: "auto",
-                      height: "100%",
-                      fontSize: "35pt",
-                      color: "silver",
-                      cursor: "pointer",
-                    }}
-                    onMouseDown={async () => {
-                      await dispatch(
-                        updatePicklistsAsync({
-                          teamNumber: r.teamNumber as number,
-                          firstPicklist: r.firstPicklist,
-                          secondPicklist: !r.secondPicklist
-                        })
-                      );
-                    }}
-                  >
-                    <i className={`bi ${r.secondPicklist ? "bi-star-fill" : "bi-star"}`} />
-                  </div>
-                </td>
+                    {header}
+                  </th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {/* Once the team selection function in admin is working, that can be modified for the picklist. */}
+              {team.teamScores.map((r, idx) => (
+                <tr key={r.id} style={{fontSize: "12px"}}>
+                  <td>{r.id}</td>
+                  <td>{r.preloaded}</td>
+                  <td>{r.leftStartingZone}</td>
+                  <td>{r.incapSegments.map((s, ind)=>(
+                    <p>{Number(s.timestampEnded)-Number(s.timestampStarted)}<br /></p>
+                  ))}</td>
+                  <td>
+                    Type: {r.endgameType}<br />
+                    Success: {r.endgameSuccess}<br />
+                  </td>
+                  <td>{r.driverSkillRating}</td>
+                  <td>{r.result}</td>
+                  <td>{r.playedDefense}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
       </div>
   );
 }
