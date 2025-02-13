@@ -65,7 +65,7 @@ export default function Pit() {
   const ready = mainData.activeEvent?.code && adminData.eventTeams;
 
   //A form that's filled out after the match with supplementary info.
-  //Based off of a layout provided by Michael and ChatGPT.
+  //Based off of a layout provided by Michael.
   return (
     <>
       <StatusBar isConnected={true} />
