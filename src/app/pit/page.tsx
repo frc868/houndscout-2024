@@ -62,6 +62,18 @@ export default function Pit() {
   const [canShallow, setCanShallow] = useState<boolean>(false);
   const [canDeep, setCanDeep] = useState<boolean>(false);
 
+  
+  const [robotImage, setRobotImage] = useState<string | null>(null); 
+
+  
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+    const file = e.target.files[0];
+    const imageUrl = URL.createObjectURL(file); 
+    setRobotImage(imageUrl);
+    }
+  };
+
   const ready = mainData.activeEvent?.code && adminData.eventTeams;
 
   //A form that's filled out after the match with supplementary info.
@@ -96,6 +108,33 @@ export default function Pit() {
               </>
             )} 
           </Row>
+
+          <Row className="d-flex justify-content-center my-2">
+            <Form.Group controlId="robotPicture">
+              <Form.Label>Upload Robot Picture</Form.Label>
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+            </Form.Group>
+          </Row>
+          
+          {robotImage && (
+            <Row className="d-flex justify-content-center my-2">
+              <Col md={6} className="d-flex justify-content-center">
+                <img
+                  src={robotImage}
+                  alt="Robot"
+                  style={{ width: '100%', height: 'auto' }}
+                />
+              </Col>
+            </Row>
+          )}
+
+
+
+
           <Row className="my-5">
             <Col className="d-flex justify-content-start" md={3}>
     {/*           Probably going to make a dropdown component to save space. */}
