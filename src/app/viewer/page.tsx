@@ -13,6 +13,7 @@ import HomeContent from "@/components/viewer/content/PitContent";
 import RankingsContent from "@/components/viewer/content/RankingsContent";
 import ImportContent from "@/components/viewer/content/ImportContent";
 import PitContent from "@/components/viewer/content/PitContent";
+import ScoresContent from "@/components/viewer/content/ScoresContent";
 import AutosContent from "@/components/viewer/content/AutosContent";
 import SettingsContent from "@/components/viewer/content/SettingsContent";
 import { getRankingsAsync } from "@/redux/viewerDataSlice";
@@ -71,6 +72,7 @@ export default function Viewer() {
               {tab === ViewerTab.RANKINGS && <RankingsContent rankings={viewerData.rankings as Ranking[]} />}
               {tab === ViewerTab.AUTOS && <AutosContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
               {tab === ViewerTab.PIT && <PitContent rankings={viewerData.rankings as Ranking[]} />}
+              {tab === ViewerTab.SCORES && <ScoresContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
               {tab === ViewerTab.IMPORT && <ImportContent />}
               {tab === ViewerTab.SETTINGS && <SettingsContent />}
             </Col>

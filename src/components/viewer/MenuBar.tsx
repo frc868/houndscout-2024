@@ -25,7 +25,7 @@ export default function MenuBar({ selectedTab, handleTabSelect }: Props) {
           }`}
           onClick={() => handleTabSelect(ViewerTab.RANKINGS)}
         >
-          Rankings
+          Match Rankings
         </div>
         <div
           className={`fs-5 py-2 ps-4 font-monospace ${
@@ -33,7 +33,15 @@ export default function MenuBar({ selectedTab, handleTabSelect }: Props) {
           }`}
           onClick={() => handleTabSelect(ViewerTab.AUTOS)}
         >
-          Game Pieces
+          Scoring Data
+        </div>
+        <div
+          className={`fs-5 py-2 ps-4 font-monospace ${
+            selectedTab === ViewerTab.SCORES && "bg-secondary"
+          }`}
+          onClick={() => handleTabSelect(ViewerTab.SCORES)}
+        >
+          Match Data
         </div>
         <div
           className={`fs-5 py-2 ps-4 font-monospace ${
