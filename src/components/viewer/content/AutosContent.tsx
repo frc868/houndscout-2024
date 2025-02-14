@@ -103,11 +103,14 @@ export default function AutosContent({rankings, teams}: Props) {
 
   return (
     <div
-      style={{
-        height: "calc(100% - 2*24px)",
-        width: "calc(100% - 2*24px)",
-        color: "white",
-      }}
+    style={{
+      height: "calc(100% - 2*24px)",
+      width: "calc(100% - 2*24px)",
+      color: "white",
+      overflowX: "auto",
+      overflowY: "auto",
+      float: "right"
+    }}
       className="m-4 bg-dark rounded-3 font-monospace text-center"
     >
       <h1>Scoring Event Data (WIP)</h1>

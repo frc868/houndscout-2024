@@ -5,9 +5,6 @@ import { Table } from "react-bootstrap";
 import { Ranking } from "@/lib/enums";
 import { updatePicklistsAsync } from "@/redux/viewerDataSlice";
 
-// bar sorter:
-// <i className={` bi ${(header.toLowerCase().replace(/ /g, "") as keyof Ranking!=sortField) ? "bi-chevron-bar-contract" : sortDirection=="asc" ? "bi-chevron-bar-up" : "bi-chevron-bar-down"}`} />
-
 interface Props {
   rankings: Ranking[];
 }
@@ -19,18 +16,17 @@ export default function RankingsContent({rankings}: Props) {
 
   // Sorting function
   const sortedRankings = useMemo(() => {
-    return rankings;
-    
-    // if (!sortField) return rankings;
+    if (!sortField) return rankings;
 
-    // return [...rankings].sort((a, b) => {
-    //   const valueA = a[sortField];
-    //   const valueB = b[sortField];
-
-    //   if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
-    //   if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
-    //   return 0;
-    // });
+    return [...rankings].sort((a, b) => {
+      const valueA = a[sortField];
+      const valueB = b[sortField];
+      if (valueA==undefined||valueA==null) return -1;
+      if (valueB==undefined||valueB==null) return 1;
+      if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
+      if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
+      return 0;
+    });
     
   }, [rankings, sortField, sortDirection]);
 
@@ -74,11 +70,14 @@ export default function RankingsContent({rankings}: Props) {
 
   return (
     <div
-      style={{
-        height: "calc(100% - 2*24px)",
-        width: "calc(100% - 2*24px)",
-        color: "white",
-      }}
+    style={{
+      height: "calc(100% - 2*24px)",
+      width: "calc(85% - 2*24px)",
+      color: "white",
+      overflowX: "auto",
+      overflowY: "auto",
+      float: "right"
+    }}
       className="m-4 bg-dark rounded-3 font-monospace text-center"
     >
       <h1>Welcome to the HoundScout data viewer! (WIP)</h1>
@@ -96,28 +95,33 @@ export default function RankingsContent({rankings}: Props) {
               "Team",
               "Games",
               "Mobility",
-              "Dropped Pieces",
-              "Endgame Data",
+              "Dropped Coral",
+              "Dropped Algae",
+              "Endgame: Parked",
+              "Endgame: Shallow",
+              "Endgame: Deep",
               "Incap",
-              "Defense",
-              "Picklist",
+              "Played Defense",
+              "Driver Skill",
+              "1st Picklist",
+              "2nd Picklist",
             ].map((header) => (
               <th
                 key={header}
-                // onClick={() =>
-                //   handleSort(
-                //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
-                //   )
-                // }
+                onClick={() =>
+                  handleSort(
+                    header.toLowerCase().replace(/ /g, "") as keyof Ranking
+                  )
+                }
                 style={{ cursor: "pointer" }}
               >
                 {header}
+                <i className={` bi ${(header.toLowerCase().replace(/ /g, "") as keyof Ranking!=sortField) ? "bi-chevron-bar-contract" : sortDirection=="asc" ? "bi-chevron-bar-up" : "bi-chevron-bar-down"}`} />
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {/* Once the team selection function in admin is working, that can be modified for the picklist. */}
           {sortedRankings.map((r, idx) => (
             <tr key={r.teamNumber}>
               <td 
@@ -128,20 +132,17 @@ export default function RankingsContent({rankings}: Props) {
               </td>
               <td>{r.total}</td>
               <td>{r.mobility}</td>
-              <td>
-                Coral: {r.CoralDropped} per match<br />
-                Algae: {r.AlgaeDropped} per match<br />
-              </td>
-              <td>
-                Parked: {r.parked}<br />
-                Shallow: {r.shallow}<br />
-                Deep: {r.deep}<br />
-              </td>
+              <td>{r.CoralDropped}</td>
+              <td>{r.AlgaeDropped}</td>
+              <td>{r.parked}</td>
+              <td>{r.shallow}</td>
+              <td>{r.deep}</td>
               <td>{r.incap}</td>
               <td>{r.defense}</td>
-              <td className="d-flex flex-row justify-content-center align-items-stretch">
+              <td>{r.driverSkill}</td>
+              <td>
                 <div
-                  className={"d-flex justify-content-start align-items-center"}
+                  className={"d-flex justify-content-center align-items-center"}
                   style={{
                     width: "auto",
                     height: "100%",
@@ -161,8 +162,10 @@ export default function RankingsContent({rankings}: Props) {
                 >
                   <i className={`bi ${r.firstPicklist ? "bi-star-fill" : "bi-star"}`} />
                 </div>
+              </td>
+              <td>
                 <div
-                  className={"d-flex justify-content-end align-items-center"}
+                  className={"d-flex justify-content-center align-items-center"}
                   style={{
                     width: "auto",
                     height: "100%",

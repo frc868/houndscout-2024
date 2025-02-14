@@ -28,6 +28,7 @@ export default function MatchSchedule({
 }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const mainData = useSelector((state: ReduxState) => state.mainData);
+  const adminData = useSelector((state: ReduxState) => state.adminData);
   const [showMatchCreate, setShowMatchCreate] = useState(false);
   const [showMatchEdit, setShowMatchEdit] = useState(false);
   const [matchEditData, setMatchEditData] = useState<{
@@ -109,7 +110,31 @@ export default function MatchSchedule({
           className="w-25 mx-auto mb-3"
           onClick={() => {setShowMatchCreate(true);}}
         >
-          Create new match
+          Create New Match
+        </Button>
+        <Button 
+          className="w-25 mx-auto mb-3"
+          onClick={() => {
+            if(adminData.scouters==undefined||adminData.scouters.length<6){
+              alert("Error: At least 6 scouters must be created to generate a scouter schedule.");
+            } else matches.map((match) => {
+              let scoutersLeft=adminData.scouters as Scouter[];
+              let r1 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
+              let r2 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
+              let r3 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
+              let b1 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
+              let b2 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
+              let b3 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
+              handleScouterSelect(match.name, "red1", r1[0].id);
+              handleScouterSelect(match.name, "red2", r2[0].id);
+              handleScouterSelect(match.name, "red3", r3[0].id);
+              handleScouterSelect(match.name, "blue1", b1[0].id);
+              handleScouterSelect(match.name, "blue2", b2[0].id);
+              handleScouterSelect(match.name, "blue3", b3[0].id);
+            })
+          }}
+        >
+          Generate Scouter Schedule
         </Button>
         <Table bordered className="border-secondary-subtle">
           <thead className="align-middle text-center">

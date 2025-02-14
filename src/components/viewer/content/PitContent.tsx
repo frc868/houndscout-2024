@@ -72,8 +72,11 @@ export default function PitContent({rankings}: Props) {
       <div
         style={{
           height: "calc(100% - 2*24px)",
-          width: "calc(100% - 2*24px)",
+          width: "calc(85% - 2*24px)",
           color: "white",
+          overflowX: "auto",
+          overflowY: "auto",
+          float: "right"
         }}
         className="m-4 bg-dark rounded-3 font-monospace text-center"
       >
@@ -86,25 +89,115 @@ export default function PitContent({rankings}: Props) {
         >
           <thead>
             <tr>
-              {/* Clickable table headers for sorting */}
               <th
-                key={"Team"}
-                onClick={() =>
-                  handleSort(
-                    "Team".toLowerCase().replace(/ /g, "") as keyof Ranking
-                  )
-                }
+                // onClick={() =>
+                //   handleSort(
+                //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
+                //   )
+                // }
                 style={{ cursor: "pointer" }}
+                rowSpan={2}
               >
                 Team
               </th>
+              <th
+                // onClick={() =>
+                //   handleSort(
+                //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
+                //   )
+                // }
+                style={{ cursor: "pointer" }}
+                colSpan={3}
+              >
+                Structure
+              </th>
+              <th
+                // onClick={() =>
+                //   handleSort(
+                //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
+                //   )
+                // }
+                style={{ cursor: "pointer" }}
+                colSpan={5}
+              >
+                Intaking: Can...
+              </th>
+              <th
+                // onClick={() =>
+                //   handleSort(
+                //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
+                //   )
+                // }
+                style={{ cursor: "pointer" }}
+                colSpan={6}
+              >
+                Scoring: Can Score...
+              </th>
+              <th
+                // onClick={() =>
+                //   handleSort(
+                //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
+                //   )
+                // }
+                style={{ cursor: "pointer" }}
+                colSpan={3}
+              >
+                Endgame: Can...
+              </th>
+              <th
+                // onClick={() =>
+                //   handleSort(
+                //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
+                //   )
+                // }
+                style={{ cursor: "pointer" }}
+                rowSpan={2}
+              >
+                Comments
+              </th>
+              <th
+                // onClick={() =>
+                //   handleSort(
+                //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
+                //   )
+                // }
+                style={{ cursor: "pointer" }}
+                rowSpan={2}
+              >
+                First Picklist
+              </th>
+              <th
+                // onClick={() =>
+                //   handleSort(
+                //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
+                //   )
+                // }
+                style={{ cursor: "pointer" }}
+                rowSpan={2}
+              >
+                Second Picklist
+              </th>
+            </tr>
+            <tr>
+              {/* Clickable table headers for sorting */}
               {[
-                "Structure",
+                "Drivetrain",
+                "Wheels",
                 "Intake",
-                "Scoring",
-                "Endgame",
-                "Comments",
-                "Picklist",
+                "Intake Ground Coral",
+                "Intake Station Coral",
+                "Intake Ground Algae",
+                "Intake Reef Algae",
+                "Remove Reef Algae w/o Intaking",
+                "Coral in Reef L1",
+                "Coral in Reef L2",
+                "Coral in Reef L3",
+                "Coral in Reef L4",
+                "Algae in New",
+                "Algae in Processor",
+                "Park under Net",
+                "Hang on Shallow Cage",
+                "Hang on Deep Cage",
               ].map((header) => (
                 <th
                   key={header}
@@ -125,35 +218,27 @@ export default function PitContent({rankings}: Props) {
             {sortedRankings.map((r, idx) => (
               <tr key={r.teamNumber} style={{fontSize: "12px"}}>
                 <td>{r.teamNumber}</td>
-                <td>
-                  Drivetrain: {r.drivetrain}<br />
-                  Wheels: {r.wheels}<br />
-                  Intake: {r.intake}<br />
-                </td>
-                <td>
-                  Can Intake Coral from Ground: {r.canIntakeGroundCoral}<br />
-                  Can Intake Coral from Station: {r.canIntakeStationCoral}<br />
-                  Can Intake Algae from Ground: {r.canIntakeGroundAlgae}<br />
-                  Can Intake Algae from Reef: {r.canIntakeReefAlgae}<br />
-                  Can Remove Algae from Reef without Intaking: {r.canRemoveReefAlgaeWithoutIntake}<br />
-                </td>
-                <td>
-                  Can Score Coral in Reef L1: {r.canScoreReefL1}<br />
-                  Can Score Coral in Reef L2: {r.canScoreReefL2}<br />
-                  Can Score Coral in Reef L3: {r.canScoreReefL3}<br />
-                  Can Score Coral in Reef L4: {r.canScoreReefL4}<br />
-                  Can Score Algae in Net: {r.canScoreNet}<br />
-                  Can Score Algae in Processor: {r.canScoreProcessor}<br />
-                </td>
-                <td>
-                  Can Park under Net: {r.canPark}<br />
-                  Can Hang on Shallow Cage: {r.canShallow}<br />
-                  Can Hang on Deep Cage: {r.canDeep}<br />
-                </td>
+                <td>{r.drivetrain}</td>
+                <td>{r.wheels}</td>
+                <td>{r.intake}</td>
+                <td>{r.canIntakeGroundCoral}</td>
+                <td>{r.canIntakeStationCoral}</td>
+                <td>{r.canIntakeGroundAlgae}</td>
+                <td>{r.canIntakeReefAlgae}</td>
+                <td>{r.canRemoveReefAlgaeWithoutIntake}</td>
+                <td>{r.canScoreReefL1}</td>
+                <td>{r.canScoreReefL2}</td>
+                <td>{r.canScoreReefL3}</td>
+                <td>{r.canScoreReefL4}</td>
+                <td>{r.canScoreNet}</td>
+                <td>{r.canScoreProcessor}</td>
+                <td>{r.canPark}</td>
+                <td>{r.canShallow}</td>
+                <td>{r.canDeep}</td>
                 <td>{r.comments}</td>
-                <td className="d-flex flex-row justify-content-center align-items-stretch">
+                <td>
                   <div
-                    className={"d-flex justify-content-start align-items-center"}
+                    className={"d-flex justify-content-center align-items-center"}
                     style={{
                       width: "auto",
                       height: "100%",
@@ -173,8 +258,10 @@ export default function PitContent({rankings}: Props) {
                   >
                     <i className={`bi ${r.firstPicklist ? "bi-star-fill" : "bi-star"}`} />
                   </div>
+                </td>
+                <td>
                   <div
-                    className={"d-flex justify-content-end align-items-center"}
+                    className={"d-flex justify-content-center align-items-center"}
                     style={{
                       width: "auto",
                       height: "100%",

@@ -74,11 +74,14 @@ export default function ScoresContent({rankings, teams}: Props) {
   
     return (
       <div
-        style={{
-          height: "calc(100% - 2*24px)",
-          width: "calc(100% - 2*24px)",
-          color: "white",
-        }}
+      style={{
+        height: "calc(100% - 2*24px)",
+        width: "calc(100% - 2*24px)",
+        color: "white",
+        overflowX: "auto",
+        overflowY: "auto",
+        float: "right"
+      }}
         className="m-4 bg-dark rounded-3 font-monospace text-center"
       >
         <h1>Match Data (WIP)</h1>
@@ -151,13 +154,16 @@ export default function ScoresContent({rankings, teams}: Props) {
                 {/* Clickable table headers for sorting */}
                 {[
                   "Match Number",
+                  "Scouter",
                   "Preload",
                   "Mobility Bonus",
-                  "Incap Segments",
-                  "Endgame Data",
+                  "Total Incap Time",
+                  "Endgame Type",
+                  "Endgame Success",
                   "Driver Skill",
                   "Result",
                   "Played Defense",
+                  "Comments",
                 ].map((header) => (
                   <th
                     key={header}
@@ -177,19 +183,24 @@ export default function ScoresContent({rankings, teams}: Props) {
               {/* Once the team selection function in admin is working, that can be modified for the picklist. */}
               {team.teamScores.map((r, idx) => (
                 <tr key={r.id} style={{fontSize: "12px"}}>
-                  <td>{r.id}</td>
+                  {/* <td>{
+                    if(r.red1Match){
+                      return (r.red1Match.number); 
+                    }
+                  }</td> */}
+                  <td>WIP</td>
+                  <td>{r.scouterId}</td>
                   <td>{r.preloaded}</td>
                   <td>{r.leftStartingZone}</td>
-                  <td>{r.incapSegments.map((s, ind)=>(
-                    <p>{Number(s.timestampEnded)-Number(s.timestampStarted)}<br /></p>
-                  ))}</td>
                   <td>
-                    Type: {r.endgameType}<br />
-                    Success: {r.endgameSuccess}<br />
+                    {r.incapSegments.reduce((s, ind)=>(s+Number(ind.timestampEnded)-Number(ind.timestampStarted)),0)}
                   </td>
+                  <td>{r.endgameType}</td>
+                  <td>{r.endgameSuccess}</td>
                   <td>{r.driverSkillRating}</td>
                   <td>{r.result}</td>
                   <td>{r.playedDefense}</td>
+                  <td>{r.comments}</td>
                 </tr>
               ))}
             </tbody>

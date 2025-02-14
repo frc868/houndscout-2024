@@ -78,11 +78,6 @@ export default function Controls({ scouters, allTeams, eventTeams, eventCode, bl
         </Button>
       </Row>
       <Row className="">
-        <Button variant="secondary" disabled className="mb-2">
-          Generate Scouter Schedule
-        </Button>
-      </Row>
-      <Row className="">
         <Button
           variant="secondary"
           className="mb-2"

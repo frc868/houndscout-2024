@@ -181,6 +181,15 @@ export async function GET(
           return total + totalIncapTime;
         }, 0) / teamScores.length;
 
+      //Average driver skill rating
+      const driverSkill:number =
+        teamScores.reduce((total, score) => {
+          if(score.driverSkillRating){
+            return total + score.driverSkillRating;
+          }
+          return total;
+        }, 0) / teamScores.filter((score) => score.driverSkillRating).length;
+
       // fraction of games the robot played defence
       const defense:number =
         teamScores.filter((score) => score.playedDefense).length /
@@ -203,6 +212,7 @@ export async function GET(
         deep,
         incap,
         defense,
+        driverSkill,
         drivetrain: team.drivetrain,
         wheels: team.wheels,
         intake: team.intake,

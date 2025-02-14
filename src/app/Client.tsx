@@ -62,11 +62,57 @@ export default function Client({ station }: Props) {
   const [algaeStartTime, setAlgaeStartTime] = useState(0);
   const [algaeEndTime, setAlgaeEndTime] = useState(0);
 
+  const [incapOn, setIncapOn] = useState(false);
+  const [incapStartTime, setIncapStartTime] = useState(0);
+
   useEffect(() => {
     const update = async () => {
       await dispatch(setStation({ station }));
       await dispatch(getStationData({ station }));
       await dispatch(sendHeartbeatAsync({ station, section: tab }));
+      if(tab===Section.POSTMATCH){
+        //Prematurely ends any in-progress scoring events and incap segments when switching to postmatch
+        if(incapOn){
+          const event = {
+            timestampStarted: incapStartTime,
+            timestampEnded: Date.now(),
+            full: false
+          }; //incapSegment creation.
+          setIncapStartTime(0);
+          setIncapOn(false);  
+    
+          await dispatch(sendIncapSegment(event));
+        }
+        if(coralActiveSide!="intaking"){
+          const event = {
+            intakeLocation: coralIntakeLocation as CoralIntakeLocation,
+            scoringLevel: undefined,
+            scoringSide: undefined,
+            failedScoring: true,
+            dropped: true,
+            timestampPickedUp: coralStartTime,
+            timestampScored: Date.now(),
+          }; //teleopScoringEvent creation.
+          setCoralIntakeLocation(undefined);
+          setCoralStartTime(0);
+          setCoralActiveSide("intaking");
+        }
+        if(algaeActiveSide!="intaking"){
+          const event = {
+            intakeLocation: algaeIntakeLocation as AlgaeIntakeLocation,
+            scoringLocation: undefined,
+            failedScoring: true,
+            dropped: true,
+            timestampPickedUp: algaeStartTime,
+            timestampScored: Date.now(),
+          }; //scoring event creation.
+          setAlgaeIntakeLocation(undefined);
+          setAlgaeStartTime(0);
+          setAlgaeActiveSide("intaking");
+    
+          await dispatch(sendAlgaeEvent(event));
+        }
+      }
     };
     update();
     //If the bot is preloaded, sets the scoring event time to be when the tab was switched to auto and the intake location to preload.
@@ -74,7 +120,9 @@ export default function Client({ station }: Props) {
       setCoralStartTime(Date.now());
       setCoralIntakeLocation(CoralIntakeLocation.AUTOPRELOAD);
     }
-    //Skips the side selection if moving off of Auto with it on.
+    //If the bot is preloaded, sets the scoring event time to be when the tab was switched to auto and the intake location to preload.
+    
+    //Skips the side selection from Auto if moving to another tab with it on.
     if(tab!==Section.AUTO&&coralActiveSide=="side"){
       setCoralActiveSide("result");
     }
@@ -87,143 +135,6 @@ export default function Client({ station }: Props) {
     setTab(Section.PREMATCH);
   }, [mainData.activeMatchName]);
 
-// Explicitly typing the buttonRef as pointing to an HTMLButtonElement
-const prematchTabRef = useRef<HTMLButtonElement | null>(null);
-const autoTabRef = useRef<HTMLButtonElement | null>(null);
-const teleopTabRef = useRef<HTMLButtonElement | null>(null);
-const postmatchTabRef = useRef<HTMLButtonElement | null>(null);
-const side1Ref = useRef<HTMLButtonElement | null>(null);
-const side2Ref = useRef<HTMLButtonElement | null>(null);
-const side3Ref = useRef<HTMLButtonElement | null>(null);
-const side4Ref = useRef<HTMLButtonElement | null>(null);
-const side5Ref = useRef<HTMLButtonElement | null>(null);
-const side6Ref = useRef<HTMLButtonElement | null>(null);
-const coralScoreRef = useRef<HTMLButtonElement | null>(null);
-const coralFailRef = useRef<HTMLButtonElement | null>(null);
-const algaeScoreRef = useRef<HTMLButtonElement | null>(null);
-const algaeFailRef = useRef<HTMLButtonElement | null>(null);
-const pressedKeys = useRef(new Set<string>());
-useEffect(() => {
-  const handleKeydown = (e: KeyboardEvent) => {
-    e.preventDefault();
-
-    // Add the key to the pressedKeys set
-    pressedKeys.current.add(e.key);
-
-    // Shifts tab to the next entry if possible
-    if (pressedKeys.current.has('Tab')) {
-      // Check if buttonRef.current is not null
-      if (tab==Section.PREMATCH){
-        if (autoTabRef.current) {
-          autoTabRef.current.click();
-        }
-      } else if (tab==Section.AUTO){
-        if (teleopTabRef.current) {
-          teleopTabRef.current.click();
-        }
-      } else if (tab==Section.TELEOP){
-        if (postmatchTabRef.current) {
-          postmatchTabRef.current.click();
-        }
-      } else if (tab==Section.POSTMATCH){
-        if (prematchTabRef.current) {
-          prematchTabRef.current.click();
-        }
-      }
-    }
-
-    // Presses the the coral scoring side 1 button if active
-    if (pressedKeys.current.has('1')) {
-      // Check if buttonRef.current is not null
-      if (side1Ref.current) {
-        side1Ref.current.click();
-      }
-    }
-    // Presses the the coral scoring side 2 button if active
-    if (pressedKeys.current.has('2')) {
-      // Check if buttonRef.current is not null
-      if (side2Ref.current) {
-        side2Ref.current.click();
-      }
-    }
-    // Presses the the coral scoring side 3 button if active
-    if (pressedKeys.current.has('3')) {
-      // Check if buttonRef.current is not null
-      if (side3Ref.current) {
-        side3Ref.current.click();
-      }
-    }
-    // Presses the the coral scoring side 4 button if active
-    if (pressedKeys.current.has('4')) {
-      // Check if buttonRef.current is not null
-      if (side4Ref.current) {
-        side4Ref.current.click();
-      }
-    }
-    // Presses the the coral scoring side 5 button if active
-    if (pressedKeys.current.has('5')) {
-      // Check if buttonRef.current is not null
-      if (side5Ref.current) {
-        side5Ref.current.click();
-      }
-    }
-    // Presses the the coral scoring side 6 button if active
-    if (pressedKeys.current.has('6')) {
-      // Check if buttonRef.current is not null
-      if (side6Ref.current) {
-        side6Ref.current.click();
-      }
-    }
-
-    // Presses the the coral score button if active
-    if (pressedKeys.current.has('Q')) {
-      // Check if buttonRef.current is not null
-      if (coralScoreRef.current) {
-        coralScoreRef.current.click();
-      }
-    }
-    // Presses the the coral fail button if active
-    if (pressedKeys.current.has('Z')) {
-      // Check if buttonRef.current is not null
-      if (coralFailRef.current) {
-        coralFailRef.current.click();
-      }
-    }
-
-    // Presses the the algae score button if active
-    if (pressedKeys.current.has('Y')) {
-      // Check if buttonRef.current is not null
-      if (algaeScoreRef.current) {
-        algaeScoreRef.current.click();
-      }
-    }
-    // Presses the the coral fail button if active
-    if (pressedKeys.current.has('N')) {
-      // Check if buttonRef.current is not null
-      if (algaeFailRef.current) {
-        algaeFailRef.current.click();
-      }
-    }
-  };
-
-    const handleKeyup = (e: KeyboardEvent) => {
-        // Remove the key from the pressedKeys set when released
-        pressedKeys.current.delete(e.key);
-    };
-
-    // Attach event listeners for keydown and keyup
-    document.addEventListener('keydown', handleKeydown);
-    document.addEventListener('keyup', handleKeyup);
-
-    // Cleanup event listeners on component unmount
-    return () => {
-      document.removeEventListener('keydown', handleKeydown);
-      document.removeEventListener('keyup', handleKeyup);
-    };
-}, []);
-
-  const [incapOn, setIncapOn] = useState(false);
-  const [incapStartTime, setIncapStartTime] = useState(0);
 
   //triggers when intake location is selected
   const handleIncap = async () => {
@@ -269,7 +180,7 @@ useEffect(() => {
             scoringSide: undefined,
             failedScoring: true,
             dropped: true,
-            timestampPickedUp: algaeStartTime,
+            timestampPickedUp: coralStartTime,
             timestampScored: Date.now(),
           }; //teleopScoringEvent creation.
           setCoralIntakeLocation(undefined);

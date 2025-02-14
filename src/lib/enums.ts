@@ -34,6 +34,7 @@ export interface Ranking {
   deep: number;
   incap: number;
   defense: number;
+  driverSkill: number;
   total: number;
   drivetrain?: DrivetrainType | null;
   wheels?: WheelType | null;
