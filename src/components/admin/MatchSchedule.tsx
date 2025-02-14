@@ -2,7 +2,7 @@
 import { createMatchAsync, deleteMatchAsync, editMatchAsync } from "@/redux/adminDataSlice";
 import { setActiveMatchAsync } from "@/redux/mainDataSlice";
 import React, { useState } from "react";
-import { Button, Table, Form } from "react-bootstrap";
+import { Button, Table, Form, Row } from "react-bootstrap";
 import ScoutersDropdown from "./ScouterDropdown";
 import DeleteButton from "./DeleteButton";
 import MatchAddModal from "./MatchAddModal";
@@ -97,45 +97,51 @@ export default function MatchSchedule({
         }}
       ></MatchAddModal>
       <div className="d-flex flex-column">
-        <h1 className="text-center mb-3">Match Schedule</h1>
-        <MoonLoader
-          className="mx-2"
-          color={"black"}
-          loading={loading}
-          size={25}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
-        <Button
-          className="w-25 mx-auto mb-3"
-          onClick={() => {setShowMatchCreate(true);}}
-        >
-          Create New Match
-        </Button>
-        <Button 
-          className="w-25 mx-auto mb-3"
-          onClick={() => {
-            if(adminData.scouters==undefined||adminData.scouters.length<6){
-              alert("Error: At least 6 scouters must be created to generate a scouter schedule.");
-            } else matches.map((match) => {
-              let scoutersLeft=adminData.scouters as Scouter[];
-              let r1 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
-              let r2 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
-              let r3 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
-              let b1 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
-              let b2 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
-              let b3 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
-              handleScouterSelect(match.name, "red1", r1[0].id);
-              handleScouterSelect(match.name, "red2", r2[0].id);
-              handleScouterSelect(match.name, "red3", r3[0].id);
-              handleScouterSelect(match.name, "blue1", b1[0].id);
-              handleScouterSelect(match.name, "blue2", b2[0].id);
-              handleScouterSelect(match.name, "blue3", b3[0].id);
-            })
-          }}
-        >
-          Generate Scouter Schedule
-        </Button>
+        <Row className="mb-3">
+          <h1 className="text-center">Match Schedule</h1>
+          <MoonLoader
+            color={"black"}
+            loading={loading}
+            size={25}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        </Row>
+        <Row className="mb-3">
+          <Button
+            className="w-25 mx-auto"
+            onClick={() => {setShowMatchCreate(true);}}
+          >
+            Create New Match
+          </Button>
+          <Button 
+            variant="secondary"
+            className="mx-auto"
+            onClick={() => {
+              if(adminData.scouters==undefined||adminData.scouters.length<6){
+                alert("Error: At least 6 scouters must be created to generate a scouter schedule.");
+              } else matches.map((match) => {
+                setLoading(true);
+                let scoutersLeft=JSON.parse(JSON.stringify(adminData.scouters as Scouter[]));
+                let r1 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
+                let r2 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
+                let r3 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
+                let b1 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
+                let b2 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
+                let b3 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
+                handleScouterSelect(match.name, "red1", r1[0].id);
+                handleScouterSelect(match.name, "red2", r2[0].id);
+                handleScouterSelect(match.name, "red3", r3[0].id);
+                handleScouterSelect(match.name, "blue1", b1[0].id);
+                handleScouterSelect(match.name, "blue2", b2[0].id);
+                handleScouterSelect(match.name, "blue3", b3[0].id);
+                setLoading(false);
+              })
+            }}
+          >
+            Generate Scouter Schedule
+          </Button>
+        </Row>
         <Table bordered className="border-secondary-subtle">
           <thead className="align-middle text-center">
             <tr>

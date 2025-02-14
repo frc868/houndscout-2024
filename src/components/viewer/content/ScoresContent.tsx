@@ -157,7 +157,7 @@ export default function ScoresContent({rankings, teams}: Props) {
                   "Scouter",
                   "Preload",
                   "Mobility Bonus",
-                  "Total Incap Time",
+                  "Total Incap Time (s)",
                   "Endgame Type",
                   "Endgame Success",
                   "Driver Skill",
@@ -180,9 +180,8 @@ export default function ScoresContent({rankings, teams}: Props) {
               </tr>
             </thead>
             <tbody>
-              {/* Once the team selection function in admin is working, that can be modified for the picklist. */}
               {team.teamScores.map((r, idx) => (
-                <tr key={r.id} style={{fontSize: "12px"}}>
+                <tr key={r.id}>
                   {/* <td>{
                     if(r.red1Match){
                       return (r.red1Match.number); 
@@ -190,16 +189,14 @@ export default function ScoresContent({rankings, teams}: Props) {
                   }</td> */}
                   <td>WIP</td>
                   <td>{r.scouterId}</td>
-                  <td>{r.preloaded}</td>
-                  <td>{r.leftStartingZone}</td>
-                  <td>
-                    {r.incapSegments.reduce((s, ind)=>(s+Number(ind.timestampEnded)-Number(ind.timestampStarted)),0)}
-                  </td>
+                  <td>{r.preloaded?"yes":"no"}</td>
+                  <td>{r.leftStartingZone?"yes":"no"}</td>
+                  <td>{r.incapSegments.reduce((s, ind)=>(s+Number(ind.timestampEnded)-Number(ind.timestampStarted)),0)/1000}</td>
                   <td>{r.endgameType}</td>
-                  <td>{r.endgameSuccess}</td>
+                  <td>{r.endgameSuccess?"yes":"no"}</td>
                   <td>{r.driverSkillRating}</td>
                   <td>{r.result}</td>
-                  <td>{r.playedDefense}</td>
+                  <td>{r.playedDefense?"yes":"no"}</td>
                   <td>{r.comments}</td>
                 </tr>
               ))}

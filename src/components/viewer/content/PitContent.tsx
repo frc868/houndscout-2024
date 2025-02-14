@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useMemo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
@@ -215,28 +216,31 @@ export default function PitContent({rankings}: Props) {
             </tr>
           </thead>
           <tbody>
-            {/* Once the team selection function in admin is working, that can be modified for the picklist. */}
             {sortedRankings.map((r, idx) => (
-              <tr key={r.teamNumber} style={{fontSize: "12px"}}>
+              <tr key={r.teamNumber}>
                 <td>{r.teamNumber}</td>
-                <td>{r.robotImage}</td>
+                <td>
+                  {r.robotImage &&
+                    <img className="" alt="" src={r.robotImage} width={85} />
+                  }
+                </td>
                 <td>{r.drivetrain}</td>
                 <td>{r.wheels}</td>
                 <td>{r.intake}</td>
-                <td>{r.canIntakeGroundCoral}</td>
-                <td>{r.canIntakeStationCoral}</td>
-                <td>{r.canIntakeGroundAlgae}</td>
-                <td>{r.canIntakeReefAlgae}</td>
-                <td>{r.canRemoveReefAlgaeWithoutIntake}</td>
-                <td>{r.canScoreReefL1}</td>
-                <td>{r.canScoreReefL2}</td>
-                <td>{r.canScoreReefL3}</td>
-                <td>{r.canScoreReefL4}</td>
-                <td>{r.canScoreNet}</td>
-                <td>{r.canScoreProcessor}</td>
-                <td>{r.canPark}</td>
-                <td>{r.canShallow}</td>
-                <td>{r.canDeep}</td>
+                <td>{r.canIntakeGroundCoral?"yes":"no"}</td>
+                <td>{r.canIntakeStationCoral?"yes":"no"}</td>
+                <td>{r.canIntakeGroundAlgae?"yes":"no"}</td>
+                <td>{r.canIntakeReefAlgae?"yes":"no"}</td>
+                <td>{r.canRemoveReefAlgaeWithoutIntake?"yes":"no"}</td>
+                <td>{r.canScoreReefL1?"yes":"no"}</td>
+                <td>{r.canScoreReefL2?"yes":"no"}</td>
+                <td>{r.canScoreReefL3?"yes":"no"}</td>
+                <td>{r.canScoreReefL4?"yes":"no"}</td>
+                <td>{r.canScoreNet?"yes":"no"}</td>
+                <td>{r.canScoreProcessor?"yes":"no"}</td>
+                <td>{r.canPark?"yes":"no"}</td>
+                <td>{r.canShallow?"yes":"no"}</td>
+                <td>{r.canDeep?"yes":"no"}</td>
                 <td>{r.comments}</td>
                 <td>
                   <div

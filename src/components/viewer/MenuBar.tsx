@@ -41,7 +41,7 @@ export default function MenuBar({ selectedTab, handleTabSelect }: Props) {
           }`}
           onClick={() => handleTabSelect(ViewerTab.SCORES)}
         >
-          Match Data
+          Team Data
         </div>
         <div
           className={`fs-5 py-2 ps-4 font-monospace ${

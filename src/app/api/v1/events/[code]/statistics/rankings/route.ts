@@ -168,7 +168,7 @@ export async function GET(
         teamScores.filter((score) => score.endgameType === EndgameType.DEEP)
           .length / teamScores.length;
 
-      //Average Incap time per match
+      //Average Incap time per match in seconds
       const incap:number =
         teamScores.reduce((total, score) => {
           const totalIncapTime = score.incapSegments.reduce(
@@ -179,7 +179,7 @@ export async function GET(
             0
           );
           return total + totalIncapTime;
-        }, 0) / teamScores.length;
+        }, 0) / (teamScores.length * 1000);
 
       //Average driver skill rating
       const driverSkill:number =
