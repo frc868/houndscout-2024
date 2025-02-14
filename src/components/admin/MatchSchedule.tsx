@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { Button, Table, Form, Row } from "react-bootstrap";
 import ScoutersDropdown from "./ScouterDropdown";
 import DeleteButton from "./DeleteButton";
-import MatchAddModal from "./MatchAddModal";
+import MatchAddModal from "./NewMatchModal";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import { Event } from "@prisma/client"
@@ -51,7 +51,6 @@ export default function MatchSchedule({
     blue3: 0
   });
 
-  const [loading, setLoading] = useState(false);
   return (
     <div className="d-flex justify-content-center">
       <MatchAddModal
@@ -101,7 +100,7 @@ export default function MatchSchedule({
           <h1 className="text-center">Match Schedule</h1>
           <MoonLoader
             color={"black"}
-            loading={loading}
+            loading={!(adminData.scoutersStatus&&adminData.eventTeamsStatus&&adminData.matchesStatus)}
             size={25}
             aria-label="Loading Spinner"
             data-testid="loader"
@@ -116,12 +115,11 @@ export default function MatchSchedule({
           </Button>
           <Button 
             variant="secondary"
-            className="mx-auto"
+            className="w-25 mx-auto"
             onClick={() => {
               if(adminData.scouters==undefined||adminData.scouters.length<6){
                 alert("Error: At least 6 scouters must be created to generate a scouter schedule.");
               } else matches.map((match) => {
-                setLoading(true);
                 let scoutersLeft=JSON.parse(JSON.stringify(adminData.scouters as Scouter[]));
                 let r1 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
                 let r2 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
@@ -135,7 +133,6 @@ export default function MatchSchedule({
                 handleScouterSelect(match.name, "blue1", b1[0].id);
                 handleScouterSelect(match.name, "blue2", b2[0].id);
                 handleScouterSelect(match.name, "blue3", b3[0].id);
-                setLoading(false);
               })
             }}
           >
@@ -175,14 +172,12 @@ export default function MatchSchedule({
                     checked={match.name === activeMatchName}
                     onChange={async () => {
                       //Sets the match as the active one if it isn't already.
-                      setLoading(true);
                       await dispatch(
                         setActiveMatchAsync({
                           eventCode: mainData.activeEvent?.code as string,
                           matchName: match.name,
                         })
                       )
-                      setLoading(false);
                     }}
                   />
                 </td>
@@ -289,14 +284,12 @@ export default function MatchSchedule({
                     }
                     handleDelete={async () => {
                       //deletes the match.
-                      setLoading(true);
                       await dispatch(
                         deleteMatchAsync({
                           eventCode: mainData.activeEvent?.code as string,
                           matchName: match.name,
                         })
                       )
-                      setLoading(false);
                     }}
                   />
                 </td>

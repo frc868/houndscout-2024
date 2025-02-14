@@ -4,7 +4,7 @@ import { MoonLoader } from "react-spinners";
 import { Event } from "@prisma/client";
 import DeleteButton from "./DeleteButton";
 import NewEventForm from "./NewEventForm";
-import { deleteEventAsync, createEventAsync } from "@/redux/adminDataSlice";
+import { deleteEventAsync, createEventAsync, getEventsAsync } from "@/redux/adminDataSlice";
 import { setActiveEventAsync } from "@/redux/mainDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
@@ -21,7 +21,9 @@ export default function EventManageModal({
   handleClose,
   activeEvent
 }: Props) {
+  //dispatch is used to call functions in a redux file.
   const dispatch = useDispatch<AppDispatch>();
+
   const [showEventNew, setShowEventNew] = useState(false);
   const [loading, setLoading] = useState(false); //I put a small loading animation jsut for user feedback.
 

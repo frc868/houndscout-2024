@@ -2,7 +2,7 @@
 import React, { useMemo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
-import { Table } from "react-bootstrap";
+import { Form, Table } from "react-bootstrap";
 import { Ranking } from "@/lib/enums";
 import { updatePicklistsAsync } from "@/redux/viewerDataSlice";
 
@@ -10,14 +10,59 @@ interface Props {
   rankings: Ranking[];
 }
 export default function PitContent({rankings}: Props) {
-  const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useDispatch<AppDispatch>();
 
-  const [sortField, setSortField] = useState<keyof Ranking | null>(null);
+    const [sortField, setSortField] = useState<keyof Ranking | null>(null);
     const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+
+    const [groundCoralEnabled, setGroundCoralEnabled] = useState<boolean>(false);
+    const [stationCoralEnabled, setStationCoralEnabled] = useState<boolean>(false);
+    const [groundAlgaeEnabled, setGroundAlgaeEnabled] = useState<boolean>(false);
+    const [reefAlgaeEnabled, setReefAlgaeEnabled] = useState<boolean>(false);
+    const [reefAlgaeNoIntakeEnabled, setReefAlgaeNoIntakeEnabled] = useState<boolean>(false);
+
+    const [reefL1Enabled, setReefL1Enabled] = useState<boolean>(false);
+    const [reefL2Enabled, setReefL2Enabled] = useState<boolean>(false);
+    const [reefL3Enabled, setReefL3Enabled] = useState<boolean>(false);
+    const [reefL4Enabled, setReefL4Enabled] = useState<boolean>(false);
+    const [netEnabled, setNetEnabled] = useState<boolean>(false);
+    const [processorEnabled, setProcessorEnabled] = useState<boolean>(false);
+
+    const [parkEnabled, setParkEnabled] = useState<boolean>(false);
+    const [shallowEnabled, setShallowEnabled] = useState<boolean>(false);
+    const [deepEnabled, setDeepEnabled] = useState<boolean>(false);
+    const [autonEnabled, setAutonEnabled] = useState<boolean>(false);
+
+    const [firstPicklistEnabled, setFirstPicklistEnabled] = useState<boolean>(false);
+    const [secondPicklistEnabled, setSecondPicklistEnabled] = useState<boolean>(false);
+
+    // var firstFilterFunction=()=>{};
+    // var secondFilterFunction=()=>{};
+    // var combined = [firstFilterFunction, secondFilterFunction]
+    //             .reduce((x, y) => (z => x(z) && y(z)));
+    // var filtered = rankings.filter(combined); 
   
     // Sorting function
     const sortedRankings = useMemo(() => {
-      return rankings;
+      let newRankings = JSON.parse(JSON.stringify(rankings as Ranking[]));
+      if (groundCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canIntakeGroundCoral);
+      if (stationCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canIntakeStationCoral);
+      if (groundAlgaeEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canIntakeGroundAlgae);
+      if (reefAlgaeEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canIntakeReefAlgae);
+      if (reefAlgaeNoIntakeEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canRemoveReefAlgaeWithoutIntake);
+      if (reefL1Enabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canScoreReefL1);
+      if (reefL2Enabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canScoreReefL2);
+      if (reefL3Enabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canScoreReefL3);
+      if (reefL4Enabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canScoreReefL4);
+      if (netEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canScoreNet);
+      if (processorEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canScoreProcessor);
+      if (parkEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canPark);
+      if (shallowEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canShallow);
+      if (deepEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canDeep);
+      if (autonEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.hasAuton);
+      if (firstPicklistEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.firstPicklist);
+      if (secondPicklistEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.secondPicklist);
+      return newRankings;
       // if (!sortField) return rankings;
   
       // return [...rankings].sort((a, b) => {
@@ -29,7 +74,7 @@ export default function PitContent({rankings}: Props) {
       //   return 0;
       // });
       
-    }, [rankings, sortField, sortDirection]);
+    }, [rankings, groundCoralEnabled, stationCoralEnabled, groundAlgaeEnabled, reefAlgaeEnabled, reefAlgaeNoIntakeEnabled, reefL1Enabled, reefL2Enabled, reefL3Enabled, reefL4Enabled, netEnabled, processorEnabled, parkEnabled, shallowEnabled, deepEnabled, autonEnabled, firstPicklistEnabled, secondPicklistEnabled]);
   
     // Calculate max values for coloring
     const maxValues = useMemo(() => {
@@ -146,6 +191,23 @@ export default function PitContent({rankings}: Props) {
                 Endgame: Can...
               </th>
               <th
+                key="Has Auton"
+                onClick={() =>
+                  handleSort(
+                    "hasauton" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+                rowSpan={2}
+              >
+                <Form.Check
+                  type="checkbox"
+                  checked={autonEnabled}
+                  onChange={() => {setAutonEnabled(!autonEnabled)}}
+                />
+                Has Auton
+              </th>
+              <th
                 // onClick={() =>
                 //   handleSort(
                 //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
@@ -157,25 +219,37 @@ export default function PitContent({rankings}: Props) {
                 Comments
               </th>
               <th
-                // onClick={() =>
-                //   handleSort(
-                //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
-                //   )
-                // }
+                key="First Picklist"
+                onClick={() =>
+                  handleSort(
+                    "firstpicklist" as keyof Ranking
+                  )
+                }
                 style={{ cursor: "pointer" }}
                 rowSpan={2}
               >
+                <Form.Check
+                  type="checkbox"
+                  checked={firstPicklistEnabled}
+                  onChange={() => {setFirstPicklistEnabled(!firstPicklistEnabled)}}
+                />
                 First Picklist
               </th>
               <th
-                // onClick={() =>
-                //   handleSort(
-                //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
-                //   )
-                // }
+                key="Second Picklist"
+                onClick={() =>
+                  handleSort(
+                    "secondpicklist" as keyof Ranking
+                  )
+                }
                 style={{ cursor: "pointer" }}
                 rowSpan={2}
               >
+                <Form.Check
+                  type="checkbox"
+                  checked={secondPicklistEnabled}
+                  onChange={() => {setSecondPicklistEnabled(!secondPicklistEnabled)}}
+                />
                 Second Picklist
               </th>
             </tr>
@@ -186,20 +260,6 @@ export default function PitContent({rankings}: Props) {
                 "Drivetrain",
                 "Wheels",
                 "Intake",
-                "Intake Ground Coral",
-                "Intake Station Coral",
-                "Intake Ground Algae",
-                "Intake Reef Algae",
-                "Remove Reef Algae w/o Intaking",
-                "Coral in Reef L1",
-                "Coral in Reef L2",
-                "Coral in Reef L3",
-                "Coral in Reef L4",
-                "Algae in New",
-                "Algae in Processor",
-                "Park under Net",
-                "Hang on Shallow Cage",
-                "Hang on Deep Cage",
               ].map((header) => (
                 <th
                   key={header}
@@ -213,10 +273,234 @@ export default function PitContent({rankings}: Props) {
                   {header}
                 </th>
               ))}
+              <th
+                key="Intake Ground Coral"
+                onClick={() =>
+                  handleSort(
+                    "intakegroundcoral" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <Form.Check
+                  type="checkbox"
+                  checked={groundCoralEnabled}
+                  onChange={() => {setGroundCoralEnabled(!groundCoralEnabled)}}
+                />
+                Intake Ground Coral
+              </th>
+              <th
+                key="Intake Station Coral"
+                onClick={() =>
+                  handleSort(
+                    "intakestationcoral" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <Form.Check
+                  type="checkbox"
+                  checked={stationCoralEnabled}
+                  onChange={() => {setStationCoralEnabled(!stationCoralEnabled)}}
+                />
+                Intake Station Coral
+              </th>
+              <th
+                key="Intake Ground Algae"
+                onClick={() =>
+                  handleSort(
+                    "intakegroundalgae" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <Form.Check
+                  type="checkbox"
+                  checked={groundAlgaeEnabled}
+                  onChange={() => {setGroundAlgaeEnabled(!groundAlgaeEnabled)}}
+                />
+                Intake Ground Algae
+              </th>
+              <th
+                key="Intake Reef Algae"
+                onClick={() =>
+                  handleSort(
+                    "intakereefalgae" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <Form.Check
+                  type="checkbox"
+                  checked={reefAlgaeEnabled}
+                  onChange={() => {setReefAlgaeEnabled(!reefAlgaeEnabled)}}
+                />
+                Intake Reef Algae
+              </th>
+              <th
+                key="Remove Reef Algae w/o Intaking"
+                onClick={() =>
+                  handleSort(
+                    "removereefalgaew/ointaking" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <Form.Check
+                  type="checkbox"
+                  checked={reefAlgaeNoIntakeEnabled}
+                  onChange={() => {setReefAlgaeNoIntakeEnabled(!reefAlgaeNoIntakeEnabled)}}
+                />
+                Remove Reef Algae w/o Intaking
+              </th>
+              <th
+                key="Coral in Reef L1"
+                onClick={() =>
+                  handleSort(
+                    "coralinreefl1" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <Form.Check
+                  type="checkbox"
+                  checked={reefL1Enabled}
+                  onChange={() => {setReefL1Enabled(!reefL1Enabled)}}
+                />
+                Coral in Reef L1
+              </th>
+              <th
+                key="Coral in Reef L2"
+                onClick={() =>
+                  handleSort(
+                    "coralinreefl2" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <Form.Check
+                  type="checkbox"
+                  checked={reefL2Enabled}
+                  onChange={() => {setReefL2Enabled(!reefL2Enabled)}}
+                />
+                Coral in Reef L2
+              </th>
+              <th
+                key="Coral in Reef L3"
+                onClick={() =>
+                  handleSort(
+                    "coralinreefl3" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <Form.Check
+                  type="checkbox"
+                  checked={reefL3Enabled}
+                  onChange={() => {setReefL3Enabled(!reefL3Enabled)}}
+                />
+                Coral in Reef L3
+              </th>
+              <th
+                key="Coral in Reef L4"
+                onClick={() =>
+                  handleSort(
+                    "coralinreefl4" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <Form.Check
+                  type="checkbox"
+                  checked={reefL4Enabled}
+                  onChange={() => {setReefL4Enabled(!reefL4Enabled)}}
+                />
+                Coral in Reef L4
+              </th>
+              <th
+                key="Algae in Net"
+                onClick={() =>
+                  handleSort(
+                    "algaeinnet" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <Form.Check
+                  type="checkbox"
+                  checked={netEnabled}
+                  onChange={() => {setNetEnabled(!netEnabled)}}
+                />
+                Algae in Net
+              </th>
+              <th
+                key="Algae in Processor"
+                onClick={() =>
+                  handleSort(
+                    "algaeinprocessor" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <Form.Check
+                  type="checkbox"
+                  checked={processorEnabled}
+                  onChange={() => {setProcessorEnabled(!processorEnabled)}}
+                />
+                Algae in Processor
+              </th>
+              <th
+                key="Park under Net"
+                onClick={() =>
+                  handleSort(
+                    "parkundernet" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <Form.Check
+                  type="checkbox"
+                  checked={parkEnabled}
+                  onChange={() => {setParkEnabled(!parkEnabled)}}
+                />
+                Park under Net
+              </th>
+              <th
+                key="Hang on Shallow Cage"
+                onClick={() =>
+                  handleSort(
+                    "hangonshallowcage" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <Form.Check
+                  type="checkbox"
+                  checked={shallowEnabled}
+                  onChange={() => {setShallowEnabled(!shallowEnabled)}}
+                />
+                Hang on Shallow Cage
+              </th>
+              <th
+                key="Hang on Deep Cage"
+                onClick={() =>
+                  handleSort(
+                    "hangondeepcage" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <Form.Check
+                  type="checkbox"
+                  checked={deepEnabled}
+                  onChange={() => {setDeepEnabled(!deepEnabled)}}
+                />
+                Hang on Deep Cage
+              </th>
             </tr>
           </thead>
           <tbody>
-            {sortedRankings.map((r, idx) => (
+            {sortedRankings.map((r: Ranking, idx: number) => (
               <tr key={r.teamNumber}>
                 <td>{r.teamNumber}</td>
                 <td>
@@ -241,6 +525,7 @@ export default function PitContent({rankings}: Props) {
                 <td>{r.canPark?"yes":"no"}</td>
                 <td>{r.canShallow?"yes":"no"}</td>
                 <td>{r.canDeep?"yes":"no"}</td>
+                <td>{r.hasAuton?"yes":"no"}</td>
                 <td>{r.comments}</td>
                 <td>
                   <div
