@@ -107,7 +107,7 @@ export default function PitContent({rankings}: Props) {
                 //   )
                 // }
                 style={{ cursor: "pointer" }}
-                colSpan={3}
+                colSpan={4}
               >
                 Structure
               </th>
@@ -181,6 +181,7 @@ export default function PitContent({rankings}: Props) {
             <tr>
               {/* Clickable table headers for sorting */}
               {[
+                "Image",
                 "Drivetrain",
                 "Wheels",
                 "Intake",
@@ -218,6 +219,7 @@ export default function PitContent({rankings}: Props) {
             {sortedRankings.map((r, idx) => (
               <tr key={r.teamNumber} style={{fontSize: "12px"}}>
                 <td>{r.teamNumber}</td>
+                <td>{r.robotImage}</td>
                 <td>{r.drivetrain}</td>
                 <td>{r.wheels}</td>
                 <td>{r.intake}</td>

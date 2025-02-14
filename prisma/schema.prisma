@@ -90,6 +90,7 @@ model Team {
   weight      Decimal?
   hasAuton    Boolean?
   comments    String?
+  robotImage  String?
 
 //intake capabilities
   canIntakeGroundCoral               Boolean?

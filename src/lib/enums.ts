@@ -42,6 +42,7 @@ export interface Ranking {
   weight?: Decimal | null;
   hasAuton?: boolean | null;
   comments?: string | null;
+  robotImage?: string | null;
   canIntakeGroundCoral?: boolean | null;
   canIntakeStationCoral?: boolean | null;
   canIntakeGroundAlgae?: boolean | null;

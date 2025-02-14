@@ -10,6 +10,7 @@ import ScoreButton from "../mini/ScoreButton";
 import FailButton from "../mini/FailButton";
 import { useSelector } from "react-redux";
 import { ReduxState } from "@/redux/store";
+import { useEffect, useRef } from "react";
 
 interface Props {
     activeSide: string;
@@ -41,6 +42,92 @@ export default function AutoCoralPanel({
     const mainData = useSelector((state: ReduxState) => state.mainData);
 
     const flip = (mainData.blueOnLeft && mainData.station?.includes("RED")) || (!mainData.blueOnLeft && mainData.station?.includes("BLUE"));
+
+    // Explicitly typing the buttonRef as pointing to an HTMLButtonElement
+const side1Ref = useRef<HTMLDivElement | null>(null);
+const side2Ref = useRef<HTMLDivElement | null>(null);
+const side3Ref = useRef<HTMLDivElement | null>(null);
+const side4Ref = useRef<HTMLDivElement | null>(null);
+const side5Ref = useRef<HTMLDivElement | null>(null);
+const side6Ref = useRef<HTMLDivElement | null>(null);
+const coralScoreRef = useRef<HTMLDivElement | null>(null);
+const coralFailRef = useRef<HTMLDivElement | null>(null);
+const pressedKeys = useRef(new Set<string>());
+useEffect(() => {
+  const handleKeydown = (e: KeyboardEvent) => {
+    e.preventDefault();
+    // Add the key to the pressedKeys set
+    pressedKeys.current.add(e.key);
+    // Presses the the coral scoring side 1 button if active
+    if (pressedKeys.current.has('1')) {
+      // Check if buttonRef.current is not null
+      if (side1Ref.current) {
+        side1Ref.current.click();
+      }
+    }
+    // Presses the the coral scoring side 2 button if active
+    if (pressedKeys.current.has('2')) {
+      // Check if buttonRef.current is not null
+      if (side2Ref.current) {
+        side2Ref.current.click();
+      }
+    }
+    // Presses the the coral scoring side 3 button if active
+    if (pressedKeys.current.has('3')) {
+      // Check if buttonRef.current is not null
+      if (side3Ref.current) {
+        side3Ref.current.click();
+      }
+    }
+    // Presses the the coral scoring side 4 button if active
+    if (pressedKeys.current.has('4')) {
+      // Check if buttonRef.current is not null
+      if (side4Ref.current) {
+        side4Ref.current.click();
+      }
+    }
+    // Presses the the coral scoring side 5 button if active
+    if (pressedKeys.current.has('5')) {
+      // Check if buttonRef.current is not null
+      if (side5Ref.current) {
+        side5Ref.current.click();
+      }
+    }
+    // Presses the the coral scoring side 6 button if active
+    if (pressedKeys.current.has('6')) {
+      // Check if buttonRef.current is not null
+      if (side6Ref.current) {
+        side6Ref.current.click();
+      }
+    }
+    // Presses the the coral score button if active
+    if (pressedKeys.current.has('Q')) {
+      // Check if buttonRef.current is not null
+      if (coralScoreRef.current) {
+        coralScoreRef.current.click();
+      }
+    }
+    // Presses the the coral fail button if active
+    if (pressedKeys.current.has('Z')) {
+      // Check if buttonRef.current is not null
+      if (coralFailRef.current) {
+        coralFailRef.current.click();
+      }
+    }
+  };
+    const handleKeyup = (e: KeyboardEvent) => {
+        // Remove the key from the pressedKeys set when released
+        pressedKeys.current.delete(e.key);
+    };
+    // Attach event listeners for keydown and keyup
+    document.addEventListener('keydown', handleKeydown);
+    document.addEventListener('keyup', handleKeyup);
+    // Cleanup event listeners on component unmount
+    return () => {
+      document.removeEventListener('keydown', handleKeydown);
+      document.removeEventListener('keyup', handleKeyup);
+    };
+});
     return (
         <div className="d-flex flex-column align-items-center border border-2 border-secondary px-3">
             <h1>Coral</h1>
@@ -215,6 +302,7 @@ export default function AutoCoralPanel({
                                             : mainData.blueOnLeft ? "74%" : "-3%" // Redside with BlueOnLeft/OnRight
                                     }
                                     text="1"
+                                    ref={side1Ref}
                                 />
                                 <ReefSideButton
                                     active={activeSide=="side"}
@@ -235,6 +323,7 @@ export default function AutoCoralPanel({
                                             : mainData.blueOnLeft ? "46%" : "27%" // Redside with BlueOnLeft/OnRight
                                     }
                                     text="2"
+                                    ref={side2Ref}
                                 />
                                 <ReefSideButton
                                     active={activeSide=="side"}
@@ -255,6 +344,7 @@ export default function AutoCoralPanel({
                                             : mainData.blueOnLeft ? "30%" : "40%" // Redside with BlueOnLeft/OnRight
                                     }
                                     text="3"
+                                    ref={side3Ref}
                                 />
                                 <ReefSideButton
                                     active={activeSide=="side"}
@@ -275,6 +365,7 @@ export default function AutoCoralPanel({
                                             : mainData.blueOnLeft ? "45%" : "27%" // Redside with BlueOnLeft/OnRight
                                     }
                                     text="4"
+                                    ref={side4Ref}
                                 />
                                 <ReefSideButton
                                     active={activeSide=="side"}
@@ -295,6 +386,7 @@ export default function AutoCoralPanel({
                                             : mainData.blueOnLeft ? "74%" : "-3%" // Redside with BlueOnLeft/OnRight
                                     }
                                     text="5"
+                                    ref={side5Ref}
                                 />
                                 <ReefSideButton
                                     active={activeSide=="side"}
@@ -315,6 +407,7 @@ export default function AutoCoralPanel({
                                             : mainData.blueOnLeft ? "90%" : "-15%" // Redside with BlueOnLeft/OnRight
                                     }
                                     text="6"
+                                    ref={side6Ref}
                                 />
                             </div>
                         </Col>
@@ -330,7 +423,9 @@ export default function AutoCoralPanel({
                                     failedScoring: false
                                 })
                             }}
+                            ref={coralScoreRef}
                         />
+                        <p className="d-flex flex-row justify-content-center">Q</p>
                         <FailButton
                             className="mt-2"
                             active={activeSide=="result"}
@@ -339,7 +434,9 @@ export default function AutoCoralPanel({
                                     failedScoring: true
                                 })
                             }}
+                            ref={coralFailRef}
                         />
+                        <p className="d-flex flex-row justify-content-center">Z</p>
                 </Col>
             </Row>
         </div>

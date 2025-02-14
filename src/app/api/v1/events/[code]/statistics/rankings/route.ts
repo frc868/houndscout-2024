@@ -219,6 +219,7 @@ export async function GET(
         weight: team.weight,
         hasAuton: team.hasAuton,
         comments: team.comments,
+        robotImage: team.robotImage,
         canIntakeGroundCoral: team.canIntakeGroundCoral,
         canIntakeStationCoral: team.canIntakeStationCoral,
         canIntakeGroundAlgae: team.canIntakeGroundAlgae,

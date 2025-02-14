@@ -51,6 +51,7 @@ export async function PATCH(
         weight: data.weight,
         hasAuton: data.hasAuton,
         comments: data.comments,
+        robotImage: data.robotImage,
 
         canIntakeGroundCoral: data.canIntakeGroundCoral,
         canIntakeStationCoral: data.canIntakeStationCoral,

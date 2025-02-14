@@ -136,7 +136,7 @@ export default function Pit() {
 
 
           <Row className="my-5">
-            <Col className="d-flex justify-content-start" md={3}>
+            <Col className="d-flex justify-content-center align-items-center" md={4}>
     {/*           Probably going to make a dropdown component to save space. */}
               <Form.Group controlId="drivetrain">
                 <Form.Label>Drivetrain Type</Form.Label>
@@ -154,7 +154,7 @@ export default function Pit() {
               </Form.Group>
             </Col>
 
-            <Col className="d-flex justify-content-center" md={3}>
+            <Col className="d-flex justify-content-center align-items-center" md={4}>
               <Form.Group controlId="wheelType">
                 <Form.Label>Wheels</Form.Label>
                 <Form.Control
@@ -174,7 +174,7 @@ export default function Pit() {
               </Form.Group>
             </Col>
             
-            <Col className="d-flex justify-content-end" md={3}>
+            <Col className="d-flex justify-content-center align-items-center" md={4}>
               <Form.Group controlId="intakeType">
                 <Form.Label>Intake Type</Form.Label>
                 <Form.Control
@@ -192,7 +192,7 @@ export default function Pit() {
           </Row>
 
           <Row className="my-2">
-            <Col className="d-flex justify-content-start" md={5}>
+            <Col className="d-flex flex-column justify-content-center align-items-center" md={4}>
               <h3>Intake: Can...</h3>
               <Form.Group>
                 <Form.Check
@@ -228,7 +228,7 @@ export default function Pit() {
               </Form.Group>
             </Col>
         
-            <Col className="d-flex justify-content-center" md={1}>
+            <Col className="d-flex flex-column justify-content-center align-items-center" md={4}>
               <h3>Can Score In...</h3>
               <Form.Group>
                 <Form.Check
@@ -270,7 +270,7 @@ export default function Pit() {
               </Form.Group>
             </Col>
 
-            <Col className="d-flex justify-content-end" md={5}>
+            <Col className="d-flex flex-column justify-content-center align-items-center" md={4}>
               <h3>Endgame: Can...</h3>
               <Form.Group>
                 <Form.Check
@@ -295,7 +295,7 @@ export default function Pit() {
             </Col>
           </Row>
           <Row className="my-2">
-            <Col className="d-flex justify-content-start" md={4}>
+            <Col className="d-flex justify-content-center" md={6}>
               <Form.Group controlId="weight">
                 <Form.Label>Weight (lbs)</Form.Label>
                 <Form.Control
@@ -305,7 +305,7 @@ export default function Pit() {
                 />
               </Form.Group>
             </Col>
-            <Col className="d-flex justify-content-end" md={4}>
+            <Col className="d-flex justify-content-center" md={6}>
               <SidewaysToggleBox
                 name="Has Auto Mode?"
                 enabled={hasAuton}
@@ -334,6 +334,7 @@ export default function Pit() {
                       weight: weight as number,
                       hasAuton: hasAuton as boolean,
                       comments: comments as string,
+                      robotImage: robotImage as string,
                       canIntakeGroundCoral: canIntakeGroundCoral as boolean,
                       canIntakeStationCoral: canIntakeStationCoral as boolean,
                       canIntakeGroundAlgae: canIntakeGroundAlgae as boolean,

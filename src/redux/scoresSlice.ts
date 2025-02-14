@@ -164,6 +164,7 @@ export const sendPitData = createAsyncThunk(
       weight,
       hasAuton,
       comments,
+      robotImage,
       canIntakeGroundCoral,
       canIntakeStationCoral,
       canIntakeGroundAlgae,
@@ -186,6 +187,7 @@ export const sendPitData = createAsyncThunk(
       weight?: number;
       hasAuton?: boolean;
       comments?: string;
+      robotImage?: string;
       canIntakeGroundCoral?: boolean;
       canIntakeStationCoral?: boolean;
       canIntakeGroundAlgae?: boolean;
@@ -215,6 +217,7 @@ export const sendPitData = createAsyncThunk(
         weight,
         hasAuton,
         comments,
+        robotImage,
         canIntakeGroundCoral,
         canIntakeStationCoral,
         canIntakeGroundAlgae,

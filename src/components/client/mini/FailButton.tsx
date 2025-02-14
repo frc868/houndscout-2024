@@ -1,11 +1,14 @@
+import { LegacyRef } from "react";
+
 interface Props {
   active: boolean;
   handleClick: () => void;
   className?: string;
+  ref: LegacyRef<HTMLDivElement>;
 }
 
 //Big fat fail button for when the robot fails to score.
-export default function FailButton({ active, handleClick, className }: Props) {
+export default function FailButton({ active, handleClick, className, ref }: Props) {
   return (
     <div className={className || ""}>
       <div
@@ -21,6 +24,7 @@ export default function FailButton({ active, handleClick, className }: Props) {
           WebkitTextStroke: "4px",
         }}
         onMouseDown={handleClick}
+        ref={ref}
       >
         <i className="bi bi-x" />
       </div>

@@ -7,6 +7,7 @@ import ScoreButton from "../mini/ScoreButton";
 import FailButton from "../mini/FailButton";
 import { Col, Row } from "react-bootstrap";
 import { AlgaeIntakeLocation, AlgaeScoringLocation } from "@prisma/client";
+import { useEffect, useRef } from "react";
 
 interface Props {
     activeSide: string;
@@ -32,6 +33,44 @@ export default function AutoAlgaePanel({
     locationSelected,
     handleSelection,
 }: Props) {
+// Explicitly typing the buttonRef as pointing to an HTMLButtonElement
+const algaeScoreRef = useRef<HTMLDivElement | null>(null);
+const algaeFailRef = useRef<HTMLDivElement | null>(null);
+const pressedKeys = useRef(new Set<string>());
+useEffect(() => {
+  const handleKeydown = (e: KeyboardEvent) => {
+    e.preventDefault();
+    // Add the key to the pressedKeys set
+    pressedKeys.current.add(e.key);
+    // Presses the the algae score button if active
+    if (pressedKeys.current.has('Y')) {
+      // Check if buttonRef.current is not null
+      if (algaeScoreRef.current) {
+        algaeScoreRef.current.click();
+      }
+    }
+    // Presses the the coral fail button if active
+    if (pressedKeys.current.has('N')) {
+      // Check if buttonRef.current is not null
+      if (algaeFailRef.current) {
+        algaeFailRef.current.click();
+      }
+    }
+  };
+    const handleKeyup = (e: KeyboardEvent) => {
+        // Remove the key from the pressedKeys set when released
+        pressedKeys.current.delete(e.key);
+    };
+    // Attach event listeners for keydown and keyup
+    document.addEventListener('keydown', handleKeydown);
+    document.addEventListener('keyup', handleKeyup);
+    // Cleanup event listeners on component unmount
+    return () => {
+      document.removeEventListener('keydown', handleKeydown);
+      document.removeEventListener('keyup', handleKeyup);
+    };
+});
+
     return (
         <div className="d-flex flex-column align-items-center border border-2 border-secondary px-3">
             <h1>Algae</h1>
@@ -103,7 +142,9 @@ export default function AutoAlgaePanel({
                                     failedScoring: false
                                 })
                             }}
+                            ref={algaeScoreRef}
                         />
+                        <p className="d-flex flex-row justify-content-center">Y</p>
                         <FailButton
                             className="mt-2"
                             active={activeSide=="result"}
@@ -112,7 +153,9 @@ export default function AutoAlgaePanel({
                                     failedScoring: true
                                 })
                             }}
+                            ref={algaeFailRef}
                         />
+                        <p className="d-flex flex-row justify-content-center">N</p>
                     </div>
                 </Col>
             </Row>

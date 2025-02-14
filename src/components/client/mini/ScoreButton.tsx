@@ -1,11 +1,14 @@
+import { LegacyRef } from "react";
+
 interface Props {
   active: boolean;
   handleClick: () => void;
   className?: string;
+  ref: LegacyRef<HTMLDivElement>;
 }
 
 //Button that indicates the robot scored!
-export default function ScoreButton({ active, handleClick, className }: Props) {
+export default function ScoreButton({ active, handleClick, className, ref }: Props) {
   return (
     <div className={className || ""}>
       <div
@@ -20,6 +23,7 @@ export default function ScoreButton({ active, handleClick, className }: Props) {
           fontSize: "90pt",
         }}
         onMouseDown={handleClick}
+        ref={ref}
       >
         <i className="bi bi-check" />
       </div>

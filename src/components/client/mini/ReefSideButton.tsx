@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
+import { LegacyRef } from "react";
+
 interface Props {
   active: boolean
   selected: boolean;
@@ -8,6 +10,7 @@ interface Props {
   handleSelection: () => void;
   className?: string;
   text: string;
+  ref: LegacyRef<HTMLDivElement>;
 }
 
 //A picture of the game piece used to indicate an intake location in teleop.
@@ -19,6 +22,7 @@ export default function ReefSideButton({
   handleSelection,
   className,
   text,
+  ref,
 }: Props) {
   return (
     <div className={className || ""} style={{
@@ -36,6 +40,7 @@ export default function ReefSideButton({
         }`}
         style={{ width: "40px", height: "40px" }}
         onMouseDown={handleSelection}
+        ref={ref}
       >
         <h3 className="text-center mt-2">{text}</h3>
       </div>
