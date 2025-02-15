@@ -1,8 +1,9 @@
 export enum ViewerTab {
   RANKINGS,
   SCORES,
-  AUTOS,
+  CORALS,
+  ALGAES,
+  INCAPS,
   PIT,
   IMPORT,
-  SETTINGS,
 }

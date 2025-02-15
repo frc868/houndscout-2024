@@ -14,7 +14,7 @@ interface Props {
   teams: Team[]
 }
 
-export default function AutosContent({rankings, teams}: Props) {
+export default function AlgaesContent({rankings, teams}: Props) {
   const dispatch = useDispatch<AppDispatch>();
 
   const [coralIntake, setCoralIntake] = useState("");
@@ -113,7 +113,7 @@ export default function AutosContent({rankings, teams}: Props) {
     }}
       className="m-4 bg-dark rounded-3 font-monospace text-center"
     >
-      <h1>Scoring Event Data (WIP)</h1>
+      <h1>Algae Scoring Event Data (WIP)</h1>
       <div className="position-relative mt-4" style={{width: "100%"}}>
           <img
               alt=""
@@ -177,18 +177,6 @@ export default function AutosContent({rankings, teams}: Props) {
             style={{ top: "70%", left: "22%" }}
           >
             G3
-          </p>
-          <p 
-            className="position-absolute"
-            style={{ top: "17%", left: "15%" }}
-          >
-            S1
-          </p>
-          <p 
-            className="position-absolute"
-            style={{ top: "75%", left: "15%" }}
-          >
-            S2
           </p>
       </div>
       <Row className="d-flex flex-row justify-content-center align-items-center">

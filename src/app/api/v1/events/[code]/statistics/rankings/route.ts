@@ -172,12 +172,11 @@ export async function GET(
       const incap:number =
         teamScores.reduce((total, score) => {
           const totalIncapTime = score.incapSegments.reduce(
-            (sum, segment) =>
+            (sum, segment) => 
               sum +
               (Number(segment.timestampEnded) -
                 Number(segment.timestampStarted)),
-            0
-          );
+            0);
           return total + totalIncapTime;
         }, 0) / (teamScores.length * 1000);
 

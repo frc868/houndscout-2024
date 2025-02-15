@@ -25,15 +25,31 @@ export default function MenuBar({ selectedTab, handleTabSelect }: Props) {
           }`}
           onClick={() => handleTabSelect(ViewerTab.RANKINGS)}
         >
-          Match Rankings
+          Main Page
         </div>
         <div
           className={`fs-5 py-2 ps-4 font-monospace ${
-            selectedTab === ViewerTab.AUTOS && "bg-secondary"
+            selectedTab === ViewerTab.CORALS && "bg-secondary"
           }`}
-          onClick={() => handleTabSelect(ViewerTab.AUTOS)}
+          onClick={() => handleTabSelect(ViewerTab.CORALS)}
         >
-          Scoring Data
+          Coral Data
+        </div>
+        <div
+          className={`fs-5 py-2 ps-4 font-monospace ${
+            selectedTab === ViewerTab.ALGAES && "bg-secondary"
+          }`}
+          onClick={() => handleTabSelect(ViewerTab.ALGAES)}
+        >
+          Algae Data
+        </div>
+        <div
+          className={`fs-5 py-2 ps-4 font-monospace ${
+            selectedTab === ViewerTab.INCAPS && "bg-secondary"
+          }`}
+          onClick={() => handleTabSelect(ViewerTab.INCAPS)}
+        >
+          Incap Data
         </div>
         <div
           className={`fs-5 py-2 ps-4 font-monospace ${
@@ -57,15 +73,7 @@ export default function MenuBar({ selectedTab, handleTabSelect }: Props) {
           }`}
           onClick={() => handleTabSelect(ViewerTab.IMPORT)}
         >
-          Import
-        </div>
-        <div
-          className={`fs-5 py-2 mb-4 ps-4 font-monospace ${
-            selectedTab === ViewerTab.SETTINGS && "bg-secondary"
-          }`}
-          onClick={() => handleTabSelect(ViewerTab.SETTINGS)}
-        >
-          Settings
+          Exp/Imp Data
         </div>
       </div>
     </>

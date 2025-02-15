@@ -9,13 +9,13 @@ import TopBar from "@/components/viewer/TopBar";
 import { ViewerTab } from "@/components/viewer/ViewerEnums";
 import MenuBar from "@/components/viewer/MenuBar";
 import { Col, Row } from "react-bootstrap";
-import HomeContent from "@/components/viewer/content/PitContent";
 import RankingsContent from "@/components/viewer/content/RankingsContent";
 import ImportContent from "@/components/viewer/content/ImportContent";
 import PitContent from "@/components/viewer/content/PitContent";
 import ScoresContent from "@/components/viewer/content/ScoresContent";
-import AutosContent from "@/components/viewer/content/AutosContent";
-import SettingsContent from "@/components/viewer/content/SettingsContent";
+import CoralsContent from "@/components/viewer/content/CoralsContent";
+import AlgaesContent from "@/components/viewer/content/AlgaesContent";
+import IncapsContent from "@/components/viewer/content/IncapsContent";
 import { getRankingsAsync } from "@/redux/viewerDataSlice";
 import { getEventTeamsAsync } from "@/redux/adminDataSlice";
 import { Ranking, Team } from "@/lib/enums";
@@ -70,11 +70,12 @@ export default function Viewer() {
             <Col className="ps-0 pe-0" md={2}></Col>
             <Col className="ps-0">
               {tab === ViewerTab.RANKINGS && <RankingsContent rankings={viewerData.rankings as Ranking[]} />}
-              {tab === ViewerTab.AUTOS && <AutosContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
+              {tab === ViewerTab.CORALS && <CoralsContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
+              {tab === ViewerTab.ALGAES && <AlgaesContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
+              {tab === ViewerTab.INCAPS && <IncapsContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
               {tab === ViewerTab.PIT && <PitContent rankings={viewerData.rankings as Ranking[]} />}
               {tab === ViewerTab.SCORES && <ScoresContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
               {tab === ViewerTab.IMPORT && <ImportContent />}
-              {tab === ViewerTab.SETTINGS && <SettingsContent />}
             </Col>
           </Row>
           </>

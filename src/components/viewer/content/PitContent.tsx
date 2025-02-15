@@ -5,7 +5,7 @@ import { AppDispatch, ReduxState } from "@/redux/store";
 import { Form, Table } from "react-bootstrap";
 import { Ranking } from "@/lib/enums";
 import { updatePicklistsAsync } from "@/redux/viewerDataSlice";
-
+import { DrivetrainType, IntakeType, WheelType } from "@prisma/client";
 interface Props {
   rankings: Ranking[];
 }
@@ -14,6 +14,10 @@ export default function PitContent({rankings}: Props) {
 
     const [sortField, setSortField] = useState<keyof Ranking | null>(null);
     const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+
+    const [drivetrain, setDrivetrain] = useState<DrivetrainType|undefined>(undefined);
+    const [wheels, setWheels] = useState<WheelType|undefined>(undefined);
+    const [intake, setIntake] = useState<IntakeType|undefined>(undefined);
 
     const [groundCoralEnabled, setGroundCoralEnabled] = useState<boolean>(false);
     const [stationCoralEnabled, setStationCoralEnabled] = useState<boolean>(false);
@@ -35,16 +39,13 @@ export default function PitContent({rankings}: Props) {
 
     const [firstPicklistEnabled, setFirstPicklistEnabled] = useState<boolean>(false);
     const [secondPicklistEnabled, setSecondPicklistEnabled] = useState<boolean>(false);
-
-    // var firstFilterFunction=()=>{};
-    // var secondFilterFunction=()=>{};
-    // var combined = [firstFilterFunction, secondFilterFunction]
-    //             .reduce((x, y) => (z => x(z) && y(z)));
-    // var filtered = rankings.filter(combined); 
   
     // Sorting function
     const sortedRankings = useMemo(() => {
       let newRankings = JSON.parse(JSON.stringify(rankings as Ranking[]));
+      if (drivetrain) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain==drivetrain);
+      if (wheels) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels==wheels);
+      if (intake) newRankings=newRankings.filter((ranking:Ranking)=>ranking.intake==intake);
       if (groundCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canIntakeGroundCoral);
       if (stationCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canIntakeStationCoral);
       if (groundAlgaeEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canIntakeGroundAlgae);
@@ -136,55 +137,30 @@ export default function PitContent({rankings}: Props) {
           <thead>
             <tr>
               <th
-                // onClick={() =>
-                //   handleSort(
-                //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
-                //   )
-                // }
                 style={{ cursor: "pointer" }}
                 rowSpan={2}
               >
                 Team
               </th>
               <th
-                // onClick={() =>
-                //   handleSort(
-                //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
-                //   )
-                // }
                 style={{ cursor: "pointer" }}
                 colSpan={4}
               >
                 Structure
               </th>
               <th
-                // onClick={() =>
-                //   handleSort(
-                //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
-                //   )
-                // }
                 style={{ cursor: "pointer" }}
                 colSpan={5}
               >
                 Intaking: Can...
               </th>
               <th
-                // onClick={() =>
-                //   handleSort(
-                //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
-                //   )
-                // }
                 style={{ cursor: "pointer" }}
                 colSpan={6}
               >
                 Scoring: Can Score...
               </th>
               <th
-                // onClick={() =>
-                //   handleSort(
-                //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
-                //   )
-                // }
                 style={{ cursor: "pointer" }}
                 colSpan={3}
               >
@@ -208,11 +184,18 @@ export default function PitContent({rankings}: Props) {
                 Has Auton
               </th>
               <th
-                // onClick={() =>
-                //   handleSort(
-                //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
-                //   )
-                // }
+                key="Weight"
+                onClick={() =>
+                  handleSort(
+                    "weight" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+                rowSpan={2}
+              >
+                Weight
+              </th>
+              <th
                 style={{ cursor: "pointer" }}
                 rowSpan={2}
               >
@@ -255,24 +238,81 @@ export default function PitContent({rankings}: Props) {
             </tr>
             <tr>
               {/* Clickable table headers for sorting */}
-              {[
-                "Image",
-                "Drivetrain",
-                "Wheels",
-                "Intake",
-              ].map((header) => (
-                <th
-                  key={header}
-                  onClick={() =>
-                    handleSort(
-                      header.toLowerCase().replace(/ /g, "") as keyof Ranking
-                    )
-                  }
-                  style={{ cursor: "pointer" }}
+              
+              <th
+                key="Images"
+                style={{ cursor: "pointer" }}
+              >
+                Image
+              </th>
+              <th
+                key="Drivetrain"
+                onClick={() =>
+                  handleSort(
+                    "drivetrain" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <Form.Control
+                  as="select"
+                  value={drivetrain}
+                  onChange={(e) => setDrivetrain(e.target.value as DrivetrainType|undefined)} // Updates drivetrain on selection
                 >
-                  {header}
-                </th>
-              ))}
+                  <option value={undefined}>Select...</option>
+                  <option value={DrivetrainType.SWERVE}>Swerve</option>
+                  <option value={DrivetrainType.TANK}>Tank</option>
+                  <option value={DrivetrainType.MECANUM}>Mecanum</option>
+                  <option value={DrivetrainType.OTHER}>Other</option>
+                </Form.Control>
+                Drivetrain
+              </th>
+              <th
+                key="Wheel Type"
+                onClick={() =>
+                  handleSort(
+                    "wheeltype" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <Form.Control
+                  as="select"
+                  value={wheels}
+                  onChange={(e) => setWheels(e.target.value as WheelType|undefined)} // Updates wheel type on selection
+                >
+                  <option value={undefined}>Select...</option>
+                  <option value={WheelType.COLSUNS}>Colsuns</option>
+                  <option value={WheelType.BLACKNITRITE}>Black Nitrite</option>
+                  <option value={WheelType.BLUENITRITE}>Blue Nitrite</option>
+                  <option value={WheelType.TPY}>TPY</option>
+                  <option value={WheelType.WHITEANDYMARK}>White AndyMark</option>
+                  <option value={WheelType.MECANUM}>Mecanum</option>
+                  <option value={WheelType.OTHER}>Other</option>
+                </Form.Control>
+                Wheel Type
+              </th>
+              <th
+                key="Intake Type"
+                onClick={() =>
+                  handleSort(
+                    "intaketype" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <Form.Control
+                  as="select"
+                  value={intake}
+                  onChange={(e) => setIntake(e.target.value as IntakeType|undefined)} // Updates intake type on selection
+                >
+                  <option value={undefined}>Select...</option>
+                  <option value={IntakeType.MECHANICAL}>Mechanical</option>
+                  <option value={IntakeType.PNEUMATIC}>Pneumatic</option>
+                  <option value={IntakeType.OTHER}>Other</option>
+                </Form.Control>
+                Intake Type
+              </th>
               <th
                 key="Intake Ground Coral"
                 onClick={() =>
@@ -526,6 +566,7 @@ export default function PitContent({rankings}: Props) {
                 <td>{r.canShallow?"yes":"no"}</td>
                 <td>{r.canDeep?"yes":"no"}</td>
                 <td>{r.hasAuton?"yes":"no"}</td>
+                <td>{Number(r.weight)}</td>
                 <td>{r.comments}</td>
                 <td>
                   <div
