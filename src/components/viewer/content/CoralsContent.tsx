@@ -180,13 +180,13 @@ export default function CoralsContent({rankings, teams}: Props) {
           </p>
           <p 
             className="position-absolute"
-            style={{ top: "17%", left: "15%" }}
+            style={{ top: "12%", left: "15%" }}
           >
             S1
           </p>
           <p 
             className="position-absolute"
-            style={{ top: "75%", left: "15%" }}
+            style={{ top: "80%", left: "15%" }}
           >
             S2
           </p>

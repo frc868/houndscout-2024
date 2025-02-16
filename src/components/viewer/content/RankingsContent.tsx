@@ -72,7 +72,7 @@ export default function RankingsContent({rankings}: Props) {
     <div
     style={{
       height: "calc(100% - 2*24px)",
-      width: "calc(85% - 2*24px)",
+      width: "calc(100% - 2*24px)",
       color: "white",
       overflowX: "auto",
       overflowY: "auto",

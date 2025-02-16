@@ -29,6 +29,30 @@ export default function MenuBar({ selectedTab, handleTabSelect }: Props) {
         </div>
         <div
           className={`fs-5 py-2 ps-4 font-monospace ${
+            selectedTab === ViewerTab.EVENTS && "bg-secondary"
+          }`}
+          onClick={() => handleTabSelect(ViewerTab.EVENTS)}
+        >
+          Scoring Events
+        </div>
+        <div
+          className={`fs-5 py-2 ps-4 font-monospace ${
+            selectedTab === ViewerTab.PIT && "bg-secondary"
+          }`}
+          onClick={() => handleTabSelect(ViewerTab.PIT)}
+        >
+          Pit Data
+        </div>
+        {/* <div
+          className={`fs-5 py-2 ps-4 font-monospace ${
+            selectedTab === ViewerTab.SCORES && "bg-secondary"
+          }`}
+          onClick={() => handleTabSelect(ViewerTab.SCORES)}
+        >
+          Team Data
+        </div>
+        <div
+          className={`fs-5 py-2 ps-4 font-monospace ${
             selectedTab === ViewerTab.CORALS && "bg-secondary"
           }`}
           onClick={() => handleTabSelect(ViewerTab.CORALS)}
@@ -50,23 +74,7 @@ export default function MenuBar({ selectedTab, handleTabSelect }: Props) {
           onClick={() => handleTabSelect(ViewerTab.INCAPS)}
         >
           Incap Data
-        </div>
-        <div
-          className={`fs-5 py-2 ps-4 font-monospace ${
-            selectedTab === ViewerTab.SCORES && "bg-secondary"
-          }`}
-          onClick={() => handleTabSelect(ViewerTab.SCORES)}
-        >
-          Team Data
-        </div>
-        <div
-          className={`fs-5 py-2 ps-4 font-monospace ${
-            selectedTab === ViewerTab.PIT && "bg-secondary"
-          }`}
-          onClick={() => handleTabSelect(ViewerTab.PIT)}
-        >
-          Pit Data
-        </div>
+        </div> */}
         <div
           className={`fs-5 py-2 ps-4 font-monospace ${
             selectedTab === ViewerTab.IMPORT && "bg-secondary"

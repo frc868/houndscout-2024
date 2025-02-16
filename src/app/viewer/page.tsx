@@ -10,6 +10,7 @@ import { ViewerTab } from "@/components/viewer/ViewerEnums";
 import MenuBar from "@/components/viewer/MenuBar";
 import { Col, Row } from "react-bootstrap";
 import RankingsContent from "@/components/viewer/content/RankingsContent";
+import EventsContent from "@/components/viewer/content/EventsContent";
 import ImportContent from "@/components/viewer/content/ImportContent";
 import PitContent from "@/components/viewer/content/PitContent";
 import ScoresContent from "@/components/viewer/content/ScoresContent";
@@ -70,6 +71,7 @@ export default function Viewer() {
             <Col className="ps-0 pe-0" md={2}></Col>
             <Col className="ps-0">
               {tab === ViewerTab.RANKINGS && <RankingsContent rankings={viewerData.rankings as Ranking[]} />}
+              {tab === ViewerTab.EVENTS && <EventsContent rankings={viewerData.rankings as Ranking[]} />}
               {tab === ViewerTab.CORALS && <CoralsContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
               {tab === ViewerTab.ALGAES && <AlgaesContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
               {tab === ViewerTab.INCAPS && <IncapsContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
