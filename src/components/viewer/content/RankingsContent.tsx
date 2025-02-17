@@ -16,15 +16,37 @@ export default function RankingsContent({rankings}: Props) {
 
   // Sorting function
   const sortedRankings = useMemo(() => {
-    if (!sortField) return rankings;
+    if (!sortField) return [...rankings].sort((a, b) => {
+      if(a.firstpicklist&&!b.firstpicklist) return -1;
+        else if(!a.firstpicklist&&b.firstpicklist) return 1;
+        else if(a.secondpicklist&&!b.secondpicklist) return -1;
+        else if(!a.secondpicklist&&b.secondpicklist) return 1;
+        else if(a.teamnumber<b.teamnumber) return -1;
+        else if(a.teamnumber>b.teamnumber) return 1;
+        else return 0;
+  });
 
     return [...rankings].sort((a, b) => {
       const valueA = a[sortField];
       const valueB = b[sortField];
+      console.log(valueA+", "+valueB)
       if (valueA==undefined||valueA==null) return -1;
-      if (valueB==undefined||valueB==null) return 1;
-      if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
-      if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
+      else if (valueB==undefined||valueB==null) return 1;
+      else if (valueA < valueB) {
+        if (sortDirection === "asc") return -1;
+        else return 1;
+      }else if (valueA > valueB) {
+        if (sortDirection === "asc") return 1;
+        else return -1;
+      }else if (valueA == valueB){
+        if(a.firstpicklist&&!b.firstpicklist) return -1;
+        else if(!a.firstpicklist&&b.firstpicklist) return 1;
+        else if(a.secondpicklist&&!b.secondpicklist) return -1;
+        else if(!a.secondpicklist&&b.secondpicklist) return 1;
+        else if(a.teamnumber<b.teamnumber) return -1;
+        else if(a.teamnumber>b.teamnumber) return 1;
+        else return 0;
+      }
       return 0;
     });
     
@@ -92,19 +114,19 @@ export default function RankingsContent({rankings}: Props) {
           <tr>
             {/* Clickable table headers for sorting */}
             {[
-              "Team",
-              "Games",
+              "Team Number",
+              "Total Games",
               "Mobility",
-              "Dropped Coral",
-              "Dropped Algae",
-              "Endgame: Parked",
-              "Endgame: Shallow",
-              "Endgame: Deep",
+              "Coral Dropped",
+              "Algae Dropped",
+              "Endgame Parked",
+              "Endgame Shallow",
+              "Endgame Deep",
               "Incap",
-              "Played Defense",
+              "Defense",
               "Driver Skill",
-              "1st Picklist",
-              "2nd Picklist",
+              "First Picklist",
+              "Second Picklist",
             ].map((header) => (
               <th
                 key={header}
@@ -116,30 +138,30 @@ export default function RankingsContent({rankings}: Props) {
                 style={{ cursor: "pointer" }}
               >
                 {header}
-                <i className={` bi ${(header.toLowerCase().replace(/ /g, "") as keyof Ranking!=sortField) ? "bi-chevron-bar-contract" : sortDirection=="asc" ? "bi-chevron-bar-up" : "bi-chevron-bar-down"}`} />
+                <i className={` bi ${(header.toLowerCase().replace(/ /g, "") as keyof Ranking!=sortField) ? "bi-chevron-bar-contract" : sortDirection=="asc" ? "bi-chevron-bar-down" : "bi-chevron-bar-up"}`} />
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
           {sortedRankings.map((r, idx) => (
-            <tr key={r.teamNumber}>
+            <tr key={r.teamnumber}>
               <td 
                 // key={r}  
                 // style={getColor(idx as number, maxValues[r], r)}
               >
-                {r.teamNumber}
+                {r.teamnumber}
               </td>
-              <td>{r.total}</td>
+              <td>{r.totalgames}</td>
               <td>{r.mobility}</td>
-              <td>{r.CoralDropped}</td>
-              <td>{r.AlgaeDropped}</td>
-              <td>{r.parked}</td>
-              <td>{r.shallow}</td>
-              <td>{r.deep}</td>
+              <td>{r.coraldropped}</td>
+              <td>{r.algaedropped}</td>
+              <td>{r.endgameparked}</td>
+              <td>{r.endgameshallow}</td>
+              <td>{r.endgamedeep}</td>
               <td>{r.incap}</td>
               <td>{r.defense}</td>
-              <td>{r.driverSkill}</td>
+              <td>{r.driverskill}</td>
               <td>
                 <div
                   className={"d-flex justify-content-center align-items-center"}
@@ -153,14 +175,14 @@ export default function RankingsContent({rankings}: Props) {
                   onMouseDown={async () => {
                     await dispatch(
                       updatePicklistsAsync({
-                        teamNumber: r.teamNumber as number,
-                        firstPicklist: !r.firstPicklist,
-                        secondPicklist: r.secondPicklist
+                        teamNumber: r.teamnumber as number,
+                        firstPicklist: !r.firstpicklist,
+                        secondPicklist: r.secondpicklist
                       })
                     );
                   }}
                 >
-                  <i className={`bi ${r.firstPicklist ? "bi-star-fill" : "bi-star"}`} />
+                  <i className={`bi ${r.firstpicklist ? "bi-star-fill" : "bi-star"}`} />
                 </div>
               </td>
               <td>
@@ -176,14 +198,14 @@ export default function RankingsContent({rankings}: Props) {
                   onMouseDown={async () => {
                     await dispatch(
                       updatePicklistsAsync({
-                        teamNumber: r.teamNumber as number,
-                        firstPicklist: r.firstPicklist,
-                        secondPicklist: !r.secondPicklist
+                        teamNumber: r.teamnumber as number,
+                        firstPicklist: r.firstpicklist,
+                        secondPicklist: !r.secondpicklist
                       })
                     );
                   }}
                 >
-                  <i className={`bi ${r.secondPicklist ? "bi-star-fill" : "bi-star"}`} />
+                  <i className={`bi ${r.secondpicklist ? "bi-star-fill" : "bi-star"}`} />
                 </div>
               </td>
               {/* {Object.entries(r).map(([key, value]) =>

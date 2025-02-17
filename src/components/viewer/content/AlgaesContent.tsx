@@ -183,10 +183,10 @@ export default function AlgaesContent({rankings, teams}: Props) {
         <h3 className="mr-2">Team Number: </h3>
         <TeamDropdown
           red={false}
-          activeTeam={Number(team?.teamNumber)}
+          activeTeam={Number(team?.teamnumber)}
           teams={teams as Team[]}
           handleTeamSelect={(number) => {
-            setTeam(rankings.filter(team=>team.teamNumber===number)[0]);
+            setTeam(rankings.filter(team=>team.teamnumber===number)[0]);
           }}
         />
         {team && (<>
@@ -202,15 +202,15 @@ export default function AlgaesContent({rankings, teams}: Props) {
             onMouseDown={async () => {
               await dispatch(
                 updatePicklistsAsync({
-                  teamNumber: team.teamNumber as number,
-                  firstPicklist: !(team.firstPicklist),
-                  secondPicklist: team.secondPicklist
+                  teamNumber: team.teamnumber as number,
+                  firstPicklist: !(team.firstpicklist),
+                  secondPicklist: team.secondpicklist
                 })
               );
-              setTeam({...team, firstPicklist: !team.firstPicklist});
+              setTeam({...team, firstpicklist: !team.firstpicklist});
             }}
           >
-            <i className={`bi ${team.firstPicklist ? "bi-star-fill" : "bi-star"}`} />
+            <i className={`bi ${team.firstpicklist ? "bi-star-fill" : "bi-star"}`} />
           </div>
           <div
             className={"d-flex justify-content-end align-items-center"}
@@ -224,15 +224,15 @@ export default function AlgaesContent({rankings, teams}: Props) {
             onMouseDown={async () => {
               await dispatch(
                 updatePicklistsAsync({
-                  teamNumber: team.teamNumber as number,
-                  firstPicklist: team.firstPicklist,
-                  secondPicklist: !(team.secondPicklist)
+                  teamNumber: team.teamnumber as number,
+                  firstPicklist: team.firstpicklist,
+                  secondPicklist: !(team.secondpicklist)
                 })
               );
-              setTeam({...team, secondPicklist: !team.secondPicklist});
+              setTeam({...team, secondpicklist: !team.secondpicklist});
             }}
           >
-            <i className={`bi ${team.secondPicklist ? "bi-star-fill" : "bi-star"}`} />
+            <i className={`bi ${team.secondpicklist ? "bi-star-fill" : "bi-star"}`} />
           </div>
         </>)}
       </Row>

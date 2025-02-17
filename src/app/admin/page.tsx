@@ -21,7 +21,7 @@ import {
 import MatchSchedule from "@/components/admin/MatchSchedule";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Activity from "@/components/admin/ClientActivity";
-import AdminControls from "@/components/admin/MatchControls";
+import AdminControls from "@/components/admin/AdminControls";
 import { Event } from "@prisma/client";
 import EventDetails from "@/components/admin/EventDetails";
 import EventManageModal from "@/components/admin/EventManageModal";

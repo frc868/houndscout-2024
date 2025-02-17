@@ -17,46 +17,52 @@ export enum Alliance {
 
 //UPDATE CYCLE: Ensure this interface reflects the rankings API. Update imports as needed as well.
 export interface Ranking {
-  teamNumber: number;
-  teamName: string;
+  teamnumber: number;
+  teamname: string;
   teamScores: (TeamScore & {
     CoralScoringEvents: CoralScoringEvent[];
     AlgaeScoringEvents: AlgaeScoringEvent[];
     incapSegments: IncapSegment[];
   })[];
-  firstPicklist: boolean;
-  secondPicklist: boolean;
+  firstpicklist: boolean;
+  secondpicklist: boolean;
   mobility: number;
-  CoralDropped: number;
-  AlgaeDropped: number;
-  parked: number;
-  shallow: number;
-  deep: number;
+  coraldropped: number;
+  algaedropped: number;
+  endgameparked: number;
+  endgameshallow: number;
+  endgamedeep: number;
   incap: number;
   defense: number;
-  driverSkill: number;
-  total: number;
+  driverskill: number;
+  totalgames: number;
   drivetrain?: DrivetrainType | null;
   wheels?: WheelType | null;
   intake?: IntakeType | null;
   weight?: Decimal | null;
-  hasAuton?: boolean | null;
+  hasauton?: boolean | null;
   comments?: string | null;
-  robotImage?: string | null;
-  canIntakeGroundCoral?: boolean | null;
-  canIntakeStationCoral?: boolean | null;
-  canIntakeGroundAlgae?: boolean | null;
-  canIntakeReefAlgae?: boolean | null;
-  canRemoveReefAlgaeWithoutIntake?: boolean | null;
-  canScoreReefL1?: boolean | null;
-  canScoreReefL2?: boolean | null;
-  canScoreReefL3?: boolean | null;
-  canScoreReefL4?: boolean | null;
-  canScoreNet?: boolean | null;
-  canScoreProcessor?: boolean | null;
-  canPark?: boolean | null;
-  canShallow?: boolean | null;
-  canDeep?: boolean | null;
+  robotimage?: string | null;
+  canintakegroundcoral?: boolean | null;
+  canintakestationcoral?: boolean | null;
+  canintakegroundalgae?: boolean | null;
+  canintakereefalgae?: boolean | null;
+  canremovereefalgaewithoutintake?: boolean | null;
+  canscorereefl1?: boolean | null;
+  canscorereefl2?: boolean | null;
+  canscorereefl3?: boolean | null;
+  canscorereefl4?: boolean | null;
+  canscorenet?: boolean | null;
+  canscoreprocessor?: boolean | null;
+  canpark?: boolean | null;
+  canshallow?: boolean | null;
+  candeep?: boolean | null;
+  coralpermatch?: number | null;
+  coralaccuracy?: number | null;
+  coralcycletime?: number | null;
+  algaepermatch?: number | null;
+  algaeaccuracy?: number | null;
+  algaecycletime?: number | null;
 }
 
 export interface Match {

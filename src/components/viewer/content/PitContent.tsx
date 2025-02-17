@@ -46,35 +46,32 @@ export default function PitContent({rankings}: Props) {
       if (drivetrain) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain==drivetrain);
       if (wheels) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels==wheels);
       if (intake) newRankings=newRankings.filter((ranking:Ranking)=>ranking.intake==intake);
-      if (groundCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canIntakeGroundCoral);
-      if (stationCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canIntakeStationCoral);
-      if (groundAlgaeEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canIntakeGroundAlgae);
-      if (reefAlgaeEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canIntakeReefAlgae);
-      if (reefAlgaeNoIntakeEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canRemoveReefAlgaeWithoutIntake);
-      if (reefL1Enabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canScoreReefL1);
-      if (reefL2Enabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canScoreReefL2);
-      if (reefL3Enabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canScoreReefL3);
-      if (reefL4Enabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canScoreReefL4);
-      if (netEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canScoreNet);
-      if (processorEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canScoreProcessor);
-      if (parkEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canPark);
-      if (shallowEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canShallow);
-      if (deepEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canDeep);
-      if (autonEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.hasAuton);
-      if (firstPicklistEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.firstPicklist);
-      if (secondPicklistEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.secondPicklist);
-      return newRankings;
-      // if (!sortField) return rankings;
-  
-      // return [...rankings].sort((a, b) => {
-      //   const valueA = a[sortField];
-      //   const valueB = b[sortField];
-  
-      //   if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
-      //   if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
-      //   return 0;
-      // });
-      
+      if (groundCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakegroundcoral);
+      if (stationCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakestationcoral);
+      if (groundAlgaeEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakegroundalgae);
+      if (reefAlgaeEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakereefalgae);
+      if (reefAlgaeNoIntakeEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canremovereefalgaewithoutintake);
+      if (reefL1Enabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canscorereefl1);
+      if (reefL2Enabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canscorereefl2);
+      if (reefL3Enabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canscorereefl3);
+      if (reefL4Enabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canscorereefl4);
+      if (netEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canscorenet);
+      if (processorEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canscoreprocessor);
+      if (parkEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canpark);
+      if (shallowEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canshallow);
+      if (deepEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.candeep);
+      if (autonEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.hasauton);
+      if (firstPicklistEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.firstpicklist);
+      if (secondPicklistEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.secondpicklist);
+      return [...newRankings].sort((a, b) => {
+        if(a.firstpicklist&&!b.firstpicklist) return -1;
+        else if(!a.firstpicklist&&b.firstpicklist) return 1;
+        else if(a.secondpicklist&&!b.secondpicklist) return -1;
+        else if(!a.secondpicklist&&b.secondpicklist) return 1;
+        else if(a.teamnumber<b.teamnumber) return -1;
+        else if(a.teamnumber>b.teamnumber) return 1;
+        else return 0;
+    });
     }, [rankings, groundCoralEnabled, stationCoralEnabled, groundAlgaeEnabled, reefAlgaeEnabled, reefAlgaeNoIntakeEnabled, reefL1Enabled, reefL2Enabled, reefL3Enabled, reefL4Enabled, netEnabled, processorEnabled, parkEnabled, shallowEnabled, deepEnabled, autonEnabled, firstPicklistEnabled, secondPicklistEnabled]);
   
     // Calculate max values for coloring
@@ -541,79 +538,79 @@ export default function PitContent({rankings}: Props) {
           </thead>
           <tbody>
             {sortedRankings.map((r: Ranking, idx: number) => (
-              <tr key={r.teamNumber}>
-                <td>{r.teamNumber}</td>
+              <tr key={r.teamnumber}>
+                <td>{r.teamnumber}</td>
                 <td>
-                  {r.robotImage &&
-                    <img className="" alt="" src={r.robotImage} width={85} />
+                  {r.robotimage &&
+                    <img className="" alt="" src={r.robotimage} width={85} />
                   }
                 </td>
                 <td>{r.drivetrain}</td>
                 <td>{r.wheels}</td>
                 <td>{r.intake}</td>
-                <td>{r.canIntakeGroundCoral?"yes":"no"}</td>
-                <td>{r.canIntakeStationCoral?"yes":"no"}</td>
-                <td>{r.canIntakeGroundAlgae?"yes":"no"}</td>
-                <td>{r.canIntakeReefAlgae?"yes":"no"}</td>
-                <td>{r.canRemoveReefAlgaeWithoutIntake?"yes":"no"}</td>
-                <td>{r.canScoreReefL1?"yes":"no"}</td>
-                <td>{r.canScoreReefL2?"yes":"no"}</td>
-                <td>{r.canScoreReefL3?"yes":"no"}</td>
-                <td>{r.canScoreReefL4?"yes":"no"}</td>
-                <td>{r.canScoreNet?"yes":"no"}</td>
-                <td>{r.canScoreProcessor?"yes":"no"}</td>
-                <td>{r.canPark?"yes":"no"}</td>
-                <td>{r.canShallow?"yes":"no"}</td>
-                <td>{r.canDeep?"yes":"no"}</td>
-                <td>{r.hasAuton?"yes":"no"}</td>
+                <td>{r.canintakegroundcoral?"yes":"no"}</td>
+                <td>{r.canintakestationcoral?"yes":"no"}</td>
+                <td>{r.canintakegroundalgae?"yes":"no"}</td>
+                <td>{r.canintakereefalgae?"yes":"no"}</td>
+                <td>{r.canremovereefalgaewithoutintake?"yes":"no"}</td>
+                <td>{r.canscorereefl1?"yes":"no"}</td>
+                <td>{r.canscorereefl2?"yes":"no"}</td>
+                <td>{r.canscorereefl3?"yes":"no"}</td>
+                <td>{r.canscorereefl4?"yes":"no"}</td>
+                <td>{r.canscorenet?"yes":"no"}</td>
+                <td>{r.canscoreprocessor?"yes":"no"}</td>
+                <td>{r.canpark?"yes":"no"}</td>
+                <td>{r.canshallow?"yes":"no"}</td>
+                <td>{r.candeep?"yes":"no"}</td>
+                <td>{r.hasauton?"yes":"no"}</td>
                 <td>{Number(r.weight)}</td>
                 <td>{r.comments}</td>
                 <td>
-                  <div
-                    className={"d-flex justify-content-center align-items-center"}
-                    style={{
-                      width: "auto",
-                      height: "100%",
-                      fontSize: "35pt",
-                      color: "gold",
-                      cursor: "pointer",
-                    }}
-                    onMouseDown={async () => {
-                      await dispatch(
-                        updatePicklistsAsync({
-                          teamNumber: r.teamNumber as number,
-                          firstPicklist: !r.firstPicklist,
-                          secondPicklist: r.secondPicklist
-                        })
-                      );
-                    }}
-                  >
-                    <i className={`bi ${r.firstPicklist ? "bi-star-fill" : "bi-star"}`} />
-                  </div>
-                </td>
-                <td>
-                  <div
-                    className={"d-flex justify-content-center align-items-center"}
-                    style={{
-                      width: "auto",
-                      height: "100%",
-                      fontSize: "35pt",
-                      color: "silver",
-                      cursor: "pointer",
-                    }}
-                    onMouseDown={async () => {
-                      await dispatch(
-                        updatePicklistsAsync({
-                          teamNumber: r.teamNumber as number,
-                          firstPicklist: r.firstPicklist,
-                          secondPicklist: !r.secondPicklist
-                        })
-                      );
-                    }}
-                  >
-                    <i className={`bi ${r.secondPicklist ? "bi-star-fill" : "bi-star"}`} />
-                  </div>
-                </td>
+                <div
+                  className={"d-flex justify-content-center align-items-center"}
+                  style={{
+                    width: "auto",
+                    height: "100%",
+                    fontSize: "35pt",
+                    color: "gold",
+                    cursor: "pointer",
+                  }}
+                  onMouseDown={async () => {
+                    await dispatch(
+                      updatePicklistsAsync({
+                        teamNumber: r.teamnumber as number,
+                        firstPicklist: !r.firstpicklist,
+                        secondPicklist: r.secondpicklist
+                      })
+                    );
+                  }}
+                >
+                  <i className={`bi ${r.firstpicklist ? "bi-star-fill" : "bi-star"}`} />
+                </div>
+              </td>
+              <td>
+                <div
+                  className={"d-flex justify-content-center align-items-center"}
+                  style={{
+                    width: "auto",
+                    height: "100%",
+                    fontSize: "35pt",
+                    color: "silver",
+                    cursor: "pointer",
+                  }}
+                  onMouseDown={async () => {
+                    await dispatch(
+                      updatePicklistsAsync({
+                        teamNumber: r.teamnumber as number,
+                        firstPicklist: r.firstpicklist,
+                        secondPicklist: !r.secondpicklist
+                      })
+                    );
+                  }}
+                >
+                  <i className={`bi ${r.secondpicklist ? "bi-star-fill" : "bi-star"}`} />
+                </div>
+              </td>
               </tr>
             ))}
           </tbody>
