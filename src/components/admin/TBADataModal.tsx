@@ -53,9 +53,6 @@ export default function TBADataModal({
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="secondary" className="bg-danger" onClick={handleClose}>
-          Discard Changes
-        </Button>
         <Button
           variant="success"
           onClick={() => handleSubmit({ teams, matches })}

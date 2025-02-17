@@ -141,14 +141,14 @@ export async function GET(
       
       //Each of these functions calculates the average amount of a game piece that the robot dropped without scoring.
       //UPDATE CYCLE: Ensure all scoring locations for all scoring events are calculated here, including dropped pieces.
-      const CoralDropped =
+      const coraldropped =
         teamScores.reduce((total, score) => {
           const gameAmount = score.CoralScoringEvents.filter(
             (event) => event.dropped
           ).length;
           return total + gameAmount;
         }, 0) / teamScores.length;
-      const AlgaeDropped =
+      const algaedropped =
         teamScores.reduce((total, score) => {
           const gameAmount = score.AlgaeScoringEvents.filter(
             (event) => event.dropped
@@ -158,13 +158,13 @@ export async function GET(
 
       // Each of these functions calculates the fraction of games in which the team did a certain thing in endgame.
       //UPDATE CYCLE: Ensure this is consistent with the Endgame section of TeamScore.
-      const parked:number =
+      const endgameparked:number =
         teamScores.filter((score) => score.endgameType === EndgameType.PARKED)
           .length / teamScores.length;
-      const shallow:number =
+      const endgameshallow:number =
         teamScores.filter((score) => score.endgameType === EndgameType.SHALLOW)
           .length / teamScores.length;
-      const deep:number =
+      const endgamedeep:number =
         teamScores.filter((score) => score.endgameType === EndgameType.DEEP)
           .length / teamScores.length;
 
@@ -181,7 +181,7 @@ export async function GET(
         }, 0) / (teamScores.length * 1000);
 
       //Average driver skill rating
-      const driverSkill:number =
+      const driverskill:number =
         teamScores.reduce((total, score) => {
           if(score.driverSkillRating){
             return total + score.driverSkillRating;
@@ -197,43 +197,43 @@ export async function GET(
       //UPDATE CYCLE: Ensure everything calculated above is listed here.
       return {
         //keep these:
-        teamNumber: team.number,
-        teamName: team.name,
+        teamnumber: team.number,
+        teamname: team.name,
         teamScores: teamScores,
-        firstPicklist: team.firstPicklist,
-        secondPicklist: team.secondPicklist,
+        firstpicklist: team.firstPicklist,
+        secondpicklist: team.secondPicklist,
         //change these between games:
         mobility,
-        CoralDropped,
-        AlgaeDropped,
-        parked,
-        shallow,
-        deep,
+        coraldropped,
+        algaedropped,
+        endgameparked,
+        endgameshallow,
+        endgamedeep,
         incap,
         defense,
-        driverSkill,
+        driverskill,
         drivetrain: team.drivetrain,
         wheels: team.wheels,
         intake: team.intake,
         weight: team.weight,
-        hasAuton: team.hasAuton,
+        hasauton: team.hasAuton,
         comments: team.comments,
-        robotImage: team.robotImage,
-        canIntakeGroundCoral: team.canIntakeGroundCoral,
-        canIntakeStationCoral: team.canIntakeStationCoral,
-        canIntakeGroundAlgae: team.canIntakeGroundAlgae,
-        canIntakeReefAlgae: team.canIntakeReefAlgae,
-        canRemoveReefAlgaeWithoutIntake: team.canRemoveReefAlgaeWithoutIntake,
-        canScoreReefL1: team.canScoreReefL1,
-        canScoreReefL2: team.canScoreReefL2,
-        canScoreReefL3: team.canScoreReefL3,
-        canScoreReefL4: team.canScoreReefL4,
-        canScoreNet: team.canScoreNet,
-        canScoreProcessor: team.canScoreProcessor,
-        canPark: team.canPark,
-        canShallow: team.canShallow,
-        canDeep: team.canDeep,
-        total: teamScores.length
+        robotimage: team.robotImage,
+        canintakegroundcoral: team.canIntakeGroundCoral,
+        canintakestationcoral: team.canIntakeStationCoral,
+        canintakegroundalgae: team.canIntakeGroundAlgae,
+        canintakereefalgae: team.canIntakeReefAlgae,
+        canremovereefalgaewithoutintake: team.canRemoveReefAlgaeWithoutIntake,
+        canscorereefl1: team.canScoreReefL1,
+        canscorereefl2: team.canScoreReefL2,
+        canscorereefl3: team.canScoreReefL3,
+        canscorereefl4: team.canScoreReefL4,
+        canscorenet: team.canScoreNet,
+        canscoreprocessor: team.canScoreProcessor,
+        canpark: team.canPark,
+        canshallow: team.canShallow,
+        candeep: team.canDeep,
+        totalgames: teamScores.length
       };
     });
     
