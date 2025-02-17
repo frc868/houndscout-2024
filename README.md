@@ -2,13 +2,21 @@
 ## PCs (WIP)
 First, ensure you're using the Workspace version of TypeScript, as this will fix multiple errors regarding certain imports. 
 
-Then, create a PostgreSQL database. Ensure you the database name, username, and password are all "postgres", as the export database function will not work without these. (These specific values were also chosen for consistency with the API call for The Blue Alliance.)
+Then, create a PostgreSQL database. 
+Use the following format for your .env file:
+DATABASE_URL="postgresql://[user[:password]@][netloc][:port][/dbname]"
+DBNAME="[dbname]"
+DBUSER="[user]"
+
 # Codespaces
-Create a codespace off of your branch. GitHub should handle the rest of the setup.
-Please note that usage of Codespaces is limited by GitHub.
-# Finish Setup
-1. Create a .env file and enter the following to connect the database to your server:
+Create a codespace off of your branch. Please note that usage of Codespaces is limited by GitHub.
+Enter the following into your .env file: 
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres"
+DBNAME="postgres"
+DBUSER="postgres"
+# Finish Setup
+1. Create/log in to an account on The Blue Alliance, generate a Read API key, and authorize it. Add it to your .env file using the following format:
+TBA_API_KEY="[key]"
 2. Run "npm install" in the terminal to install all necessary frameworks.
 3. Run "npx prisma migrate dev" in the terminal to create the database. Any name will do.
 3. Run "npx prisma studio" to open Prisma Studio.
@@ -30,12 +38,9 @@ Please note that the Client pages will be nonfunctional until a match is created
 
 # To be completed:
 ## Priority
-Client: Update all interfaces to match Reefscape.
-Scoring Events: Add timestamp support.
 Viewer: Complete data viewer page.
-Admin: Add function that aren't the scouter schedule, including a button to switch orientation.
-Pit: Add this page.
+Verify TBA functions work
+
 ## Secondary
-Admin: Add algorithm to generate scouter schedule.
 Comments: Improve comments.
 Client: Implement key listener.
