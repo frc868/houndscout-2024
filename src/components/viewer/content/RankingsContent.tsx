@@ -24,7 +24,7 @@ export default function RankingsContent({rankings}: Props) {
         else if(a.teamnumber<b.teamnumber) return -1;
         else if(a.teamnumber>b.teamnumber) return 1;
         else return 0;
-  });
+    });
 
     return [...rankings].sort((a, b) => {
       const valueA = a[sortField];
@@ -92,14 +92,14 @@ export default function RankingsContent({rankings}: Props) {
 
   return (
     <div
-    style={{
-      height: "calc(100% - 2*24px)",
-      width: "calc(100% - 2*24px)",
-      color: "white",
-      overflowX: "auto",
-      overflowY: "auto",
-      float: "right"
-    }}
+      style={{
+        height: "calc(100% - 2*24px)",
+        width: "calc(85vw - 2*24px)",
+        color: "white",
+        overflowX: "auto",
+        overflowY: "auto",
+        float: "right"
+      }}
       className="m-4 bg-dark rounded-3 font-monospace text-center"
     >
       <h1>Welcome to the HoundScout data viewer! (WIP)</h1>

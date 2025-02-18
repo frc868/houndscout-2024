@@ -122,7 +122,7 @@ export default function EventsContent({rankings}: Props) {
   // Calculate max values for coloring
   const maxValues = useMemo(() => {
     const maxes: Record<string, number> = {};
-    [...rankings].forEach((r: Ranking) => {
+    [...sortedRankings].forEach((r: Ranking) => {
       Object.entries(r).forEach(([key, value]) => {
         if (typeof value === "number" && key !== "team") {
           maxes[key] = Math.max(maxes[key] || 0, value);
@@ -130,7 +130,7 @@ export default function EventsContent({rankings}: Props) {
       });
     });
     return maxes;
-  }, [rankings]);
+  }, [sortedRankings]);
 
   // Handler to sort by column
   const handleSort = (field: keyof Ranking) => {
@@ -161,7 +161,7 @@ export default function EventsContent({rankings}: Props) {
     <div
     style={{
       height: "calc(100% - 2*24px)",
-      width: "calc(100% - 2*24px)",
+      width: "calc(85vw - 2*24px)",
       color: "white",
       overflowX: "auto",
       overflowY: "auto",
@@ -169,7 +169,7 @@ export default function EventsContent({rankings}: Props) {
     }}
       className="m-4 bg-dark rounded-3 font-monospace text-center"
     >
-      <h1>Team Scoring Event Data (WIP)</h1>
+      <h1>Team Scoring Event Data</h1>
       <p>S: Coral Station<br />G: Ground<br />R: Reef Side</p>
       <div className="position-relative mt-4" style={{width: "100%"}}>
           <img
@@ -403,8 +403,8 @@ export default function EventsContent({rankings}: Props) {
           {sortedRankings.map((r, idx) => (
             <tr key={r.teamnumber}>
               <td 
-                // key={r}  
-                // style={getColor(idx as number, maxValues[r], r)}
+                key="teamnumber"
+                style={getColor(r.teamnumber as number, maxValues["teamNumber"], "teamNumber")}
               >
                 {r.teamnumber}
               </td>

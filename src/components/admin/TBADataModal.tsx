@@ -12,6 +12,7 @@ interface Props {
     teams: string;
     matches: string;
   }) => void;
+  handleOnline: () => void;
 }
 
 //Blue Alliance data import.
@@ -19,6 +20,7 @@ export default function TBADataModal({
   show,
   handleClose,
   handleSubmit,
+  handleOnline
 }: Props) {
   const [teams, setTeams] = useState("");
   const [matches, setMatches] = useState("");
@@ -53,6 +55,13 @@ export default function TBADataModal({
       </Modal.Body>
 
       <Modal.Footer>
+        <p>Warning: This will OVERWRITE all matches in the current event.</p>
+        <Button
+          variant="success"
+          onClick={() => handleSubmit({ teams, matches })}
+        >
+          Upload Online (WIP)
+        </Button>
         <Button
           variant="success"
           onClick={() => handleSubmit({ teams, matches })}

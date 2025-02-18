@@ -77,7 +77,7 @@ export default function Viewer() {
               {tab === ViewerTab.INCAPS && <IncapsContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
               {tab === ViewerTab.PIT && <PitContent rankings={viewerData.rankings as Ranking[]} />}
               {tab === ViewerTab.SCORES && <ScoresContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
-              {tab === ViewerTab.IMPORT && <ImportContent />}
+              {tab === ViewerTab.IMPORT && <ImportContent eventCode={mainData.activeEvent?.code as string} />}
             </Col>
           </Row>
           </>

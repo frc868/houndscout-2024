@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import React, { useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
-import { deleteTeamAsync, uploadTBADataAsync } from "@/redux/adminDataSlice";
+import { deleteTeamAsync, uploadOfflineTBADataAsync, uploadOnlineTBADataAsync } from "@/redux/adminDataSlice";
 import { setBlueOnLeftAsync } from "@/redux/mainDataSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
@@ -31,21 +31,25 @@ export default function Controls({ scouters, allTeams, eventTeams, eventCode, bl
         show={showTBADataModal}
         handleClose={() => setShowTBADataModal(false)}
         handleSubmit={async (payload) => {
-          await dispatch(uploadTBADataAsync({ ...payload, eventCode }));
+          await dispatch(uploadOfflineTBADataAsync({ ...payload, eventCode }));
           setShowTBADataModal(false);
         }}
-      ></TBADataModal>
+        handleOnline={async () => {
+          await dispatch(uploadOnlineTBADataAsync({ eventCode }));
+          setShowTBADataModal(false);
+        }}
+      />
       <TeamManageModal
         show={showTeamManage}
         allTeams={allTeams as Team[]}
         eventTeams={eventTeams as Team[]}
         handleClose={() => setShowTeamManage(false)}
-      ></TeamManageModal>
+      />
       <ScouterManageModal
         show={showScouterManage}
         scouters={scouters as Scouter[]}
         handleClose={() => setShowScouterManage(false)}
-      ></ScouterManageModal>
+      />
       <h1 className="text-center mb-3">Controls</h1>
       <Row className="">
         <Button
@@ -86,48 +90,6 @@ export default function Controls({ scouters, allTeams, eventTeams, eventCode, bl
           Import TBA Data
         </Button>
       </Row>
-      <h3 className="text-center mb-3">Export:</h3>
-      
-      <Row className="">
-        <Col>
-          <Button
-            variant="secondary"
-            href={`/api/v1/export`}
-            className="mb-2 mx-1"
-          >
-            Postgres Dump
-          </Button>
-          <Button
-            variant="secondary"
-            href={`/api/v1/events/${eventCode}/statistics/all/csv`}
-            className="mb-2 mx-1"
-          >
-            CSV
-          </Button>
-        </Col>
-      </Row>
-      <Row className="">
-        <Col>
-          <Button
-            variant="secondary"
-            href={`/api/v1/events/${eventCode}/statistics/all`}
-            className="mb-2 mx-1"
-            target="_blank"
-          >
-            JSON
-          </Button>
-          <Button
-            variant="secondary"
-            href={`/api/v1/events/${eventCode}/statistics/rankings`}
-            className="mb-2 mx-1"
-            target="_blank"
-          >
-            Aggregate JSON
-          </Button>
-        </Col>
-      </Row>
-      
-      
     </div>
   );
 }

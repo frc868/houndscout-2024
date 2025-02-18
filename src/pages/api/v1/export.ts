@@ -4,9 +4,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import path from "path";
 
 //Creates a pg_dump file
-//I have no idea what exactly this does, but it triggers on Export Database being clicked.
-//I (Tim) don't know who made these comments, but here's what you need to do to get this to work.
-
+//Triggers on Export Database being clicked.
+//I (Tim) don't know who made these comments, but make sure your .env has the correct DBNAME and DBUSER.
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -20,6 +19,7 @@ export default async function handler(
     // Ensure the backup directory exists
     if (!fs.existsSync(backupDir)) {
       fs.mkdirSync(backupDir, { recursive: true });
+      console.log("true")
     }
 
     // Database credentials and details
@@ -36,7 +36,7 @@ export default async function handler(
         console.error(`Error executing pg_dump: ${error}`);
         return res
           .status(500)
-          .json({ success: false, message: "Failed to backup database" });
+          .json({ success: false, message: "Failed to backup database", error: error });
       }
 
       // Set headers to indicate a file download

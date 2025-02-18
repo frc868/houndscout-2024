@@ -38,9 +38,9 @@ Please note that the Client pages will be nonfunctional until a match is created
 
 # To be completed:
 ## Priority
-Viewer: Complete data viewer page.
-Verify TBA functions work
+Fix TBA functions
+Addd import functions and fix pg_dump export
 
 ## Secondary
-Comments: Improve comments.
-Client: Implement key listener.
+Improve comments.
+Implement key listener in client page.

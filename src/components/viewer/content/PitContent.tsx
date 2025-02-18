@@ -2,7 +2,7 @@
 import React, { useMemo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
-import { Form, Table } from "react-bootstrap";
+import { Dropdown, Form, Table } from "react-bootstrap";
 import { Ranking } from "@/lib/enums";
 import { updatePicklistsAsync } from "@/redux/viewerDataSlice";
 import { DrivetrainType, IntakeType, WheelType } from "@prisma/client";
@@ -43,9 +43,9 @@ export default function PitContent({rankings}: Props) {
     // Sorting function
     const sortedRankings = useMemo(() => {
       let newRankings = JSON.parse(JSON.stringify(rankings as Ranking[]));
-      if (drivetrain) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain==drivetrain);
-      if (wheels) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels==wheels);
-      if (intake) newRankings=newRankings.filter((ranking:Ranking)=>ranking.intake==intake);
+      if (drivetrain!=undefined) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain==drivetrain);
+      if (wheels!=undefined) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels==wheels);
+      if (intake!=undefined) newRankings=newRankings.filter((ranking:Ranking)=>ranking.intake==intake);
       if (groundCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakegroundcoral);
       if (stationCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakestationcoral);
       if (groundAlgaeEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakegroundalgae);
@@ -63,16 +63,40 @@ export default function PitContent({rankings}: Props) {
       if (autonEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.hasauton);
       if (firstPicklistEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.firstpicklist);
       if (secondPicklistEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.secondpicklist);
-      return [...newRankings].sort((a, b) => {
+      if (!sortField) return [...newRankings].sort((a, b) => {
         if(a.firstpicklist&&!b.firstpicklist) return -1;
-        else if(!a.firstpicklist&&b.firstpicklist) return 1;
-        else if(a.secondpicklist&&!b.secondpicklist) return -1;
-        else if(!a.secondpicklist&&b.secondpicklist) return 1;
-        else if(a.teamnumber<b.teamnumber) return -1;
-        else if(a.teamnumber>b.teamnumber) return 1;
-        else return 0;
-    });
-    }, [rankings, groundCoralEnabled, stationCoralEnabled, groundAlgaeEnabled, reefAlgaeEnabled, reefAlgaeNoIntakeEnabled, reefL1Enabled, reefL2Enabled, reefL3Enabled, reefL4Enabled, netEnabled, processorEnabled, parkEnabled, shallowEnabled, deepEnabled, autonEnabled, firstPicklistEnabled, secondPicklistEnabled]);
+          else if(!a.firstpicklist&&b.firstpicklist) return 1;
+          else if(a.secondpicklist&&!b.secondpicklist) return -1;
+          else if(!a.secondpicklist&&b.secondpicklist) return 1;
+          else if(a.teamnumber<b.teamnumber) return -1;
+          else if(a.teamnumber>b.teamnumber) return 1;
+          else return 0;
+      });
+  
+      return [...newRankings].sort((a, b) => {
+        const valueA = a[sortField];
+        const valueB = b[sortField];
+        console.log(valueA+", "+valueB)
+        if (valueA==undefined||valueA==null) return -1;
+        else if (valueB==undefined||valueB==null) return 1;
+        else if (valueA < valueB) {
+          if (sortDirection === "asc") return -1;
+          else return 1;
+        }else if (valueA > valueB) {
+          if (sortDirection === "asc") return 1;
+          else return -1;
+        }else if (valueA == valueB){
+          if(a.firstpicklist&&!b.firstpicklist) return -1;
+          else if(!a.firstpicklist&&b.firstpicklist) return 1;
+          else if(a.secondpicklist&&!b.secondpicklist) return -1;
+          else if(!a.secondpicklist&&b.secondpicklist) return 1;
+          else if(a.teamnumber<b.teamnumber) return -1;
+          else if(a.teamnumber>b.teamnumber) return 1;
+          else return 0;
+        }
+        return 0;
+      });
+    }, [rankings, groundCoralEnabled, stationCoralEnabled, groundAlgaeEnabled, reefAlgaeEnabled, reefAlgaeNoIntakeEnabled, reefL1Enabled, reefL2Enabled, reefL3Enabled, reefL4Enabled, netEnabled, processorEnabled, parkEnabled, shallowEnabled, deepEnabled, autonEnabled, firstPicklistEnabled, secondPicklistEnabled, drivetrain, intake, wheels, sortDirection, sortField]);
   
     // Calculate max values for coloring
     const maxValues = useMemo(() => {
@@ -116,7 +140,7 @@ export default function PitContent({rankings}: Props) {
       <div
         style={{
           height: "calc(100% - 2*24px)",
-          width: "calc(85% - 2*24px)",
+          width: "calc(85vw - 2*24px)",
           color: "white",
           overflowX: "auto",
           overflowY: "auto",
@@ -124,7 +148,7 @@ export default function PitContent({rankings}: Props) {
         }}
         className="m-4 bg-dark rounded-3 font-monospace text-center"
       >
-        <h1>Pit Scouting Data (WIP)</h1>
+        <h1>Pit Scouting Data</h1>
         <Table
           bordered
           hover
@@ -133,11 +157,18 @@ export default function PitContent({rankings}: Props) {
         >
           <thead>
             <tr>
-              <th
+            <th
+                key="Team Number"
+                onClick={() =>
+                  handleSort(
+                    "teamnumber" as keyof Ranking
+                  )
+                }
                 style={{ cursor: "pointer" }}
                 rowSpan={2}
               >
-                Team
+                Team Number
+                <i className={` bi ${(sortField!="teamnumber") ? "bi-chevron-bar-contract" : sortDirection=="asc" ? "bi-chevron-bar-down" : "bi-chevron-bar-up"}`} />
               </th>
               <th
                 style={{ cursor: "pointer" }}
@@ -191,6 +222,7 @@ export default function PitContent({rankings}: Props) {
                 rowSpan={2}
               >
                 Weight
+                <i className={` bi ${(sortField!="weight") ? "bi-chevron-bar-contract" : sortDirection=="asc" ? "bi-chevron-bar-down" : "bi-chevron-bar-up"}`} />
               </th>
               <th
                 style={{ cursor: "pointer" }}
@@ -199,7 +231,7 @@ export default function PitContent({rankings}: Props) {
                 Comments
               </th>
               <th
-                key="First Picklist"
+                key="firstpicklist"
                 onClick={() =>
                   handleSort(
                     "firstpicklist" as keyof Ranking
@@ -208,15 +240,11 @@ export default function PitContent({rankings}: Props) {
                 style={{ cursor: "pointer" }}
                 rowSpan={2}
               >
-                <Form.Check
-                  type="checkbox"
-                  checked={firstPicklistEnabled}
-                  onChange={() => {setFirstPicklistEnabled(!firstPicklistEnabled)}}
-                />
                 First Picklist
+                <i className={` bi ${(sortField!="firstpicklist") ? "bi-chevron-bar-contract" : sortDirection=="asc" ? "bi-chevron-bar-down" : "bi-chevron-bar-up"}`} />
               </th>
               <th
-                key="Second Picklist"
+                key="secondpicklist"
                 onClick={() =>
                   handleSort(
                     "secondpicklist" as keyof Ranking
@@ -225,12 +253,8 @@ export default function PitContent({rankings}: Props) {
                 style={{ cursor: "pointer" }}
                 rowSpan={2}
               >
-                <Form.Check
-                  type="checkbox"
-                  checked={secondPicklistEnabled}
-                  onChange={() => {setSecondPicklistEnabled(!secondPicklistEnabled)}}
-                />
                 Second Picklist
+                <i className={` bi ${(sortField!="secondpicklist") ? "bi-chevron-bar-contract" : sortDirection=="asc" ? "bi-chevron-bar-down" : "bi-chevron-bar-up"}`} />
               </th>
             </tr>
             <tr>
@@ -251,17 +275,22 @@ export default function PitContent({rankings}: Props) {
                 }
                 style={{ cursor: "pointer" }}
               >
-                <Form.Control
-                  as="select"
-                  value={drivetrain}
-                  onChange={(e) => setDrivetrain(e.target.value as DrivetrainType|undefined)} // Updates drivetrain on selection
-                >
-                  <option value={undefined}>Select...</option>
-                  <option value={DrivetrainType.SWERVE}>Swerve</option>
-                  <option value={DrivetrainType.TANK}>Tank</option>
-                  <option value={DrivetrainType.MECANUM}>Mecanum</option>
-                  <option value={DrivetrainType.OTHER}>Other</option>
-                </Form.Control>
+                <Dropdown className="mt-1" style={{ width: '100%' }}>
+                  <Dropdown.Toggle
+                    variant="secondary"
+                  >
+                    {drivetrain}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <ul className="list-unstyled">
+                      <Dropdown.Item key={1} onMouseDown={() => setDrivetrain(undefined)}>N/A</Dropdown.Item>
+                      <Dropdown.Item key={2} onMouseDown={() => setDrivetrain("SWERVE")}>Swerve</Dropdown.Item>
+                      <Dropdown.Item key={3} onMouseDown={() => setDrivetrain("TANK")}>Tank</Dropdown.Item>
+                      <Dropdown.Item key={4} onMouseDown={() => setDrivetrain("MECANUM")}>Mecanum</Dropdown.Item>
+                      <Dropdown.Item key={5} onMouseDown={() => setDrivetrain("OTHER")}>Other</Dropdown.Item>
+                    </ul>
+                  </Dropdown.Menu>
+                </Dropdown>
                 Drivetrain
               </th>
               <th
@@ -273,20 +302,25 @@ export default function PitContent({rankings}: Props) {
                 }
                 style={{ cursor: "pointer" }}
               >
-                <Form.Control
-                  as="select"
-                  value={wheels}
-                  onChange={(e) => setWheels(e.target.value as WheelType|undefined)} // Updates wheel type on selection
-                >
-                  <option value={undefined}>Select...</option>
-                  <option value={WheelType.COLSUNS}>Colsuns</option>
-                  <option value={WheelType.BLACKNITRITE}>Black Nitrite</option>
-                  <option value={WheelType.BLUENITRITE}>Blue Nitrite</option>
-                  <option value={WheelType.TPY}>TPY</option>
-                  <option value={WheelType.WHITEANDYMARK}>White AndyMark</option>
-                  <option value={WheelType.MECANUM}>Mecanum</option>
-                  <option value={WheelType.OTHER}>Other</option>
-                </Form.Control>
+                <Dropdown className="mt-1" style={{ width: '100%' }}>
+                  <Dropdown.Toggle
+                    variant="secondary"
+                  >
+                    {wheels}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <ul className="list-unstyled">
+                      <Dropdown.Item key={1} onMouseDown={() => setWheels(undefined)}>N/A</Dropdown.Item>
+                      <Dropdown.Item key={2} onMouseDown={() => setWheels("COLSUNS")}>Colsuns</Dropdown.Item>
+                      <Dropdown.Item key={3} onMouseDown={() => setWheels("BLACKNITRITE")}>Black Nitrite</Dropdown.Item>
+                      <Dropdown.Item key={4} onMouseDown={() => setWheels("BLUENITRITE")}>Blue Nitrite</Dropdown.Item>
+                      <Dropdown.Item key={5} onMouseDown={() => setWheels("TPY")}>TPY</Dropdown.Item>
+                      <Dropdown.Item key={6} onMouseDown={() => setWheels("WHITEANDYMARK")}>While AndyMark</Dropdown.Item>
+                      <Dropdown.Item key={7} onMouseDown={() => setWheels("MECANUM")}>Mecanum</Dropdown.Item>
+                      <Dropdown.Item key={8} onMouseDown={() => setDrivetrain("OTHER")}>Other</Dropdown.Item>
+                    </ul>
+                  </Dropdown.Menu>
+                </Dropdown>
                 Wheel Type
               </th>
               <th
@@ -298,16 +332,21 @@ export default function PitContent({rankings}: Props) {
                 }
                 style={{ cursor: "pointer" }}
               >
-                <Form.Control
-                  as="select"
-                  value={intake}
-                  onChange={(e) => setIntake(e.target.value as IntakeType|undefined)} // Updates intake type on selection
-                >
-                  <option value={undefined}>Select...</option>
-                  <option value={IntakeType.MECHANICAL}>Mechanical</option>
-                  <option value={IntakeType.PNEUMATIC}>Pneumatic</option>
-                  <option value={IntakeType.OTHER}>Other</option>
-                </Form.Control>
+                <Dropdown className="mt-1" style={{ width: '100%' }}>
+                  <Dropdown.Toggle
+                    variant="secondary"
+                  >
+                    {intake}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <ul className="list-unstyled">
+                      <Dropdown.Item key={1} onMouseDown={() => setIntake(undefined)}>N/A</Dropdown.Item>
+                      <Dropdown.Item key={2} onMouseDown={() => setIntake("MECHANICAL")}>Mechanical</Dropdown.Item>
+                      <Dropdown.Item key={3} onMouseDown={() => setIntake("PNEUMATIC")}>Pneumatic</Dropdown.Item>
+                      <Dropdown.Item key={4} onMouseDown={() => setIntake("OTHER")}>Other</Dropdown.Item>
+                    </ul>
+                  </Dropdown.Menu>
+                </Dropdown>
                 Intake Type
               </th>
               <th

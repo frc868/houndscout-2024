@@ -130,13 +130,19 @@ export const deleteMatchAsync = createAsyncThunk(
   }
 );
 
-export const uploadTBADataAsync = createAsyncThunk(
-  "adminData/uploadTBADataAsync",
+export const uploadOfflineTBADataAsync = createAsyncThunk(
+  "adminData/uploadOfflineTBADataAsync",
   async (data: { eventCode: string; teams: string; matches: string }) => {
     await axios.post(`/api/v1/events/${data.eventCode}/tbaseed/offline`, {
       teams: data.teams,
       matches: data.matches,
     });
+  }
+);
+export const uploadOnlineTBADataAsync = createAsyncThunk(
+  "adminData/uploadOnlineTBADataAsync",
+  async (data: { eventCode: string;}) => {
+    await axios.post(`/api/v1/events/${data.eventCode}/tbaseed/`, {});
   }
 );
 export const createTeamAsync = createAsyncThunk(
