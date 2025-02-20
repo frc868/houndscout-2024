@@ -11,8 +11,8 @@ import {
 } from "@prisma/client";
 import { Ranking } from "@/lib/enums";
 
-//see the "JSON" button in ImportContent for implementation.
-//Creates a JSON object containing data about the specified event.
+//see the "All JSON" button in ImportContent for implementation.
+//Creates a JSON object containing all collected data about the specified event.
 //UPDATE CYCLE: Most of the necessary edits also apply to the CSV button.
 export async function GET(
   req: Request,
