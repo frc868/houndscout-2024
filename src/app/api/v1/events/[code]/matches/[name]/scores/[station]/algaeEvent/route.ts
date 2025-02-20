@@ -6,7 +6,11 @@ import prisma from "@/lib/prisma";
 
 export async function POST(
   req: Request,
-  { params }: { params: { code: string; name: string; station: string } }
+  { params }: { params: {
+    code: string; //Event code (typically the active event)
+    name: string; //Match name (typically qm_[number])
+    station: string //Station (typically the one that send this call
+  } }
 ) {
   const data = await req.json();
 
