@@ -2,10 +2,13 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 //mainDataSlice/getActiveTeamNumberAsync
-//Gets all teams and scouters currently set to each station during the specified match.
+//Gets all teams, teamScores, and scouters currently set to each station during a certain match.
 export async function GET(
   req: Request,
-  { params }: { params: { code: string; name: string } }
+  {{ params }: { params: {
+    code: string; //Event code (typically the active event)
+    name: string; //Match name (typically the active match, formatteed qm_[number])
+  } }
 ) {
   let match;
   try {
@@ -40,10 +43,13 @@ export async function GET(
 }
 
 //adminDataSlice/editMatchAsync
-//Updates the teams currently set to each station during the specified match.
+//Updates the teams currently set to each station during a certain match, as well as the start time and match name.
 export async function PATCH(
   req: Request,
-  { params }: { params: { code: string; name: string } }
+  {{ params }: { params: {
+    code: string; //Event code (typically the active event)
+    name: string; //Match name (typically the active match, formatteed qm_[number])
+  } }
 ) {
   const data = await req.json();
   let updateData: any = {};
@@ -102,9 +108,13 @@ export async function PATCH(
 }
 
 //adminDataSlice/deleteMatchAsync
+//Deletes a certain match
 export async function DELETE(
   req: Request,
-  { params }: { params: { code: string; name: string } }
+  {{ params }: { params: {
+    code: string; //Event code (typically the active event)
+    name: string; //Match name (typically the active match, formatteed qm_[number])
+  } }
 ) {
   let match;
   try {

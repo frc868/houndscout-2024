@@ -24,8 +24,11 @@ interface TBAMatch {
   key: string;
 }
 
-//Currently unimplemented, as far as I know.
-//Gets data directly from The Blue Alliance API and updates database information with it.
+//adminDataSlice/uploadOnlineTBADataAsync (TBA)
+//Updates database with data sourced directly from The Blue Alliance API.
+//Please note that this function requires an event with the specified code must be created first.
+//This function will also delete any pre-existing matches in the event.
+//Ensure you have an Blue Alliance API key.
 export async function POST(
   req: Request,
   { params }: { params: { code: string } }

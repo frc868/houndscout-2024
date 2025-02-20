@@ -45,6 +45,7 @@ model Heartbeat {
 model Scouter {
   id        Int         @id @default(autoincrement())
   name      String      @unique
+  active    Boolean     @default(true)
   TeamScore TeamScore[]
 }
 
@@ -92,14 +93,14 @@ model Team {
   comments    String?
   robotImage  String?
 
-//intake capabilities
+//intake capabilities (UPDATE CYCLE)
   canIntakeGroundCoral               Boolean?
   canIntakeStationCoral              Boolean?
   canIntakeGroundAlgae               Boolean?
   canIntakeReefAlgae                 Boolean?
   canRemoveReefAlgaeWithoutIntake    Boolean?
 
-//scoring capabilities
+//scoring capabilities (UPDATE CYCLE)
   canScoreReefL1      Boolean?
   canScoreReefL2      Boolean?
   canScoreReefL3      Boolean?
@@ -107,7 +108,7 @@ model Team {
   canScoreNet         Boolean?
   canScoreProcessor   Boolean?
 
-//endgame capabilities
+//endgame capabilities (UPDATE CYCLE)
   canPark      Boolean?
   canShallow   Boolean?
   canDeep      Boolean?
@@ -168,14 +169,14 @@ model TeamScore {
   preloaded             Boolean              @default(true)
   autoStartingZone      AutoStartingZone?
 
-//Auton
+//Auton (UPDATE CYCLE)
   leftStartingZone      Boolean              @default(false)
   //The following three lines are left over from Crescendo. See the crescendo_archive branch to see how it works.
   // autoGamePieces        AutoGamePiece[] //Crescendo: The pieces the robot attempted to pick up
   // missingAutoGamePieces AutoGamePiece[] //Crescendo: The pieces the robot attempted but failed to pick up
   // autoGamePiecesScored  Int                  @default(0) //Crescendo: The overall pieces scored
   
-//Scoring Events
+//Scoring Events (UPDATE CYCLE)
   CoralScoringEvents     CoralScoringEvent[]
   AlgaeScoringEvents     AlgaeScoringEvent[]
 
@@ -204,8 +205,8 @@ model TeamScore {
   blue3Match       Match?             @relation("Blue3TeamScore")
 }
 
-//The following four models are based on scoring events. There's one for each combination of phase and game piece.
-//UPDATE CYCLE: Please update these models for the amount of game pieces and the possible scoring locations in each event.
+//The following models are based on scoring events. There's one for each game piece.
+//UPDATE CYCLE: Please ensure these models match each type of game piece types in the current event.
 model CoralScoringEvent {
   id                Int              @id @default(autoincrement())
   intakeLocation    CoralIntakeLocation
@@ -278,7 +279,7 @@ enum AlgaeIntakeLocation {
   TELEOPGROUND
 }
 
-//The potential scoring locations for each game piece.
+//The potential scoring locations for each game piece. The first word in each value indicates phrase.
 //For particularly complicated games, feel free to sort these into parts.
 //UPDATE CYCLE: Please ensure these are accurate between games.
 enum CoralScoringLevel {
@@ -335,6 +336,8 @@ enum Station {
   BLUE3
 }
 
+//The following enums are related to pit scouting.
+//OPTIONAL: Feel free to update these values to represent any trendy/popular wheels/drivetrains/intakes, but keep the OTHER value as a fallback.
 enum DrivetrainType {
   SWERVE
   TANK

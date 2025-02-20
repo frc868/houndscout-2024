@@ -2,11 +2,14 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 //Currently unimplemented.
-// Returns the scoring events and incap segments mapped to the specified station in the specified match.
-// UPDATE CYCLE: Ensure all scoring events are listed here.
+// Returns the scoring events and incap segments of a certain teamScore
 export async function GET(
   req: Request,
-  { params }: { params: { code: string; name: string; station: string } }
+  { params }: { params: {
+    code: string; //Event code (typically the active event)
+    name: string; //Match name (typically the active match, formatteed qm_[number])
+    station: string //Station (typically the one that called this route)
+  } }
 ) {
   let match;
   try {
@@ -19,6 +22,7 @@ export async function GET(
       },
       include: {
         [`${params.station}TeamScore`]: {
+          // UPDATE CYCLE: Ensure all scoring events are listed here.
           include: {
             CoralScoringEvents: true,
             AlgaeScoringEvents: true,
@@ -40,10 +44,13 @@ export async function GET(
 
 //scoresSlice/(most things)
 //A do-it-all function that can update update anything in the specified teamScore that needs to be updated.
-// UPDATE CYCLE: Please ensure this matches the updated TeamScore schema.
 export async function PATCH(
   req: Request,
-  { params }: { params: { code: string; name: string; station: string } }
+  { params }: { params: {
+    code: string; //Event code (typically the active event)
+    name: string; //Match name (typically the active match, formatteed qm_[number])
+    station: string //Station (typically the one that called this route)
+  } }
 ) {
   const data = await req.json();
 
@@ -55,6 +62,7 @@ export async function PATCH(
       },
       data: {
         [`${params.station.toLowerCase()}TeamScore`]: {
+          // UPDATE CYCLE: Please ensure this matches the updated TeamScore schema.
           update: {
             preloaded: data.preloaded,
             autoStartingZone: data.autoStartingZone,

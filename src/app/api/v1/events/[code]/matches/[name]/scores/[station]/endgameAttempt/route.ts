@@ -1,12 +1,16 @@
+//Currently unimplemented; all functionality is done through the route on the next highest level.
 //Creates an endgame attempt.
-//Currently unused; all functionality is done through the route on the next highest level.
 
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 export async function POST(
   req: Request,
-  { params }: { params: { code: string; name: string; station: string } }
+  { params }: { params: {
+    code: string; //Event code (typically the active event)
+    name: string; //Match name (typically qm_[number])
+    station: string //Station (typically the one that send this call
+  } }
 ) {
   const data = await req.json();
 

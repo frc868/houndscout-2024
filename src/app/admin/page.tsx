@@ -1,5 +1,5 @@
 "use client";
-//Quick tip, you can ctrl+click on something from another file to go directly there.
+//This stuff should work regardless of the game, but I'll try to explain it in case you want to make changes.
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
@@ -39,8 +39,10 @@ export default function Admin() {
   //dispatch is used to call functions in a redux file.
   const dispatch = useDispatch<AppDispatch>();
 
-  //I just shoehorned every function in my update here; please optimize.
+  
   useEffect(() => {
+    //Every second, these functions get data from the database.
+    //OPTIONAL: I just shoehorned every dispatch in this page here; if you have the time, please optimize.
     const interval = setInterval(async () => {
       await dispatch(getActiveEventAsync());
       await dispatch(getActiveMatchAsync());
@@ -62,12 +64,13 @@ export default function Admin() {
         ));
     }, 1000);
     return () => clearInterval(interval);
-  }, [dispatch, mainData.activeEvent?.code, mainData.activeMatchName, mainData.blueOnLeft]);
+  }, [dispatch, mainData.activeEvent?.code, mainData.activeMatchName]);
 
-  const ready = mainData.activeEvent?.code && adminData.matches && adminData.eventTeams;
   //Displays a loading screen if these haven't been filled in the state yet.
   //This prevents errors from trying to render things too early.
+  const ready = mainData.activeEvent?.code && adminData.matches && adminData.eventTeams;
 
+  //Gets more specific data about the current match in the database.
   const activeMatch = adminData.matches?.filter(
     (match) => match.name === mainData.activeMatchName
   )[0];
@@ -81,6 +84,8 @@ export default function Admin() {
         matchName={mainData.activeMatchName}
         isConnected={true}
       />
+
+      {/* Loading Screen */}
       {!ready && (
         <>
           <div className="vh-30 d-flex justify-content-center mt-5">
@@ -105,7 +110,7 @@ export default function Admin() {
             eventList={adminData?.eventList as Event[]}
             activeEvent={mainData.activeEvent?.code as string}
             handleClose={() => setShowEventManage(false)}
-          ></EventManageModal>
+          />
           <Row className="my-4">
             <Col md={5}>
               <Activity

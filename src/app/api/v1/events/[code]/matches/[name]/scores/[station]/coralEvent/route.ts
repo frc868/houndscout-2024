@@ -1,12 +1,15 @@
-//Creates an CoralScoringEvent.
-//UPDATE CYCLE: Please ensure this function's update values match the schema it's based off of.
-
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+//ScoresSlice/sendCoralEvent
+//Creates a coralScoringEvent.
 export async function POST(
   req: Request,
-  { params }: { params: { code: string; name: string; station: string } }
+  { params }: { params: {
+    code: string; //Event code (typically the active event)
+    name: string; //Match name (typically the active match, formatteed qm_[number])
+    station: string //Station (typically the one that called this route)
+  } }
 ) {
   const data = await req.json();
 
@@ -21,6 +24,7 @@ export async function POST(
           update: {
             CoralScoringEvents: {
               create: {
+                // UPDATE CYCLE: Ensure these match the schema.
                 intakeLocation: data.intakeLocation,
                 scoringLevel: data.scoringLevel || undefined,
                 scoringSide: data.scoringSide || undefined,

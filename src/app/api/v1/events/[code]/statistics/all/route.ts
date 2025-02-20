@@ -11,8 +11,8 @@ import {
 } from "@prisma/client";
 import { Ranking } from "@/lib/enums";
 
-//see the "JSON" button in DataControls for implementation.
-//Creates a JSON object containing data about the specified event.
+//see the "All JSON" button in ImportContent for implementation.
+//Creates a JSON object containing all collected data about the specified event.
 //UPDATE CYCLE: Most of the necessary edits also apply to the CSV button.
 export async function GET(
   req: Request,
@@ -166,40 +166,22 @@ export async function GET(
       .map((teamScore) => ({
         ...teamScore,
         teamNumber: teamScore.teamNumber,
-        autoCoralLevel1Scored: teamScore.CoralScoringEvents.filter(
+        coralLevel1Scored: teamScore.CoralScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL1
         ).length,
-        autoCoralLevel2Scored: teamScore.CoralScoringEvents.filter(
+        coralLevel2Scored: teamScore.CoralScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL2
         ).length,
-        autoCoralLevel3Scored: teamScore.CoralScoringEvents.filter(
+        coralLevel3Scored: teamScore.CoralScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL3
         ).length,
-        autoCoralLevel4Scored: teamScore.CoralScoringEvents.filter(
+        coralLevel4Scored: teamScore.CoralScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL4
         ).length,
-        autoAlgaeNetScored: teamScore.AlgaeScoringEvents.filter(
+        algaeNetScored: teamScore.AlgaeScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLocation==AlgaeScoringLocation.NET
         ).length,
-        autoAlgaeProcessorScored: teamScore.AlgaeScoringEvents.filter(
-          (event) => !event.failedScoring&&event.scoringLocation==AlgaeScoringLocation.PROCESSOR
-        ).length,
-        teleopCoralLevel1Scored: teamScore.CoralScoringEvents.filter(
-          (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL1
-        ).length,
-        teleopCoralLevel2Scored: teamScore.CoralScoringEvents.filter(
-          (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL2
-        ).length,
-        teleopCoralLevel3Scored: teamScore.CoralScoringEvents.filter(
-          (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL3
-        ).length,
-        teleopCoralLevel4Scored: teamScore.CoralScoringEvents.filter(
-          (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL4
-        ).length,
-        teleopAlgaeNetScored: teamScore.AlgaeScoringEvents.filter(
-          (event) => !event.failedScoring&&event.scoringLocation==AlgaeScoringLocation.NET
-        ).length,
-        teleopAlgaeProcessorScored: teamScore.AlgaeScoringEvents.filter(
+        algaeProcessorScored: teamScore.AlgaeScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLocation==AlgaeScoringLocation.PROCESSOR
         ).length,
         coralDropped: teamScore.CoralScoringEvents.filter((event) => event.dropped).length,
