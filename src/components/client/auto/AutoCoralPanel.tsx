@@ -13,6 +13,7 @@ import { ReduxState } from "@/redux/store";
 import { useEffect, useRef } from "react";
 
 interface Props {
+    incapActive: boolean;
     activeSide: string;
     intakeSelected?: CoralIntakeLocation;
     levelSelected?: CoralScoringLevel;
@@ -33,6 +34,7 @@ interface Props {
 //The notes are clickable, each representing an enum choice that represents that position.
 //Click a note again to render it missing, and click again to indicate no pickup.
 export default function AutoCoralPanel({
+    incapActive,
     activeSide,
     intakeSelected,
     levelSelected,
@@ -141,7 +143,7 @@ useEffect(() => {
                                 <div className={`d-flex ${flip?"flex-column-reverse":"flex-column"} justify-content-center align-items-center`}>
                                     <TeleopIntakeButton
                                         className="my-4"
-                                        active={activeSide=="intaking"}
+                                        active={activeSide=="intaking"&&!incapActive}
                                         selected={intakeSelected==CoralIntakeLocation.AUTOSTATION1}
                                         handleSelection={() => {
                                             handleSelection("intaking",{
@@ -153,7 +155,7 @@ useEffect(() => {
                                     />
                                     <TeleopIntakeButton
                                         className="my-4"
-                                        active={activeSide=="intaking"}
+                                        active={activeSide=="intaking"&&!incapActive}
                                         selected={intakeSelected==CoralIntakeLocation.AUTOSTATION2}
                                         handleSelection={() => {
                                             handleSelection("intaking",{
@@ -172,7 +174,7 @@ useEffect(() => {
                                 <div className={`d-flex ${flip?"flex-column-reverse":"flex-column"} justify-content-center align-items-center`}>
                                     <TeleopIntakeButton
                                         className="mt-2"
-                                        active={activeSide=="intaking"}
+                                        active={activeSide=="intaking"&&!incapActive}
                                         selected={intakeSelected==CoralIntakeLocation.AUTOGROUND1}
                                         handleSelection={() => {
                                             handleSelection("intaking",{
@@ -184,7 +186,7 @@ useEffect(() => {
                                     />
                                     <TeleopIntakeButton
                                         className="mt-2"
-                                        active={activeSide=="intaking"}
+                                        active={activeSide=="intaking"&&!incapActive}
                                         selected={intakeSelected==CoralIntakeLocation.AUTOGROUND2}
                                         handleSelection={() => {
                                             handleSelection("intaking",{
@@ -196,7 +198,7 @@ useEffect(() => {
                                     />
                                     <TeleopIntakeButton
                                         className="mt-2"
-                                        active={activeSide=="intaking"}
+                                        active={activeSide=="intaking"&&!incapActive}
                                         selected={intakeSelected==CoralIntakeLocation.AUTOGROUND3}
                                         handleSelection={() => {
                                             handleSelection("intaking",{
@@ -218,7 +220,7 @@ useEffect(() => {
                             <div className="d-flex flex-column">
                                 <LocationButton
                                     className="mt-2"
-                                    active={activeSide=="level"}
+                                    active={activeSide=="level"&&!incapActive}
                                     selected={levelSelected==CoralScoringLevel.LEVEL1}
                                     handleSelection={() => {
                                         handleSelection("level",{
@@ -230,7 +232,7 @@ useEffect(() => {
                                 />
                                 <LocationButton
                                     className="mt-2"
-                                    active={activeSide=="level"}
+                                    active={activeSide=="level"&&!incapActive}
                                     selected={levelSelected==CoralScoringLevel.LEVEL2}
                                     handleSelection={() => {
                                         handleSelection("level",{
@@ -242,7 +244,7 @@ useEffect(() => {
                                 />
                                 <LocationButton
                                     className="mt-2"
-                                    active={activeSide=="level"}
+                                    active={activeSide=="level"&&!incapActive}
                                     selected={levelSelected==CoralScoringLevel.LEVEL3}
                                     handleSelection={() => {
                                         handleSelection("level",{
@@ -254,7 +256,7 @@ useEffect(() => {
                                 />
                                 <LocationButton
                                     className="mt-2"
-                                    active={activeSide=="level"}
+                                    active={activeSide=="level"&&!incapActive}
                                     selected={levelSelected==CoralScoringLevel.LEVEL4}
                                     handleSelection={() => {
                                         handleSelection("level",{
@@ -284,7 +286,7 @@ useEffect(() => {
                                 />
 
                                 <ReefSideButton
-                                    active={activeSide=="side"}
+                                    active={activeSide=="side"&&!incapActive}
                                     selected={sideSelected==CoralScoringSide.SIDE1}
                                     handleSelection={() => {
                                         handleSelection("side",{
@@ -305,7 +307,7 @@ useEffect(() => {
                                     ref={side1Ref}
                                 />
                                 <ReefSideButton
-                                    active={activeSide=="side"}
+                                    active={activeSide=="side"&&!incapActive}
                                     selected={sideSelected==CoralScoringSide.SIDE2}
                                     handleSelection={() => {
                                         handleSelection("side",{
@@ -326,7 +328,7 @@ useEffect(() => {
                                     ref={side2Ref}
                                 />
                                 <ReefSideButton
-                                    active={activeSide=="side"}
+                                    active={activeSide=="side"&&!incapActive}
                                     selected={sideSelected==CoralScoringSide.SIDE3}
                                     handleSelection={() => {
                                         handleSelection("side",{
@@ -347,7 +349,7 @@ useEffect(() => {
                                     ref={side3Ref}
                                 />
                                 <ReefSideButton
-                                    active={activeSide=="side"}
+                                    active={activeSide=="side"&&!incapActive}
                                     selected={sideSelected==CoralScoringSide.SIDE4}
                                     handleSelection={() => {
                                         handleSelection("side",{
@@ -368,7 +370,7 @@ useEffect(() => {
                                     ref={side4Ref}
                                 />
                                 <ReefSideButton
-                                    active={activeSide=="side"}
+                                    active={activeSide=="side"&&!incapActive}
                                     selected={sideSelected==CoralScoringSide.SIDE5}
                                     handleSelection={() => {
                                         handleSelection("side",{
@@ -389,7 +391,7 @@ useEffect(() => {
                                     ref={side5Ref}
                                 />
                                 <ReefSideButton
-                                    active={activeSide=="side"}
+                                    active={activeSide=="side"&&!incapActive}
                                     selected={sideSelected==CoralScoringSide.SIDE6}
                                     handleSelection={() => {
                                         handleSelection("side",{
@@ -417,7 +419,7 @@ useEffect(() => {
                     <h2 className="text-center">Result</h2>
                         <ScoreButton
                             className="mt-2"
-                            active={activeSide=="result"}
+                            active={activeSide=="result"&&!incapActive}
                             handleClick={() => {
                                 handleSelection("result",{
                                     failedScoring: false
@@ -428,7 +430,7 @@ useEffect(() => {
                         <p className="d-flex flex-row justify-content-center">Q</p>
                         <FailButton
                             className="mt-2"
-                            active={activeSide=="result"}
+                            active={activeSide=="result"&&!incapActive}
                             handleClick={() => {
                                 handleSelection("result",{
                                     failedScoring: true

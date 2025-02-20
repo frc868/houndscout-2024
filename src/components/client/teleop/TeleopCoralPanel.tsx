@@ -9,6 +9,7 @@ import FailButton from "../mini/FailButton";
 import { useEffect, useRef } from "react";
 
 interface Props {
+    incapActive: boolean;
     activeSide: string;
     intakeSelected?: CoralIntakeLocation;
     levelSelected?: CoralScoringLevel;
@@ -24,10 +25,11 @@ interface Props {
 }
 
 export default function TeleopCoralPanel({
-  activeSide,
-  intakeSelected,
-  levelSelected,
-  handleSelection,
+    incapActive,
+    activeSide,
+    intakeSelected,
+    levelSelected,
+    handleSelection,
 }: Props) {
 // Explicitly typing the buttonRef as pointing to an HTMLButtonElement
 const coralScoreRef = useRef<HTMLDivElement | null>(null);
@@ -78,7 +80,7 @@ useEffect(() => {
                         <div className="d-flex flex-column align-items-center">
                             <h3 className="text-center">Ground</h3>
                             <TeleopIntakeButton
-                                active={activeSide=="intaking"}
+                                active={activeSide=="intaking"&&!incapActive}
                                 selected={intakeSelected==CoralIntakeLocation.TELEOPGROUND}
                                 handleSelection={() => {
                                     handleSelection("intaking",{
@@ -91,7 +93,7 @@ useEffect(() => {
                         <div className="d-flex flex-column align-items-center">
                             <h3 className="text-center">Station</h3>
                             <TeleopIntakeButton
-                                active={activeSide=="intaking"}
+                                active={activeSide=="intaking"&&!incapActive}
                                 selected={intakeSelected==CoralIntakeLocation.TELEOPSTATION}
                                 handleSelection={() => {
                                     handleSelection("intaking",{
@@ -106,7 +108,7 @@ useEffect(() => {
                     <h2 className="text-center mb-1">Scoring</h2>
                         <div className="d-flex flex-column align-items-center">
                             <LocationButton
-                                active={activeSide=="level"}
+                                active={activeSide=="level"&&!incapActive}
                                 selected={levelSelected==CoralScoringLevel.LEVEL1}
                                 handleSelection={() => {
                                     handleSelection("level",{
@@ -118,7 +120,7 @@ useEffect(() => {
                             />
                             <LocationButton
                                 className="mt-1"
-                                active={activeSide=="level"}
+                                active={activeSide=="level"&&!incapActive}
                                 selected={levelSelected==CoralScoringLevel.LEVEL2}
                                 handleSelection={() => {
                                     handleSelection("level",{
@@ -130,7 +132,7 @@ useEffect(() => {
                             />
                             <LocationButton
                                 className="mt-1"
-                                active={activeSide=="level"}
+                                active={activeSide=="level"&&!incapActive}
                                 selected={levelSelected==CoralScoringLevel.LEVEL3}
                                 handleSelection={() => {
                                     handleSelection("level",{
@@ -142,7 +144,7 @@ useEffect(() => {
                             />
                             <LocationButton
                                 className="mt-1"
-                                active={activeSide=="level"}
+                                active={activeSide=="level"&&!incapActive}
                                 selected={levelSelected==CoralScoringLevel.LEVEL4}
                                 handleSelection={() => {
                                     handleSelection("level",{
@@ -158,7 +160,7 @@ useEffect(() => {
                     <h2 className="text-center mb-1">Result</h2>
                     <div className="d-flex flex-column">
                         <ScoreButton
-                            active={activeSide=="result"}
+                            active={activeSide=="result"&&!incapActive}
                             handleClick={() => {
                                 handleSelection("result",{
                                     failedScoring: false
@@ -169,7 +171,7 @@ useEffect(() => {
                         <p className="d-flex flex-row justify-content-center">Q</p>
                         <FailButton
                             className="mt-2"
-                            active={activeSide=="result"}
+                            active={activeSide=="result"&&!incapActive}
                             handleClick={() => {
                                 handleSelection("result",{
                                     failedScoring: true

@@ -10,6 +10,7 @@ import { AlgaeIntakeLocation, AlgaeScoringLocation } from "@prisma/client";
 import { useEffect, useRef } from "react";
 
 interface Props {
+    incapActive: boolean;
     activeSide: string;
     intakeSelected?: AlgaeIntakeLocation;
     locationSelected?: AlgaeScoringLocation;
@@ -28,6 +29,7 @@ interface Props {
 //The notes are clickable, each representing an enum choice that represents that position.
 //Click a note again to render it missing, and click again to indicate no pickup.
 export default function AutoAlgaePanel({
+    incapActive,
     activeSide,
     intakeSelected,
     locationSelected,
@@ -81,7 +83,7 @@ useEffect(() => {
                     <div className="d-flex flex-column align-items-center">
                         <h3 className = "text-center">Ground</h3>
                         <TeleopIntakeButton
-                            active={activeSide=="intaking"}
+                            active={activeSide=="intaking"&&!incapActive}
                             selected={intakeSelected == AlgaeIntakeLocation.TELEOPGROUND}
                             handleSelection={() => {
                                 handleSelection("intaking",{
@@ -94,7 +96,7 @@ useEffect(() => {
                     <div className="d-flex flex-column align-items-center">
                         <h3 className = "text-center">Reef</h3>
                         <TeleopIntakeButton
-                            active={activeSide=="intaking"}
+                            active={activeSide=="intaking"&&!incapActive}
                             selected={intakeSelected == AlgaeIntakeLocation.TELEOPREEF}
                             handleSelection={() => {
                                 handleSelection("intaking",{
@@ -110,7 +112,7 @@ useEffect(() => {
                     <div className="d-flex flex-column">
                         <LocationButton
                             className="mt-2"
-                            active={activeSide=="scoring"}
+                            active={activeSide=="scoring"&&!incapActive}
                             selected={locationSelected == AlgaeScoringLocation.NET}
                             handleSelection={() => {
                                 handleSelection("scoring",{
@@ -121,7 +123,7 @@ useEffect(() => {
                         />
                         <LocationButton
                             className="mt-2"
-                            active={activeSide=="scoring"}
+                            active={activeSide=="scoring"&&!incapActive}
                             selected={locationSelected == AlgaeScoringLocation.PROCESSOR}
                             handleSelection={() => {
                                 handleSelection("scoring",{
@@ -136,7 +138,7 @@ useEffect(() => {
                     <h2 className="text-center mb-1">Result</h2>
                     <div className="d-flex flex-column">
                         <ScoreButton
-                            active={activeSide=="result"}
+                            active={activeSide=="result"&&!incapActive}
                             handleClick={() => {
                                 handleSelection("result",{
                                     failedScoring: false
@@ -147,7 +149,7 @@ useEffect(() => {
                         <p className="d-flex flex-row justify-content-center">Y</p>
                         <FailButton
                             className="mt-2"
-                            active={activeSide=="result"}
+                            active={activeSide=="result"&&!incapActive}
                             handleClick={() => {
                                 handleSelection("result",{
                                     failedScoring: true

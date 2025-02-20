@@ -13,6 +13,7 @@ import { mainData } from "@/redux/adminDataSlice";
 import { useEffect, useRef } from "react";
 
 interface Props {
+    incapActive: boolean;
     activeSide: string;
     intakeSelected?: AlgaeIntakeLocation;
     locationSelected?: AlgaeScoringLocation;
@@ -31,6 +32,7 @@ interface Props {
 //The notes are clickable, each representing an enum choice that represents that position.
 //Click a note again to render it missing, and click again to indicate no pickup.
 export default function AutoAlgaePanel({
+    incapActive,
     activeSide,
     intakeSelected,
     locationSelected,
@@ -91,7 +93,7 @@ useEffect(() => {
                                 <div className={`d-flex ${flip?"flex-column-reverse":"flex-column"} justify-content-center align-items-center`}>
                                     <TeleopIntakeButton
                                         className="mt-2"
-                                        active={activeSide=="intaking"}
+                                        active={activeSide=="intaking"&&!incapActive}
                                         selected={intakeSelected==AlgaeIntakeLocation.AUTOGROUND1}
                                         handleSelection={() => {
                                             handleSelection("intaking",{
@@ -103,7 +105,7 @@ useEffect(() => {
                                     />
                                     <TeleopIntakeButton
                                         className="mt-2"
-                                        active={activeSide=="intaking"}
+                                        active={activeSide=="intaking"&&!incapActive}
                                         selected={intakeSelected==AlgaeIntakeLocation.AUTOGROUND2}
                                         handleSelection={() => {
                                             handleSelection("intaking",{
@@ -115,7 +117,7 @@ useEffect(() => {
                                     />
                                     <TeleopIntakeButton
                                         className="mt-2"
-                                        active={activeSide=="intaking"}
+                                        active={activeSide=="intaking"&&!incapActive}
                                         selected={intakeSelected==AlgaeIntakeLocation.AUTOGROUND3}
                                         handleSelection={() => {
                                             handleSelection("intaking",{
@@ -146,7 +148,7 @@ useEffect(() => {
                                 />
                                     
                                 <AutoIntakeButton
-                                    active={activeSide=="intaking"}
+                                    active={activeSide=="intaking"&&!incapActive}
                                     selected={intakeSelected == AlgaeIntakeLocation.AUTOREEF1}
                                     handleSelection={() => {
                                         handleSelection("intaking",{
@@ -167,7 +169,7 @@ useEffect(() => {
                                     number="1"
                                 />
                                 <AutoIntakeButton
-                                    active={activeSide=="intaking"}
+                                    active={activeSide=="intaking"&&!incapActive}
                                     selected={intakeSelected == AlgaeIntakeLocation.AUTOREEF2}
                                     handleSelection={() => {
                                         handleSelection("intaking",{
@@ -188,7 +190,7 @@ useEffect(() => {
                                     number="2"
                                 />
                                 <AutoIntakeButton
-                                    active={activeSide=="intaking"}
+                                    active={activeSide=="intaking"&&!incapActive}
                                     selected={intakeSelected == AlgaeIntakeLocation.AUTOREEF3}
                                     handleSelection={() => {
                                         handleSelection("intaking",{
@@ -209,7 +211,7 @@ useEffect(() => {
                                     number="3"
                                 />
                                 <AutoIntakeButton
-                                    active={activeSide=="intaking"}
+                                    active={activeSide=="intaking"&&!incapActive}
                                     selected={intakeSelected == AlgaeIntakeLocation.AUTOREEF4}
                                     handleSelection={() => {
                                         handleSelection("intaking",{
@@ -230,7 +232,7 @@ useEffect(() => {
                                     number="4"
                                 />
                                 <AutoIntakeButton
-                                    active={activeSide=="intaking"}
+                                    active={activeSide=="intaking"&&!incapActive}
                                     selected={intakeSelected == AlgaeIntakeLocation.AUTOREEF5}
                                     handleSelection={() => {
                                         handleSelection("intaking",{
@@ -250,7 +252,7 @@ useEffect(() => {
                                     number="5"
                                 />
                                 <AutoIntakeButton
-                                    active={activeSide=="intaking"}
+                                    active={activeSide=="intaking"&&!incapActive}
                                     selected={intakeSelected == AlgaeIntakeLocation.AUTOREEF6}
                                     handleSelection={() => {
                                         handleSelection("intaking",{
@@ -279,7 +281,7 @@ useEffect(() => {
                     <div className="d-flex flex-column align-items-center">
                         <LocationButton
                             className="mt-2"
-                            active={activeSide=="scoring"}
+                            active={activeSide=="scoring"&&!incapActive}
                             selected={locationSelected == AlgaeScoringLocation.NET}
                             handleSelection={() => {
                                 handleSelection("scoring",{
@@ -291,7 +293,7 @@ useEffect(() => {
                         />
                         <LocationButton
                             className="mt-2"
-                            active={activeSide=="scoring"}
+                            active={activeSide=="scoring"&&!incapActive}
                             selected={locationSelected == AlgaeScoringLocation.PROCESSOR}
                             handleSelection={() => {
                                 handleSelection("scoring",{
@@ -308,7 +310,7 @@ useEffect(() => {
                     <div className="d-flex flex-column">
                         <ScoreButton
                             className="mt-2"
-                            active={activeSide=="result"}
+                            active={activeSide=="result"&&!incapActive}
                             handleClick={() => {
                                 handleSelection("result",{
                                     failedScoring: false
@@ -319,7 +321,7 @@ useEffect(() => {
                         <p className="d-flex flex-row justify-content-center">Y</p>
                         <FailButton
                             className="mt-2"
-                            active={activeSide=="result"}
+                            active={activeSide=="result"&&!incapActive}
                             handleClick={() => {
                                 handleSelection("result",{
                                     failedScoring: true

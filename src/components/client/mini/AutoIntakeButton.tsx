@@ -22,6 +22,11 @@ export default function IntakeButton({
   gamePiece,
   number,
 }: Props) {
+  function checkForSelection(){
+    if(active){
+      handleSelection();
+    }
+  }
   return (
     <div className={className || ""} style={{
       position: "absolute",
@@ -37,7 +42,7 @@ export default function IntakeButton({
              : ``
         }`}
         style={{ width: "50px", height: "50px", position: "relative"}}
-        onMouseDown={handleSelection}
+        onMouseDown={checkForSelection}
       >
         <img className="" alt="" src={gamePiece=="coral"?`/assets/coral_object.png`:`/assets/algae_object.png`} width={75} />
         <p style={{position: "absolute", top: "13px"}}>{number}</p>

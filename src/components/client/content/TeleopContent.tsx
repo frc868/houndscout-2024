@@ -74,6 +74,7 @@ export default function TeleopContent({
       <Row className="d-flex justify-content-center">
         <Col className="d-flex justify-content-left" md={4}>
           <TeleopCoralPanel
+            incapActive={incapOn}
             activeSide={coralActiveSide}
             intakeSelected={coralIntakeLocation}
             levelSelected={coralScoringLevel}
@@ -82,6 +83,7 @@ export default function TeleopContent({
         </Col>
         <Col className="d-flex justify-content-center" md={4}>
           <TeleopAlgaePanel
+            incapActive={incapOn}
             activeSide={algaeActiveSide}
             intakeSelected={algaeIntakeLocation}
             locationSelected={algaeScoringLocation}

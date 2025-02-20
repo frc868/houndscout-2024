@@ -14,6 +14,11 @@ export default function DroppedButton({
   className,
   gamePiece,
 }: Props) {
+  function checkForSelection(){
+    if(active){
+      handleSelection();
+    }
+  }
   return (
     <div className={className || ""}>
       <div
@@ -23,7 +28,7 @@ export default function DroppedButton({
             : "bg-secondary-subtle border-secondary"
         }`}
         style={{ width: "75px", height: "75px" }}
-        onMouseDown={handleSelection}
+        onMouseDown={checkForSelection}
       >
         <img className="" alt="" src={gamePiece=="coral"?`/assets/coral_object.png`:`/assets/algae_object.png`} width={85} />
       </div>

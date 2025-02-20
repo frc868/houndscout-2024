@@ -9,6 +9,11 @@ interface Props {
 
 //Big fat fail button for when the robot fails to score.
 export default function FailButton({ active, handleClick, className, ref }: Props) {
+  function checkForSelection(){
+    if(active){
+      handleClick();
+    }
+  }
   return (
     <div className={className || ""}>
       <div
@@ -23,7 +28,7 @@ export default function FailButton({ active, handleClick, className, ref }: Prop
           fontSize: "70pt",
           WebkitTextStroke: "4px",
         }}
-        onMouseDown={handleClick}
+        onMouseDown={checkForSelection}
         ref={ref}
       >
         <i className="bi bi-x" />

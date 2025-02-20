@@ -29,7 +29,10 @@ export default function EndgamePanel({
                 endgameType !== item ? "bg-dark-subtle" : ""
               }`}
               active={endgameType === item}
-              onMouseDown={() => handleEndgameTypeSelection(item)}
+              onMouseDown={() => {
+                handleEndgameTypeSelection(item);
+                if(item==EndgameType.NONE) handleSuccessSelection(!endgameSuccess);
+              }}
             >
               {item[0].toUpperCase()}
               {item.substring(1).toLowerCase()}
@@ -43,7 +46,9 @@ export default function EndgamePanel({
             className="mx-2"
             name="Success?"
             enabled={endgameSuccess}
-            handleClick={() => handleSuccessSelection(!endgameSuccess)}
+            handleClick={() => {
+              if (endgameType != EndgameType.NONE) handleSuccessSelection(!endgameSuccess)
+            }}
           />
         </div>
       </Col>

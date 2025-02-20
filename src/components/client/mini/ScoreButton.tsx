@@ -9,6 +9,11 @@ interface Props {
 
 //Button that indicates the robot scored!
 export default function ScoreButton({ active, handleClick, className, ref }: Props) {
+  function checkForSelection(){
+    if(active){
+      handleClick();
+    }
+  }
   return (
     <div className={className || ""}>
       <div
@@ -22,7 +27,7 @@ export default function ScoreButton({ active, handleClick, className, ref }: Pro
           height: "100px",
           fontSize: "90pt",
         }}
-        onMouseDown={handleClick}
+        onMouseDown={checkForSelection}
         ref={ref}
       >
         <i className="bi bi-check" />

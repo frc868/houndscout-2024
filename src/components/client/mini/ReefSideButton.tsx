@@ -24,6 +24,11 @@ export default function ReefSideButton({
   text,
   ref,
 }: Props) {
+  function checkForSelection(){
+    if(active){
+      handleSelection();
+    }
+  }
   return (
     <div className={className || ""} style={{
       position: "absolute",
@@ -39,7 +44,7 @@ export default function ReefSideButton({
              : `bg-secondary-subtle border-secondary`
         }`}
         style={{ width: "40px", height: "40px" }}
-        onMouseDown={handleSelection}
+        onMouseDown={checkForSelection}
         ref={ref}
       >
         <h3 className="text-center mt-2">{text}</h3>

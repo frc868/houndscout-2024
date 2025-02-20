@@ -120,6 +120,7 @@ export default function AutoContent({
       <Row className="d-flex justify-content-center">
         <Col className="d-flex justify-content-center" md={6}>
           <AutoCoralPanel
+            incapActive={incapOn}
             activeSide={coralActiveSide}
             intakeSelected={coralIntakeLocation}
             levelSelected={coralScoringLevel}
@@ -129,6 +130,7 @@ export default function AutoContent({
         </Col>
         <Col className="d-flex justify-content-center" md={6}>
           <AutoAlgaePanel
+            incapActive={incapOn}
             activeSide={algaeActiveSide}
             intakeSelected={algaeIntakeLocation}
             locationSelected={algaeScoringLocation}

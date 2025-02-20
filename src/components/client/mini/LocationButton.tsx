@@ -16,6 +16,11 @@ export default function LocationButton({
   className,
   text,
 }: Props) {
+  function checkForSelection(){
+    if(active){
+      handleSelection();
+    }
+  }
   return (
     <div className={className || ""}>
       <div
@@ -27,7 +32,7 @@ export default function LocationButton({
              : `bg-secondary-subtle border-secondary`
         }`}
         style={{ width: "75px", height: "55px" }}
-        onMouseDown={handleSelection}
+        onMouseDown={checkForSelection}
       >
         <h4 className="text-center mt-2">{text}</h4>
       </div>
