@@ -2,10 +2,12 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 //adminDataSlice/getMatchesAsync
-//Gets all the matches in the specified event.
+//Gets information on all the matches in an event, including teams, teamScores, and scouters.
 export async function GET(
   req: Request,
-  { params }: { params: { code: string } }
+  { params }: { params: {
+    code: string; //Event code (typically the active event)
+  } }
 ) {
   let event;
   try {
@@ -41,10 +43,12 @@ export async function GET(
 }
 
 //adminDataSlice/createMatchAsync
-//Creates a match in the specified event.
+//Creates a match.
 export async function POST(
   req: Request,
-  { params }: { params: { code: string } }
+  { params }: { params: {
+    code: string; //Event code (typically the active event)
+  } }
 ) {
   const data = await req.json();
 
