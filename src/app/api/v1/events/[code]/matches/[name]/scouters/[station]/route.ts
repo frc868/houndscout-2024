@@ -2,10 +2,14 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 //mainDataSlice/getScouterAsync
-//Gets the scouter currently set to run the specified station during the specified match
+//Gets the scouter currently set to run a station during a certain match
 export async function GET(
   req: Request,
-  { params }: { params: { code: string; name: string; station: string } }
+  { params }: { params: {
+    code: string; //Event code (typically the active event)
+    name: string; //Match name (typically the active match, formatteed qm_[number])
+    station: string //Station (typically the one that called this route)
+  } }
 ) {
   let match;
   try {
@@ -38,10 +42,14 @@ export async function GET(
 }
 
 //adminDataSlice/setMatchScouterAsync
-//Sets the scouter this is to run the specified station during the specified match
+//Sets the scouter this is to run a station during a certain match
 export async function POST(
   req: Request,
-  { params }: { params: { code: string; name: string; station: string } }
+  { params }: { params: {
+    code: string; //Event code (typically the active event)
+    name: string; //Match name (typically the active match, formatteed qm_[number])
+    station: string //Station (typically the one that called this route)
+  } }
 ) {
   const data = await req.json();
 
