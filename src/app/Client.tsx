@@ -154,7 +154,7 @@ export default function Client({ station }: Props) {
     }   
   };
 
-  //UPDATE CYCLE (out of date): Make sure everything down to handleScoringSelection is duplicated if there's multiple game pieces.
+  //UPDATE CYCLE (out of date): Make sure these are accurate and cover every game piece.
   //Also ensure the enums used are accurate; those are imported from Prisma, so update those as well.
   
   const handleCoral = async (
@@ -298,7 +298,7 @@ export default function Client({ station }: Props) {
         </div>
         <ul className="vh-1 d-flex flex-column justify-content-center mt-3">
           <li className="vh-1 d-flex justify-content-center mt-1">1. Set an active match. </li>
-          <li className="vh-1 d-flex justify-content-center mt-1">2. Scouters and teams have been assigned to each station in each match.</li>
+          <li className="vh-1 d-flex justify-content-center mt-1">2. Teams have been assigned to each station in each match.</li>
         </ul>
       </>
       )}
