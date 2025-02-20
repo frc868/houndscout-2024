@@ -16,9 +16,9 @@ import {
 import { Ranking } from "@/lib/enums";
 
 //viewerDataSlice/getRankingsAsync
-//see the "Aggregate JSON" button in DataControls for additional implementation.
-//Creates a JSON object containing performance data about each team in the specified event.
-//This is way more complicated than everything else that's exportable, so this also feeds into the database.
+//see the "Aggregate JSON" button in ImportContent for additional implementation.
+//Creates a JSON object containing aggregated performance data about each team in the specified event as well as other infromation for the data viewer.
+//This is way more complicated than everything else that's exportable.
 export async function GET(
   req: Request,
   { params }: { params: { code: string } }
@@ -123,16 +123,6 @@ export async function GET(
         AlgaeScoringEvents: AlgaeScoringEvent[];
         incapSegments: IncapSegment[];
       })[]; // Remove null entries
-  
-      // Archived from Crescendo
-      // const autoSpeaker:number =
-      //   teamScores.reduce((o, s) => o + (s?.autoGamePiecesScored || 0), 0) /
-      //   teamScores.length;
-      // const autoMisses:number =
-      //   (teamScores.reduce((o, s) => o + (s?.autoGamePieces.length || 0), 0) -
-      //     autoSpeaker +
-      //     2) /
-      //   teamScores.length;
 
       // Calculates the fraction of games in which the team left the starting zone in auto.
       const mobility:number =
