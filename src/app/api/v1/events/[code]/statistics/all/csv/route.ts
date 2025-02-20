@@ -5,8 +5,8 @@ import {
   AlgaeScoringLocation,
 } from "@prisma/client";
 
-//see the "CSV" button in DataControls for implementation.
-//Creates an spreadsheet containing data about the specified event.
+//see the "All CSV" button in ImportContent for implementation.
+//Creates an spreadsheet containing all collected data about the specified event.
 //UPDATE CYCLE: Most of the necessary edits also apply to the JSON button.
 export async function GET(
   req: Request,
@@ -160,40 +160,25 @@ export async function GET(
       .map((teamScore) => ({
         ...teamScore,
         teamNumber: teamScore.teamNumber,
-        autoCoralLevel1Scored: teamScore.CoralScoringEvents.filter(
+        .map((teamScore) => ({
+        ...teamScore,
+        teamNumber: teamScore.teamNumber,
+        coralLevel1Scored: teamScore.CoralScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL1
         ).length,
-        autoCoralLevel2Scored: teamScore.CoralScoringEvents.filter(
+        coralLevel2Scored: teamScore.CoralScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL2
         ).length,
-        autoCoralLevel3Scored: teamScore.CoralScoringEvents.filter(
+        coralLevel3Scored: teamScore.CoralScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL3
         ).length,
-        autoCoralLevel4Scored: teamScore.CoralScoringEvents.filter(
+        coralLevel4Scored: teamScore.CoralScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL4
         ).length,
-        autoAlgaeNetScored: teamScore.AlgaeScoringEvents.filter(
+        algaeNetScored: teamScore.AlgaeScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLocation==AlgaeScoringLocation.NET
         ).length,
-        autoAlgaeProcessorScored: teamScore.AlgaeScoringEvents.filter(
-          (event) => !event.failedScoring&&event.scoringLocation==AlgaeScoringLocation.PROCESSOR
-        ).length,
-        teleopCoralLevel1Scored: teamScore.CoralScoringEvents.filter(
-          (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL1
-        ).length,
-        teleopCoralLevel2Scored: teamScore.CoralScoringEvents.filter(
-          (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL2
-        ).length,
-        teleopCoralLevel3Scored: teamScore.CoralScoringEvents.filter(
-          (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL3
-        ).length,
-        teleopCoralLevel4Scored: teamScore.CoralScoringEvents.filter(
-          (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL4
-        ).length,
-        teleopAlgaeNetScored: teamScore.AlgaeScoringEvents.filter(
-          (event) => !event.failedScoring&&event.scoringLocation==AlgaeScoringLocation.NET
-        ).length,
-        teleopAlgaeProcessorScored: teamScore.AlgaeScoringEvents.filter(
+        algaeProcessorScored: teamScore.AlgaeScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLocation==AlgaeScoringLocation.PROCESSOR
         ).length,
         coralDropped: teamScore.CoralScoringEvents.filter((event) => event.dropped).length,
@@ -220,7 +205,7 @@ export async function GET(
       return NextResponse.json({ ok: false, message: "No match data." });
     }
 
-    //The stuff below is just getting this data into spreadsheet form.
+    //The stuff below is getting this data into spreadsheet form.
 
     const headers = Object.keys((teamScoresWithDetails as Object[])[0]).join(
       ","
