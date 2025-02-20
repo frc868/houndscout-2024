@@ -1,15 +1,16 @@
-//Creates an algaeScoringEvent.
-//UPDATE CYCLE: Please ensure this function's update values match the schema it's based off of.
+
 
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+//ScoresSlice/sendAlgaeEvent
+//Creates an algaeScoringEvent.
 export async function POST(
   req: Request,
   { params }: { params: {
     code: string; //Event code (typically the active event)
-    name: string; //Match name (typically qm_[number])
-    station: string //Station (typically the one that send this call
+    name: string; //Match name (typically the active match, formatteed qm_[number])
+    station: string //Station (typically the one that called this route)
   } }
 ) {
   const data = await req.json();
@@ -25,6 +26,7 @@ export async function POST(
           update: {
             AlgaeScoringEvents: {
               create: {
+                // UPDATE CYCLE: Ensure these match the schema.
                 intakeLocation: data.intakeLocation,
                 scoringLocation: data.scoringLocation || undefined,
                 dropped: data.dropped || false,
