@@ -24,12 +24,12 @@ export default function LocationButton({
   return (
     <div className={className || ""}>
       <div
-        className={`grow d-flex justify-content-center align-items-center border border-5 rounded-4 ${
+        className={`grow d-flex justify-content-center align-items-center rounded-4 ${
           selected
-           ? `location-area-selected border-primary`
+           ? `location-area-selected border border-5 border-primary`
            : active
-             ? `location-active border-secondary`
-             : `bg-secondary-subtle border-secondary`
+             ? `location-active`
+             : `bg-secondary-subtle`
         }`}
         style={{ width: "75px", height: "55px" }}
         onMouseDown={checkForSelection}

@@ -4,11 +4,12 @@ interface Props {
   active: boolean;
   handleClick: () => void;
   className?: string;
+  gamePiece: string;
   ref: LegacyRef<HTMLDivElement>;
 }
 
 //Big fat fail button for when the robot fails to score.
-export default function FailButton({ active, handleClick, className, ref }: Props) {
+export default function FailButton({ active, handleClick, className, gamePiece, ref }: Props) {
   function checkForSelection(){
     if(active){
       handleClick();
@@ -33,6 +34,7 @@ export default function FailButton({ active, handleClick, className, ref }: Prop
       >
         <i className="bi bi-x" />
       </div>
+      <p className="d-flex flex-row justify-content-center"><u>{gamePiece=="coral"?`Z`:`N`}</u></p>
     </div>
   );
 }

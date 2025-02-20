@@ -18,6 +18,7 @@ import {
   CoralScoringSide,
   AlgaeScoringLocation
 } from "@prisma/client";
+import IncapButton from "../mini/IncapButton";
 
 interface Props {
   show: boolean;
@@ -139,23 +140,10 @@ export default function AutoContent({
         </Col>
       </Row>
       <Row className="d-flex justify-content-center" md={12}>
-        <DroppedPanel
-          incapActive={incapOn}
-          coralActive={coralActiveSide=="level"}
-          algaeActive={algaeActiveSide=="scoring"}
-          handleIncap={handleIncap}
-          handleCoralDropped={() => {
-            handleCoral("level",{
-              scoringLevel: undefined,
-              dropped: true
-            })
-          }}
-          handleAlgaeDropped={() => {
-            handleAlgae("scoring",{
-              scoringLocation: undefined,
-              dropped: true
-            })
-          }}
+        <IncapButton
+          className="text-nowrap my-1"
+          active={incapOn}
+          handleClick={handleIncap}
         />
       </Row>
     </div>

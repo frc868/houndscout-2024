@@ -3,6 +3,7 @@ import { Alliance } from "@/lib/enums";
 import TeleopIntakeButton from "../mini/TeleopIntakeButton";
 import LocationButton from "../mini/LocationButton";
 import AutoIntakeButton from "../mini/AutoIntakeButton";
+import DroppedButton from "../mini/DroppedButton";
 import ScoreButton from "../mini/ScoreButton";
 import FailButton from "../mini/FailButton";
 import { Col, Row } from "react-bootstrap";
@@ -130,9 +131,9 @@ useEffect(() => {
                                 </div>
                             </div>
                         </Col>
-                        <Col className="d-flex flex-column mt-3" md={8}>
-                            {/* Algae Reef in Auto */}
-                            <div className="position-relative mt-5" style={{width: "100%"}}>
+                        <Col className="d-flex flex-column mt-1" md={8}>
+                        <h4 className="text-center">Reef</h4>
+                            <div className="position-relative mt-4" style={{width: "100%"}}>
                                 <img
                                     alt=""
                                     style={{
@@ -303,6 +304,17 @@ useEffect(() => {
                             }}
                             text="Proc."
                         />
+                        <DroppedButton
+                            className="mt-2"
+                            active={activeSide=="scoring"}
+                            gamePiece="algae"
+                            handleSelection={() => {
+                                handleSelection("scoring",{
+                                    scoringLocation: undefined,
+                                    dropped: true
+                                })
+                            }}
+                        />
                     </div>
                 </Col>
                 <Col className="d-flex flex-column"  md={2}>
@@ -316,9 +328,9 @@ useEffect(() => {
                                     failedScoring: false
                                 })
                             }}
+                            gamePiece="algae"
                             ref={algaeScoreRef}
                         />
-                        <p className="d-flex flex-row justify-content-center">Y</p>
                         <FailButton
                             className="mt-2"
                             active={activeSide=="result"&&!incapActive}
@@ -327,9 +339,9 @@ useEffect(() => {
                                     failedScoring: true
                                 })
                             }}
+                            gamePiece="algae"
                             ref={algaeFailRef}
                         />
-                        <p className="d-flex flex-row justify-content-center">N</p>
                     </div>
                 </Col>
             </Row>

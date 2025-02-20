@@ -7,13 +7,13 @@ export default function Home() {
   return (
     <>
       <StatusBar isConnected={true} />
-      <Row className="d-flex justify-content-center flex-row align-items-end">
-        <Col className="d-flex justify-content-start flex-column align-items-end" md={8}>
+      <Row className="d-flex justify-content-center flex-row">
+        <Col className="d-flex justify-content-center flex-column" md={6}>
           <h1 className="text-center mt-4">Client</h1>
-          <Row className="d-flex justify-content-center flex-row align-items-end">
-            <Col className="d-flex justify-content-start flex-column align-items-end">
+          <Row className="d-flex justify-content-center flex-row">
+            <Col className="d-flex justify-content-center flex-column" md={6}>
               <Button
-                className="mt-3"
+                className="mt-3 mx-3"
                 size="lg"
                 variant="danger"
                 href="/client/red1"
@@ -21,7 +21,7 @@ export default function Home() {
                 Red 1
               </Button>
               <Button
-                className="mt-3"
+                className="mt-3 mx-3"
                 size="lg"
                 variant="danger"
                 href="/client/red2"
@@ -29,7 +29,7 @@ export default function Home() {
                 Red 2
               </Button>
               <Button
-                className="mt-3"
+                className="mt-3 mx-3"
                 size="lg"
                 variant="danger"
                 href="/client/red3"
@@ -37,9 +37,9 @@ export default function Home() {
                 Red 3
               </Button>
             </Col>
-            <Col className="d-flex justify-content-center flex-column align-items-start">
+            <Col className="d-flex justify-content-center flex-column" md={6}>
               <Button
-                className="mt-3"
+                className="mt-3 mx-3"
                 size="lg"
                 variant="primary"
                 href="/client/blue1"
@@ -47,7 +47,7 @@ export default function Home() {
                 Blue 1
               </Button>
               <Button
-                className="mt-3"
+                className="mt-3 mx-3"
                 size="lg"
                 variant="primary"
                 href="/client/blue2"
@@ -55,7 +55,7 @@ export default function Home() {
                 Blue 2
               </Button>
               <Button
-                className="mt-3"
+                className="mt-3 mx-3"
                 size="lg"
                 variant="primary"
                 href="/client/blue3"
@@ -65,10 +65,10 @@ export default function Home() {
             </Col>
           </Row>
         </Col>
-        <Col className="d-flex justify-content-center flex-column align-items-center" md={4}>
-          <h1 className="text-center mt-4">Other</h1>
+        <Col className="d-flex justify-content-center flex-column" md={4}>
+          <h1 className="text-center mt-5">Other</h1>
           <Button
-            className="mx-1 mt-2"
+            className="mx-5 mt-2"
             size="lg"
             variant="secondary"
             href="/admin"
@@ -76,15 +76,15 @@ export default function Home() {
             Lead Scouter
           </Button>
           <Button
-            className="mx-1 mt-2"
+            className="mx-5 mt-2"
             size="lg"
             variant="secondary"
             href="/pit"
           >
-            Pit Scouting (WIP)
+            Pit Scouting
           </Button>
           <Button
-            className="mx-1 mt-2"
+            className="mx-5 mt-2"
             size="lg"
             variant="secondary"
             href="/viewer"
@@ -92,7 +92,7 @@ export default function Home() {
             Data Viewer (WIP)
           </Button>
           <Button
-            className="mx-1 mt-2"
+            className="mx-5 mt-2"
             size="lg"
             variant="secondary"
             href="/sandbox"

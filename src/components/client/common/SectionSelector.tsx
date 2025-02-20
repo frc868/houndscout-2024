@@ -59,7 +59,7 @@ useEffect(() => {
 
   return (
     <>
-      <h6 className="d-flex flex-row justify-content-center mt-1">Press Tab to switch to next tab.</h6>
+      <h6 className="d-flex flex-row justify-content-center mt-1">Press <u className="mx-1">Tab</u> to switch to next tab.</h6>
       <div className="d-flex justify-content-evenly mx-5 py-2">
         <Button
           key="PREMATCH"

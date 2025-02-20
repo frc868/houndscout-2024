@@ -348,11 +348,13 @@ export default function Client({ station }: Props) {
                 <TeleopContent
                   show={tab === Section.TELEOP}
                   coralActiveSide={coralActiveSide}
+                  coralScoringLevel={coralScoringLevel}
                   coralIntakeLocation={coralIntakeLocation}
                   handleCoral={handleCoral}
                   handleAlgae={handleAlgae}
                   algaeActiveSide={algaeActiveSide}
                   algaeIntakeLocation={algaeIntakeLocation}
+                  algaeScoringLocation={algaeScoringLocation}
                   incapOn={incapOn}
                   handleIncap={handleIncap}
                 />

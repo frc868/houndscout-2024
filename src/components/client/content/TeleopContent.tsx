@@ -19,6 +19,7 @@ import {
   setEndgameTypeAsync,
   setEndgameSuccessAsync,
 } from "@/redux/scoresSlice";
+import IncapButton from "../mini/IncapButton";
 
 interface Props {
   show: boolean;
@@ -104,25 +105,12 @@ export default function TeleopContent({
             />
         </Col>
       </Row>
-      <Row className="d-flex justify-content-center">
-      <DroppedPanel
-            incapActive={incapOn}
-            coralActive={coralActiveSide=="level"}
-            algaeActive={algaeActiveSide=="scoring"}
-            handleIncap={handleIncap}
-            handleCoralDropped={() => {
-              handleCoral("level",{
-                scoringLevel: undefined,
-                dropped: true
-              })
-            }}
-            handleAlgaeDropped={() => {
-              handleAlgae("scoring",{
-                scoringLocation: undefined,
-                dropped: true
-              })
-            }}
-          />
+      <Row className="d-flex justify-content-center" md={12}>
+        <IncapButton
+          className="text-nowrap my-1"
+          active={incapOn}
+          handleClick={handleIncap}
+        />
       </Row>
     </div>
   );

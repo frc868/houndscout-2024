@@ -22,16 +22,17 @@ export default function DroppedButton({
   return (
     <div className={className || ""}>
       <div
-        className={`mx-2 grow d-flex justify-content-center align-items-center border border-5 rounded-4 ${
+        className={`grow d-flex justify-content-center align-items-center rounded-4 ${
           active
-            ? "bg-danger-subtle border-danger"
-            : "bg-secondary-subtle border-secondary"
+            ? "bg-danger-subtle border-danger border border-5 text-danger"
+            : "bg-secondary-subtle text-secondary"
         }`}
-        style={{ width: "75px", height: "75px" }}
+        style={{ width: "75px", height: "75px", fontSize: "70pt", WebkitTextStroke: "4px", }}
         onMouseDown={checkForSelection}
       >
-        <img className="" alt="" src={gamePiece=="coral"?`/assets/coral_object.png`:`/assets/algae_object.png`} width={85} />
+        <i className="bi bi-x mt-1" />
       </div>
+      <p className="text-center">Dropped</p>
     </div>
   );
 }

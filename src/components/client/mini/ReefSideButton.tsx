@@ -36,18 +36,18 @@ export default function ReefSideButton({
       left: left,
     }}>
       <div
-        className={`mx-2 grow d-flex justify-content-center align-items-center border border-5 rounded-4 ${
+        className={`mx-2 grow d-flex justify-content-center align-items-center rounded-4 ${
           selected
-           ? `location-area-selected border-primary`
+           ? `location-area-selected border border-5 border-primary`
            : active
-             ? `location-active border-secondary`
-             : `bg-secondary-subtle border-secondary`
+             ? `location-active`
+             : `bg-secondary-subtle`
         }`}
         style={{ width: "40px", height: "40px" }}
         onMouseDown={checkForSelection}
         ref={ref}
       >
-        <h3 className="text-center mt-2">{text}</h3>
+        <h3 className="text-center mt-2"><u>{text}</u></h3>
       </div>
     </div>
   );

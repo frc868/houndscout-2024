@@ -4,11 +4,12 @@ interface Props {
   active: boolean;
   handleClick: () => void;
   className?: string;
+  gamePiece: string;
   ref: LegacyRef<HTMLDivElement>;
 }
 
 //Button that indicates the robot scored!
-export default function ScoreButton({ active, handleClick, className, ref }: Props) {
+export default function ScoreButton({ active, handleClick, className, gamePiece, ref }: Props) {
   function checkForSelection(){
     if(active){
       handleClick();
@@ -32,6 +33,7 @@ export default function ScoreButton({ active, handleClick, className, ref }: Pro
       >
         <i className="bi bi-check" />
       </div>
+      <p className="d-flex flex-row justify-content-center"><u>{gamePiece=="coral"?`Q`:`Y`}</u></p>
     </div>
   );
 }

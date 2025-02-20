@@ -6,6 +6,7 @@ import TeleopIntakeButton from "../mini/TeleopIntakeButton";
 import LocationButton from "../mini/LocationButton";
 import ScoreButton from "../mini/ScoreButton";
 import FailButton from "../mini/FailButton";
+import DroppedButton from "../mini/DroppedButton";
 import { useEffect, useRef } from "react";
 
 interface Props {
@@ -154,6 +155,17 @@ useEffect(() => {
                                 }}
                                 text="L4"
                             />
+                            <DroppedButton
+                                className="mt-2"
+                                active={activeSide=="level"}
+                                gamePiece="algae"
+                                handleSelection={() => {
+                                    handleSelection("level",{
+                                        scoringLevel: undefined,
+                                        dropped: true
+                                    })
+                                }}
+                            />
                         </div>
                 </Col>
                 <Col className="d-flex flex-column flex-shrink-1">
@@ -166,9 +178,9 @@ useEffect(() => {
                                     failedScoring: false
                                 })
                             }}
+                            gamePiece="coral"
                             ref={coralScoreRef}
                         />
-                        <p className="d-flex flex-row justify-content-center">Q</p>
                         <FailButton
                             className="mt-2"
                             active={activeSide=="result"&&!incapActive}
@@ -177,9 +189,9 @@ useEffect(() => {
                                     failedScoring: true
                                 })
                             }}
+                            gamePiece="coral"
                             ref={coralFailRef}
                         />
-                        <p className="d-flex flex-row justify-content-center">Z</p>
                     </div>
                 </Col>
             </Row>

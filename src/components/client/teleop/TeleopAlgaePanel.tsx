@@ -5,6 +5,7 @@ import LocationButton from "../mini/LocationButton";
 import AutoIntakeButton from "../mini/AutoIntakeButton";
 import ScoreButton from "../mini/ScoreButton";
 import FailButton from "../mini/FailButton";
+import DroppedButton from "../mini/DroppedButton";
 import { Col, Row } from "react-bootstrap";
 import { AlgaeIntakeLocation, AlgaeScoringLocation } from "@prisma/client";
 import { useEffect, useRef } from "react";
@@ -132,6 +133,17 @@ useEffect(() => {
                             }}
                             text="Proc."
                         />
+                        <DroppedButton
+                            className="mt-2"
+                            active={activeSide=="scoring"}
+                            gamePiece="algae"
+                            handleSelection={() => {
+                                handleSelection("scoring",{
+                                    scoringLocation: undefined,
+                                    dropped: true
+                                })
+                            }}
+                        />
                     </div>
                 </Col>
                 <Col className="d-flex flex-column">
@@ -144,9 +156,9 @@ useEffect(() => {
                                     failedScoring: false
                                 })
                             }}
+                            gamePiece="algae"
                             ref={algaeScoreRef}
                         />
-                        <p className="d-flex flex-row justify-content-center">Y</p>
                         <FailButton
                             className="mt-2"
                             active={activeSide=="result"&&!incapActive}
@@ -155,9 +167,9 @@ useEffect(() => {
                                     failedScoring: true
                                 })
                             }}
+                            gamePiece="algae"
                             ref={algaeFailRef}
                         />
-                        <p className="d-flex flex-row justify-content-center">N</p>
                     </div>
                 </Col>
             </Row>
