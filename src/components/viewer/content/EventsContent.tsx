@@ -16,24 +16,28 @@ interface Props {
 export default function EventsContent({rankings}: Props) {
   const dispatch = useDispatch<AppDispatch>();
 
-  const [coralIntake, setCoralIntake] = useState<CoralIntakeLocation|undefined>(undefined);
-  const [coralLevel, setCoralLevel] = useState<CoralScoringLevel|undefined>(undefined);
-  const [coralSide, setCoralSide] = useState<CoralScoringSide|undefined>(undefined);
-  const [algaeIntake, setAlgaeIntake] = useState<AlgaeIntakeLocation|undefined>(undefined);
-  const [algaeScoring, setAlgaeScoring] = useState<AlgaeScoringLocation|undefined>(undefined);
+  const [coralIntake, setCoralIntake] = useState<CoralIntakeLocation|undefined|string>(undefined);
+  const [coralLevel, setCoralLevel] = useState<CoralScoringLevel|undefined|string>(undefined);
+  const [coralSide, setCoralSide] = useState<CoralScoringSide|undefined|string>(undefined);
+  const [algaeIntake, setAlgaeIntake] = useState<AlgaeIntakeLocation|undefined|string>(undefined);
+  const [algaeScoring, setAlgaeScoring] = useState<AlgaeScoringLocation|undefined|string>(undefined);
 
   const [sortField, setSortField] = useState<keyof Ranking | null>(null);
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
   const filterCoral = (scoringEvent: CoralScoringEvent)=>{
-    if (coralIntake && scoringEvent.intakeLocation!=coralIntake) return false;
+    if (Object.values(CoralIntakeLocation).includes(coralIntake as any)&&scoringEvent.intakeLocation!=coralIntake) return false;
+    if (coralIntake=="Auto"&&scoringEvent.intakeLocation.startsWith("AUTO")) return false;
+    if (coralIntake=="Teleop"&&scoringEvent.intakeLocation.startsWith("TELEOP")) return false;
     if (coralLevel && scoringEvent.scoringLevel!=coralLevel) return false;
     if (coralSide && scoringEvent.scoringSide!=coralSide) return false;
     return true;
   }
 
   const filterAlgae = (scoringEvent: AlgaeScoringEvent)=>{
-    if (algaeIntake && scoringEvent.intakeLocation!=algaeIntake) return false;
+    if (Object.values(AlgaeIntakeLocation).includes(algaeIntake as any)&&scoringEvent.intakeLocation!=algaeIntake) return false;
+    if (algaeIntake=="Auto"&&scoringEvent.intakeLocation.startsWith("AUTO")) return false;
+    if (algaeIntake=="Teleop"&&scoringEvent.intakeLocation.startsWith("TELEOP")) return false;
     if (algaeScoring && scoringEvent.scoringLocation!=algaeScoring) return false;
     return true;
   }
@@ -268,14 +272,16 @@ export default function EventsContent({rankings}: Props) {
             <Dropdown.Menu>
               <ul className="list-unstyled">
                 <Dropdown.Item key={1} onMouseDown={() => setCoralIntake(undefined)}>N/A</Dropdown.Item>
-                <Dropdown.Item key={2} onMouseDown={() => setCoralIntake("AUTOPRELOAD")}>Preload</Dropdown.Item>
-                <Dropdown.Item key={3} onMouseDown={() => setCoralIntake("AUTOGROUND1")}>G1 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={4} onMouseDown={() => setCoralIntake("AUTOGROUND2")}>G2 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={5} onMouseDown={() => setCoralIntake("AUTOGROUND3")}>G3 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={6} onMouseDown={() => setCoralIntake("AUTOSTATION1")}>S1 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={7} onMouseDown={() => setCoralIntake("AUTOSTATION2")}>S2 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={8} onMouseDown={() => setCoralIntake("TELEOPGROUND")}>G (Teleop)</Dropdown.Item>
-                <Dropdown.Item key={9} onMouseDown={() => setCoralIntake("TELEOPSTATION")}>S (Teleop)</Dropdown.Item>
+                <Dropdown.Item key={2} onMouseDown={() => setCoralIntake("Auto")}>Auto</Dropdown.Item>
+                <Dropdown.Item key={3} onMouseDown={() => setCoralIntake("Teleop")}>Teleop</Dropdown.Item>
+                <Dropdown.Item key={4} onMouseDown={() => setCoralIntake("AUTOPRELOAD")}>Preload</Dropdown.Item>
+                <Dropdown.Item key={5} onMouseDown={() => setCoralIntake("AUTOGROUND1")}>G1 (Auto)</Dropdown.Item>
+                <Dropdown.Item key={6} onMouseDown={() => setCoralIntake("AUTOGROUND2")}>G2 (Auto)</Dropdown.Item>
+                <Dropdown.Item key={7} onMouseDown={() => setCoralIntake("AUTOGROUND3")}>G3 (Auto)</Dropdown.Item>
+                <Dropdown.Item key={8} onMouseDown={() => setCoralIntake("AUTOSTATION1")}>S1 (Auto)</Dropdown.Item>
+                <Dropdown.Item key={9} onMouseDown={() => setCoralIntake("AUTOSTATION2")}>S2 (Auto)</Dropdown.Item>
+                <Dropdown.Item key={10} onMouseDown={() => setCoralIntake("TELEOPGROUND")}>G (Teleop)</Dropdown.Item>
+                <Dropdown.Item key={100} onMouseDown={() => setCoralIntake("TELEOPSTATION")}>S (Teleop)</Dropdown.Item>
               </ul>
             </Dropdown.Menu>
           </Dropdown>
@@ -331,17 +337,19 @@ export default function EventsContent({rankings}: Props) {
             <Dropdown.Menu>
               <ul className="list-unstyled">
                 <Dropdown.Item key={1} onMouseDown={() => setAlgaeIntake(undefined)}>N/A</Dropdown.Item>
-                <Dropdown.Item key={2} onMouseDown={() => setAlgaeIntake("AUTOGROUND1")}>G1 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={3} onMouseDown={() => setAlgaeIntake("AUTOGROUND2")}>G2 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={4} onMouseDown={() => setAlgaeIntake("AUTOGROUND3")}>G3 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={5} onMouseDown={() => setAlgaeIntake("AUTOREEF1")}>R1 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={6} onMouseDown={() => setAlgaeIntake("AUTOREEF2")}>R2 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={7} onMouseDown={() => setAlgaeIntake("AUTOREEF3")}>R3 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={8} onMouseDown={() => setAlgaeIntake("AUTOREEF4")}>R4 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={9} onMouseDown={() => setAlgaeIntake("AUTOREEF5")}>R5 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={10} onMouseDown={() => setAlgaeIntake("AUTOREEF6")}>R6 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={11} onMouseDown={() => setAlgaeIntake("TELEOPGROUND")}>G (Teleop)</Dropdown.Item>
-                <Dropdown.Item key={12} onMouseDown={() => setAlgaeIntake("TELEOPREEF")}>R (Teleop)</Dropdown.Item>
+                <Dropdown.Item key={2} onMouseDown={() => setAlgaeIntake("Auto")}>Auto</Dropdown.Item>
+                <Dropdown.Item key={3} onMouseDown={() => setAlgaeIntake("Teleop")}>Teleop</Dropdown.Item>
+                <Dropdown.Item key={4} onMouseDown={() => setAlgaeIntake("AUTOGROUND1")}>G1 (Auto)</Dropdown.Item>
+                <Dropdown.Item key={5} onMouseDown={() => setAlgaeIntake("AUTOGROUND2")}>G2 (Auto)</Dropdown.Item>
+                <Dropdown.Item key={6} onMouseDown={() => setAlgaeIntake("AUTOGROUND3")}>G3 (Auto)</Dropdown.Item>
+                <Dropdown.Item key={7} onMouseDown={() => setAlgaeIntake("AUTOREEF1")}>R1 (Auto)</Dropdown.Item>
+                <Dropdown.Item key={8} onMouseDown={() => setAlgaeIntake("AUTOREEF2")}>R2 (Auto)</Dropdown.Item>
+                <Dropdown.Item key={9} onMouseDown={() => setAlgaeIntake("AUTOREEF3")}>R3 (Auto)</Dropdown.Item>
+                <Dropdown.Item key={10} onMouseDown={() => setAlgaeIntake("AUTOREEF4")}>R4 (Auto)</Dropdown.Item>
+                <Dropdown.Item key={11} onMouseDown={() => setAlgaeIntake("AUTOREEF5")}>R5 (Auto)</Dropdown.Item>
+                <Dropdown.Item key={12} onMouseDown={() => setAlgaeIntake("AUTOREEF6")}>R6 (Auto)</Dropdown.Item>
+                <Dropdown.Item key={13} onMouseDown={() => setAlgaeIntake("TELEOPGROUND")}>G (Teleop)</Dropdown.Item>
+                <Dropdown.Item key={14} onMouseDown={() => setAlgaeIntake("TELEOPREEF")}>R (Teleop)</Dropdown.Item>
               </ul>
             </Dropdown.Menu>
           </Dropdown>

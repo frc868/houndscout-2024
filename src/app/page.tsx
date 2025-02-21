@@ -89,7 +89,7 @@ export default function Home() {
             variant="secondary"
             href="/viewer"
           >
-            Data Viewer (WIP)
+            Data Viewer
           </Button>
           <Button
             className="mx-5 mt-2"
