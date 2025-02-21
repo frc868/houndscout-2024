@@ -51,6 +51,26 @@ export default function MatchSchedule({
     blue3: 0
   });
 
+  const generateScouterSchedule=(match:Match)=>{
+    if(adminData.scouters==undefined||adminData.scouters.filter(scouter=>scouter.active).length<6){
+      alert("At least 6 scouters must be active to generate a scouter schedule.");
+    } else {
+      let scoutersLeft=JSON.parse(JSON.stringify(adminData.scouters.filter(scouter=>scouter.active) as Scouter[]));
+      let r1 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
+      let r2 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
+      let r3 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
+      let b1 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
+      let b2 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
+      let b3 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
+      handleScouterSelect(match.name, "red1", r1[0].id);
+      handleScouterSelect(match.name, "red2", r2[0].id);
+      handleScouterSelect(match.name, "red3", r3[0].id);
+      handleScouterSelect(match.name, "blue1", b1[0].id);
+      handleScouterSelect(match.name, "blue2", b2[0].id);
+      handleScouterSelect(match.name, "blue3", b3[0].id);
+    }
+  }
+
   return (
     <div className="d-flex justify-content-center">
       <MatchAddModal
@@ -116,27 +136,9 @@ export default function MatchSchedule({
           <Button 
             variant="secondary"
             className="w-25 mx-auto"
-            onClick={() => {
-              if(adminData.scouters==undefined||adminData.scouters.length<6){
-                alert("Error: At least 6 scouters must be created to generate a scouter schedule.");
-              } else matches.map((match) => {
-                let scoutersLeft=JSON.parse(JSON.stringify(adminData.scouters as Scouter[]));
-                let r1 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
-                let r2 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
-                let r3 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
-                let b1 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
-                let b2 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
-                let b3 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
-                handleScouterSelect(match.name, "red1", r1[0].id);
-                handleScouterSelect(match.name, "red2", r2[0].id);
-                handleScouterSelect(match.name, "red3", r3[0].id);
-                handleScouterSelect(match.name, "blue1", b1[0].id);
-                handleScouterSelect(match.name, "blue2", b2[0].id);
-                handleScouterSelect(match.name, "blue3", b3[0].id);
-              })
-            }}
+            onClick={() => matches.forEach(generateScouterSchedule)}
           >
-            Generate Scouter Schedule
+            Generate Scouter Schedule (All)
           </Button>
         </Row>
         <Table bordered className="border-secondary-subtle">
@@ -185,7 +187,7 @@ export default function MatchSchedule({
                   {match.teamNumbers.red1}{" "}
                   <ScoutersDropdown
                     active={match.name === activeMatchName}
-                    activeScouter={match.scouters.red1?.name || "Not Assigned"}
+                    activeScouter={match.scouters.red1||undefined}
                     scouters={scouters}
                     handleScouterSelect={(id) =>
                       handleScouterSelect(match.name, "red1", id)
@@ -196,7 +198,7 @@ export default function MatchSchedule({
                   {match.teamNumbers.red2}{" "}
                   <ScoutersDropdown
                     active={match.name === activeMatchName}
-                    activeScouter={match.scouters.red2?.name || "Not Assigned"}
+                    activeScouter={match.scouters.red2||undefined}
                     scouters={scouters}
                     handleScouterSelect={(id) =>
                       handleScouterSelect(match.name, "red2", id)
@@ -207,7 +209,7 @@ export default function MatchSchedule({
                   {match.teamNumbers.red3}{" "}
                   <ScoutersDropdown
                     active={match.name === activeMatchName}
-                    activeScouter={match.scouters.red3?.name || "Not Assigned"}
+                    activeScouter={match.scouters.red3||undefined}
                     scouters={scouters}
                     handleScouterSelect={(id) =>
                       handleScouterSelect(match.name, "red3", id)
@@ -218,7 +220,7 @@ export default function MatchSchedule({
                   {match.teamNumbers.blue1}{" "}
                   <ScoutersDropdown
                     active={match.name === activeMatchName}
-                    activeScouter={match.scouters.blue1?.name || "Not Assigned"}
+                    activeScouter={match.scouters.blue1||undefined}
                     scouters={scouters}
                     handleScouterSelect={(id) =>
                       handleScouterSelect(match.name, "blue1", id)
@@ -229,7 +231,7 @@ export default function MatchSchedule({
                   {match.teamNumbers.blue2}{" "}
                   <ScoutersDropdown
                     active={match.name === activeMatchName}
-                    activeScouter={match.scouters.blue2?.name || "Not Assigned"}
+                    activeScouter={match.scouters.blue2||undefined}
                     scouters={scouters}
                     handleScouterSelect={(id) =>
                       handleScouterSelect(match.name, "blue2", id)
@@ -240,7 +242,7 @@ export default function MatchSchedule({
                   {match.teamNumbers.blue3}{" "}
                   <ScoutersDropdown
                     active={match.name === activeMatchName}
-                    activeScouter={match.scouters.blue3?.name || "Not Assigned"}
+                    activeScouter={match.scouters.blue3||undefined}
                     scouters={scouters}
                     handleScouterSelect={(id) =>
                       handleScouterSelect(match.name, "blue3", id)
@@ -275,6 +277,18 @@ export default function MatchSchedule({
                   }}
                   >
                     Edit Event
+                  </Button>
+                  <Button 
+                    variant={
+                      match.name === activeMatchName
+                        ? "secondary"
+                        : "outline-secondary"
+                    }
+                    className={"mb-1 mx-2"}
+                    size="sm"
+                    onClick={()=>generateScouterSchedule(match)}
+                  >
+                    Gen. Scouter Sched.
                   </Button>
                   <DeleteButton
                     variant={

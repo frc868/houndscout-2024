@@ -105,12 +105,6 @@ export default function Admin() {
       {/* Most of the documentation for these components are on their respective pages. */}
       {ready && (
         <Container>
-          <EventManageModal
-            show={showEventManage}
-            eventList={adminData?.eventList as Event[]}
-            activeEvent={mainData.activeEvent?.code as string}
-            handleClose={() => setShowEventManage(false)}
-          />
           <Row className="my-4">
             <Col md={5}>
               <Activity
@@ -122,13 +116,6 @@ export default function Admin() {
               <EventDetails
                 event={mainData.activeEvent as Event}
               />
-              <Button
-              variant="secondary"
-              className="edit-button mx-auto"
-              onClick={() => setShowEventManage(true)}
-              >
-                Manage Events
-              </Button>
             </Col>
             <Col md={3}>
               <AdminControls
@@ -137,6 +124,7 @@ export default function Admin() {
                 eventTeams={adminData.eventTeams as Team[]}
                 eventCode={mainData.activeEvent?.code as string}
                 blueOnLeft={mainData.blueOnLeft as boolean}
+                eventList={adminData?.eventList as Event[]}
               />
             </Col>
           </Row>

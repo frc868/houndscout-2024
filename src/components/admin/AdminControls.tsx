@@ -9,6 +9,8 @@ import TeamManageModal from "@/components/admin/TeamManageModal";
 import ScouterManageModal from "@/components/admin/ScouterManageModal";
 import TBADataModal from "./TBADataModal";
 import { Scouter, Team } from "@/lib/enums"
+import EventManageModal from "./EventManageModal";
+import { Event } from "@prisma/client";
 
 interface Props {
   scouters: Scouter[];
@@ -16,11 +18,13 @@ interface Props {
   eventTeams: Team[];
   eventCode: string;
   blueOnLeft: boolean;
+  eventList?: Event[];
 }
 
 //Many of these link to other modals, others call certain apis.
-export default function Controls({ scouters, allTeams, eventTeams, eventCode, blueOnLeft }: Props) {
+export default function Controls({ scouters, allTeams, eventTeams, eventCode, blueOnLeft, eventList }: Props) {
   const dispatch = useDispatch<AppDispatch>();
+  const [showEventManage, setShowEventManage] = useState(false);
   const [showTeamManage, setShowTeamManage] = useState(false);
   const [showScouterManage, setShowScouterManage] = useState(false);
   const [showTBADataModal, setShowTBADataModal] = useState(false);
@@ -38,6 +42,12 @@ export default function Controls({ scouters, allTeams, eventTeams, eventCode, bl
           await dispatch(uploadOnlineTBADataAsync({ eventCode }));
           setShowTBADataModal(false);
         }}
+      />
+      <EventManageModal
+        show={showEventManage}
+        eventList={eventList as Event[]}
+        activeEvent={eventCode as string}
+        handleClose={() => setShowEventManage(false)}
       />
       <TeamManageModal
         show={showTeamManage}
@@ -69,6 +79,11 @@ export default function Controls({ scouters, allTeams, eventTeams, eventCode, bl
           }}
         >
           Toggle Orientation <br />(Currently: {blueOnLeft?"Blue on Left":"Blue on Right"})
+        </Button>
+      </Row>
+      <Row className="">
+        <Button variant="secondary" onClick={() => setShowEventManage(true)} className="mb-2">
+          Manage Events
         </Button>
       </Row>
       <Row className="">
