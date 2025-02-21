@@ -67,14 +67,14 @@ export default function MenuBar({ selectedTab, handleTabSelect }: Props) {
         >
           Algae Data
         </div>
-        {/* <div
+        <div
           className={`fs-5 py-2 ps-4 font-monospace ${
             selectedTab === ViewerTab.INCAPS && "bg-secondary"
           }`}
           onClick={() => handleTabSelect(ViewerTab.INCAPS)}
         >
           Incap Data
-        </div> */}
+        </div>
         <div
           className={`fs-5 py-2 ps-4 font-monospace ${
             selectedTab === ViewerTab.IMPORT && "bg-secondary"

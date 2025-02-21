@@ -249,7 +249,7 @@ export default function CoralsContent({rankings, teams}: Props) {
         </>)}
       </Row>
       <Row className="d-flex flex-row mt-2">
-        <Col md={4}>
+        {/* <Col md={4}>
           <h5>Coral Intake Location:</h5>
           <Dropdown className="mt-1" style={{ width: '100%' }}>
             <Dropdown.Toggle
@@ -311,7 +311,7 @@ export default function CoralsContent({rankings, teams}: Props) {
               </ul>
             </Dropdown.Menu>
           </Dropdown>
-        </Col>
+        </Col> */}
         
       </Row>
       {team &&(

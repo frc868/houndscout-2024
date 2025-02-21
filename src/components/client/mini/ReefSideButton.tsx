@@ -28,7 +28,7 @@ export default function ReefSideButton({
     }
   }
 // Explicitly typing the buttonRef as pointing to an HTMLButtonElement
-const buttonRef = useRef<HTMLDivElement | null>(null);
+const buttonRef = useRef<HTMLButtonElement | null>(null);
 
 const pressedKeys = useRef(new Set<string>());
 useEffect(() => {
@@ -64,7 +64,7 @@ useEffect(() => {
       top: top,
       left: left,
     }}>
-      <div
+      <button
         className={`mx-2 grow d-flex justify-content-center align-items-center rounded-4 ${
           selected
            ? `location-area-selected border border-5 border-primary`
@@ -73,11 +73,11 @@ useEffect(() => {
              : `bg-secondary-subtle`
         }`}
         style={{ width: "40px", height: "40px" }}
-        onMouseDown={checkForSelection}
+        onClick={checkForSelection}
         ref={buttonRef}
       >
         <h3 className="text-center mt-2"><u>{text}</u></h3>
-      </div>
+      </button>
     </div>
   );
 }

@@ -24,7 +24,7 @@ export default function ScoreButton({ active, handleClick, className, gamePiece 
       // Add the key to the pressedKeys set
       pressedKeys.current.add(e.key);
       // Presses the the coral scoring side 1 button if active
-      if ((pressedKeys.current.has('Q')&&gamePiece=="coral")||(pressedKeys.current.has('Y')&&gamePiece=="algae")) {
+      if ((pressedKeys.current.has('q')&&gamePiece=="coral")||(pressedKeys.current.has('y')&&gamePiece=="algae")) {
         // Check if buttonRef.current is not null
         if (buttonRef.current) {
           buttonRef.current.click();

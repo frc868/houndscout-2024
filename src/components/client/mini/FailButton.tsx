@@ -15,38 +15,38 @@ export default function FailButton({ active, handleClick, className, gamePiece }
     }
   }
   // Explicitly typing the buttonRef as pointing to an HTMLButtonElement
-    const buttonRef = useRef<HTMLDivElement | null>(null);
-    
-    const pressedKeys = useRef(new Set<string>());
-    useEffect(() => {
-      const handleKeydown = (e: KeyboardEvent) => {
-        e.preventDefault();
-        // Add the key to the pressedKeys set
-        pressedKeys.current.add(e.key);
-        // Presses the the coral scoring side 1 button if active
-        if ((pressedKeys.current.has('Z')&&gamePiece=="coral")||(pressedKeys.current.has('N')&&gamePiece=="algae")) {
-          // Check if buttonRef.current is not null
-          if (buttonRef.current) {
-            buttonRef.current.click();
-          }
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  
+  const pressedKeys = useRef(new Set<string>());
+  useEffect(() => {
+    const handleKeydown = (e: KeyboardEvent) => {
+      e.preventDefault();
+      // Add the key to the pressedKeys set
+      pressedKeys.current.add(e.key);
+      // Presses the the coral scoring side 1 button if active
+      if ((pressedKeys.current.has('z')&&gamePiece=="coral")||(pressedKeys.current.has('n')&&gamePiece=="algae")) {
+        // Check if buttonRef.current is not null
+        if (buttonRef.current) {
+          buttonRef.current.click();
         }
+      }
+    };
+      const handleKeyup = (e: KeyboardEvent) => {
+          // Remove the key from the pressedKeys set when released
+          pressedKeys.current.delete(e.key);
       };
-        const handleKeyup = (e: KeyboardEvent) => {
-            // Remove the key from the pressedKeys set when released
-            pressedKeys.current.delete(e.key);
-        };
-        // Attach event listeners for keydown and keyup
-        document.addEventListener('keydown', handleKeydown);
-        document.addEventListener('keyup', handleKeyup);
-        // Cleanup event listeners on component unmount
-        return () => {
-          document.removeEventListener('keydown', handleKeydown);
-          document.removeEventListener('keyup', handleKeyup);
-        };
-    });
+      // Attach event listeners for keydown and keyup
+      document.addEventListener('keydown', handleKeydown);
+      document.addEventListener('keyup', handleKeyup);
+      // Cleanup event listeners on component unmount
+      return () => {
+        document.removeEventListener('keydown', handleKeydown);
+        document.removeEventListener('keyup', handleKeyup);
+      };
+  });
   return (
     <div className={className || ""}>
-      <div
+      <button
         className={`d-flex justify-content-center align-items-center border border-5 score-button rounded-4 grow ${
           active
             ? "bg-danger-subtle border-danger text-danger"
@@ -58,10 +58,11 @@ export default function FailButton({ active, handleClick, className, gamePiece }
           fontSize: "70pt",
           WebkitTextStroke: "4px",
         }}
-        onMouseDown={checkForSelection}
+        onClick={checkForSelection}
+        ref={buttonRef}
       >
         <i className="bi bi-x" />
-      </div>
+      </button>
       <p className="d-flex flex-row justify-content-center"><u>{gamePiece=="coral"?`Z`:`N`}</u></p>
     </div>
   );
