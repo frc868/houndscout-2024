@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Button, Modal, ListGroup } from "react-bootstrap";
+import { Button, Modal, ListGroup, Form } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
 import DeleteButton from "./DeleteButton";
 import { Scouter } from "@/lib/enums";
 import { createScouterAsync, deleteScouterAsync } from "@/redux/mainDataSlice";
+import { setScouterActiveAsync } from "@/redux/adminDataSlice";
 import NewScouterForm from "./NewScouterForm";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
@@ -64,6 +65,22 @@ export default function ScouterManageModal({
           {scouters.map((scouter: Scouter)=>(
             <ListGroup.Item key={scouter.id}>
               {scouter.name}
+              <Form.Check
+                type="checkbox"
+                label="Active"
+                checked={scouter.active}
+                onChange={async () => {
+                  //Sets the match as the active one if it isn't already.
+                  setLoading(true);
+                  await dispatch(
+                    setScouterActiveAsync({
+                      scouterId: scouter.id,
+                      active: !scouter.active,
+                    })
+                  ),
+                  setLoading(false);
+                }}
+              />
               <DeleteButton
                 variant={"danger"}
                 handleDelete={async () => {

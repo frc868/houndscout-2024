@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Dropdown, Form } from "react-bootstrap";
+import { Dropdown, Form, Table } from "react-bootstrap";
 import { useState } from "react";
 import { CoralIntakeLocation, CoralScoringLevel, CoralScoringSide, AlgaeIntakeLocation, AlgaeScoringLocation } from "@prisma/client";
 import { Row, Col } from "react-bootstrap";
@@ -113,7 +113,7 @@ export default function IncapsContent({rankings, teams}: Props) {
     }}
       className="m-4 bg-dark rounded-3 font-monospace text-center"
     >
-      <h1>Incap Event Data (WIP)</h1>
+      <h1>Incap Event Data</h1>
       
       <Row className="d-flex flex-row justify-content-center align-items-center">
         <h3 className="mr-2">Team Number: </h3>
@@ -185,10 +185,7 @@ export default function IncapsContent({rankings, teams}: Props) {
               {[
                 // "Match Number",
                 "Incap Time (s)",
-                "Scoring Side (Auto)",
-                "Dropped?",
-                "Failed Scoring?",
-                "Total Time (s)",
+                "Completed?",
               ].map((header) => (
                 <th
                   key={header}
@@ -209,6 +206,7 @@ export default function IncapsContent({rankings, teams}: Props) {
               teamScore.incapSegments.map((r, idx) => (
                 <tr key={r.id}>
                   <td>{(Number(r.timestampEnded)-Number(r.timestampStarted))/1000}</td>
+                  <td>{r.full?"yes":"no"}</td>
                 </tr>
               ))
             ))

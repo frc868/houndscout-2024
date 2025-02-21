@@ -215,6 +215,17 @@ export const getScoutersAsync = createAsyncThunk(
     return res.data.scouters;
   }
 );
+export const setScouterActiveAsync = createAsyncThunk(
+  "adminData/setScouterActiveAsync",
+  async (data: {
+    scouterId: number;
+    active: boolean;
+  }) => {
+    await axios.patch(`/api/v1/scouters/${data.scouterId}`, {
+      ...data,
+    });
+  }
+);
 export const deleteScouterAsync = createAsyncThunk(
   "adminData/deleteScouterAsync",
   async ({ scouterId }: { scouterId: number }) => {

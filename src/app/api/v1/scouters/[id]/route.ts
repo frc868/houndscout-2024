@@ -21,7 +21,7 @@ export async function GET(
   return NextResponse.json({ ok: true, scouter });
 }
 
-//Currently unimplemented, because frankly I don't think we need to worry about this one yet.
+//adminDataSlice/setScouterActive
 //Edits the name of the specified scouter.
 export async function PATCH(
   req: Request,
@@ -37,6 +37,7 @@ export async function PATCH(
       },
       data: {
         name: data.name,
+        active: data.active,
       },
     });
   } catch {

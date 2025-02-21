@@ -90,6 +90,7 @@ export interface Match {
 export interface Scouter {
   id: number;
   name: string;
+  active: boolean;
 }
 
 export interface Team {

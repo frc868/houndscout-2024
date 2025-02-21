@@ -36,7 +36,7 @@ export default function ScoutersDropdown({
         />
         <ul className="list-unstyled">
           {scouters
-            .filter((scouter) => scouter.name.toLowerCase().startsWith(value))
+            .filter((scouter) => scouter.name.toLowerCase().startsWith(value)&&scouter.active)
             .map((scouter) => (
               <Dropdown.Item
                 key={scouter.id}

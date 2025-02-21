@@ -113,7 +113,7 @@ export default function CoralsContent({rankings, teams}: Props) {
     }}
       className="m-4 bg-dark rounded-3 font-monospace text-center"
     >
-      <h1>Coral Scoring Event Data (WIP)</h1>
+      <h1>Coral Scoring Event Data</h1>
       <div className="position-relative mt-4" style={{width: "100%"}}>
           <img
               alt=""

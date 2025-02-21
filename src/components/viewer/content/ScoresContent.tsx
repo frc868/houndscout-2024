@@ -84,7 +84,7 @@ export default function ScoresContent({rankings, teams}: Props) {
       }}
         className="m-4 bg-dark rounded-3 font-monospace text-center"
       >
-        <h1>Match Data (WIP)</h1>
+        <h1>Team Match Data</h1>
         <Row className="d-flex flex-row justify-content-center align-items-center">
           <h3 className="mr-2">Team Number: </h3>
           <TeamDropdown
