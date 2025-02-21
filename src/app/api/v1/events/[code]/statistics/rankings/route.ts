@@ -12,6 +12,8 @@ import {
   CoralIntakeLocation,
   AlgaeIntakeLocation,
   CoralScoringSide,
+  Match,
+  Scouter,
 } from "@prisma/client";
 import { Ranking } from "@/lib/enums";
 

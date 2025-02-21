@@ -1,20 +1,49 @@
-import { LegacyRef } from "react";
+import { useRef, useEffect } from "react";
 
 interface Props {
   active: boolean;
   handleClick: () => void;
   className?: string;
   gamePiece: string;
-  ref: LegacyRef<HTMLDivElement>;
 }
 
 //Big fat fail button for when the robot fails to score.
-export default function FailButton({ active, handleClick, className, gamePiece, ref }: Props) {
+export default function FailButton({ active, handleClick, className, gamePiece }: Props) {
   function checkForSelection(){
     if(active){
       handleClick();
     }
   }
+  // Explicitly typing the buttonRef as pointing to an HTMLButtonElement
+    const buttonRef = useRef<HTMLDivElement | null>(null);
+    
+    const pressedKeys = useRef(new Set<string>());
+    useEffect(() => {
+      const handleKeydown = (e: KeyboardEvent) => {
+        e.preventDefault();
+        // Add the key to the pressedKeys set
+        pressedKeys.current.add(e.key);
+        // Presses the the coral scoring side 1 button if active
+        if ((pressedKeys.current.has('Z')&&gamePiece=="coral")||(pressedKeys.current.has('N')&&gamePiece=="algae")) {
+          // Check if buttonRef.current is not null
+          if (buttonRef.current) {
+            buttonRef.current.click();
+          }
+        }
+      };
+        const handleKeyup = (e: KeyboardEvent) => {
+            // Remove the key from the pressedKeys set when released
+            pressedKeys.current.delete(e.key);
+        };
+        // Attach event listeners for keydown and keyup
+        document.addEventListener('keydown', handleKeydown);
+        document.addEventListener('keyup', handleKeyup);
+        // Cleanup event listeners on component unmount
+        return () => {
+          document.removeEventListener('keydown', handleKeydown);
+          document.removeEventListener('keyup', handleKeyup);
+        };
+    });
   return (
     <div className={className || ""}>
       <div
@@ -30,7 +59,6 @@ export default function FailButton({ active, handleClick, className, gamePiece, 
           WebkitTextStroke: "4px",
         }}
         onMouseDown={checkForSelection}
-        ref={ref}
       >
         <i className="bi bi-x" />
       </div>

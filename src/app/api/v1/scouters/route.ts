@@ -25,7 +25,6 @@ export async function POST(req: Request) {
     scouter = await prisma.scouter.create({
       data: {
         name: data.name,
-        active: true,
       },
     });
   } catch (e) {

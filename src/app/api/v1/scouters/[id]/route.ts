@@ -37,7 +37,6 @@ export async function PATCH(
       },
       data: {
         name: data.name,
-        active: data.active,
       },
     });
   } catch {

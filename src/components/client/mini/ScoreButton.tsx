@@ -1,23 +1,52 @@
-import { LegacyRef } from "react";
+import { useRef, useEffect } from "react";
 
 interface Props {
   active: boolean;
   handleClick: () => void;
   className?: string;
   gamePiece: string;
-  ref: LegacyRef<HTMLDivElement>;
 }
 
 //Button that indicates the robot scored!
-export default function ScoreButton({ active, handleClick, className, gamePiece, ref }: Props) {
+export default function ScoreButton({ active, handleClick, className, gamePiece }: Props) {
   function checkForSelection(){
     if(active){
       handleClick();
     }
   }
+  // Explicitly typing the buttonRef as pointing to an HTMLButtonElement
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  
+  const pressedKeys = useRef(new Set<string>());
+  useEffect(() => {
+    const handleKeydown = (e: KeyboardEvent) => {
+      e.preventDefault();
+      // Add the key to the pressedKeys set
+      pressedKeys.current.add(e.key);
+      // Presses the the coral scoring side 1 button if active
+      if ((pressedKeys.current.has('Q')&&gamePiece=="coral")||(pressedKeys.current.has('Y')&&gamePiece=="algae")) {
+        // Check if buttonRef.current is not null
+        if (buttonRef.current) {
+          buttonRef.current.click();
+        }
+      }
+    };
+      const handleKeyup = (e: KeyboardEvent) => {
+          // Remove the key from the pressedKeys set when released
+          pressedKeys.current.delete(e.key);
+      };
+      // Attach event listeners for keydown and keyup
+      document.addEventListener('keydown', handleKeydown);
+      document.addEventListener('keyup', handleKeyup);
+      // Cleanup event listeners on component unmount
+      return () => {
+        document.removeEventListener('keydown', handleKeydown);
+        document.removeEventListener('keyup', handleKeyup);
+      };
+  });
   return (
     <div className={className || ""}>
-      <div
+      <button
         className={`d-flex justify-content-center align-items-center border border-5 score-button rounded-4 grow ${
           active
             ? "bg-success-subtle border-success text-success"
@@ -28,11 +57,11 @@ export default function ScoreButton({ active, handleClick, className, gamePiece,
           height: "100px",
           fontSize: "90pt",
         }}
-        onMouseDown={checkForSelection}
-        ref={ref}
+        onClick={checkForSelection}
+        ref={buttonRef}
       >
         <i className="bi bi-check" />
-      </div>
+      </button>
       <p className="d-flex flex-row justify-content-center"><u>{gamePiece=="coral"?`Q`:`Y`}</u></p>
     </div>
   );

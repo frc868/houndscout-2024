@@ -138,7 +138,7 @@ export default function RankingsContent({rankings}: Props) {
                 style={{ cursor: "pointer" }}
               >
                 {header}
-                <i className={` bi ${(header.toLowerCase().replace(/ /g, "") as keyof Ranking!=sortField) ? "bi-chevron-bar-contract" : sortDirection=="asc" ? "bi-chevron-bar-down" : "bi-chevron-bar-up"}`} />
+                <i className={` mx-2 bi ${(header.toLowerCase().replace(/ /g, "") as keyof Ranking!=sortField) ? "bi-chevron-bar-contract" : sortDirection=="asc" ? "bi-chevron-bar-down" : "bi-chevron-bar-up"}`} />
               </th>
             ))}
           </tr>

@@ -45,7 +45,6 @@ model Heartbeat {
 model Scouter {
   id        Int         @id @default(autoincrement())
   name      String      @unique
-  active    Boolean     @default(true)
   TeamScore TeamScore[]
 }
 
@@ -65,7 +64,7 @@ model Event {
   servers Server[]
 }
 
-//Represents an FRC team. Should be auto-filled using The Blue Alliance API.
+//Represents an FRC team. Should be mostly auto-filled using The Blue Alliance API.
 model Team {
   id           Int         @id @default(autoincrement())
   number       Int         @unique
@@ -93,14 +92,12 @@ model Team {
   comments    String?
   robotImage  String?
 
-//intake capabilities (UPDATE CYCLE)
   canIntakeGroundCoral               Boolean?
   canIntakeStationCoral              Boolean?
   canIntakeGroundAlgae               Boolean?
   canIntakeReefAlgae                 Boolean?
   canRemoveReefAlgaeWithoutIntake    Boolean?
 
-//scoring capabilities (UPDATE CYCLE)
   canScoreReefL1      Boolean?
   canScoreReefL2      Boolean?
   canScoreReefL3      Boolean?
@@ -108,7 +105,6 @@ model Team {
   canScoreNet         Boolean?
   canScoreProcessor   Boolean?
 
-//endgame capabilities (UPDATE CYCLE)
   canPark      Boolean?
   canShallow   Boolean?
   canDeep      Boolean?
@@ -234,7 +230,6 @@ model AlgaeScoringEvent {
 }
 
 //Represents a segment where a robot was disabled during a match.
-//2025: Put this on the client status bar.
 model IncapSegment {
   id               Int       @id @default(autoincrement())
   timestampStarted Decimal

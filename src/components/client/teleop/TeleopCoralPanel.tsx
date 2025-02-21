@@ -32,44 +32,6 @@ export default function TeleopCoralPanel({
     levelSelected,
     handleSelection,
 }: Props) {
-// Explicitly typing the buttonRef as pointing to an HTMLButtonElement
-const coralScoreRef = useRef<HTMLDivElement | null>(null);
-const coralFailRef = useRef<HTMLDivElement | null>(null);
-const pressedKeys = useRef(new Set<string>());
-useEffect(() => {
-  const handleKeydown = (e: KeyboardEvent) => {
-    e.preventDefault();
-    // Add the key to the pressedKeys set
-    pressedKeys.current.add(e.key);
-    
-    // Presses the the coral score button if active
-    if (pressedKeys.current.has('Q')) {
-      // Check if buttonRef.current is not null
-      if (coralScoreRef.current) {
-        coralScoreRef.current.click();
-      }
-    }
-    // Presses the the coral fail button if active
-    if (pressedKeys.current.has('Z')) {
-      // Check if buttonRef.current is not null
-      if (coralFailRef.current) {
-        coralFailRef.current.click();
-      }
-    }
-  };
-    const handleKeyup = (e: KeyboardEvent) => {
-        // Remove the key from the pressedKeys set when released
-        pressedKeys.current.delete(e.key);
-    };
-    // Attach event listeners for keydown and keyup
-    document.addEventListener('keydown', handleKeydown);
-    document.addEventListener('keyup', handleKeyup);
-    // Cleanup event listeners on component unmount
-    return () => {
-      document.removeEventListener('keydown', handleKeydown);
-      document.removeEventListener('keyup', handleKeyup);
-    };
-});
 
     return (
         <div className="d-flex flex-column align-items-center border border-2 border-secondary px-3">
@@ -179,7 +141,6 @@ useEffect(() => {
                                 })
                             }}
                             gamePiece="coral"
-                            ref={coralScoreRef}
                         />
                         <FailButton
                             className="mt-2"
@@ -190,7 +151,6 @@ useEffect(() => {
                                 })
                             }}
                             gamePiece="coral"
-                            ref={coralFailRef}
                         />
                     </div>
                 </Col>

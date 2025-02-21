@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Dropdown, Form } from "react-bootstrap";
+import { Dropdown, Form, Table } from "react-bootstrap";
 import { useState } from "react";
 import { CoralIntakeLocation, CoralScoringLevel, CoralScoringSide, AlgaeIntakeLocation, AlgaeScoringLocation } from "@prisma/client";
 import { Row, Col } from "react-bootstrap";
@@ -248,16 +248,8 @@ export default function CoralsContent({rankings, teams}: Props) {
           </div>
         </>)}
       </Row>
-      <Row className="d-flex flex-row">
-        <Col md={6}>
-          <h3 className="mr-2">Coral Scoring Events:</h3>
-        </Col>
-        <Col md={6}>
-          <h3 className="mr-2">Algae Scoring Events:</h3>
-        </Col>
-      </Row>
-      <Row className="d-flex flex-row">
-        <Col md={2}>
+      <Row className="d-flex flex-row mt-2">
+        <Col md={4}>
           <h5>Coral Intake Location:</h5>
           <Dropdown className="mt-1" style={{ width: '100%' }}>
             <Dropdown.Toggle
@@ -280,7 +272,7 @@ export default function CoralsContent({rankings, teams}: Props) {
             </Dropdown.Menu>
           </Dropdown>
         </Col>
-        <Col md={2}>
+        <Col md={4}>
           <h5>Coral Scoring Level:</h5>
           <Dropdown className="mt-1" style={{ width: '100%' }}>
             <Dropdown.Toggle
@@ -299,7 +291,7 @@ export default function CoralsContent({rankings, teams}: Props) {
             </Dropdown.Menu>
           </Dropdown>
         </Col>
-        <Col md={2}>
+        <Col md={4}>
           <h5>Coral Scoring Side (Auto):</h5>
           <Dropdown className="mt-1" style={{ width: '100%' }}>
             <Dropdown.Toggle
@@ -320,62 +312,58 @@ export default function CoralsContent({rankings, teams}: Props) {
             </Dropdown.Menu>
           </Dropdown>
         </Col>
-        <Col md={3}>
-          <h5>Algae Intake Location:</h5>
-          <Dropdown className="mt-1" style={{ width: '100%' }}>
-            <Dropdown.Toggle
-              variant="secondary"
-            >
-              {algaeIntake}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <ul className="list-unstyled">
-                <Dropdown.Item key={1} onMouseDown={() => setAlgaeIntake("")}>N/A</Dropdown.Item>
-                <Dropdown.Item key={2} onMouseDown={() => setAlgaeIntake("AUTOGROUND1")}>{AlgaeIntakeLocation.AUTOGROUND1}</Dropdown.Item>
-                <Dropdown.Item key={3} onMouseDown={() => setAlgaeIntake("AUTOGROUND2")}>{AlgaeIntakeLocation.AUTOGROUND2}</Dropdown.Item>
-                <Dropdown.Item key={4} onMouseDown={() => setAlgaeIntake("AUTOGROUND3")}>{AlgaeIntakeLocation.AUTOGROUND3}</Dropdown.Item>
-                <Dropdown.Item key={5} onMouseDown={() => setAlgaeIntake("AUTOREEF1")}>{AlgaeIntakeLocation.AUTOREEF1}</Dropdown.Item>
-                <Dropdown.Item key={6} onMouseDown={() => setAlgaeIntake("AUTOREEF2")}>{AlgaeIntakeLocation.AUTOREEF2}</Dropdown.Item>
-                <Dropdown.Item key={7} onMouseDown={() => setAlgaeIntake("AUTOREEF3")}>{AlgaeIntakeLocation.AUTOREEF3}</Dropdown.Item>
-                <Dropdown.Item key={8} onMouseDown={() => setAlgaeIntake("AUTOREEF4")}>{AlgaeIntakeLocation.AUTOREEF4}</Dropdown.Item>
-                <Dropdown.Item key={9} onMouseDown={() => setAlgaeIntake("AUTOREEF5")}>{AlgaeIntakeLocation.AUTOREEF5}</Dropdown.Item>
-                <Dropdown.Item key={10} onMouseDown={() => setAlgaeIntake("AUTOREEF6")}>{AlgaeIntakeLocation.AUTOREEF6}</Dropdown.Item>
-                <Dropdown.Item key={11} onMouseDown={() => setAlgaeIntake("TELEOPGROUND")}>{AlgaeIntakeLocation.TELEOPGROUND}</Dropdown.Item>
-                <Dropdown.Item key={12} onMouseDown={() => setAlgaeIntake("TELEOPREEF")}>{AlgaeIntakeLocation.TELEOPREEF}</Dropdown.Item>
-              </ul>
-            </Dropdown.Menu>
-          </Dropdown>
-        </Col>
-        <Col md={3}>
-          <h5>Algae Scoring Location:</h5>
-          <Dropdown className="mt-1" style={{ width: '100%' }}>
-            <Dropdown.Toggle
-              variant="secondary"
-            >
-              {algaeScoring}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <ul className="list-unstyled">
-                <Dropdown.Item key={1} onMouseDown={() => setAlgaeScoring("")}>N/A</Dropdown.Item>
-                <Dropdown.Item key={2} onMouseDown={() => setAlgaeScoring("NET")}>{AlgaeScoringLocation.NET}</Dropdown.Item>
-                <Dropdown.Item key={3} onMouseDown={() => setAlgaeScoring("PROCESSOR")}>{AlgaeScoringLocation.PROCESSOR}</Dropdown.Item>
-              </ul>
-            </Dropdown.Menu>
-          </Dropdown>
-        </Col>
+        
       </Row>
-      <Row className="d-flex flex-row">
-        <Col md={6}>
-          <h4 className="mr-2">Avg Pieces/Game:</h4>
-          <h4 className="mr-2">Avg Successes/Game:</h4>
-          <h4 className="mr-2">Avg Time Held/Game (Successes Only):</h4>
-        </Col>
-        <Col md={6}>
-          <h4 className="mr-2">Avg Pieces/Game:</h4>
-          <h4 className="mr-2">Avg Successes/Game:</h4>
-          <h4 className="mr-2">Avg Time Held/Game (Successes Only):</h4>
-        </Col>
-      </Row>
+      {team &&(
+        <Table
+          bordered
+          hover
+          variant="dark"
+          className="table-responsive"
+        >
+          <thead>
+            <tr>
+              {/* Clickable table headers for sorting */}
+              {[
+                // "Match Number",
+                "Intake Location",
+                "Scoring Level",
+                "Scoring Side (Auto)",
+                "Dropped?",
+                "Failed Scoring?",
+                "Total Time (s)",
+              ].map((header) => (
+                <th
+                  key={header}
+                  // onClick={() =>
+                  //   handleSort(
+                  //     header.toLowerCase().replace(/ /g, "") as keyof Ranking
+                  //   )
+                  // }
+                  style={{ cursor: "pointer" }}
+                >
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {team.teamScores.flatMap((teamScore)=>(
+              teamScore.CoralScoringEvents.map((r, idx) => (
+                <tr key={r.id}>
+                  <td>{r.intakeLocation}</td>
+                  <td>{r.scoringLevel}</td>
+                  <td>{r.scoringSide}</td>
+                  <td>{r.dropped?"yes":"no"}</td>
+                  <td>{r.failedScoring?"yes":"no"}</td>
+                  <td>{(Number(r.timestampScored)-Number(r.timestampPickedUp))/1000}</td>
+                </tr>
+              ))
+            ))
+            }
+          </tbody>
+        </Table>
+      )}
     </div>
   );
 }
