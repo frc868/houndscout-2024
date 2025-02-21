@@ -180,7 +180,7 @@ export default function ScoresContent({rankings, teams}: Props) {
               </tr>
             </thead>
             <tbody>
-              {team.teamScores.map((r, idx) => (
+              {team.teamScores.filter(score=>score.submitted).map((r, idx) => (
                 <tr key={r.id}>
                   {/* <td>{
                     r.red1Match?r.red1Match.number:r.red2Match?r.red2Match.number:r.red3Match?r.red3Match.number:r.blue1Match?r.blue1Match.number:r.blue2Match?r.blue2Match.number:r.blue3Match?r.blue3Match.number:null 

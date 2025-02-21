@@ -47,17 +47,17 @@ export default function EventsContent({rankings}: Props) {
     let newRankings = rankings.map((r)=>{
       return {
         ...r,
-        coralpermatch: r.teamScores.reduce((total, score) => {
+        coralpermatch: r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
           const gameAmount = score.CoralScoringEvents.filter(filterCoral).length;
           return total + gameAmount;
         }, 0) / (r.totalgames),
-        coralaccuracy: r.teamScores.reduce((total, score) => {
+        coralaccuracy: r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
           const gameAmount = score.CoralScoringEvents.filter(filterCoral).filter(
             (event) => !event.failedScoring
           ).length;
           return total + gameAmount;
         }, 0) / (r.totalgames),
-        coralcycletime: r.teamScores.reduce((total, score) => {
+        coralcycletime: r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
           const totalMatchTime = score.CoralScoringEvents.filter(filterCoral).reduce(
             (sum, segment) => 
               sum +
@@ -66,17 +66,17 @@ export default function EventsContent({rankings}: Props) {
             0) / score.CoralScoringEvents.length;
           return total + totalMatchTime;
         }, 0) / (r.teamScores.length * 1000),
-        algaepermatch: r.teamScores.reduce((total, score) => {
+        algaepermatch: r.teamScores.filter(score=>score.submitted).filter(score=>score.submitted).reduce((total, score) => {
           const gameAmount = score.AlgaeScoringEvents.filter(filterAlgae).length;
           return total + gameAmount;
         }, 0) / (r.totalgames),
-        algaeaccuracy: r.teamScores.reduce((total, score) => {
+        algaeaccuracy: r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
           const gameAmount = score.AlgaeScoringEvents.filter(filterAlgae).filter(
             (event) => !event.failedScoring
           ).length;
           return total + gameAmount;
         }, 0) / (r.totalgames),
-        algaecycletime: r.teamScores.reduce((total, score) => {
+        algaecycletime: r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
           const totalMatchTime = score.AlgaeScoringEvents.filter(filterAlgae).reduce(
             (sum, segment) => 
               sum +

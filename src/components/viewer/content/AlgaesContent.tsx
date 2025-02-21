@@ -315,7 +315,7 @@ export default function AlgaesContent({rankings, teams}: Props) {
             </tr>
           </thead>
           <tbody>
-            {team.teamScores.flatMap((teamScore)=>(
+            {team.teamScores.filter(score=>score.submitted).flatMap((teamScore)=>(
               teamScore.AlgaeScoringEvents.map((r, idx) => (
                 <tr key={r.id}>
                   <td>{r.intakeLocation}</td>

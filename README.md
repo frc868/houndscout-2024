@@ -39,8 +39,9 @@ Please note that the Client pages will be nonfunctional until a match is created
 # To be completed:
 ## Priority
 Fix TBA functions
-Addd import functions and fix pg_dump export
+Add import functions and fix pg_dump export
+Fix comment box in client
+Fix images from pit not saving 
 
 ## Secondary
 Improve comments.
-Implement key listener in client page.

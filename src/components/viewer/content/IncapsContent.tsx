@@ -202,7 +202,7 @@ export default function IncapsContent({rankings, teams}: Props) {
             </tr>
           </thead>
           <tbody>
-            {team.teamScores.flatMap((teamScore)=>(
+            {team.teamScores.filter(score=>score.submitted).flatMap((teamScore)=>(
               teamScore.incapSegments.map((r, idx) => (
                 <tr key={r.id}>
                   <td>{(Number(r.timestampEnded)-Number(r.timestampStarted))/1000}</td>

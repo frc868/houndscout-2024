@@ -325,33 +325,37 @@ export default function Pit() {
             <Col md={3}>
               <SubmitButton
                 handleClick={async () => {
-                  dispatch(
-                    sendPitData({
-                      teamNumber: teamNumber as number,
-                      drivetrain: drivetrain as DrivetrainType,
-                      wheels: wheels as WheelType,
-                      intake: intake as IntakeType,
-                      weight: weight as number,
-                      hasAuton: hasAuton as boolean,
-                      comments: comments as string,
-                      robotImage: robotImage as string,
-                      canIntakeGroundCoral: canIntakeGroundCoral as boolean,
-                      canIntakeStationCoral: canIntakeStationCoral as boolean,
-                      canIntakeGroundAlgae: canIntakeGroundAlgae as boolean,
-                      canIntakeReefAlgae: canIntakeReefAlgae as boolean,
-                      canRemoveReefAlgaeWithoutIntake: canRemoveReefAlgaeWithoutIntake as boolean,
-                      canScoreReefL1: canScoreReefL1 as boolean,
-                      canScoreReefL2: canScoreReefL2 as boolean,
-                      canScoreReefL3: canScoreReefL3 as boolean,
-                      canScoreReefL4: canScoreReefL4 as boolean,
-                      canScoreNet: canScoreNet as boolean,
-                      canScoreProcessor: canScoreProcessor as boolean,
-                      canPark: canPark as boolean,
-                      canShallow: canShallow as boolean,
-                      canDeep: canDeep as boolean,
-                    })
-                  );
-                  setSubmitted(true);
+                  if(!teamNumber){
+                    alert("Please input a team number.");
+                  }else{
+                    dispatch(
+                      sendPitData({
+                        teamNumber: teamNumber as number,
+                        drivetrain: drivetrain as DrivetrainType,
+                        wheels: wheels as WheelType,
+                        intake: intake as IntakeType,
+                        weight: weight as number,
+                        hasAuton: hasAuton as boolean,
+                        comments: comments as string,
+                        robotImage: robotImage as string,
+                        canIntakeGroundCoral: canIntakeGroundCoral as boolean,
+                        canIntakeStationCoral: canIntakeStationCoral as boolean,
+                        canIntakeGroundAlgae: canIntakeGroundAlgae as boolean,
+                        canIntakeReefAlgae: canIntakeReefAlgae as boolean,
+                        canRemoveReefAlgaeWithoutIntake: canRemoveReefAlgaeWithoutIntake as boolean,
+                        canScoreReefL1: canScoreReefL1 as boolean,
+                        canScoreReefL2: canScoreReefL2 as boolean,
+                        canScoreReefL3: canScoreReefL3 as boolean,
+                        canScoreReefL4: canScoreReefL4 as boolean,
+                        canScoreNet: canScoreNet as boolean,
+                        canScoreProcessor: canScoreProcessor as boolean,
+                        canPark: canPark as boolean,
+                        canShallow: canShallow as boolean,
+                        canDeep: canDeep as boolean,
+                      })
+                    );
+                    setSubmitted(true);
+                  }
                 }}
               />
             </Col>
