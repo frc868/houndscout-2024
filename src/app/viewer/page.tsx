@@ -17,9 +17,9 @@ import ScoresContent from "@/components/viewer/content/ScoresContent";
 import CoralsContent from "@/components/viewer/content/CoralsContent";
 import AlgaesContent from "@/components/viewer/content/AlgaesContent";
 import IncapsContent from "@/components/viewer/content/IncapsContent";
-import { getRankingsAsync } from "@/redux/viewerDataSlice";
+import { getDetailedTeamScoresAsync, getRankingsAsync } from "@/redux/viewerDataSlice";
 import { getEventTeamsAsync } from "@/redux/adminDataSlice";
-import { Ranking, Team } from "@/lib/enums";
+import { DetailedTeamScore, Ranking, Team } from "@/lib/enums";
 
 export default function Viewer() {
   const mainData = useSelector((state: ReduxState) => state.mainData);
@@ -33,6 +33,9 @@ export default function Viewer() {
       await dispatch(getActiveEventAsync());
       mainData.activeEvent?.code && (
         await dispatch(getRankingsAsync({ eventCode: mainData.activeEvent?.code }))  
+      );
+      mainData.activeEvent?.code && (
+        await dispatch(getDetailedTeamScoresAsync({ eventCode: mainData.activeEvent?.code }))  
       );
       mainData.activeEvent?.code && (
         await dispatch(getEventTeamsAsync({ eventCode: mainData.activeEvent?.code }))
@@ -54,14 +57,9 @@ export default function Viewer() {
             <div className="vh-30 d-flex justify-content-center mt-5">
               <h1>Waiting...</h1>
             </div>
-            <div className="vh-3 d-flex justify-content-center mt-5">
-              <h5>If this screen persists, please consult Prisma Studio and ensure the following are true:</h5>
+            <div className="vh-3 d-flex justify-content-center my-5">
+              <h5>If this screen persists, please ensure at least one team score in the current event has been submitte.</h5>
             </div>
-            <ul className="vh-1 d-flex flex-column justify-content-center mt-3">
-              <li className="vh-1 d-flex justify-content-center mt-1">1. In Server, activeEvent has been set to a created Event.</li>
-              <li className="vh-1 d-flex justify-content-center mt-1">2. A Match has been created and linked to the active event.</li>
-              <li className="vh-1 d-flex justify-content-center mt-1">3. A Team has been created and linked to the active event.</li>
-            </ul>
           </Row>
         )}
         {ready && (
@@ -72,11 +70,11 @@ export default function Viewer() {
             <Col className="ps-0">
               {tab === ViewerTab.RANKINGS && <RankingsContent rankings={viewerData.rankings as Ranking[]} />}
               {tab === ViewerTab.EVENTS && <EventsContent rankings={viewerData.rankings as Ranking[]} />}
+              {tab === ViewerTab.PIT && <PitContent rankings={viewerData.rankings as Ranking[]} />}
+              {tab === ViewerTab.SCORES && <ScoresContent scores={viewerData.scores as DetailedTeamScore[]} teams={adminData.eventTeams as Team[]} />}
               {tab === ViewerTab.CORALS && <CoralsContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
               {tab === ViewerTab.ALGAES && <AlgaesContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
               {tab === ViewerTab.INCAPS && <IncapsContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
-              {tab === ViewerTab.PIT && <PitContent rankings={viewerData.rankings as Ranking[]} />}
-              {tab === ViewerTab.SCORES && <ScoresContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
               {tab === ViewerTab.IMPORT && <ImportContent eventCode={mainData.activeEvent?.code as string} />}
             </Col>
           </Row>

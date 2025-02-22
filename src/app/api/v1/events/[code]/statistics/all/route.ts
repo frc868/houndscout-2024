@@ -166,26 +166,50 @@ export async function GET(
       .map((teamScore) => ({
         ...teamScore,
         teamNumber: teamScore.teamNumber,
+        coralLevel1: teamScore.CoralScoringEvents.filter(
+          (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL1
+        ).length,
         coralLevel1Scored: teamScore.CoralScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL1
+        ).length,
+        coralLevel2: teamScore.CoralScoringEvents.filter(
+          (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL2
         ).length,
         coralLevel2Scored: teamScore.CoralScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL2
         ).length,
+        coralLevel3: teamScore.CoralScoringEvents.filter(
+          (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL3
+        ).length,
         coralLevel3Scored: teamScore.CoralScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL3
+        ).length,
+        coralLevel4: teamScore.CoralScoringEvents.filter(
+          (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL4
         ).length,
         coralLevel4Scored: teamScore.CoralScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL4
         ).length,
+        algaeNet: teamScore.AlgaeScoringEvents.filter(
+          (event) => !event.failedScoring&&event.scoringLocation==AlgaeScoringLocation.NET
+        ).length,
         algaeNetScored: teamScore.AlgaeScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLocation==AlgaeScoringLocation.NET
+        ).length,
+        algaeProcessor: teamScore.AlgaeScoringEvents.filter(
+          (event) => !event.failedScoring&&event.scoringLocation==AlgaeScoringLocation.PROCESSOR
         ).length,
         algaeProcessorScored: teamScore.AlgaeScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLocation==AlgaeScoringLocation.PROCESSOR
         ).length,
         coralDropped: teamScore.CoralScoringEvents.filter((event) => event.dropped).length,
         algaeDropped: teamScore.AlgaeScoringEvents.filter((event) => event.dropped).length,
+        totalIncapTime: teamScore.incapSegments.reduce(
+          (sum, segment) => 
+            sum +
+            (Number(segment.timestampEnded) -
+              Number(segment.timestampStarted)),
+          0),
       }))
       //UPDATE CYCLE: Ensure all scoring events are listed here.
       .map((teamScore) => {
@@ -204,7 +228,7 @@ export async function GET(
         return rest;
       });
 
-    return NextResponse.json(teamScoresWithDetails);
+    return NextResponse.json({ ok: true, scores: teamScoresWithDetails});
   } catch (e) {
     return NextResponse.json({ ok: false });
   }

@@ -2,25 +2,26 @@ import React, { useMemo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import { Row, Col, Table } from "react-bootstrap";
-import { Team, Ranking } from "@/lib/enums";
+import { Team, Ranking, DetailedTeamScore } from "@/lib/enums";
 import { updatePicklistsAsync } from "@/redux/viewerDataSlice";
 import TeamDropdown from "@/components/admin/TeamDropdown";
+import { TeamScore } from "@prisma/client";
 
 interface Props {
-  rankings: Ranking[];
+  scores: DetailedTeamScore[];
   teams: Team[];
 }
-export default function ScoresContent({rankings, teams}: Props) {
+export default function ScoresContent({scores, teams}: Props) {
   const dispatch = useDispatch<AppDispatch>();
 
-  const [team, setTeam]=useState<Ranking | undefined>();
+  const [team, setTeam]=useState<Team | undefined>();
 
   const [sortField, setSortField] = useState<keyof Ranking | null>(null);
     const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   
     // Sorting function
     const sortedRankings = useMemo(() => {
-      return rankings;
+      return scores;
       // if (!sortField) return rankings;
   
       // return [...rankings].sort((a, b) => {
@@ -32,20 +33,20 @@ export default function ScoresContent({rankings, teams}: Props) {
       //   return 0;
       // });
       
-    }, [rankings, sortField, sortDirection]);
+    }, [scores, sortField, sortDirection]);
   
     // Calculate max values for coloring
-    const maxValues = useMemo(() => {
-      const maxes: Record<string, number> = {};
-      [...rankings].forEach((r: Ranking) => {
-        Object.entries(r).forEach(([key, value]) => {
-          if (typeof value === "number" && key !== "team") {
-            maxes[key] = Math.max(maxes[key] || 0, value);
-          }
-        });
-      });
-      return maxes;
-    }, [rankings]);
+    // const maxValues = useMemo(() => {
+    //   const maxes: Record<string, number> = {};
+    //   [...scores].forEach((r: R) => {
+    //     Object.entries(r).forEach(([key, value]) => {
+    //       if (typeof value === "number" && key !== "team") {
+    //         maxes[key] = Math.max(maxes[key] || 0, value);
+    //       }
+    //     });
+    //   });
+    //   return maxes;
+    // }, [scores]);
   
     // Handler to sort by column
     const handleSort = (field: keyof Ranking) => {
@@ -89,10 +90,10 @@ export default function ScoresContent({rankings, teams}: Props) {
           <h3 className="mr-2">Team Number: </h3>
           <TeamDropdown
             red={false}
-            activeTeam={Number(team?.teamnumber)}
+            activeTeam={Number(team?.number)}
             teams={teams as Team[]}
             handleTeamSelect={(number) => {
-              setTeam(rankings.filter(team=>team.teamnumber===number)[0]);
+              setTeam(teams.filter(team=>team.number===number)[0]);
             }}
           />
           {team && (<>
@@ -108,15 +109,15 @@ export default function ScoresContent({rankings, teams}: Props) {
             onMouseDown={async () => {
               await dispatch(
                 updatePicklistsAsync({
-                  teamNumber: team.teamnumber as number,
-                  firstPicklist: !(team.firstpicklist),
-                  secondPicklist: team.secondpicklist
+                  teamNumber: team.number as number,
+                  firstPicklist: !(team.firstPicklist),
+                  secondPicklist: team.secondPicklist
                 })
               );
-              setTeam({...team, firstpicklist: !team.firstpicklist});
+              setTeam({...team, firstPicklist: !team.firstPicklist});
             }}
           >
-            <i className={`bi ${team.firstpicklist ? "bi-star-fill" : "bi-star"}`} />
+            <i className={`bi ${team.firstPicklist ? "bi-star-fill" : "bi-star"}`} />
           </div>
           <div
             className={"d-flex justify-content-end align-items-center"}
@@ -130,15 +131,15 @@ export default function ScoresContent({rankings, teams}: Props) {
             onMouseDown={async () => {
               await dispatch(
                 updatePicklistsAsync({
-                  teamNumber: team.teamnumber as number,
-                  firstPicklist: team.firstpicklist,
-                  secondPicklist: !(team.secondpicklist)
+                  teamNumber: team.number as number,
+                  firstPicklist: team.firstPicklist,
+                  secondPicklist: !(team.secondPicklist)
                 })
               );
-              setTeam({...team, secondpicklist: !team.secondpicklist});
+              setTeam({...team, secondPicklist: !team.secondPicklist});
             }}
           >
-            <i className={`bi ${team.secondpicklist ? "bi-star-fill" : "bi-star"}`} />
+            <i className={`bi ${team.secondPicklist ? "bi-star-fill" : "bi-star"}`} />
           </div>
           </>)}
         </Row>
@@ -180,7 +181,7 @@ export default function ScoresContent({rankings, teams}: Props) {
               </tr>
             </thead>
             <tbody>
-              {team.teamScores.filter(score=>score.submitted).map((r, idx) => (
+              {scores.filter((score)=>score.submitted&&score.teamNumber==team.number).map((r, idx) => (
                 <tr key={r.id}>
                   {/* <td>{
                     r.red1Match?r.red1Match.number:r.red2Match?r.red2Match.number:r.red3Match?r.red3Match.number:r.blue1Match?r.blue1Match.number:r.blue2Match?r.blue2Match.number:r.blue3Match?r.blue3Match.number:null 
@@ -189,7 +190,7 @@ export default function ScoresContent({rankings, teams}: Props) {
                   {/* <td>{r.scouter.name}</td> */}
                   <td>{r.preloaded?"yes":"no"}</td>
                   <td>{r.leftStartingZone?"yes":"no"}</td>
-                  <td>{r.incapSegments.reduce((s, ind)=>(s+Number(ind.timestampEnded)-Number(ind.timestampStarted)),0)/1000}</td>
+                  <td>{r.totalIncapTime}</td>
                   <td>{r.endgameType}</td>
                   <td>{r.endgameSuccess?"yes":"no"}</td>
                   <td>{r.driverSkillRating}</td>

@@ -99,9 +99,36 @@ export interface Team {
   name: string;
   location: string;
   events?: Event[];
+  teamScores: (TeamScore & {
+    CoralScoringEvents: CoralScoringEvent[];
+    AlgaeScoringEvents: AlgaeScoringEvent[];
+    incapSegments: IncapSegment[];
+  })[];
+  firstPicklist: boolean;
+  secondPicklist: boolean;
 }
 
 export interface Heartbeat {
   time: number;
   section: string;
+}
+
+
+export interface DetailedTeamScore extends TeamScore {
+  teamNumber: number;
+  coralLevel1: number;
+  coralLevel1Scored: number;
+  coralLevel2: number;
+  coralLevel2Scored: number;
+  coralLevel3: number;
+  coralLevel3Scored: number;
+  coralLevel4: number;
+  coralLevel4Scored: number;
+  algaeNet: number;
+  algaeNetScored: number;
+  algaeProcessor: number;
+  algaeProcessorScored: number;
+  coralDropped: number;
+  algaeDropped: number;
+  totalIncapTime: number;
 }

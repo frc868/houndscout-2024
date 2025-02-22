@@ -1,11 +1,13 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { ReduxState } from "./store";
-import { Ranking } from "@/lib/enums";
+import { DetailedTeamScore, Ranking } from "@/lib/enums";
 
 export interface ViewerData {
   rankings?: Ranking[];
   rankingsStatus: "idle" | "waiting" | "succeeded" | "failed";
+  scores?: DetailedTeamScore[];
+  scoresStatus: "idle" | "waiting" | "succeeded" | "failed";
 }
 
 export const getRankingsAsync = createAsyncThunk(
@@ -15,6 +17,16 @@ export const getRankingsAsync = createAsyncThunk(
       `/api/v1/events/${eventCode}/statistics/rankings`
     );
     return res.data.rankings;
+  }
+);
+
+export const getDetailedTeamScoresAsync = createAsyncThunk(
+  "viewer/getDetailedTeamScoresAsync",
+  async ({ eventCode }: { eventCode: string }) => {
+    const res = await axios.get(
+      `/api/v1/events/${eventCode}/statistics/all`
+    );
+    return res.data.scores;
   }
 );
 
@@ -43,10 +55,12 @@ export const updatePicklistsAsync = createAsyncThunk(
   }
 );
 
-//This one's fairly simple. Just one thunk that gets data to be sent to the viewer page.
+//This one's fairly simple. Just two thunks that get data to be sent to the viewer page, and one to update picklists.
 const initialState: ViewerData = {
   rankings: undefined,
   rankingsStatus: "idle",
+  scores: undefined,
+  scoresStatus: "idle",
 };
 
 export const viewerData = createSlice({
@@ -69,7 +83,23 @@ export const viewerData = createSlice({
       .addCase(getRankingsAsync.rejected, (state, action) => {
         state.rankingsStatus = "failed";
       });
+    builder
+      .addCase(getDetailedTeamScoresAsync.pending, (state) => {
+        state.scoresStatus = "waiting";
+      })
+      .addCase(getDetailedTeamScoresAsync.fulfilled, (state, action) => {
+        state.scores = action.payload;
+        if (action.payload !== null) {
+          state.scoresStatus = "succeeded";
+        } else {
+          state.scoresStatus = "idle";
+        }
+      })
+      .addCase(getDetailedTeamScoresAsync.rejected, (state, action) => {
+        state.scoresStatus = "failed";
+      });
   },
+  
 });
 
 export default viewerData.reducer;
