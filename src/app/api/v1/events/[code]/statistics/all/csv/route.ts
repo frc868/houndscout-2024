@@ -160,6 +160,7 @@ export async function GET(
       .map((teamScore) => ({
         ...teamScore,
         teamNumber: teamScore.teamNumber,
+        scouterName: teamScore.scouter?.name,
         coralLevel1: teamScore.CoralScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL1
         ).length,

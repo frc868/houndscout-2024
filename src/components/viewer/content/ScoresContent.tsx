@@ -75,14 +75,14 @@ export default function ScoresContent({scores, teams}: Props) {
   
     return (
       <div
-      style={{
-        height: "calc(100% - 2*24px)",
-        width: "calc(100% - 2*24px)",
-        color: "white",
-        overflowX: "auto",
-        overflowY: "auto",
-        float: "right"
-      }}
+        style={{
+          height: "calc(100% - 2*24px)",
+          width: "calc(100% - 2*24px)",
+          color: "white",
+          overflowX: "auto",
+          overflowY: "auto",
+          float: "right"
+        }}
         className="m-4 bg-dark rounded-3 font-monospace text-center"
       >
         <h1>Team Match Data</h1>
@@ -154,11 +154,12 @@ export default function ScoresContent({scores, teams}: Props) {
               <tr>
                 {/* Clickable table headers for sorting */}
                 {[
-                  // "Match Number",
-                  // "Scouter",
+                  "Match Name",
+                  "Station",
+                  "Scouter",
                   "Preload",
                   "Mobility Bonus",
-                  "Total Incap Time (s)",
+                  "Time Incapped (s)",
                   "Endgame Type",
                   "Endgame Success",
                   "Driver Skill",
@@ -181,13 +182,11 @@ export default function ScoresContent({scores, teams}: Props) {
               </tr>
             </thead>
             <tbody>
-              {scores.filter((score)=>score.submitted&&score.teamNumber==team.number).map((r, idx) => (
+              {scores.filter((score)=>score.teamNumber==team.number).map((r, idx) => (
                 <tr key={r.id}>
-                  {/* <td>{
-                    r.red1Match?r.red1Match.number:r.red2Match?r.red2Match.number:r.red3Match?r.red3Match.number:r.blue1Match?r.blue1Match.number:r.blue2Match?r.blue2Match.number:r.blue3Match?r.blue3Match.number:null 
-                    
-                  }</td> */}
-                  {/* <td>{r.scouter.name}</td> */}
+                  <td>{r.matchName}</td>
+                  <td>{r.station}</td>
+                  <td>{r.scouterName}</td>
                   <td>{r.preloaded?"yes":"no"}</td>
                   <td>{r.leftStartingZone?"yes":"no"}</td>
                   <td>{r.totalIncapTime}</td>

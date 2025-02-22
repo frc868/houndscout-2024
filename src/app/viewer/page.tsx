@@ -44,7 +44,7 @@ export default function Viewer() {
     return () => clearInterval(interval);
   }, [dispatch, mainData.activeEvent?.code]);
 
-  const ready = mainData.activeEvent?.code && viewerData.rankings;
+  const ready = mainData.activeEvent?.code && viewerData.rankings && viewerData.scores;
 
   return (
     <>

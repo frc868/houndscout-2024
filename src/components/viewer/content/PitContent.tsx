@@ -15,7 +15,12 @@ export default function PitContent({rankings}: Props) {
     const [sortField, setSortField] = useState<keyof Ranking | null>(null);
     const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
-    const [drivetrain, setDrivetrain] = useState<DrivetrainType|undefined>(undefined);
+    const [drivetrain, setDrivetrain] = useState({
+      swerve: true,
+      tank: true,
+      mecanum: true,
+      other: true,
+    });
     const [wheels, setWheels] = useState<WheelType|undefined>(undefined);
     const [intake, setIntake] = useState<IntakeType|undefined>(undefined);
 
@@ -43,7 +48,11 @@ export default function PitContent({rankings}: Props) {
     // Sorting function
     const sortedRankings = useMemo(() => {
       let newRankings = JSON.parse(JSON.stringify(rankings as Ranking[]));
-      if (drivetrain!=undefined) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain==drivetrain);
+      if (!drivetrain.swerve) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain!=DrivetrainType.SWERVE);
+      if (!drivetrain.tank) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain!=DrivetrainType.TANK);
+      if (!drivetrain.mecanum) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain!=DrivetrainType.MECANUM);
+      if (!drivetrain.other) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain!=DrivetrainType.OTHER);
+      if (Object.values(drivetrain).some(value => value === false)) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain!=undefined);
       if (wheels!=undefined) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels==wheels);
       if (intake!=undefined) newRankings=newRankings.filter((ranking:Ranking)=>ranking.intake==intake);
       if (groundCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakegroundcoral);
@@ -275,22 +284,30 @@ export default function PitContent({rankings}: Props) {
                 }
                 style={{ cursor: "pointer" }}
               >
-                <Dropdown className="mt-1" style={{ width: '100%' }}>
-                  <Dropdown.Toggle
-                    variant="secondary"
-                  >
-                    {drivetrain}
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <ul className="list-unstyled">
-                      <Dropdown.Item key={1} onMouseDown={() => setDrivetrain(undefined)}>N/A</Dropdown.Item>
-                      <Dropdown.Item key={2} onMouseDown={() => setDrivetrain("SWERVE")}>Swerve</Dropdown.Item>
-                      <Dropdown.Item key={3} onMouseDown={() => setDrivetrain("TANK")}>Tank</Dropdown.Item>
-                      <Dropdown.Item key={4} onMouseDown={() => setDrivetrain("MECANUM")}>Mecanum</Dropdown.Item>
-                      <Dropdown.Item key={5} onMouseDown={() => setDrivetrain("OTHER")}>Other</Dropdown.Item>
-                    </ul>
-                  </Dropdown.Menu>
-                </Dropdown>
+                <Form.Check
+                  type="checkbox"
+                  label="Swerve"
+                  checked={drivetrain.swerve}
+                  onChange={() => {setDrivetrain((prev) => ({...prev, swerve: !prev.swerve,}))}}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Tank"
+                  checked={drivetrain.tank}
+                  onChange={() => {setDrivetrain((prev) => ({...prev, tank: !prev.tank,}))}}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Mecanum"
+                  checked={drivetrain.mecanum}
+                  onChange={() => {setDrivetrain((prev) => ({...prev, mecanum: !prev.mecanum,}))}}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Other"
+                  checked={drivetrain.other}
+                  onChange={() => {setDrivetrain((prev) => ({...prev, other: !prev.other,}))}}
+                />
                 Drivetrain
               </th>
               <th
@@ -317,7 +334,7 @@ export default function PitContent({rankings}: Props) {
                       <Dropdown.Item key={5} onMouseDown={() => setWheels("TPY")}>TPY</Dropdown.Item>
                       <Dropdown.Item key={6} onMouseDown={() => setWheels("WHITEANDYMARK")}>While AndyMark</Dropdown.Item>
                       <Dropdown.Item key={7} onMouseDown={() => setWheels("MECANUM")}>Mecanum</Dropdown.Item>
-                      <Dropdown.Item key={8} onMouseDown={() => setDrivetrain("OTHER")}>Other</Dropdown.Item>
+                      <Dropdown.Item key={8} onMouseDown={() => setWheels("OTHER")}>Other</Dropdown.Item>
                     </ul>
                   </Dropdown.Menu>
                 </Dropdown>

@@ -116,6 +116,9 @@ export interface Heartbeat {
 
 export interface DetailedTeamScore extends TeamScore {
   teamNumber: number;
+  scouterName: string;
+  station: string;
+  matchName: string;
   coralLevel1: number;
   coralLevel1Scored: number;
   coralLevel2: number;

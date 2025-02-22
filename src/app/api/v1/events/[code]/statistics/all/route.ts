@@ -166,6 +166,7 @@ export async function GET(
       .map((teamScore) => ({
         ...teamScore,
         teamNumber: teamScore.teamNumber,
+        scouterName: teamScore.scouter?.name,
         coralLevel1: teamScore.CoralScoringEvents.filter(
           (event) => !event.failedScoring&&event.scoringLevel==CoralScoringLevel.LEVEL1
         ).length,
@@ -213,6 +214,7 @@ export async function GET(
       }))
       //UPDATE CYCLE: Ensure all scoring events are listed here.
       .map((teamScore) => {
+        //Filters out the more complicated stuff.
         const {
           team,
           id,
