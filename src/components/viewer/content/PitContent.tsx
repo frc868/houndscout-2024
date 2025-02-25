@@ -9,6 +9,8 @@ import { DrivetrainType, IntakeType, WheelType } from "@prisma/client";
 interface Props {
   rankings: Ranking[];
 }
+
+//I know there's errors, but I'm still trying to fix those.
 export default function PitContent({rankings}: Props) {
     const dispatch = useDispatch<AppDispatch>();
 
@@ -21,8 +23,20 @@ export default function PitContent({rankings}: Props) {
       mecanum: true,
       other: true,
     });
-    const [wheels, setWheels] = useState<WheelType|undefined>(undefined);
-    const [intake, setIntake] = useState<IntakeType|undefined>(undefined);
+    const [wheels, setWheels] = useState({
+      colsuns: true,
+      blacknitrite: true,
+      bluenitrite: true,
+      tpu: true,
+      whiteandymark: true,
+      mecanum: true,
+      other: true,
+    });
+    const [intake, setIntake] = useState({
+      mechanical: true,
+      pneumatic: true,
+      other: true,
+    });
 
     const [groundCoralEnabled, setGroundCoralEnabled] = useState<boolean>(false);
     const [stationCoralEnabled, setStationCoralEnabled] = useState<boolean>(false);
@@ -53,8 +67,18 @@ export default function PitContent({rankings}: Props) {
       if (!drivetrain.mecanum) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain!=DrivetrainType.MECANUM);
       if (!drivetrain.other) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain!=DrivetrainType.OTHER);
       if (Object.values(drivetrain).some(value => value === false)) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain!=undefined);
-      if (wheels!=undefined) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels==wheels);
-      if (intake!=undefined) newRankings=newRankings.filter((ranking:Ranking)=>ranking.intake==intake);
+      if (!wheels.colsuns) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.COLSUNS);
+      if (!wheels.blacknitrite) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.BLACKNITRITE);
+      if (!wheels.bluenitrite) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.BLUENITRITE);
+      if (!wheels.tpu) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.TPU);
+      if (!wheels.whiteandymark) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.WHITEANDYMARK);
+      if (!wheels.mecanum) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.MECANUM);
+      if (!wheels.other) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.OTHER);
+      if (Object.values(wheels).some(value => value === false)) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=undefined);
+      if (!intake.mechanical) newRankings=newRankings.filter((ranking:Ranking)=>ranking.intake!=IntakeType.MECHANICAL);
+      if (!intake.pneumatic) newRankings=newRankings.filter((ranking:Ranking)=>ranking.intake!=IntakeType.PNEUMATIC);
+      if (!intake.other) newRankings=newRankings.filter((ranking:Ranking)=>ranking.intake!=IntakeType.OTHER);
+      if (Object.values(intake).some(value => value === false)) newRankings=newRankings.filter((ranking:Ranking)=>ranking.intake!=undefined);
       if (groundCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakegroundcoral);
       if (stationCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakestationcoral);
       if (groundAlgaeEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakegroundalgae);
@@ -284,31 +308,18 @@ export default function PitContent({rankings}: Props) {
                 }
                 style={{ cursor: "pointer" }}
               >
-                <Form.Check
-                  type="checkbox"
-                  label="Swerve"
-                  checked={drivetrain.swerve}
-                  onChange={() => {setDrivetrain((prev) => ({...prev, swerve: !prev.swerve,}))}}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Tank"
-                  checked={drivetrain.tank}
-                  onChange={() => {setDrivetrain((prev) => ({...prev, tank: !prev.tank,}))}}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Mecanum"
-                  checked={drivetrain.mecanum}
-                  onChange={() => {setDrivetrain((prev) => ({...prev, mecanum: !prev.mecanum,}))}}
-                />
-                <Form.Check
-                  type="checkbox"
-                  label="Other"
-                  checked={drivetrain.other}
-                  onChange={() => {setDrivetrain((prev) => ({...prev, other: !prev.other,}))}}
-                />
-                Drivetrain
+                {Object.keys(DrivetrainType).map((type) => {
+                  return(
+                    <Form.Check
+                      key={type}
+                      type="checkbox"
+                      label={type}
+                      checked={drivetrain[type.toLowerCase()]}
+                      onChange={() => {setDrivetrain((prev) => ({...prev, [type.toLowerCase()]: !prev[type.toLowerCase()],}))}}
+                    />
+                  )
+                })}
+                <u>Drivetrain Type</u>
               </th>
               <th
                 key="Wheel Type"
@@ -319,26 +330,18 @@ export default function PitContent({rankings}: Props) {
                 }
                 style={{ cursor: "pointer" }}
               >
-                <Dropdown className="mt-1" style={{ width: '100%' }}>
-                  <Dropdown.Toggle
-                    variant="secondary"
-                  >
-                    {wheels}
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <ul className="list-unstyled">
-                      <Dropdown.Item key={1} onMouseDown={() => setWheels(undefined)}>N/A</Dropdown.Item>
-                      <Dropdown.Item key={2} onMouseDown={() => setWheels("COLSUNS")}>Colsuns</Dropdown.Item>
-                      <Dropdown.Item key={3} onMouseDown={() => setWheels("BLACKNITRITE")}>Black Nitrite</Dropdown.Item>
-                      <Dropdown.Item key={4} onMouseDown={() => setWheels("BLUENITRITE")}>Blue Nitrite</Dropdown.Item>
-                      <Dropdown.Item key={5} onMouseDown={() => setWheels("TPY")}>TPY</Dropdown.Item>
-                      <Dropdown.Item key={6} onMouseDown={() => setWheels("WHITEANDYMARK")}>While AndyMark</Dropdown.Item>
-                      <Dropdown.Item key={7} onMouseDown={() => setWheels("MECANUM")}>Mecanum</Dropdown.Item>
-                      <Dropdown.Item key={8} onMouseDown={() => setWheels("OTHER")}>Other</Dropdown.Item>
-                    </ul>
-                  </Dropdown.Menu>
-                </Dropdown>
-                Wheel Type
+                {Object.keys(WheelType).map((type) => {
+                  return(
+                    <Form.Check
+                      key={type}
+                      type="checkbox"
+                      label={type}
+                      checked={wheels[type.toLowerCase()]}
+                      onChange={() => {setWheels((prev) => ({...prev, [type.toLowerCase()]: !prev[type.toLowerCase()],}))}}
+                    />
+                  )
+                })}
+                <u>Wheel Type</u>
               </th>
               <th
                 key="Intake Type"
@@ -349,22 +352,18 @@ export default function PitContent({rankings}: Props) {
                 }
                 style={{ cursor: "pointer" }}
               >
-                <Dropdown className="mt-1" style={{ width: '100%' }}>
-                  <Dropdown.Toggle
-                    variant="secondary"
-                  >
-                    {intake}
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <ul className="list-unstyled">
-                      <Dropdown.Item key={1} onMouseDown={() => setIntake(undefined)}>N/A</Dropdown.Item>
-                      <Dropdown.Item key={2} onMouseDown={() => setIntake("MECHANICAL")}>Mechanical</Dropdown.Item>
-                      <Dropdown.Item key={3} onMouseDown={() => setIntake("PNEUMATIC")}>Pneumatic</Dropdown.Item>
-                      <Dropdown.Item key={4} onMouseDown={() => setIntake("OTHER")}>Other</Dropdown.Item>
-                    </ul>
-                  </Dropdown.Menu>
-                </Dropdown>
-                Intake Type
+                {Object.keys(IntakeType).map((type) => {
+                  return(
+                    <Form.Check
+                      key={type}
+                      type="checkbox"
+                      label={type}
+                      checked={intake[type.toLowerCase()]}
+                      onChange={() => {setIntake((prev) => ({...prev, [type.toLowerCase()]: !prev[type.toLowerCase()],}))}}
+                    />
+                  )
+                })}
+                <u>Intake Type</u>
               </th>
               <th
                 key="Intake Ground Coral"

@@ -58,7 +58,7 @@ export default function Viewer() {
               <h1>Waiting...</h1>
             </div>
             <div className="vh-3 d-flex justify-content-center my-5">
-              <h5>If this screen persists, please ensure at least one team score in the current event has been submitte.</h5>
+              <h5>If this screen persists, please ensure at least one team score in the current event has been submitted.</h5>
             </div>
           </Row>
         )}

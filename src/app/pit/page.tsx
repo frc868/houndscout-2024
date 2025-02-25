@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 //Quick tip, you can ctrl+click on something from another file to go directly there.
 import { useEffect, useState } from "react";
@@ -166,7 +167,7 @@ export default function Pit() {
                   <option value={WheelType.COLSUNS}>Colsuns</option>
                   <option value={WheelType.BLACKNITRITE}>Black Nitrite</option>
                   <option value={WheelType.BLUENITRITE}>Blue Nitrite</option>
-                  <option value={WheelType.TPY}>TPY</option>
+                  <option value={WheelType.TPU}>TPU</option>
                   <option value={WheelType.WHITEANDYMARK}>White AndyMark</option>
                   <option value={WheelType.MECANUM}>Mecanum</option>
                   <option value={WheelType.OTHER}>Other</option>

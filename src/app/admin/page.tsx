@@ -96,8 +96,7 @@ export default function Admin() {
           </div>
           <ul className="vh-1 d-flex flex-column justify-content-center mt-3">
             <li className="vh-1 d-flex justify-content-center mt-1">1. In Server, activeEvent has been set to a created Event.</li>
-            <li className="vh-1 d-flex justify-content-center mt-1">2. A Match has been created and linked to the active event.</li>
-            <li className="vh-1 d-flex justify-content-center mt-1">3. A Team has been created and linked to the active event.</li>
+            <li className="vh-1 d-flex justify-content-center mt-1">2. A Team has been created and linked to activeEvent.</li>
           </ul>
         </>
       )}

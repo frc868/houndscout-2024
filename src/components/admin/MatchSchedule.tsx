@@ -89,7 +89,7 @@ export default function MatchSchedule({
           );
           setShowMatchCreate(false);
         }}
-      ></MatchAddModal>
+      />
       <MatchAddModal
       // Edit an existing match
         teams={teams as Team[]}
@@ -114,7 +114,7 @@ export default function MatchSchedule({
           );
           setShowMatchEdit(false);
         }}
-      ></MatchAddModal>
+      />
       <div className="d-flex flex-column">
         <Row className="mb-3">
           <h1 className="text-center">Match Schedule</h1>
@@ -132,13 +132,6 @@ export default function MatchSchedule({
             onClick={() => {setShowMatchCreate(true);}}
           >
             Create New Match
-          </Button>
-          <Button 
-            variant="secondary"
-            className="w-25 mx-auto"
-            onClick={() => matches.forEach(generateScouterSchedule)}
-          >
-            Generate Scouter Schedule (All)
           </Button>
         </Row>
         <Table bordered className="border-secondary-subtle">

@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 //Gets all teams, teamScores, and scouters currently set to each station during a certain match.
 export async function GET(
   req: Request,
-  {{ params }: { params: {
+  { params }: { params: {
     code: string; //Event code (typically the active event)
     name: string; //Match name (typically the active match, formatteed qm_[number])
   } }
@@ -46,7 +46,7 @@ export async function GET(
 //Updates the teams currently set to each station during a certain match, as well as the start time and match name.
 export async function PATCH(
   req: Request,
-  {{ params }: { params: {
+  { params }: { params: {
     code: string; //Event code (typically the active event)
     name: string; //Match name (typically the active match, formatteed qm_[number])
   } }
@@ -111,7 +111,7 @@ export async function PATCH(
 //Deletes a certain match
 export async function DELETE(
   req: Request,
-  {{ params }: { params: {
+  { params }: { params: {
     code: string; //Event code (typically the active event)
     name: string; //Match name (typically the active match, formatteed qm_[number])
   } }
