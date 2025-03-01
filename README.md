@@ -1,47 +1,27 @@
-# HoundScout: Setup guide
-## PCs (WIP)
-First, ensure you're using the Workspace version of TypeScript, as this will fix multiple errors regarding certain imports. 
+# HoundScout: The TechHOUNDS Scouting System
+#(v2025 for Reefscape)
 
-Then, create a PostgreSQL database. 
-Create a .env file and use the following format:
-DATABASE_URL="postgresql://[user[:password]@][netloc][:port][/dbname]"
-DBNAME="[dbname]"
-DBUSER="[user]"
+This is a NextJS app that this team uses to gather and view information about the teams at our competitions. This data is then used to improve the quality of our decisions when building alliances for the playoffs. 
 
-# Codespaces
-Create a codespace off of your branch. Please note that usage of Codespaces is limited by GitHub.
-Create a .env file and paste the following into it:
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres"
-DBNAME="postgres"
-DBUSER="postgres"
+For setup instructions and more information on using and maintaining HoundScout, please view [this instructions manual](https://docs.google.com/document/d/1sX5mLIimVEIika_FfuHYzIFwtuJBYQ2MmXGz5YLZFlI/edit?usp=sharing).
 
-# Finish Setup
-1. Create/log in to an account on The Blue Alliance, generate a Read API key, and authorize it. Add it to your .env file using the following format:
-TBA_API_KEY="[key]"
-2. Open a Terminal by inputting Ctrl+Shift+P and searching for “Terminal: Create New Terminal”. Run "npm install" in this terminal to install all necessary frameworks.
-3. Run "npx prisma migrate dev" in the terminal to create the database. Any name will do.
-4. Run "npx prisma studio" to open Prisma Studio.
-5. Create a row in Server and save changes.
-6. Create and fill in 6 Heartbeats, each set to a different station. Connect each of these to the Server you created by clicking on its entry in the server column and selecting the Server.
-7. Create an Event, enter something in the "code" column, and connect it to the Server.
-8. Create a Team, enter something in the "number" column, and connect it to the Event.
-
-Finally, run the development server:
+To start HoundScout, open a terminal and run the development server:
 
 ```bash
 npm run dev
 ```
 
-Ctrl+Click on (http://localhost:3012) in the terminal to open HoundScout.
+Ctrl+Click on (http://localhost:3012) in the terminal to view the results.
 
-Please note that the Client pages will be nonfunctional until a match is created and set as the active match via the lead scouter page.
+# Credits:
+David R (Framework, Crescendo version)
 
-# To be completed:
-## Priority
-Fix TBA functions
-Add import functions and fix pg_dump export
-Fix comment box in client
-Fix images from pit not saving 
+Timothy M (Reefscape version programming, Data viewer, Manual, Most comments)
 
-## Secondary
-Improve comments.
+Gavin K, Sage R, and Mr. Ford (Suggestions, Quality assurance)
+
+Isabelle I (Reefscape version design)
+
+Michael K (Pit scouting)
+
+Mr. Potts (Keyboard inputs)
