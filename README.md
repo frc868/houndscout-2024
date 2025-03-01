@@ -1,5 +1,5 @@
 # HoundScout: The TechHOUNDS Scouting System
-#(v2025 for Reefscape)
+*v2025 for Reefscape*
 
 This is a NextJS app that this team uses to gather and view information about the teams at our competitions. This data is then used to improve the quality of our decisions when building alliances for the playoffs. 
 
