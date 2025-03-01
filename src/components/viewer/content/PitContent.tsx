@@ -18,24 +18,15 @@ export default function PitContent({rankings}: Props) {
     const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
     const [drivetrain, setDrivetrain] = useState({
-      swerve: true,
-      tank: true,
-      mecanum: true,
-      other: true,
+      ...(Object.fromEntries(Object.values(DrivetrainType).map((val) => [val, true]))),
     });
     const [wheels, setWheels] = useState({
-      colsuns: true,
-      blacknitrite: true,
-      bluenitrite: true,
-      tpu: true,
-      whiteandymark: true,
-      mecanum: true,
-      other: true,
+      ...(Object.fromEntries(
+        Object.values(WheelType).map((val) => [val, true]))),
     });
     const [intake, setIntake] = useState({
-      mechanical: true,
-      pneumatic: true,
-      other: true,
+      ...(Object.fromEntries(
+        Object.values(IntakeType).map((val) => [val, true]))),
     });
 
     const [groundCoralEnabled, setGroundCoralEnabled] = useState<boolean>(false);
@@ -58,15 +49,25 @@ export default function PitContent({rankings}: Props) {
 
     const [firstPicklistEnabled, setFirstPicklistEnabled] = useState<boolean>(false);
     const [secondPicklistEnabled, setSecondPicklistEnabled] = useState<boolean>(false);
-  
+
+    const drivetrainFilter = (ranking:Ranking) => {
+      var settings=Object.fromEntries(
+        Object.entries(drivetrain).filter(([key, value]) => value == true)
+      );
+      if(ranking.drivetrain !== undefined && ranking.drivetrain !== null && Object.keys(settings).includes(ranking.drivetrain)){
+        return true;
+      } else return false;
+    }
+
     // Sorting function
     const sortedRankings = useMemo(() => {
       let newRankings = JSON.parse(JSON.stringify(rankings as Ranking[]));
+      // newRankings.filter(drivetrainFilter);
       if (!drivetrain.swerve) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain!=DrivetrainType.SWERVE);
       if (!drivetrain.tank) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain!=DrivetrainType.TANK);
       if (!drivetrain.mecanum) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain!=DrivetrainType.MECANUM);
       if (!drivetrain.other) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain!=DrivetrainType.OTHER);
-      if (Object.values(drivetrain).some(value => value === false)) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain!=undefined);
+      if (Object.values(drivetrain).some(value => value === false||value===undefined)) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain!=undefined);
       if (!wheels.colsuns) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.COLSUNS);
       if (!wheels.blacknitrite) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.BLACKNITRITE);
       if (!wheels.bluenitrite) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.BLUENITRITE);
@@ -74,11 +75,11 @@ export default function PitContent({rankings}: Props) {
       if (!wheels.whiteandymark) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.WHITEANDYMARK);
       if (!wheels.mecanum) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.MECANUM);
       if (!wheels.other) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.OTHER);
-      if (Object.values(wheels).some(value => value === false)) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=undefined);
+      if (Object.values(wheels).some(value => value === false||value===undefined)) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=undefined);
       if (!intake.mechanical) newRankings=newRankings.filter((ranking:Ranking)=>ranking.intake!=IntakeType.MECHANICAL);
       if (!intake.pneumatic) newRankings=newRankings.filter((ranking:Ranking)=>ranking.intake!=IntakeType.PNEUMATIC);
       if (!intake.other) newRankings=newRankings.filter((ranking:Ranking)=>ranking.intake!=IntakeType.OTHER);
-      if (Object.values(intake).some(value => value === false)) newRankings=newRankings.filter((ranking:Ranking)=>ranking.intake!=undefined);
+      if (Object.values(intake).some(value => value === false||value===undefined)) newRankings=newRankings.filter((ranking:Ranking)=>ranking.intake!=undefined);
       if (groundCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakegroundcoral);
       if (stationCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakestationcoral);
       if (groundAlgaeEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakegroundalgae);

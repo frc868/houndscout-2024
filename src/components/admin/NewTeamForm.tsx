@@ -49,9 +49,9 @@ export default function NewTeamModal({
             </Col>
           </Row>
           <Form.Group className="mb-1">
-            <Form.Label>Team Home City and State</Form.Label>
+            <Form.Label>Team Home City, State, and Country</Form.Label>
             <Form.Control
-              placeholder="e.g. Carmel, Indiana"
+              placeholder="e.g. Carmel, Indiana, USA"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
             />

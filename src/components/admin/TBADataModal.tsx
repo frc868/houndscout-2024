@@ -34,18 +34,16 @@ export default function TBADataModal({
       <Modal.Body>
         <Form>
           <Form.Group className="mb-3">
-            <Form.Label>Teams</Form.Label>
+            <Form.Label>Teams ({"/event/{event_key}/teams"})</Form.Label>
             <Form.Control
-              placeholder={`e.g. [{"city": "Carmel", "team_number": 868, "nickname": "TechHOUNDS"}, ...]`}
               value={teams}
               as="textarea"
               onChange={(e) => setTeams(e.target.value)}
             />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>Matches</Form.Label>
+            <Form.Label>Matches ({"/event/{event_key}/matches/simple"})</Form.Label>
             <Form.Control
-              placeholder={`e.g. [{"alliances": {"blue": {"team_keys": ["frc868", "frc1741", "frc1024"]}}}, ...]`}
               value={matches}
               as="textarea"
               onChange={(e) => setMatches(e.target.value)}

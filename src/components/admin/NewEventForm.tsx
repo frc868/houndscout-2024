@@ -48,7 +48,7 @@ export default function NewEventForm({
               <Form.Group className="mb-2">
                 <Form.Label>Event Code</Form.Label>
                 <Form.Control
-                  placeholder="e.g. ABCD"
+                  placeholder="e.g. 2025incar"
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
                 />
@@ -88,9 +88,9 @@ export default function NewEventForm({
             </Col>
           </Row>
           <Form.Group className="mb-3">
-            <Form.Label>Event Address</Form.Label>
+            <Form.Label>Event Location, City, State, and Country</Form.Label>
             <Form.Control
-              placeholder="e.g. 520 E Main St"
+              placeholder="e.g. Carmel High School in Carmel, IN, USA"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
             />
