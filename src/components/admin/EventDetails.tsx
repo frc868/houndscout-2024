@@ -51,7 +51,7 @@ export default function EventDetails({ event }: Props) {
               <div className="my-1">Week {event.weekNumber}</div>
               <div className="my-1">
                 {event.startDate?.toDateString()} to{" "}
-                {event.endDate?.toDateString()} (shift forwared by 1 day)
+                {event.endDate?.toDateString()}<br />(shift both dates forward by 1 day; still trying to fix)
               </div>
               <div className="my-1">{event.address}</div>
             </Card.Body>
