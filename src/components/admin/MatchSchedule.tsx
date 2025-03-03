@@ -133,7 +133,17 @@ export default function MatchSchedule({
           >
             Create New Match
           </Button>
+          <Row className="mb-3">
+          {/* <Button
+            variant="secondary"
+            className="w-25 mx-auto"
+            onClick={()=>{matches.forEach(generateScouterSchedule);}}
+          >
+            Gen. Scouter Sched. (all unfilled);
+          </Button> */}
         </Row>
+        </Row>
+
         <Table bordered className="border-secondary-subtle">
           <thead className="align-middle text-center">
             <tr>
