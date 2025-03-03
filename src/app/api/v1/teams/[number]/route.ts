@@ -28,7 +28,7 @@ export async function GET(
 // ScoresSlice/sendPitData
 // ViewerDataSlice/updatePicklistsAsync
 // Updates info about a specified team.
-// Note to Michael: David actually made this API route for a variety of purposes, so I don't think there's any need to edit here.
+// UPDATE CYCLE: Ensure this matches the pit scouting section of the Team model.
 export async function PATCH(
   req: Request,
   { params }: { params: { number: string } }
