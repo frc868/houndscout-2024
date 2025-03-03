@@ -78,8 +78,19 @@ export const getMatchesAsync = createAsyncThunk(
     return res.data.matches;
   }
 );
-
-
+export const getOneMatchAsync = createAsyncThunk(
+  "adminData/getOneMatch",
+  async ({
+    eventCode,
+    matchName,
+  }: {
+    eventCode: string;
+    matchName: string;
+  }) => {
+    const res = await axios.get(`/api/v1/events/${eventCode}/matches/${matchName}`);
+    return res.data.match;
+  }
+);
 export const editMatchAsync = createAsyncThunk(
   "adminData/editMatch",
   async (data: {
@@ -351,6 +362,62 @@ export const mainData = createSlice({
         }
       })
       .addCase(getMatchesAsync.rejected, (state, action) => {
+        state.matchesStatus = "failed";
+        state.error = action.error.message || "";
+      });
+    builder
+      .addCase(getOneMatchAsync.pending, (state) => {
+        state.matchesStatus = "waiting";
+      })
+      .addCase(getOneMatchAsync.fulfilled, (state, action) => {
+        if (action.payload !== null) {
+          // state.matches = matches.map(item: {
+          //     name: string;
+          //     number: number;
+          //     red1Team: { number: number };
+          //     red2Team: { number: number };
+          //     red3Team: { number: number };
+          //     blue1Team: { number: number };
+          //     blue2Team: { number: number };
+          //     blue3Team: { number: number };
+          //     red1TeamScore: { scouter: Scouter };
+          //     red2TeamScore: { scouter: Scouter };
+          //     red3TeamScore: { scouter: Scouter };
+          //     blue1TeamScore: { scouter: Scouter };
+          //     blue2TeamScore: { scouter: Scouter };
+          //     blue3TeamScore: { scouter: Scouter };
+          // })=>{
+          // if (item.name==action.payload.name) {
+          //  return {
+          //       name: action.payload.name,
+          //       number: action.payload.number,
+          //       teamNumbers: {
+          //         red1: action.payload.red1Team.number,
+          //         red2: action.payload.red2Team.number,
+          //         red3: action.payload.red3Team.number,
+          //         blue1: action.payload.blue1Team.number,
+          //         blue2: action.payload.blue2Team.number,
+          //         blue3: action.payload.blue3Team.number,
+          //       },
+          //       scouters: {
+          //         red1: action.payload.red1TeamScore.scouter,
+          //         red2: action.payload.red2TeamScore.scouter,
+          //         red3: action.payload.red3TeamScore.scouter,
+          //         blue1: action.payload.blue1TeamScore.scouter,
+          //         blue2: action.payload.blue2TeamScore.scouter,
+          //         blue3: action.payload.blue3TeamScore.scouter,
+          //       },
+          //     };
+          //  } else return item;
+          // }
+          state.matches?.sort((a, b) => a.number - b.number);
+
+          state.matchesStatus = "succeeded";
+        } else {
+          state.matchesStatus = "idle";
+        }
+      })
+      .addCase(getOneMatchAsync.rejected, (state, action) => {
         state.matchesStatus = "failed";
         state.error = action.error.message || "";
       });

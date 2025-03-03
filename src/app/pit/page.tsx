@@ -147,10 +147,11 @@ export default function Pit() {
                   onChange={(e) => setDrivetrain(e.target.value as DrivetrainType|undefined)} // Updates drivetrain on selection
                 >
                   <option value={undefined}>Select...</option>
-                  <option value={DrivetrainType.SWERVE}>Swerve</option>
-                  <option value={DrivetrainType.TANK}>Tank</option>
-                  <option value={DrivetrainType.MECANUM}>Mecanum</option>
-                  <option value={DrivetrainType.OTHER}>Other</option>
+                  {Object.keys(DrivetrainType).map((type) => {
+                    return(
+                      <option key={type} value={type}>{type}</option>
+                    )
+                  })}
                 </Form.Control>
               </Form.Group>
             </Col>
@@ -164,13 +165,11 @@ export default function Pit() {
                   onChange={(e) => setWheels(e.target.value as WheelType|undefined)} // Updates wheel type on selection
                 >
                   <option value={undefined}>Select...</option>
-                  <option value={WheelType.COLSUNS}>Colsuns</option>
-                  <option value={WheelType.BLACKNITRITE}>Black Nitrite</option>
-                  <option value={WheelType.BLUENITRITE}>Blue Nitrite</option>
-                  <option value={WheelType.TPU}>TPU</option>
-                  <option value={WheelType.WHITEANDYMARK}>White AndyMark</option>
-                  <option value={WheelType.MECANUM}>Mecanum</option>
-                  <option value={WheelType.OTHER}>Other</option>
+                  {Object.keys(WheelType).map((type) => {
+                    return(
+                      <option key={type} value={type}>{type}</option>
+                    )
+                  })}
                 </Form.Control>
               </Form.Group>
             </Col>
@@ -184,9 +183,11 @@ export default function Pit() {
                   onChange={(e) => setIntake(e.target.value as IntakeType|undefined)} // Updates intake type on selection
                 >
                   <option value={undefined}>Select...</option>
-                  <option value={IntakeType.MECHANICAL}>Mechanical</option>
-                  <option value={IntakeType.PNEUMATIC}>Pneumatic</option>
-                  <option value={IntakeType.OTHER}>Other</option>
+                  {Object.keys(IntakeType).map((type) => {
+                    return(
+                      <option key={type} value={type}>{type}</option>
+                    )
+                  })}
                 </Form.Control>
               </Form.Group>
             </Col>

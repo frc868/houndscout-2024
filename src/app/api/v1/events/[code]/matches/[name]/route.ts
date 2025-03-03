@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 //mainDataSlice/getActiveTeamNumberAsync
-//Gets all teams, teamScores, and scouters currently set to each station during a certain match.
+//Gets information on a certain match in an event, including teams, teamScores, and scouters.
 export async function GET(
   req: Request,
   { params }: { params: {

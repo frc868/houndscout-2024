@@ -42,15 +42,21 @@ export default function Admin() {
   
   useEffect(() => {
     //Every second, these functions get data from the database.
-    //OPTIONAL: I just shoehorned every dispatch in this page here; if you have the time, please optimize.
     const interval = setInterval(async () => {
-      await dispatch(getActiveEventAsync());
-      await dispatch(getActiveMatchAsync());
       await dispatch(getScoutersAsync());
       await dispatch(getEventsAsync());
       await dispatch(getHeartbeatsAsync());
-      await dispatch(getAllTeamsAsync());
       await dispatch(getBlueOnLeftAsync());
+      await dispatch(getActiveEventAsync());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [dispatch]);
+
+  useEffect(() => {
+    //These things relate to the active event.
+    const interval = setInterval(async () => {
+      //Every second, these functions get match and team-related data from the database.
+      await dispatch(getAllTeamsAsync());
 
       //These two things only trigger after the event code has been loaded.
       //For some reason it errored when I put them in the same thing.
@@ -64,7 +70,16 @@ export default function Admin() {
         ));
     }, 1000);
     return () => clearInterval(interval);
-  }, [dispatch, mainData.activeEvent?.code, mainData.activeMatchName]);
+  }, [dispatch, mainData.activeEvent?.code]);
+
+  useEffect(() => {
+    //Every second, these functions get data from the database.
+    //These things relate to the active match.
+    const interval = setInterval(async () => {
+      await dispatch(getActiveMatchAsync());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [dispatch, mainData.activeMatchName]);
 
   //Displays a loading screen if these haven't been filled in the state yet.
   //This prevents errors from trying to render things too early.
