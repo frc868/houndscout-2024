@@ -14,7 +14,7 @@ generator erd {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")//Links to your .env file; see README for more details.
+  url      = env("DATABASE_URL") //Links to your .env file; see README for more details.
 }
 
 // The tables/collections in a database. See README for setup details.
@@ -79,36 +79,42 @@ model Team {
   blue2Matches Match[]     @relation("Blue2Team")
   blue3Matches Match[]     @relation("Blue3Team")
   teamScores   TeamScore[]
-  
-  firstPicklist     Boolean     @default(false)
-  secondPicklist    Boolean     @default(false)
 
-//Pit
-//UPDATE CYCLE: Please review this section between years to ensure all necessary data is being tracked.
-  drivetrain  DrivetrainType?
-  wheels      WheelType?
-  intake      IntakeType?
-  weight      Decimal?
-  hasAuton    Boolean?
-  comments    String?
-  robotImage  String?
+  firstPicklist  Boolean   @default(false)
+  secondPicklist Boolean   @default(false)
+  pitData        pitData?
+}
 
-  canIntakeGroundCoral               Boolean?
-  canIntakeStationCoral              Boolean?
-  canIntakeGroundAlgae               Boolean?
-  canIntakeReefAlgae                 Boolean?
-  canRemoveReefAlgaeWithoutIntake    Boolean?
+model pitData {
+  id     Int  @id @default(autoincrement())
+  teamId Int  @unique
+  team   Team @relation(fields: [teamId], references: [id])
 
-  canScoreReefL1      Boolean?
-  canScoreReefL2      Boolean?
-  canScoreReefL3      Boolean?
-  canScoreReefL4      Boolean?
-  canScoreNet         Boolean?
-  canScoreProcessor   Boolean?
+  //UPDATE CYCLE: Please review this section between years to ensure all necessary data is being tracked.
+  drivetrain DrivetrainType?
+  wheels     WheelType?
+  intake     IntakeType?
+  weight     Decimal?
+  hasAuton   Boolean?
+  comments   String?
+  robotImage String?
 
-  canPark      Boolean?
-  canShallow   Boolean?
-  canDeep      Boolean?
+  canIntakeGroundCoral            Boolean?
+  canIntakeStationCoral           Boolean?
+  canIntakeGroundAlgae            Boolean?
+  canIntakeReefAlgae              Boolean?
+  canRemoveReefAlgaeWithoutIntake Boolean?
+
+  canScoreReefL1    Boolean?
+  canScoreReefL2    Boolean?
+  canScoreReefL3    Boolean?
+  canScoreReefL4    Boolean?
+  canScoreNet       Boolean?
+  canScoreProcessor Boolean?
+
+  canPark    Boolean?
+  canShallow Boolean?
+  canDeep    Boolean?
 }
 
 //Represents a match in an event. Should be auto-filled using The Blue Alliance API.
@@ -162,28 +168,28 @@ model TeamScore {
   teamId Int
   team   Team @relation(fields: [teamId], references: [id])
 
-//Prematch
-  preloaded             Boolean              @default(true)
-  autoStartingZone      AutoStartingZone?
+  //Prematch
+  preloaded        Boolean           @default(true)
+  autoStartingZone AutoStartingZone?
 
-//Auton (UPDATE CYCLE)
-  leftStartingZone      Boolean              @default(false)
+  //Auton (UPDATE CYCLE)
+  leftStartingZone Boolean @default(false)
   //The following three lines are left over from Crescendo. See the crescendo_archive branch to see how it works.
   // autoGamePieces        AutoGamePiece[] //Crescendo: The pieces the robot attempted to pick up
   // missingAutoGamePieces AutoGamePiece[] //Crescendo: The pieces the robot attempted but failed to pick up
   // autoGamePiecesScored  Int                  @default(0) //Crescendo: The overall pieces scored
-  
-//Scoring Events (UPDATE CYCLE)
-  CoralScoringEvents     CoralScoringEvent[]
-  AlgaeScoringEvents     AlgaeScoringEvent[]
 
-  incapSegments         IncapSegment[]
+  //Scoring Events (UPDATE CYCLE)
+  CoralScoringEvents CoralScoringEvent[]
+  AlgaeScoringEvents AlgaeScoringEvent[]
 
-//Endgame
-  endgameType             EndgameType?
-  endgameSuccess          Boolean?   @default(false)
+  incapSegments IncapSegment[]
 
-//Postmatch
+  //Endgame
+  endgameType    EndgameType?
+  endgameSuccess Boolean?     @default(false)
+
+  //Postmatch
   driverSkillRating Int?
   result            Result?
   playedDefense     Boolean?
@@ -194,35 +200,36 @@ model TeamScore {
   scouter   Scouter? @relation(fields: [scouterId], references: [id])
   scouterId Int?
 
-  red1Match        Match?             @relation("Red1TeamScore")
-  red2Match        Match?             @relation("Red2TeamScore")
-  red3Match        Match?             @relation("Red3TeamScore")
-  blue1Match       Match?             @relation("Blue1TeamScore")
-  blue2Match       Match?             @relation("Blue2TeamScore")
-  blue3Match       Match?             @relation("Blue3TeamScore")
+  red1Match  Match? @relation("Red1TeamScore")
+  red2Match  Match? @relation("Red2TeamScore")
+  red3Match  Match? @relation("Red3TeamScore")
+  blue1Match Match? @relation("Blue1TeamScore")
+  blue2Match Match? @relation("Blue2TeamScore")
+  blue3Match Match? @relation("Blue3TeamScore")
 }
 
 //The following models are based on scoring events. There's one for each game piece.
 //UPDATE CYCLE: Please ensure these models match each type of game piece types in the current event.
 model CoralScoringEvent {
-  id                Int              @id @default(autoincrement())
+  id                Int                 @id @default(autoincrement())
   intakeLocation    CoralIntakeLocation
   scoringLevel      CoralScoringLevel? //If the piece was dropped, anything scoring related won't be filled in.
   scoringSide       CoralScoringSide? //Auto only.
-  dropped           Boolean          @default(false) //For dropping the piece before a scoring attempt was made
-  failedScoring     Boolean          @default(false) //For trying to score and failing
+  dropped           Boolean             @default(false) //For dropping the piece before a scoring attempt was made
+  failedScoring     Boolean             @default(false) //For trying to score and failing
   timestampPickedUp Decimal //The time the game piece was selected, or the start time if going from preload.
   timestampScored   Decimal //Just do this based on whatever scoring input was clicked first for accuracy purposes.
 
   teamScoreId Int
   teamScore   TeamScore @relation(fields: [teamScoreId], references: [id])
 }
+
 model AlgaeScoringEvent {
-  id                Int              @id @default(autoincrement())
+  id                Int                   @id @default(autoincrement())
   intakeLocation    AlgaeIntakeLocation
   scoringLocation   AlgaeScoringLocation?
-  dropped           Boolean          @default(false)
-  failedScoring     Boolean          @default(false)
+  dropped           Boolean               @default(false)
+  failedScoring     Boolean               @default(false)
   timestampPickedUp Decimal
   timestampScored   Decimal
 
@@ -261,6 +268,7 @@ enum CoralIntakeLocation {
   TELEOPGROUND
   TELEOPSTATION
 }
+
 enum AlgaeIntakeLocation {
   AUTOREEF1
   AUTOREEF2
@@ -284,14 +292,16 @@ enum CoralScoringLevel {
   LEVEL3
   LEVEL4
 }
+
 enum CoralScoringSide {
   SIDE1
   SIDE2
-  SIDE3//I think these should go clockwise with 3 and 4 the closest to the starting line, just for consistency.
+  SIDE3 //I think these should go clockwise with 3 and 4 the closest to the starting line, just for consistency.
   SIDE4
   SIDE5
   SIDE6
 }
+
 enum AlgaeScoringLocation {
   NET
   PROCESSOR
@@ -340,6 +350,7 @@ enum DrivetrainType {
   MECANUM
   OTHER
 }
+
 enum WheelType {
   COLSUNS
   BLACKNITRITE
@@ -349,6 +360,7 @@ enum WheelType {
   MECANUM
   OTHER
 }
+
 enum IntakeType {
   MECHANICAL
   PNEUMATIC

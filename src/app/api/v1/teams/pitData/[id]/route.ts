@@ -2,20 +2,16 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 //Currently unimplemented.
-//Gets a specified team
+//Gets pit data for a specified team
 export async function GET(
   req: Request,
-  { params }: { params: { number: string } }
+  { params }: { params: { id: number } }
 ) {
   let team;
   try {
-    team = await prisma.team.findUniqueOrThrow({
+    team = await prisma.pitData.findUniqueOrThrow({
       where: {
-        number: Number(params.number),
-      },
-      include: {
-        teamScores: true,
-        events: true,
+        teamId: Number(params.id),
       },
     });
   } catch (e) {
@@ -31,19 +27,41 @@ export async function GET(
 // UPDATE CYCLE: Ensure this matches the pit scouting section of the Team model.
 export async function PATCH(
   req: Request,
-  { params }: { params: { number: string } }
+  { params }: { params: { id: number } }
 ) {
   const data = await req.json();
 
   let team;
   try {
-    team = await prisma.team.update({
+    team = await prisma.pitData.update({
       where: {
-        number: Number(params.number),
+        teamId: Number(params.id),
       },
       data: {
-        firstPicklist: data.firstPicklist,
-        secondPicklist: data.secondPicklist,
+        drivetrain: data.drivetrain,
+        wheels: data.wheels,
+        intake: data.intake,
+        weight: data.weight,
+        hasAuton: data.hasAuton,
+        comments: data.comments,
+        robotImage: data.robotImage,
+
+        canIntakeGroundCoral: data.canIntakeGroundCoral,
+        canIntakeStationCoral: data.canIntakeStationCoral,
+        canIntakeGroundAlgae: data.canIntakeGroundAlgae,
+        canIntakeReefAlgae: data.canIntakeReefAlgae,
+        canRemoveReefAlgaeWithoutIntake: data.canRemoveReefAlgaeWithoutIntake,
+
+        canScoreReefL1: data.canScoreReefL1,
+        canScoreReefL2: data.canScoreReefL2,
+        canScoreReefL3: data.canScoreReefL3,
+        canScoreReefL4: data.canScoreReefL4,
+        canScoreNet: data.canScoreNet,
+        canScoreProcessor: data.canScoreProcessor,
+
+        canPark: data.canPark,
+        canShallow: data.canShallow,
+        canDeep: data.canDeep,
       },
     });
   } catch {

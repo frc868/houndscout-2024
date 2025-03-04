@@ -157,7 +157,7 @@ export const sendPitData = createAsyncThunk(
   "scores/sendPitData",
   async (
     {
-      teamNumber,
+      id,
       drivetrain,
       wheels,
       intake,
@@ -180,7 +180,7 @@ export const sendPitData = createAsyncThunk(
       canShallow,
       canDeep,
     }: {
-      teamNumber: number;
+      id: number;
       drivetrain?: DrivetrainType;
       wheels?: WheelType;
       intake?: IntakeType;
@@ -209,7 +209,7 @@ export const sendPitData = createAsyncThunk(
     const wheelsInput=wheels==undefined?null:wheels;
     const intakeInput=intake==undefined?null:intake;
     const res = await axios.patch(
-      `/api/v1/teams/${teamNumber}`,
+      `/api/v1/teams/pitData/${id}`,
       {
         drivetrain: drivetrainInput,
         wheels: wheelsInput,

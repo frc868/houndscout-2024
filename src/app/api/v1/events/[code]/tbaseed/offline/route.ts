@@ -40,7 +40,7 @@ export async function POST(
     const teamData = JSON.parse(data.teams) as TBATeam[];
 
     teamData.forEach(async (team) => {
-      await prisma.team.upsert({
+      let newTeam=await prisma.team.upsert({
         where: {
           number: team.team_number,
         },
@@ -53,7 +53,15 @@ export async function POST(
           location: `${team.city}, ${team.state_prov}, ${team.country}`,
           events: { connect: { code: params.code } },
         },
+        include: {
+          pitData: true,
+        }
       });
+      if (newTeam.pitData==null){
+        await prisma.pitData.create({
+          data: {team: { connect: { number: team.team_number } } }
+        });
+      }
     });
 
     const matchData = (JSON.parse(data.matches) as TBAMatch[])

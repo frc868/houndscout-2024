@@ -83,13 +83,13 @@ export default function Pit() {
     <>
       <StatusBar isConnected={true} />
       {submitted ? (
-        <div className="d-flex justify-content-center align-items-center h-75 flex-column">
+        <div className="d-flex justify-content-center align-items-center h-75 flex-column bg-success-subtle">
           <h1 className="display-1 fw-bold">Submitted successfully!</h1>
           <h1 className="mt-3">Please reload to submit another entry.</h1>
         </div>
       ) : (
         <>
-          <h1 className="d-flex justify-content-center mt-1">Pit Scouting Form (WIP)</h1>
+          <h1 className="d-flex justify-content-center mt-1">Pit Scouting Form</h1>
           <Row className="d-flex justify-content-center">
             {ready ? (
               <div className="d-flex justify-content-center mt-3">
@@ -132,9 +132,6 @@ export default function Pit() {
               </Col>
             </Row>
           )}
-
-
-
 
           <Row className="my-5">
             <Col className="d-flex justify-content-center align-items-center" md={4}>
@@ -289,7 +286,7 @@ export default function Pit() {
                 />
                 <Form.Check
                   type="checkbox"
-                  label="Hang on Deep Cate"
+                  label="Hang on Deep Cage"
                   checked={canDeep}
                   onChange={() => setCanDeep(!canDeep)}
                 />
@@ -332,7 +329,7 @@ export default function Pit() {
                   }else{
                     dispatch(
                       sendPitData({
-                        teamNumber: teamNumber as number,
+                        id: adminData.eventTeams?.filter((team)=>team.number==teamNumber)[0].id as number,
                         drivetrain: drivetrain as DrivetrainType,
                         wheels: wheels as WheelType,
                         intake: intake as IntakeType,
