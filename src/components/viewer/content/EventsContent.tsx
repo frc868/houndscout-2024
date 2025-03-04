@@ -16,29 +16,36 @@ interface Props {
 export default function EventsContent({rankings}: Props) {
   const dispatch = useDispatch<AppDispatch>();
 
-  const [coralIntake, setCoralIntake] = useState<CoralIntakeLocation|undefined|string>(undefined);
-  const [coralLevel, setCoralLevel] = useState<CoralScoringLevel|undefined|string>(undefined);
-  const [coralSide, setCoralSide] = useState<CoralScoringSide|undefined|string>(undefined);
-  const [algaeIntake, setAlgaeIntake] = useState<AlgaeIntakeLocation|undefined|string>(undefined);
-  const [algaeScoring, setAlgaeScoring] = useState<AlgaeScoringLocation|undefined|string>(undefined);
+  const [coralIntake, setCoralIntake] = useState({
+    ...(Object.fromEntries(Object.values(CoralIntakeLocation).filter((key) => isNaN(Number(key))).map((key) => [key, false]))),
+  });
+  const [coralLevel, setCoralLevel] = useState({
+    ...(Object.fromEntries(Object.values(CoralScoringLevel).filter((key) => isNaN(Number(key))).map((key) => [key, false]))),
+  });
+  const [coralSide, setCoralSide] = useState({
+    ...(Object.fromEntries(Object.values(CoralScoringSide).filter((key) => isNaN(Number(key))).map((key) => [key, false]))),
+  });
+
+  const [algaeIntake, setAlgaeIntake] = useState({
+    ...(Object.fromEntries(Object.values(AlgaeIntakeLocation).filter((key) => isNaN(Number(key))).map((key) => [key, false]))),
+  });
+  const [algaeScoring, setAlgaeScoring] = useState({
+    ...(Object.fromEntries(Object.values(AlgaeScoringLocation).filter((key) => isNaN(Number(key))).map((key) => [key, false]))),
+  });
 
   const [sortField, setSortField] = useState<keyof Ranking | null>(null);
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
-  const filterCoral = (scoringEvent: CoralScoringEvent)=>{
-    if (Object.values(CoralIntakeLocation).includes(coralIntake as any)&&scoringEvent.intakeLocation!=coralIntake) return false;
-    if (coralIntake=="Auto"&&scoringEvent.intakeLocation.startsWith("AUTO")) return false;
-    if (coralIntake=="Teleop"&&scoringEvent.intakeLocation.startsWith("TELEOP")) return false;
-    if (coralLevel && scoringEvent.scoringLevel!=coralLevel) return false;
-    if (coralSide && scoringEvent.scoringSide!=coralSide) return false;
+  const coralFilter = (event: CoralScoringEvent)=>{
+    if (Object.values(coralIntake).some(value => value === true)&&(event.intakeLocation==undefined||event.intakeLocation==null||coralIntake[event.intakeLocation] !== true)) return false;
+    if (Object.values(coralLevel).some(value => value === true)&&(event.scoringLevel==undefined||event.scoringLevel==null||coralLevel[event.scoringLevel] !== true)) return false;
+    if (Object.values(coralSide).some(value => value === true)&&(event.scoringSide==undefined||event.scoringSide==null||coralSide[event.scoringSide] !== true)) return false;
     return true;
   }
 
-  const filterAlgae = (scoringEvent: AlgaeScoringEvent)=>{
-    if (Object.values(AlgaeIntakeLocation).includes(algaeIntake as any)&&scoringEvent.intakeLocation!=algaeIntake) return false;
-    if (algaeIntake=="Auto"&&scoringEvent.intakeLocation.startsWith("AUTO")) return false;
-    if (algaeIntake=="Teleop"&&scoringEvent.intakeLocation.startsWith("TELEOP")) return false;
-    if (algaeScoring && scoringEvent.scoringLocation!=algaeScoring) return false;
+  const algaeFilter = (event: AlgaeScoringEvent)=>{
+    if (Object.values(algaeIntake).some(value => value === true)&&(event.intakeLocation==undefined||event.intakeLocation==null||algaeIntake[event.intakeLocation] !== true)) return false;
+    if (Object.values(algaeScoring).some(value => value === true)&&(event.scoringLocation==undefined||event.scoringLocation==null||algaeScoring[event.scoringLocation] !== true)) return false;
     return true;
   }
 
@@ -48,17 +55,17 @@ export default function EventsContent({rankings}: Props) {
       return {
         ...r,
         coralpermatch: r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
-          const gameAmount = score.CoralScoringEvents.filter(filterCoral).length;
+          const gameAmount = score.CoralScoringEvents.filter(coralFilter).length;
           return total + gameAmount;
         }, 0) / (r.totalgames),
         coralaccuracy: r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
-          const gameAmount = score.CoralScoringEvents.filter(filterCoral).filter(
+          const gameAmount = score.CoralScoringEvents.filter(coralFilter).filter(
             (event) => !event.failedScoring
           ).length;
           return total + gameAmount;
         }, 0) / (r.totalgames),
         coralcycletime: r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
-          const totalMatchTime = score.CoralScoringEvents.filter(filterCoral).reduce(
+          const totalMatchTime = score.CoralScoringEvents.filter(coralFilter).reduce(
             (sum, segment) => 
               sum +
               (Number(segment.timestampScored) -
@@ -67,17 +74,17 @@ export default function EventsContent({rankings}: Props) {
           return total + totalMatchTime;
         }, 0) / (r.teamScores.length * 1000),
         algaepermatch: r.teamScores.filter(score=>score.submitted).filter(score=>score.submitted).reduce((total, score) => {
-          const gameAmount = score.AlgaeScoringEvents.filter(filterAlgae).length;
+          const gameAmount = score.AlgaeScoringEvents.filter(algaeFilter).length;
           return total + gameAmount;
         }, 0) / (r.totalgames),
         algaeaccuracy: r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
-          const gameAmount = score.AlgaeScoringEvents.filter(filterAlgae).filter(
+          const gameAmount = score.AlgaeScoringEvents.filter(algaeFilter).filter(
             (event) => !event.failedScoring
           ).length;
           return total + gameAmount;
         }, 0) / (r.totalgames),
         algaecycletime: r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
-          const totalMatchTime = score.AlgaeScoringEvents.filter(filterAlgae).reduce(
+          const totalMatchTime = score.AlgaeScoringEvents.filter(algaeFilter).reduce(
             (sum, segment) => 
               sum +
               (Number(segment.timestampScored) -
@@ -263,113 +270,73 @@ export default function EventsContent({rankings}: Props) {
       <Row className="d-flex flex-row">
         <Col md={2}>
           <h5>Coral Intake Location:</h5>
-          <Dropdown className="mt-1" style={{ width: '100%' }}>
-            <Dropdown.Toggle
-              variant="secondary"
-            >
-              {coralIntake}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <ul className="list-unstyled">
-                <Dropdown.Item key={1} onMouseDown={() => setCoralIntake(undefined)}>N/A</Dropdown.Item>
-                <Dropdown.Item key={2} onMouseDown={() => setCoralIntake("Auto")}>Auto</Dropdown.Item>
-                <Dropdown.Item key={3} onMouseDown={() => setCoralIntake("Teleop")}>Teleop</Dropdown.Item>
-                <Dropdown.Item key={4} onMouseDown={() => setCoralIntake("AUTOPRELOAD")}>Preload</Dropdown.Item>
-                <Dropdown.Item key={5} onMouseDown={() => setCoralIntake("AUTOGROUND1")}>G1 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={6} onMouseDown={() => setCoralIntake("AUTOGROUND2")}>G2 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={7} onMouseDown={() => setCoralIntake("AUTOGROUND3")}>G3 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={8} onMouseDown={() => setCoralIntake("AUTOSTATION1")}>S1 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={9} onMouseDown={() => setCoralIntake("AUTOSTATION2")}>S2 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={10} onMouseDown={() => setCoralIntake("TELEOPGROUND")}>G (Teleop)</Dropdown.Item>
-                <Dropdown.Item key={100} onMouseDown={() => setCoralIntake("TELEOPSTATION")}>S (Teleop)</Dropdown.Item>
-              </ul>
-            </Dropdown.Menu>
-          </Dropdown>
+          {Object.keys(CoralIntakeLocation).map((type) => {
+            return(
+              <Form.Check
+                key={type}
+                type="checkbox"
+                label={type}
+                checked={coralIntake[type]}
+                onChange={() => {setCoralIntake((prev) => ({...prev, [type]: !prev[type],}))}}
+              />
+            )
+          })}
         </Col>
         <Col md={2}>
           <h5>Coral Scoring Level:</h5>
-          <Dropdown className="mt-1" style={{ width: '100%' }}>
-            <Dropdown.Toggle
-              variant="secondary"
-            >
-              {coralLevel}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <ul className="list-unstyled">
-                <Dropdown.Item key={1} onMouseDown={() => setCoralLevel(undefined)}>N/A</Dropdown.Item>
-                <Dropdown.Item key={2} onMouseDown={() => setCoralLevel("LEVEL1")}>Level 1</Dropdown.Item>
-                <Dropdown.Item key={3} onMouseDown={() => setCoralLevel("LEVEL2")}>Level 2</Dropdown.Item>
-                <Dropdown.Item key={4} onMouseDown={() => setCoralLevel("LEVEL3")}>Level 3</Dropdown.Item>
-                <Dropdown.Item key={5} onMouseDown={() => setCoralLevel("LEVEL4")}>Level 4</Dropdown.Item>
-              </ul>
-            </Dropdown.Menu>
-          </Dropdown>
+          {Object.keys(CoralScoringLevel).map((type) => {
+            return(
+              <Form.Check
+                key={type}
+                type="checkbox"
+                label={type}
+                checked={coralLevel[type]}
+                onChange={() => {setCoralLevel((prev) => ({...prev, [type]: !prev[type],}))}}
+              />
+            )
+          })}
         </Col>
         <Col md={2}>
           <h5>Coral Scoring Side (Auto):</h5>
-          <Dropdown className="mt-1" style={{ width: '100%' }}>
-            <Dropdown.Toggle
-              variant="secondary"
-            >
-              {coralSide}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <ul className="list-unstyled">
-                <Dropdown.Item key={1} onMouseDown={() => setCoralSide(undefined)}>N/A</Dropdown.Item>
-                <Dropdown.Item key={2} onMouseDown={() => setCoralSide("SIDE1")}>R1 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={3} onMouseDown={() => setCoralSide("SIDE2")}>R2 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={4} onMouseDown={() => setCoralSide("SIDE3")}>R3 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={5} onMouseDown={() => setCoralSide("SIDE4")}>R4 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={4} onMouseDown={() => setCoralSide("SIDE3")}>R5 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={5} onMouseDown={() => setCoralSide("SIDE4")}>R6 (Auto)</Dropdown.Item>
-              </ul>
-            </Dropdown.Menu>
-          </Dropdown>
+          {Object.keys(CoralScoringSide).map((type) => {
+            return(
+              <Form.Check
+                key={type}
+                type="checkbox"
+                label={type}
+                checked={coralSide[type]}
+                onChange={() => {setCoralSide((prev) => ({...prev, [type]: !prev[type],}))}}
+              />
+            )
+          })}
         </Col>
         <Col md={3}>
           <h5>Algae Intake Location:</h5>
-          <Dropdown className="mt-1" style={{ width: '100%' }}>
-            <Dropdown.Toggle
-              variant="secondary"
-            >
-              {algaeIntake}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <ul className="list-unstyled">
-                <Dropdown.Item key={1} onMouseDown={() => setAlgaeIntake(undefined)}>N/A</Dropdown.Item>
-                <Dropdown.Item key={2} onMouseDown={() => setAlgaeIntake("Auto")}>Auto</Dropdown.Item>
-                <Dropdown.Item key={3} onMouseDown={() => setAlgaeIntake("Teleop")}>Teleop</Dropdown.Item>
-                <Dropdown.Item key={4} onMouseDown={() => setAlgaeIntake("AUTOGROUND1")}>G1 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={5} onMouseDown={() => setAlgaeIntake("AUTOGROUND2")}>G2 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={6} onMouseDown={() => setAlgaeIntake("AUTOGROUND3")}>G3 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={7} onMouseDown={() => setAlgaeIntake("AUTOREEF1")}>R1 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={8} onMouseDown={() => setAlgaeIntake("AUTOREEF2")}>R2 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={9} onMouseDown={() => setAlgaeIntake("AUTOREEF3")}>R3 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={10} onMouseDown={() => setAlgaeIntake("AUTOREEF4")}>R4 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={11} onMouseDown={() => setAlgaeIntake("AUTOREEF5")}>R5 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={12} onMouseDown={() => setAlgaeIntake("AUTOREEF6")}>R6 (Auto)</Dropdown.Item>
-                <Dropdown.Item key={13} onMouseDown={() => setAlgaeIntake("TELEOPGROUND")}>G (Teleop)</Dropdown.Item>
-                <Dropdown.Item key={14} onMouseDown={() => setAlgaeIntake("TELEOPREEF")}>R (Teleop)</Dropdown.Item>
-              </ul>
-            </Dropdown.Menu>
-          </Dropdown>
+          {Object.keys(AlgaeIntakeLocation).map((type) => {
+            return(
+              <Form.Check
+                key={type}
+                type="checkbox"
+                label={type}
+                checked={algaeIntake[type]}
+                onChange={() => {setAlgaeIntake((prev) => ({...prev, [type]: !prev[type],}))}}
+              />
+            )
+          })}
         </Col>
         <Col md={3}>
           <h5>Algae Scoring Location:</h5>
-          <Dropdown className="mt-1" style={{ width: '100%' }}>
-            <Dropdown.Toggle
-              variant="secondary"
-            >
-              {algaeScoring}
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <ul className="list-unstyled">
-                <Dropdown.Item key={1} onMouseDown={() => setAlgaeScoring(undefined)}>N/A</Dropdown.Item>
-                <Dropdown.Item key={2} onMouseDown={() => setAlgaeScoring("NET")}>Net</Dropdown.Item>
-                <Dropdown.Item key={3} onMouseDown={() => setAlgaeScoring("PROCESSOR")}>Processor</Dropdown.Item>
-              </ul>
-            </Dropdown.Menu>
-          </Dropdown>
+          {Object.keys(AlgaeScoringLocation).map((type) => {
+            return(
+              <Form.Check
+                key={type}
+                type="checkbox"
+                label={type}
+                checked={algaeScoring[type]}
+                onChange={() => {setAlgaeScoring((prev) => ({...prev, [type]: !prev[type],}))}}
+              />
+            )
+          })}
         </Col>
       </Row>
       <Table

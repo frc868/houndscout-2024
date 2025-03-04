@@ -18,15 +18,13 @@ export default function PitContent({rankings}: Props) {
     const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
     const [drivetrain, setDrivetrain] = useState({
-      ...(Object.fromEntries(Object.values(DrivetrainType).map((val) => [val, true]))),
+      ...(Object.fromEntries(Object.values(DrivetrainType).filter((key) => isNaN(Number(key))).map((key) => [key, false]))),
     });
     const [wheels, setWheels] = useState({
-      ...(Object.fromEntries(
-        Object.values(WheelType).map((val) => [val, true]))),
+      ...(Object.fromEntries(Object.values(WheelType).filter((key) => isNaN(Number(key))).map((key) => [key, false]))),
     });
     const [intake, setIntake] = useState({
-      ...(Object.fromEntries(
-        Object.values(IntakeType).map((val) => [val, true]))),
+      ...(Object.fromEntries(Object.values(IntakeType).filter((key) => isNaN(Number(key))).map((key) => [key, false]))),
     });
 
     const [groundCoralEnabled, setGroundCoralEnabled] = useState<boolean>(false);
@@ -50,36 +48,33 @@ export default function PitContent({rankings}: Props) {
     const [firstPicklistEnabled, setFirstPicklistEnabled] = useState<boolean>(false);
     const [secondPicklistEnabled, setSecondPicklistEnabled] = useState<boolean>(false);
 
-    const drivetrainFilter = (ranking:Ranking) => {
-      var settings=Object.fromEntries(
-        Object.entries(drivetrain).filter(([key, value]) => value == true)
-      );
-      if(ranking.drivetrain !== undefined && ranking.drivetrain !== null && Object.keys(settings).includes(ranking.drivetrain)){
-        return true;
-      } else return false;
+    const drivetrainFilter = (ranking: Ranking) => {
+      if (Object.values(drivetrain).some(value => value === true)){
+        return ranking.drivetrain !== undefined &&
+          ranking.drivetrain !== null &&
+          drivetrain[ranking.drivetrain] === true;
+      } else return true;
+    }
+
+    const wheelFilter = (ranking: Ranking) => {
+      if (Object.values(wheels).some(value => value === true)){
+        return ranking.wheels !== undefined &&
+          ranking.wheels !== null &&
+          wheels[ranking.wheels] === true;
+      } else return true;
+    }
+
+    const intakeFilter = (ranking: Ranking) => {
+      if (Object.values(intake).some(value => value === true)){
+        return ranking.intake !== undefined &&
+          ranking.intake !== null &&
+          intake[ranking.intake] === true;
+      } else return true;
     }
 
     // Sorting function
     const sortedRankings = useMemo(() => {
-      let newRankings = JSON.parse(JSON.stringify(rankings as Ranking[]));
-      // newRankings.filter(drivetrainFilter);
-      if (!drivetrain.swerve) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain!=DrivetrainType.SWERVE);
-      if (!drivetrain.tank) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain!=DrivetrainType.TANK);
-      if (!drivetrain.mecanum) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain!=DrivetrainType.MECANUM);
-      if (!drivetrain.other) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain!=DrivetrainType.OTHER);
-      if (Object.values(drivetrain).some(value => value === false||value===undefined)) newRankings=newRankings.filter((ranking:Ranking)=>ranking.drivetrain!=undefined);
-      if (!wheels.colsuns) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.COLSUNS);
-      if (!wheels.blacknitrite) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.BLACKNITRITE);
-      if (!wheels.bluenitrite) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.BLUENITRITE);
-      if (!wheels.tpu) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.TPU);
-      if (!wheels.whiteandymark) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.WHITEANDYMARK);
-      if (!wheels.mecanum) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.MECANUM);
-      if (!wheels.other) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=WheelType.OTHER);
-      if (Object.values(wheels).some(value => value === false||value===undefined)) newRankings=newRankings.filter((ranking:Ranking)=>ranking.wheels!=undefined);
-      if (!intake.mechanical) newRankings=newRankings.filter((ranking:Ranking)=>ranking.intake!=IntakeType.MECHANICAL);
-      if (!intake.pneumatic) newRankings=newRankings.filter((ranking:Ranking)=>ranking.intake!=IntakeType.PNEUMATIC);
-      if (!intake.other) newRankings=newRankings.filter((ranking:Ranking)=>ranking.intake!=IntakeType.OTHER);
-      if (Object.values(intake).some(value => value === false||value===undefined)) newRankings=newRankings.filter((ranking:Ranking)=>ranking.intake!=undefined);
+      let newRankings = JSON.parse(JSON.stringify(rankings as Ranking[])).filter(drivetrainFilter).filter(wheelFilter).filter(intakeFilter);
       if (groundCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakegroundcoral);
       if (stationCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakestationcoral);
       if (groundAlgaeEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakegroundalgae);
@@ -315,8 +310,8 @@ export default function PitContent({rankings}: Props) {
                       key={type}
                       type="checkbox"
                       label={type}
-                      checked={drivetrain[type.toLowerCase()]}
-                      onChange={() => {setDrivetrain((prev) => ({...prev, [type.toLowerCase()]: !prev[type.toLowerCase()],}))}}
+                      checked={drivetrain[type]}
+                      onChange={() => {setDrivetrain((prev) => ({...prev, [type]: !prev[type],}))}}
                     />
                   )
                 })}
@@ -337,8 +332,8 @@ export default function PitContent({rankings}: Props) {
                       key={type}
                       type="checkbox"
                       label={type}
-                      checked={wheels[type.toLowerCase()]}
-                      onChange={() => {setWheels((prev) => ({...prev, [type.toLowerCase()]: !prev[type.toLowerCase()],}))}}
+                      checked={wheels[type]}
+                      onChange={() => {setWheels((prev) => ({...prev, [type]: !prev[type],}))}}
                     />
                   )
                 })}
@@ -359,8 +354,8 @@ export default function PitContent({rankings}: Props) {
                       key={type}
                       type="checkbox"
                       label={type}
-                      checked={intake[type.toLowerCase()]}
-                      onChange={() => {setIntake((prev) => ({...prev, [type.toLowerCase()]: !prev[type.toLowerCase()],}))}}
+                      checked={intake[type]}
+                      onChange={() => {setIntake((prev) => ({...prev, [type]: !prev[type],}))}}
                     />
                   )
                 })}
