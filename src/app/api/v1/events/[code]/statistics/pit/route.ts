@@ -34,7 +34,7 @@ export async function GET(
     const pitDataWithDetails = teams
       //Calculates extra data about each teamScore
       //UPDATE CYCLE: Ensure all scoring locations for all scoring events are calculated here, including dropped pieces.
-      .filter((team) => team.pitData?.submitted===true)
+      .filter((team) => {team.pitData?.submitted===true})
       .map((team) => ({
         ...team.pitData,
         teamNumber: team.number,
@@ -68,17 +68,33 @@ export async function POST(
   try {
 
     data.stats.forEach(async (stat: { teamNumber: any; drivetrain: any; wheels: any; intake: any; hasAuton: any; comments: any; robotImage: any; canIntakeGroundCoral: any; canIntakeStationCoral: any; canIntakeGroundAlgae: any; canIntakeReefAlgae: any; canRemoveReefAlgaeWithoutIntake: any; canScoreReefL1: any; canScoreReefL2: any; canScoreReefL3: any; canScoreReefL4: any; canScoreNet: any; canScoreProcessor: any; canPark: any; canShallow: any; canDeep: any; }) => {
-      let team=await prisma.team.findFirst({
+      await prisma.pitData.upsert({
         where: {
-          number: stat.teamNumber,
+          team: { connect: { number: stat.teamNumber } },
         },
-        include: {
-          pitData: true,
-        }
-      });
-      if (team?.pitData==null){
-        await prisma.pitData.create({
-          data: {
+        update: {
+            drivetrain: stat.drivetrain,
+            wheels: stat.wheels,
+            intake: stat.intake,
+            hasAuton: stat.hasAuton,
+            comments: stat.comments,
+            robotImage: stat.robotImage,
+            canIntakeGroundCoral: stat.canIntakeGroundCoral,
+            canIntakeStationCoral: stat.canIntakeStationCoral,
+            canIntakeGroundAlgae: stat.canIntakeGroundAlgae,
+            canIntakeReefAlgae: stat.canIntakeReefAlgae,
+            canRemoveReefAlgaeWithoutIntake: stat.canRemoveReefAlgaeWithoutIntake,
+            canScoreReefL1: stat.canScoreReefL1,
+            canScoreReefL2: stat.canScoreReefL2,
+            canScoreReefL3: stat.canScoreReefL3,
+            canScoreReefL4: stat.canScoreReefL4,
+            canScoreNet: stat.canScoreNet,
+            canScoreProcessor: stat.canScoreProcessor,
+            canPark: stat.canPark,
+            canShallow: stat.canShallow,
+            canDeep: stat.canDeep,
+          },
+        create: {
             team: { connect: { number: stat.teamNumber } },
             drivetrain: stat.drivetrain,
             wheels: stat.wheels,
@@ -100,9 +116,8 @@ export async function POST(
             canPark: stat.canPark,
             canShallow: stat.canShallow,
             canDeep: stat.canDeep,
-          }
-        });
-      }
+          },
+      })
     });
 
     newTeams = await prisma.team.findMany();
