@@ -102,7 +102,7 @@ export default function RankingsContent({rankings}: Props) {
       }}
       className="m-4 bg-dark rounded-3 font-monospace text-center"
     >
-      <h1>Welcome to the HoundScout data viewer! (WIP)</h1>
+      <h1>Welcome to the HoundScout data viewer!</h1>
       <p>This is a built-in tool that provides easy access to the collected data. Feel free to use this page to make the best possible decisions!</p>
       <Table
         bordered

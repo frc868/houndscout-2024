@@ -59,7 +59,7 @@ export default function ScouterManageModal({
                 setShowScouterNew(false);
               }
             }
-          ></NewScouterForm>
+          />
         )}
         <ListGroup>
           {scouters.map((scouter: Scouter)=>(

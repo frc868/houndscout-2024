@@ -115,6 +115,8 @@ model pitData {
   canPark    Boolean?
   canShallow Boolean?
   canDeep    Boolean?
+
+  submitted Boolean @default(false)
 }
 
 //Represents a match in an event. Should be auto-filled using The Blue Alliance API.

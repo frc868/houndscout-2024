@@ -20,20 +20,20 @@ export default function ScoresContent({scores, teams}: Props) {
     const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   
     // Sorting function
-    const sortedRankings = useMemo(() => {
-      return scores;
-      // if (!sortField) return rankings;
+    // const sortedRankings = useMemo(() => {
+    //   return scores;
+    //   // if (!sortField) return rankings;
   
-      // return [...rankings].sort((a, b) => {
-      //   const valueA = a[sortField];
-      //   const valueB = b[sortField];
+    //   // return [...rankings].sort((a, b) => {
+    //   //   const valueA = a[sortField];
+    //   //   const valueB = b[sortField];
   
-      //   if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
-      //   if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
-      //   return 0;
-      // });
+    //   //   if (valueA < valueB) return sortDirection === "asc" ? -1 : 1;
+    //   //   if (valueA > valueB) return sortDirection === "asc" ? 1 : -1;
+    //   //   return 0;
+    //   // });
       
-    }, [scores, sortField, sortDirection]);
+    // }, [scores, sortField, sortDirection]);
   
     // Calculate max values for coloring
     // const maxValues = useMemo(() => {

@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useMemo, useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import { Dropdown, Form, Table } from "react-bootstrap";
@@ -48,29 +48,29 @@ export default function PitContent({rankings}: Props) {
     const [firstPicklistEnabled, setFirstPicklistEnabled] = useState<boolean>(false);
     const [secondPicklistEnabled, setSecondPicklistEnabled] = useState<boolean>(false);
 
-    const drivetrainFilter = (ranking: Ranking) => {
+    const drivetrainFilter =  useCallback((ranking: Ranking) => {
       if (Object.values(drivetrain).some(value => value === true)){
         return ranking.drivetrain !== undefined &&
           ranking.drivetrain !== null &&
           drivetrain[ranking.drivetrain] === true;
       } else return true;
-    }
+    }, [drivetrain]);
 
-    const wheelFilter = (ranking: Ranking) => {
+    const wheelFilter = useCallback((ranking: Ranking) => {
       if (Object.values(wheels).some(value => value === true)){
         return ranking.wheels !== undefined &&
           ranking.wheels !== null &&
           wheels[ranking.wheels] === true;
       } else return true;
-    }
+    }, [wheels]);
 
-    const intakeFilter = (ranking: Ranking) => {
+    const intakeFilter = useCallback((ranking: Ranking) => {
       if (Object.values(intake).some(value => value === true)){
         return ranking.intake !== undefined &&
           ranking.intake !== null &&
           intake[ranking.intake] === true;
       } else return true;
-    }
+    }, [intake]);
 
     // Sorting function
     const sortedRankings = useMemo(() => {

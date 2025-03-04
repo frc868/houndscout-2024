@@ -62,6 +62,8 @@ export async function PATCH(
         canPark: data.canPark,
         canShallow: data.canShallow,
         canDeep: data.canDeep,
+
+        submitted: true,
       },
     });
   } catch {

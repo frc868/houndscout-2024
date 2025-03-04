@@ -55,6 +55,15 @@ export const updatePicklistsAsync = createAsyncThunk(
   }
 );
 
+export const uploadPitDataAsync = createAsyncThunk(
+  "viewerData/uploadPitDataAsync",
+  async (data: { eventCode: string; stats: string}) => {
+    await axios.post(`/api/v1/events/${data.eventCode}/statistics/pit`, {
+      stats: data.stats,
+    });
+  }
+);
+
 //This one's fairly simple. Just two thunks that get data to be sent to the viewer page, and one to update picklists.
 const initialState: ViewerData = {
   rankings: undefined,

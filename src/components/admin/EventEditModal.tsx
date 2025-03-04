@@ -50,7 +50,7 @@ export default function EventEditModal({
       setEnd(event.endDate?.toISOString().substring(0, 10) as string);
       setAddress(event.address as string);
     }
-  }, [show]);
+  }, [event.address, event.code, event.endDate, event.name, event.startDate, event.weekNumber, show]);
 
   return (
     <Modal centered show={show} size="lg" onHide={handleClose}>
