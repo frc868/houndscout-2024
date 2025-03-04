@@ -125,7 +125,7 @@ export default function PitContent({rankings}: Props) {
         }
         return 0;
       });
-    }, [rankings, groundCoralEnabled, stationCoralEnabled, groundAlgaeEnabled, reefAlgaeEnabled, reefAlgaeNoIntakeEnabled, reefL1Enabled, reefL2Enabled, reefL3Enabled, reefL4Enabled, netEnabled, processorEnabled, parkEnabled, shallowEnabled, deepEnabled, autonEnabled, firstPicklistEnabled, secondPicklistEnabled, drivetrain, intake, wheels, sortDirection, sortField]);
+    }, [rankings, drivetrainFilter, wheelFilter, intakeFilter, groundCoralEnabled, stationCoralEnabled, groundAlgaeEnabled, reefAlgaeEnabled, reefAlgaeNoIntakeEnabled, reefL1Enabled, reefL2Enabled, reefL3Enabled, reefL4Enabled, netEnabled, processorEnabled, parkEnabled, shallowEnabled, deepEnabled, autonEnabled, firstPicklistEnabled, secondPicklistEnabled, sortField, sortDirection]);
   
     // Calculate max values for coloring
     const maxValues = useMemo(() => {

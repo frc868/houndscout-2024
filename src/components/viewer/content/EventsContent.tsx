@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Dropdown, Form, Table } from "react-bootstrap";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { CoralIntakeLocation, CoralScoringLevel, CoralScoringSide, AlgaeIntakeLocation, AlgaeScoringLocation, CoralScoringEvent, AlgaeScoringEvent } from "@prisma/client";
 import { Row, Col } from "react-bootstrap";
 import { Team, Ranking } from "@/lib/enums";
@@ -8,6 +8,7 @@ import TeamDropdown from "@/components/admin/TeamDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import { updatePicklistsAsync } from "@/redux/viewerDataSlice";
+import FieldMap from "../FieldMap";
 
 interface Props {
   rankings: Ranking[];
@@ -36,18 +37,18 @@ export default function EventsContent({rankings}: Props) {
   const [sortField, setSortField] = useState<keyof Ranking | null>(null);
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
-  const coralFilter = (event: CoralScoringEvent)=>{
+  const coralFilter = useCallback((event: CoralScoringEvent)=>{
     if (Object.values(coralIntake).some(value => value === true)&&(event.intakeLocation==undefined||event.intakeLocation==null||coralIntake[event.intakeLocation] !== true)) return false;
     if (Object.values(coralLevel).some(value => value === true)&&(event.scoringLevel==undefined||event.scoringLevel==null||coralLevel[event.scoringLevel] !== true)) return false;
     if (Object.values(coralSide).some(value => value === true)&&(event.scoringSide==undefined||event.scoringSide==null||coralSide[event.scoringSide] !== true)) return false;
     return true;
-  }
+  }, [coralIntake, coralLevel, coralSide])
 
-  const algaeFilter = (event: AlgaeScoringEvent)=>{
+  const algaeFilter = useCallback((event: AlgaeScoringEvent)=>{
     if (Object.values(algaeIntake).some(value => value === true)&&(event.intakeLocation==undefined||event.intakeLocation==null||algaeIntake[event.intakeLocation] !== true)) return false;
     if (Object.values(algaeScoring).some(value => value === true)&&(event.scoringLocation==undefined||event.scoringLocation==null||algaeScoring[event.scoringLocation] !== true)) return false;
     return true;
-  }
+  }, [algaeIntake, algaeScoring])
 
   // Sorting function
   const sortedRankings = useMemo(() => {
@@ -128,7 +129,7 @@ export default function EventsContent({rankings}: Props) {
       return 0;
     });
     
-  }, [rankings, sortField, sortDirection, coralIntake, coralLevel, coralSide, algaeIntake, algaeScoring]);
+  }, [rankings, sortField, coralFilter, algaeFilter, sortDirection]);
 
   // Calculate max values for coloring
   const maxValues = useMemo(() => {
@@ -181,84 +182,7 @@ export default function EventsContent({rankings}: Props) {
       className="m-4 bg-dark rounded-3 font-monospace text-center"
     >
       <h1>Team Scoring Event Data</h1>
-      <p>S: Coral Station<br />G: Ground<br />R: Reef Side</p>
-      <div className="position-relative mt-4" style={{width: "100%"}}>
-          <img
-              alt=""
-              style={{
-                  width: "40%",
-                  height: "auto",
-                  left: "60%",
-              }}
-              src={"/assets/blue_side.png"}
-          />
-          <p 
-            className="position-absolute"
-            style={{ top: "22%", left: "33%" }}
-          >
-            R1
-          </p>
-          <p 
-            className="position-absolute"
-            style={{ top: "22%", left: "44%" }}
-          >
-            R2
-          </p>
-          <p 
-            className="position-absolute"
-            style={{ top: "46%", left: "48%" }}
-          >
-            R3
-          </p>
-          <p 
-            className="position-absolute"
-            style={{ top: "70%", left: "44%" }}
-          >
-            R4
-          </p>
-          <p 
-            className="position-absolute"
-            style={{ top: "70%", left: "33%" }}
-          >
-            R5
-          </p>
-          <p 
-            className="position-absolute"
-            style={{ top: "46%", left: "29%" }}
-          >
-            R6
-          </p>
-          <p 
-            className="position-absolute"
-            style={{ top: "22%", left: "22%" }}
-          >
-            G1
-          </p>
-          <p 
-            className="position-absolute"
-            style={{ top: "46%", left: "22%" }}
-          >
-            G2
-          </p>
-          <p 
-            className="position-absolute"
-            style={{ top: "70%", left: "22%" }}
-          >
-            G3
-          </p>
-          <p 
-            className="position-absolute"
-            style={{ top: "12%", left: "15%" }}
-          >
-            S1
-          </p>
-          <p 
-            className="position-absolute"
-            style={{ top: "80%", left: "15%" }}
-          >
-            S2
-          </p>
-      </div>
+      <FieldMap />
       <Row className="d-flex flex-row">
         <Col md={6}>
           <h3 className="mr-2">Coral Scoring Events:</h3>
