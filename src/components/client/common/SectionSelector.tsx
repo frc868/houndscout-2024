@@ -18,7 +18,6 @@ const postmatchTabRef = useRef<HTMLButtonElement | null>(null);
 const pressedKeys = useRef(new Set<string>());
 useEffect(() => {
   const handleKeydown = (e: KeyboardEvent) => {
-    e.preventDefault();
     // Add the key to the pressedKeys set
     pressedKeys.current.add(e.key);
     // Shifts tab to the next entry if possible

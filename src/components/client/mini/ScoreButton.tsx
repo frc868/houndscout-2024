@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 interface Props {
   active: boolean;
@@ -9,18 +9,20 @@ interface Props {
 
 //Button that indicates the robot scored!
 export default function ScoreButton({ active, handleClick, className, gamePiece }: Props) {
-  function checkForSelection(){
-    if(active){
-      handleClick();
+  const [text,setText]=useState(gamePiece=="coral"?`Q`:`Y`);
+    function checkForSelection(){
+      if(active){
+        handleClick();
+        setText("Done!");
+        setTimeout(()=>{setText(gamePiece=="coral"?`Q`:`Y`)},1000)
+      }
     }
-  }
   // Explicitly typing the buttonRef as pointing to an HTMLButtonElement
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   
   const pressedKeys = useRef(new Set<string>());
   useEffect(() => {
     const handleKeydown = (e: KeyboardEvent) => {
-      e.preventDefault();
       // Add the key to the pressedKeys set
       pressedKeys.current.add(e.key);
       // Presses the the coral scoring side 1 button if active
@@ -62,7 +64,7 @@ export default function ScoreButton({ active, handleClick, className, gamePiece 
       >
         <i className="bi bi-check" />
       </button>
-      <p className="d-flex flex-row justify-content-center"><u>{gamePiece=="coral"?`Q`:`Y`}</u></p>
+      <p className="d-flex flex-row justify-content-center"><u>{text}</u></p>
     </div>
   );
 }

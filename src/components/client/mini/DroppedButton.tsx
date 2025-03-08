@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import { useState } from "react";
 
 interface Props {
   active: boolean;
@@ -14,11 +15,14 @@ export default function DroppedButton({
   className,
   gamePiece,
 }: Props) {
-  function checkForSelection(){
-    if(active){
-      handleSelection();
+  const [text,setText]=useState("Dropped");
+    function checkForSelection(){
+      if(active){
+        handleSelection();
+        setText("Done!");
+        setTimeout(()=>{setText("Dropped")},1000)
+      }
     }
-  }
   return (
     <div className={className || ""}>
       <div
@@ -32,7 +36,7 @@ export default function DroppedButton({
       >
         <i className="bi bi-x mt-1" />
       </div>
-      <p className="text-center">Dropped</p>
+      <p className="text-center">{text}</p>
     </div>
   );
 }

@@ -33,7 +33,6 @@ const buttonRef = useRef<HTMLButtonElement | null>(null);
 const pressedKeys = useRef(new Set<string>());
 useEffect(() => {
   const handleKeydown = (e: KeyboardEvent) => {
-    e.preventDefault();
     // Add the key to the pressedKeys set
     pressedKeys.current.add(e.key);
     // Presses the the coral scoring side 1 button if active
