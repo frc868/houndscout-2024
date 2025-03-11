@@ -82,10 +82,11 @@ export default function MatchAddModal({
     setBlue1(undefined);
     setBlue2(undefined);
     setBlue3(undefined);
+    handleClose();
   }
 
   return (
-    <Modal centered show={show} size="lg" onHide={handleClose}>
+    <Modal centered show={show} size="lg" onHide={clearState}>
       <Modal.Header closeButton>
         <Modal.Title>{submitVar=="success"?"Add New":"Edit"} Match</Modal.Title>
         <MoonLoader
@@ -186,12 +187,6 @@ export default function MatchAddModal({
 
       <Modal.Footer>
         <Button
-          variant="danger"
-          onClick={() => clearState()}
-        >
-          Cancel
-        </Button>
-        <Button
           variant={submitVar}
           onClick={() =>
             {
@@ -210,7 +205,7 @@ export default function MatchAddModal({
             }
           }
         >
-          {showMatchNumber?"Save changes":"Create Match"}
+          {showMatchNumber?"Create Match":"Save changes"}
         </Button>
       </Modal.Footer>
     </Modal>

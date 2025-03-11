@@ -91,14 +91,14 @@ export default function Home() {
           >
             Data Viewer
           </Button>
-          <Button
+          {/* <Button
             className="mx-5 mt-2"
             size="lg"
             variant="secondary"
             href="/sandbox"
           >
             Sandbox Page
-          </Button>
+          </Button> */}
         </Col>
       </Row>
     </>

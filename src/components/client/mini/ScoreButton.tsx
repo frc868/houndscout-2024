@@ -49,7 +49,7 @@ export default function ScoreButton({ active, handleClick, className, gamePiece 
   return (
     <div className={className || ""}>
       <button
-        className={`d-flex justify-content-center align-items-center border border-5 score-button rounded-4 grow ${
+        className={`text-center d-flex justify-content-center align-items-center border border-5 score-button rounded-4 grow ${
           active
             ? "bg-success-subtle border-success text-success"
             : "bg-secondary-subtle border-secondary text-secondary"

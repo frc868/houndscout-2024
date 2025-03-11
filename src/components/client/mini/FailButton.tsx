@@ -49,7 +49,7 @@ export default function FailButton({ active, handleClick, className, gamePiece }
   return (
     <div className={className || ""}>
       <button
-        className={`d-flex justify-content-center align-items-center border border-5 score-button rounded-4 grow ${
+        className={`text-center d-flex justify-content-center align-items-center border border-5 score-button rounded-4 grow ${
           active
             ? "bg-danger-subtle border-danger text-danger"
             : "bg-secondary-subtle border-secondary text-secondary"
