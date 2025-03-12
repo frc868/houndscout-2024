@@ -205,6 +205,7 @@ export async function GET(
             (Number(segment.timestampEnded) -
               Number(segment.timestampStarted)),
           0),
+        totalIncapSegments: teamScore.incapSegments.length,
       }))
       //UPDATE CYCLE: Ensure all scoring events are listed here.
       .map((teamScore) => {
