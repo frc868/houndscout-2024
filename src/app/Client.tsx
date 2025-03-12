@@ -2,6 +2,9 @@
 //You found it! (lame joke punchline)
 
 //The page info for every client page.
+import {
+  setLeftStartingZoneAsync,
+} from "@/redux/scoresSlice";
 import SectionSelector from "@/components/client/common/SectionSelector";
 import StatusBar from "@/components/client/common/StatusBar";
 import { CoralIntakeLocation, AlgaeIntakeLocation, CoralScoringLevel, AlgaeScoringLocation, CoralScoringSide } from "@prisma/client";
@@ -63,6 +66,8 @@ export default function Client({ station }: Props) {
 
   const [incapOn, setIncapOn] = useState(false);
   const [incapStartTime, setIncapStartTime] = useState(0);
+
+  const [mobility, setMobility] = useState(false);
 
   useEffect(() => {
     const update = async () => {
@@ -171,7 +176,11 @@ export default function Client({ station }: Props) {
       if (phrase=="intaking"){
         setCoralStartTime(Date.now());
         setCoralIntakeLocation(data.intakeSelection);
-        setCoralActiveSide("level");  
+        if(!mobility) {
+          await dispatch(setLeftStartingZoneAsync({leftStartingZone: true}));
+          setMobility(true);
+        }
+        setCoralActiveSide("level");
       } else if (phrase=="level"){
         if(data.dropped){
           const event = {
@@ -191,6 +200,10 @@ export default function Client({ station }: Props) {
         } else {
           setCoralEndTime(Date.now());
           setCoralScoringLevel(data.scoringLevel);
+          if(!mobility) {
+            await dispatch(setLeftStartingZoneAsync({leftStartingZone: true}));
+            setMobility(true);
+          }
           if(tab==Section.AUTO){
             setCoralActiveSide("side"); 
           } else {
@@ -235,6 +248,10 @@ export default function Client({ station }: Props) {
       if (phrase=="intaking"){
         setAlgaeStartTime(Date.now());
         setAlgaeIntakeLocation(data.intakeSelection);
+        if(!mobility) {
+          await dispatch(setLeftStartingZoneAsync({leftStartingZone: true}));
+          setMobility(true);
+        }
         setAlgaeActiveSide("scoring");  
       } else if (phrase=="scoring"){
         if(data.dropped){
@@ -254,6 +271,10 @@ export default function Client({ station }: Props) {
         } else {
           setAlgaeEndTime(Date.now());
           setAlgaeScoringLocation(data.scoringLocation);
+          if(!mobility) {
+            await dispatch(setLeftStartingZoneAsync({leftStartingZone: true}));
+            setMobility(true);
+          }
           setAlgaeActiveSide("result"); 
         }
       } else if (phrase == "result") {

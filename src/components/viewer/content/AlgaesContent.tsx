@@ -104,14 +104,14 @@ export default function AlgaesContent({rankings, teams}: Props) {
 
   return (
     <div
-    style={{
-      height: "calc(100% - 2*24px)",
-      width: "calc(100% - 2*24px)",
-      color: "white",
-      overflowX: "auto",
-      overflowY: "auto",
-      float: "right"
-    }}
+      style={{
+        height: "calc(100% - 2*24px)",
+        width: "calc(100% - 2*24px)",
+        color: "white",
+        overflowX: "auto",
+        overflowY: "auto",
+        float: "right"
+      }}
       className="m-4 bg-dark rounded-3 font-monospace text-center"
     >
       <h1>Algae Scoring Event Data</h1>
