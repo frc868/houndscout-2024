@@ -43,11 +43,11 @@ export default function StartingZoneSelector({
           style={
             alliance === Alliance.BLUE
               ? blueOnLeft 
-                ? { position: "absolute", top: "13%", left: "63%" } // Blueside button (blue on left)
-                : { position: "absolute", top: "92%", left: "31%" } // Blueside button (blue on right)
+                ? { position: "absolute", top: "26%", left: "63%" } // Blueside button (blue on left)
+                : { position: "absolute", top: "80%", left: "31%" } // Blueside button (blue on right)
               : blueOnLeft 
-                ? { position: "absolute", top: "92%", left: "30%" } // Redside button (blue on left)
-                : { position: "absolute", top: "13%", left: "64%" } // Redside button (blue on right)
+                ? { position: "absolute", top: "77%", left: "30%" } // Redside button (blue on left)
+                : { position: "absolute", top: "29%", left: "64%" } // Redside button (blue on right)
           }
         >
           <Button
@@ -64,11 +64,11 @@ export default function StartingZoneSelector({
           style={
             alliance === Alliance.BLUE
               ? blueOnLeft 
-                ? { position: "absolute", top: "29%", left: "63%" } // Blueside button (blue on left)
-                : { position: "absolute", top: "76%", left: "31%" } // Blueside button (blue on right)
+                ? { position: "absolute", top: "51%", left: "63%" } // Blueside button (blue on left)
+                : { position: "absolute", top: "55%", left: "31%" } // Blueside button (blue on right)
               : blueOnLeft 
-                ? { position: "absolute", top: "76%", left: "30%" } // Redside button (blue on left)
-                : { position: "absolute", top: "29%", left: "64%" } // Redside button (blue on right)
+                ? { position: "absolute", top: "52%", left: "30%" } // Redside button (blue on left)
+                : { position: "absolute", top: "54%", left: "64%" } // Redside button (blue on right)
           }
         >
           <Button
@@ -85,11 +85,11 @@ export default function StartingZoneSelector({
           style={
             alliance === Alliance.BLUE
               ? blueOnLeft 
-                ? { position: "absolute", top: "46%", left: "63%" } // Blueside button (blue on left)
-                : { position: "absolute", top: "59%", left: "31%" } // Blueside button (blue on right)
+                ? { position: "absolute", top: "76%", left: "63%" } // Blueside button (blue on left)
+                : { position: "absolute", top: "30%", left: "31%" } // Blueside button (blue on right)
               : blueOnLeft 
-                ? { position: "absolute", top: "59%", left: "30%" } // Redside button (blue on left)
-                : { position: "absolute", top: "46%", left: "64%" } // Redside button (blue on right)
+                ? { position: "absolute", top: "27%", left: "30%" } // Redside button (blue on left)
+                : { position: "absolute", top: "79%", left: "64%" } // Redside button (blue on right)
           }
         >
           <Button
