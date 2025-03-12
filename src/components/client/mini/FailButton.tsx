@@ -17,8 +17,8 @@ export default function FailButton({ active, handleClick, className, gamePiece }
       setTimeout(()=>{setText(gamePiece=="coral"?`Z`:`N`)},1000)
     }
   }
-  // Explicitly typing the buttonRef as pointing to an HTMLButtonElement
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  // Explicitly typing the buttonRef as pointing to an HTMLDivElement
+  const buttonRef = useRef<HTMLDivElement | null>(null);
   
   const pressedKeys = useRef(new Set<string>());
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function FailButton({ active, handleClick, className, gamePiece }
   });
   return (
     <div className={className || ""}>
-      <button
+      <div
         className={`text-center d-flex justify-content-center align-items-center border border-5 score-button rounded-4 grow ${
           active
             ? "bg-danger-subtle border-danger text-danger"
@@ -64,7 +64,7 @@ export default function FailButton({ active, handleClick, className, gamePiece }
         ref={buttonRef}
       >
         <i className="bi bi-x" />
-      </button>
+      </div>
       <p className="d-flex flex-row justify-content-center"><u>{text}</u></p>
     </div>
   );
