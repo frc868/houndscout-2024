@@ -106,8 +106,8 @@ export default function PitContent({rankings}: Props) {
         const valueA = a[sortField];
         const valueB = b[sortField];
         console.log(valueA+", "+valueB)
-        if (valueA==undefined||valueA==null) return -1;
-        else if (valueB==undefined||valueB==null) return 1;
+        if (valueA==undefined||valueA==null) return 1;
+      else if (valueB==undefined||valueB==null) return -1;
         else if (valueA < valueB) {
           if (sortDirection === "asc") return -1;
           else return 1;

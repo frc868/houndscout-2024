@@ -29,9 +29,8 @@ export default function RankingsContent({rankings}: Props) {
     return [...rankings].sort((a, b) => {
       const valueA = a[sortField];
       const valueB = b[sortField];
-      console.log(valueA+", "+valueB)
-      if (valueA==undefined||valueA==null) return -1;
-      else if (valueB==undefined||valueB==null) return 1;
+      if (valueA==undefined||valueA==null) return 1;
+      else if (valueB==undefined||valueB==null) return -1;
       else if (valueA < valueB) {
         if (sortDirection === "asc") return -1;
         else return 1;

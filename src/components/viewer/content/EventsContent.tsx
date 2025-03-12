@@ -53,19 +53,20 @@ export default function EventsContent({rankings}: Props) {
   // Sorting function
   const sortedRankings = useMemo(() => {
     let newRankings = rankings.map((r)=>{
+      let totalgames=r.totalgames;
       return {
         ...r,
-        coralpermatch: r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
+        coralpermatch: totalgames==0?null:r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
           const gameAmount = score.CoralScoringEvents.filter(coralFilter).length;
           return total + gameAmount;
         }, 0) / (r.totalgames),
-        coralaccuracy: r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
+        coralaccuracy: totalgames==0?null:r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
           const gameAmount = score.CoralScoringEvents.filter(coralFilter).filter(
             (event) => !event.failedScoring
           ).length;
           return total + gameAmount;
         }, 0) / (r.totalgames),
-        coralcycletime: r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
+        coralcycletime: totalgames==0?null:r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
           const totalMatchTime = score.CoralScoringEvents.filter(coralFilter).reduce(
             (sum, segment) => 
               sum +
@@ -74,17 +75,17 @@ export default function EventsContent({rankings}: Props) {
             0) / score.CoralScoringEvents.length;
           return total + totalMatchTime;
         }, 0) / (r.teamScores.length * 1000),
-        algaepermatch: r.teamScores.filter(score=>score.submitted).filter(score=>score.submitted).reduce((total, score) => {
+        algaepermatch: totalgames==0?null:r.teamScores.filter(score=>score.submitted).filter(score=>score.submitted).reduce((total, score) => {
           const gameAmount = score.AlgaeScoringEvents.filter(algaeFilter).length;
           return total + gameAmount;
         }, 0) / (r.totalgames),
-        algaeaccuracy: r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
+        algaeaccuracy: totalgames==0?null:r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
           const gameAmount = score.AlgaeScoringEvents.filter(algaeFilter).filter(
             (event) => !event.failedScoring
           ).length;
           return total + gameAmount;
         }, 0) / (r.totalgames),
-        algaecycletime: r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
+        algaecycletime: totalgames==0?null:r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
           const totalMatchTime = score.AlgaeScoringEvents.filter(algaeFilter).reduce(
             (sum, segment) => 
               sum +
@@ -108,9 +109,8 @@ export default function EventsContent({rankings}: Props) {
     return [...newRankings].sort((a, b) => {
       const valueA = a[sortField];
       const valueB = b[sortField];
-      console.log(valueA+", "+valueB)
-      if (valueA==undefined||valueA==null) return -1;
-      else if (valueB==undefined||valueB==null) return 1;
+      if (valueA==undefined||valueA==null) return 1;
+      else if (valueB==undefined||valueB==null) return -1;
       else if (valueA < valueB) {
         if (sortDirection === "asc") return -1;
         else return 1;
