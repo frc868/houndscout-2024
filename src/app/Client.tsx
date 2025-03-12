@@ -141,7 +141,7 @@ export default function Client({ station }: Props) {
   }, [mainData.activeMatchName]);
 
 
-  //triggers when intake location is selected
+  //triggers when incap button is pressed
   const handleIncap = async () => {
     if(incapOn){
       const event = {
@@ -176,10 +176,6 @@ export default function Client({ station }: Props) {
       if (phrase=="intaking"){
         setCoralStartTime(Date.now());
         setCoralIntakeLocation(data.intakeSelection);
-        if(!mobility) {
-          await dispatch(setLeftStartingZoneAsync({leftStartingZone: true}));
-          setMobility(true);
-        }
         setCoralActiveSide("level");
       } else if (phrase=="level"){
         if(data.dropped){
@@ -200,10 +196,6 @@ export default function Client({ station }: Props) {
         } else {
           setCoralEndTime(Date.now());
           setCoralScoringLevel(data.scoringLevel);
-          if(!mobility) {
-            await dispatch(setLeftStartingZoneAsync({leftStartingZone: true}));
-            setMobility(true);
-          }
           if(tab==Section.AUTO){
             setCoralActiveSide("side"); 
           } else {
@@ -248,10 +240,6 @@ export default function Client({ station }: Props) {
       if (phrase=="intaking"){
         setAlgaeStartTime(Date.now());
         setAlgaeIntakeLocation(data.intakeSelection);
-        if(!mobility) {
-          await dispatch(setLeftStartingZoneAsync({leftStartingZone: true}));
-          setMobility(true);
-        }
         setAlgaeActiveSide("scoring");  
       } else if (phrase=="scoring"){
         if(data.dropped){
@@ -271,10 +259,6 @@ export default function Client({ station }: Props) {
         } else {
           setAlgaeEndTime(Date.now());
           setAlgaeScoringLocation(data.scoringLocation);
-          if(!mobility) {
-            await dispatch(setLeftStartingZoneAsync({leftStartingZone: true}));
-            setMobility(true);
-          }
           setAlgaeActiveSide("result"); 
         }
       } else if (phrase == "result") {
@@ -365,6 +349,11 @@ export default function Client({ station }: Props) {
                   handleAlgae={handleAlgae}
                   incapOn={incapOn}
                   handleIncap={handleIncap}
+                  mobility={mobility}
+                  handleMobility={async () => {
+                    setMobility(!mobility);
+                    dispatch(setLeftStartingZoneAsync({leftStartingZone: mobility}));
+                  }}
                 />
                 <TeleopContent
                   show={tab === Section.TELEOP}

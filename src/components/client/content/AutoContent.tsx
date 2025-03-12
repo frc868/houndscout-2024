@@ -2,7 +2,7 @@
 
 import AutoCoralPanel from "@/components/client/auto/AutoCoralPanel";
 import AutoAlgaePanel from "@/components/client/auto/AutoAlgaePanel";
-import DroppedPanel from "@/components/client/common/DroppedPanel";
+import SidewaysToggleBox from "@/components/client/mini/SidewaysToggleBox";
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -50,6 +50,8 @@ interface Props {
   ) => void;
   incapOn: boolean;
   handleIncap: () => void;
+  mobility: boolean;
+  handleMobility: () => void;
 }
 
 export default function AutoContent({
@@ -65,56 +67,12 @@ export default function AutoContent({
   handleAlgae,
   incapOn,
   handleIncap,
+  mobility,
+  handleMobility,
 }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const mainData = useSelector((state: ReduxState) => state.mainData);
   const scores = useSelector((state: ReduxState) => state.scores);
-
-  // const [selectedGamePieces, setSelectedGamePieces] = useState<AutoGamePiece[]>(
-  //   []
-  // );
-  // const [missingGamePieces, setMissingGamePieces] = useState<AutoGamePiece[]>(
-  //   []
-  // );
-  // const [numSelected, setNumSelected] = useState<number | undefined>(undefined);
-
-  // const handleIntakeSelection = async (selection: AutoGamePiece) => {
-  //   if (
-  //     selectedGamePieces.includes(selection) &&
-  //     !missingGamePieces.includes(selection)
-  //   )
-  //     setMissingGamePieces((old) => [...old, selection]);
-  //     //If selected game piece already in selected array but not in missing array, adds it to missing array
-  //   else if (
-  //     selectedGamePieces.includes(selection) &&
-  //     missingGamePieces.includes(selection)
-  //   ) {
-  //     setSelectedGamePieces((old) =>
-  //       old.filter((value) => value !== selection)
-  //     );
-  //     setMissingGamePieces((old) => old.filter((value) => value !== selection));
-  //     //If selected game piece is already in both arrays, removes it from both arrays
-  //   } else {
-  //     setSelectedGamePieces((old) => [...old, selection]);
-  //   }
-
-  //   //Then sends the new game piece arrays to the database.
-  //   await dispatch(
-  //     setAutoGamePiecesAsync({ autoGamePieces: selectedGamePieces })
-  //   );
-  //   await dispatch(
-  //     setMissingAutoGamePiecesAsync({
-  //       missingAutoGamePieces: missingGamePieces,
-  //     })
-  //   );
-  // };
-
-  // const handleScoringSelection = async (numSelected: number) => {
-  //   setNumSelected(numSelected);
-  //   await dispatch(
-  //     setAutoGamePiecesScoredAsync({ autoGamePiecesScored: numSelected })
-  //   );
-  // };
 
   return (
     <div className={`${!show && "d-none"}`}>
@@ -139,12 +97,21 @@ export default function AutoContent({
           />
         </Col>
       </Row>
-      <Row className="d-flex justify-content-center" md={12}>
-        <IncapButton
-          className="text-nowrap my-1"
-          active={incapOn}
-          handleClick={handleIncap}
-        />
+      <Row className="d-flex justify-content-center">
+        <Col className="d-flex justify-content-center align-items-center" md={6}>
+          <IncapButton
+            className="text-nowrap my-1"
+            active={incapOn}
+            handleClick={handleIncap}
+          />
+        </Col>
+        <Col className="d-flex justify-content-center align-items-center" md={6}>
+          <SidewaysToggleBox
+            name="Left Starting Area?"
+            enabled={mobility}
+            handleClick={handleMobility}
+          />
+        </Col>
       </Row>
     </div>
   );
