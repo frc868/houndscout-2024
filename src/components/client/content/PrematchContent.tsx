@@ -36,27 +36,30 @@ export default function PrematchContent({ show, coralActiveSide, handlePreload }
           />
         </Col>
         <Col md={6} className="d-flex justify-content-start">
-          <div className="d-flex flex-column justify-content-center">
-            <div
-              className={`ms-5 px-5 py-3 rounded-4 bg-${
-                mainData.station?.includes("RED") ? "danger" : "primary"
-              }-subtle`}
-            >
-              <h1 className="text-center">
-                {mainData.station?.includes("RED") ? "Red" : "Blue"}{" "}
-                {mainData.station?.[mainData.station?.length - 1]}
-              </h1>
-              <h1 className="text-center">Team {mainData.activeTeamNumber}</h1>
+          <Row>
+            <div className="d-flex flex-column justify-content-center align-items-center">
+              <div
+                className={`ms-5 px-5 py-3 rounded-4 bg-${
+                  mainData.station?.includes("RED") ? "danger" : "primary"
+                }-subtle`}
+              >
+                <h1 className="text-center">
+                  {mainData.station?.includes("RED") ? "Red" : "Blue"}{" "}
+                  {mainData.station?.[mainData.station?.length - 1]}
+                </h1>
+                <h1 className="text-center">Team {mainData.activeTeamNumber}</h1>
+              </div>
+              <p>Remember: Only switch tabs when the buzzers sound.</p>
             </div>
-          </div>
-          <div className="d-flex flex-column justify-content-center">
-            <MiniToggleBox
-              className="mx-5"
-              name="Coral Preload?"
-              enabled={coralActiveSide=="level"}
-              handleClick={handlePreload}
-            />
-          </div>
+            <div className="d-flex flex-column justify-content-center align-items-center">
+              <MiniToggleBox
+                className="mx-5"
+                name="Coral Preload?"
+                enabled={coralActiveSide=="level"}
+                handleClick={handlePreload}
+              />
+            </div>
+          </Row>
         </Col>
       </Row>
     </div>

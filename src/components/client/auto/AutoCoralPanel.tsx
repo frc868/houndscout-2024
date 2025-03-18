@@ -138,26 +138,14 @@ export default function AutoCoralPanel({
                                 <LocationButton
                                     className="mt-2"
                                     active={activeSide=="level"&&!incapActive}
-                                    selected={levelSelected==CoralScoringLevel.LEVEL1}
+                                    selected={levelSelected==CoralScoringLevel.LEVEL4}
                                     handleSelection={() => {
                                         handleSelection("level",{
-                                            scoringLevel: CoralScoringLevel.LEVEL1,
+                                            scoringLevel: CoralScoringLevel.LEVEL4,
                                             dropped: false
                                         })
                                     }}
-                                    text="L1"
-                                />
-                                <LocationButton
-                                    className="mt-2"
-                                    active={activeSide=="level"&&!incapActive}
-                                    selected={levelSelected==CoralScoringLevel.LEVEL2}
-                                    handleSelection={() => {
-                                        handleSelection("level",{
-                                            scoringLevel: CoralScoringLevel.LEVEL2,
-                                            dropped: false
-                                        })
-                                    }}
-                                    text="L2"
+                                    text="L4"
                                 />
                                 <LocationButton
                                     className="mt-2"
@@ -174,25 +162,26 @@ export default function AutoCoralPanel({
                                 <LocationButton
                                     className="mt-2"
                                     active={activeSide=="level"&&!incapActive}
-                                    selected={levelSelected==CoralScoringLevel.LEVEL4}
+                                    selected={levelSelected==CoralScoringLevel.LEVEL2}
                                     handleSelection={() => {
                                         handleSelection("level",{
-                                            scoringLevel: CoralScoringLevel.LEVEL4,
+                                            scoringLevel: CoralScoringLevel.LEVEL2,
                                             dropped: false
                                         })
                                     }}
-                                    text="L4"
+                                    text="L2"
                                 />
-                                <DroppedButton
+                                <LocationButton
                                     className="mt-2"
-                                    active={activeSide=="level"}
-                                    gamePiece="algae"
+                                    active={activeSide=="level"&&!incapActive}
+                                    selected={levelSelected==CoralScoringLevel.LEVEL1}
                                     handleSelection={() => {
                                         handleSelection("level",{
-                                            scoringLevel: undefined,
-                                            dropped: true
+                                            scoringLevel: CoralScoringLevel.LEVEL1,
+                                            dropped: false
                                         })
                                     }}
+                                    text="L1"
                                 />
                             </div>
                         </Col>

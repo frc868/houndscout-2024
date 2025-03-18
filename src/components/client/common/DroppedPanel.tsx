@@ -4,10 +4,8 @@ import IncapButton from "../mini/IncapButton";
 import DroppedButton from "../mini/DroppedButton"
 
 interface Props {
-  incapActive: boolean;
   coralActive: boolean;
   algaeActive: boolean;
-  handleIncap: () => void;
   handleCoralDropped: () => void;
   handleAlgaeDropped: () => void;
 }
@@ -15,10 +13,8 @@ interface Props {
 //The amount of notes clicked in AutoIntakePanel determines the numbers you can click for Notes Scored.
 // 1 (preload) + the number of discs clicked.
 export default function DroppedPanel({
-  incapActive,
   coralActive,
   algaeActive,
-  handleIncap,
   handleCoralDropped,
   handleAlgaeDropped,
 }: Props) {
@@ -39,11 +35,6 @@ export default function DroppedPanel({
               handleSelection={handleAlgaeDropped}
           />
       </Col>
-      <IncapButton
-        className="text-nowrap my-1"
-        active={incapActive}
-        handleClick={handleIncap}
-      />
     </div>
   );
 }

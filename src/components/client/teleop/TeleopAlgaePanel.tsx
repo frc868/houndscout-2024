@@ -96,17 +96,6 @@ export default function AutoAlgaePanel({
                             }}
                             text="Proc."
                         />
-                        <DroppedButton
-                            className="mt-2"
-                            active={activeSide=="scoring"}
-                            gamePiece="algae"
-                            handleSelection={() => {
-                                handleSelection("scoring",{
-                                    scoringLocation: undefined,
-                                    dropped: true
-                                })
-                            }}
-                        />
                     </div>
                 </Col>
                 <Col className="d-flex flex-column">

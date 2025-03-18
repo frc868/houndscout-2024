@@ -31,7 +31,7 @@ export default function StatusBar({
       </Navbar.Text>
 
       {/* UPDATE CYCLE "VERY IMPORTANT": Make sure the year is accurate. */}
-      <Navbar.Brand>HoundScout v2025.0</Navbar.Brand>
+      <Navbar.Brand>HoundScout v2025.1</Navbar.Brand>
       
       <Navbar.Text className="justify-self-end text-end me-4 w-50">
         {isConnected ? (

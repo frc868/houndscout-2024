@@ -2,6 +2,7 @@
 
 import AutoCoralPanel from "@/components/client/auto/AutoCoralPanel";
 import AutoAlgaePanel from "@/components/client/auto/AutoAlgaePanel";
+import DroppedPanel from "@/components/client/common/DroppedPanel";
 import SidewaysToggleBox from "@/components/client/mini/SidewaysToggleBox";
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
@@ -98,14 +99,32 @@ export default function AutoContent({
         </Col>
       </Row>
       <Row className="d-flex justify-content-center">
-        <Col className="d-flex justify-content-center align-items-center" md={6}>
+        <Col className="d-flex justify-content-center align-items-center" md={4}>
           <IncapButton
             className="text-nowrap my-1"
             active={incapOn}
             handleClick={handleIncap}
           />
         </Col>
-        <Col className="d-flex justify-content-center align-items-center" md={6}>
+        <Col className="d-flex justify-content-center align-items-center" md={4}>
+          <DroppedPanel
+            coralActive={coralActiveSide=="level"}
+            algaeActive={algaeActiveSide=="scoring"}
+            handleCoralDropped={() => {
+              handleCoral("level",{
+                  scoringLevel: undefined,
+                  dropped: true
+              })
+            }}
+            handleAlgaeDropped={() => {
+              handleAlgae("scoring",{
+                  scoringLocation: undefined,
+                  dropped: true
+              })
+            }}
+          />
+        </Col>
+        <Col className="d-flex justify-content-center align-items-center" md={4}>
           <SidewaysToggleBox
             name="Left Starting Area?"
             enabled={mobility}

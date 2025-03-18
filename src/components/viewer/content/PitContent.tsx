@@ -183,6 +183,7 @@ export default function PitContent({rankings}: Props) {
           hover
           variant="dark"
           className="table-responsive"
+          style={{width: "calc(225vw - 2*24px)"}}
         >
           <thead>
             <tr>
@@ -615,7 +616,7 @@ export default function PitContent({rankings}: Props) {
                 <td>{r.candeep?"yes":"no"}</td>
                 <td>{r.hasauton?"yes":"no"}</td>
                 <td>{Number(r.weight)}</td>
-                <td>{r.comments}</td>
+                <td style={{fontSize: "12px"}}>{r.comments}</td>
                 <td>
                 <div
                   className={"d-flex justify-content-center align-items-center"}

@@ -105,13 +105,33 @@ export default function TeleopContent({
             />
         </Col>
       </Row>
-      <Row className="d-flex justify-content-center" md={12}>
-        <IncapButton
-          className="text-nowrap my-1"
-          active={incapOn}
-          handleClick={handleIncap}
-        />
-      </Row>
+      <Row className="d-flex justify-content-center">
+              <Col className="d-flex justify-content-center align-items-center" md={6}>
+                <IncapButton
+                  className="text-nowrap my-1"
+                  active={incapOn}
+                  handleClick={handleIncap}
+                />
+              </Col>
+              <Col className="d-flex justify-content-center align-items-center" md={6}>
+                <DroppedPanel
+                  coralActive={coralActiveSide=="level"}
+                  algaeActive={algaeActiveSide=="scoring"}
+                  handleCoralDropped={() => {
+                    handleCoral("level",{
+                        scoringLevel: undefined,
+                        dropped: true
+                    })
+                  }}
+                  handleAlgaeDropped={() => {
+                    handleAlgae("scoring",{
+                        scoringLocation: undefined,
+                        dropped: true
+                    })
+                  }}
+                />
+              </Col>
+            </Row>
     </div>
   );
 }

@@ -77,7 +77,7 @@ export default function ScoresContent({scores, teams}: Props) {
       <div
         style={{
           height: "calc(100% - 2*24px)",
-          width: "calc(100% - 2*24px)",
+          width: "calc(85vw - 2*24px)",
           color: "white",
           overflowX: "auto",
           overflowY: "auto",
@@ -149,6 +149,7 @@ export default function ScoresContent({scores, teams}: Props) {
             hover
             variant="dark"
             className="table-responsive"
+            style={{width: "calc(150vw - 2*24px)"}}
           >
             <thead>
               <tr>
@@ -165,7 +166,6 @@ export default function ScoresContent({scores, teams}: Props) {
                   "Driver Skill",
                   "Result",
                   "Played Defense",
-                  "Comments",
                 ].map((header) => (
                   <th
                     key={header}
@@ -179,7 +179,17 @@ export default function ScoresContent({scores, teams}: Props) {
                     {header}
                   </th>
                 ))}
+                <th
+                  key="Comments"
+                  onClick={() =>
+                    handleSort("comments")
+                  }
+                  style={{ cursor: "pointer", width: "1000%" }}
+                >
+                  Comments
+                </th>
               </tr>
+              
             </thead>
             <tbody>
               {scores.filter((score)=>score.teamNumber==team.number).map((r, idx) => (
@@ -195,7 +205,7 @@ export default function ScoresContent({scores, teams}: Props) {
                   <td>{r.driverSkillRating}</td>
                   <td>{r.result}</td>
                   <td>{r.playedDefense?"yes":"no"}</td>
-                  <td>{r.comments}</td>
+                  <td style={{fontSize: "12px"}}>{r.comments}</td>
                 </tr>
               ))}
             </tbody>
