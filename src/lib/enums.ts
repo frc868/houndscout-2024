@@ -85,6 +85,14 @@ export interface Match {
     blue2: Scouter;
     blue3: Scouter;
   };
+  submitted: {
+    red1: boolean;
+    red2: boolean;
+    red3: boolean;
+    blue1: boolean;
+    blue2: boolean;
+    blue3: boolean;
+  };
 }
 
 export interface Scouter {

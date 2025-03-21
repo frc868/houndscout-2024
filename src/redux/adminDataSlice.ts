@@ -97,12 +97,12 @@ export const editMatchAsync = createAsyncThunk(
     eventCode: string;
     number: number;
     name: string;
-    red1: number;
-    red2: number;
-    red3: number;
-    blue1: number;
-    blue2: number;
-    blue3: number;
+    red1?: number;
+    red2?: number;
+    red3?: number;
+    blue1?: number;
+    blue2?: number;
+    blue3?: number;
   }) => {
     await axios.patch(`/api/v1/events/${data.eventCode}/matches/${data.name}`, {
       ...data,
@@ -325,12 +325,12 @@ export const mainData = createSlice({
               blue1Team: { number: number };
               blue2Team: { number: number };
               blue3Team: { number: number };
-              red1TeamScore: { scouter: Scouter };
-              red2TeamScore: { scouter: Scouter };
-              red3TeamScore: { scouter: Scouter };
-              blue1TeamScore: { scouter: Scouter };
-              blue2TeamScore: { scouter: Scouter };
-              blue3TeamScore: { scouter: Scouter };
+              red1TeamScore: { scouter: Scouter, submitted: boolean };
+              red2TeamScore: { scouter: Scouter, submitted: boolean };
+              red3TeamScore: { scouter: Scouter, submitted: boolean };
+              blue1TeamScore: { scouter: Scouter, submitted: boolean };
+              blue2TeamScore: { scouter: Scouter, submitted: boolean };
+              blue3TeamScore: { scouter: Scouter, submitted: boolean };
             }) => {
               return {
                 name: item.name,
@@ -350,6 +350,14 @@ export const mainData = createSlice({
                   blue1: item.blue1TeamScore.scouter,
                   blue2: item.blue2TeamScore.scouter,
                   blue3: item.blue3TeamScore.scouter,
+                },
+                submitted: {
+                  red1: item.red1TeamScore.submitted,
+                  red2: item.red2TeamScore.submitted,
+                  red3: item.red3TeamScore.submitted,
+                  blue1: item.blue1TeamScore.submitted,
+                  blue2: item.blue2TeamScore.submitted,
+                  blue3: item.blue3TeamScore.submitted,
                 },
               };
             }

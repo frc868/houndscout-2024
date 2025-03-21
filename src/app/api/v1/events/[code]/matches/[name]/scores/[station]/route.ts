@@ -2,12 +2,12 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 //Currently unimplemented.
-// Returns the scoring events and incap segments of a certain teamScore
+// Returns a certain teamScore, including scoring events and incap segments.
 export async function GET(
   req: Request,
   { params }: { params: {
     code: string; //Event code (typically the active event)
-    name: string; //Match name (typically the active match, formatteed qm_[number])
+    name: string; //Match name (typically the active match, formatted qm_[number])
     station: string //Station (typically the one that called this route)
   } }
 ) {
@@ -48,7 +48,7 @@ export async function PATCH(
   req: Request,
   { params }: { params: {
     code: string; //Event code (typically the active event)
-    name: string; //Match name (typically the active match, formatteed qm_[number])
+    name: string; //Match name (typically the active match, formatted qm_[number])
     station: string //Station (typically the one that called this route)
   } }
 ) {

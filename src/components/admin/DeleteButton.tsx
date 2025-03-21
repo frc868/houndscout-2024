@@ -6,29 +6,25 @@ interface Props {
   handleDelete: () => void;
 }
 
-//If you see DeleteButton in common, I copied it over here because I wasn't sure how to connecct to that from admin.
+//This button is used to delete matches, scouters, teams and events.
+//As a safety measure, delete buttons open a confirmation alert before actually going through with it.
 export default function DeleteButton({ variant, handleDelete }: Props) {
   const [deleteConfirm, setDeleteConfirm] = useState(false);
 
-  //This button will ask you to click a second time to actually go thorough with the process.
-  //The window for the second click is 1.5 seconds.
-  useEffect(() => {
-    if (deleteConfirm) {
-      const timeout = setTimeout(async () => {
-        setDeleteConfirm(false);
-      }, 1500);
-      return () => clearTimeout(timeout);
+  const checkForDelete=()=>{
+    if(confirm("Are you sure you want to delete this?")==true){
+      handleDelete();
     }
-  }, [deleteConfirm]);
+  }
 
   return (
     <Button
       size="sm"
       className="mx-2"
       variant={variant}
-      onClick={deleteConfirm ? handleDelete : () => setDeleteConfirm(true)}
+      onClick={checkForDelete}
     >
-      {deleteConfirm ? "Confirm" : "Delete"}
+      Delete
     </Button>
   );
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { MoonLoader } from "react-spinners";
-import TeamDropdown from "./TeamDropdown";
+import TeamDropdown from "../TeamDropdown";
 import { Team } from "@/lib/enums";
 
 interface Props {

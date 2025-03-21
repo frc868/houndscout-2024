@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import { Form } from "react-bootstrap";
 import SubmitButton from "@/components/client/postmatch/SubmitButton";
-import TeamDropdown from "@/components/admin/TeamDropdown";
+import TeamDropdown from "@/components/TeamDropdown";
 import SidewaysToggleBox from "@/components/client/mini/SidewaysToggleBox";
 import StatusBar from "@/components/client/common/StatusBar";
 import CommentsBox from "@/components/client/postmatch/CommentsBox";

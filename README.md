@@ -14,14 +14,18 @@ npm run dev
 Ctrl+Click on (http://localhost:3012) in the terminal to view the results.
 
 # Credits:
-David R (Framework, Crescendo version)
+David R (App framework, Crescendo version)
 
 Timothy M (Reefscape version programming, Data viewer, Manual, Most comments)
 
-Gavin K, Sage R, and Mr. Ford (Suggestions, Quality assurance)
+Gavin K (Codespace integration, Suggestions, Quality assurance)
 
-Isabelle I (Reefscape version design)
+Swayam P, Sage R, and Mr. Ford (Suggestions, Quality assurance)
+
+Isabelle I (Reefscape version design and images)
 
 Michael K (Pit scouting)
 
-Mr. Potts (Keyboard inputs)
+Mr. Potts (Keyboard input framework)
+
+Everyone that scouted at our last competition (quality assurance)

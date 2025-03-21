@@ -4,7 +4,7 @@ import { AppDispatch, ReduxState } from "@/redux/store";
 import { Row, Col, Table } from "react-bootstrap";
 import { Team, Ranking, DetailedTeamScore } from "@/lib/enums";
 import { updatePicklistsAsync } from "@/redux/viewerDataSlice";
-import TeamDropdown from "@/components/admin/TeamDropdown";
+import TeamDropdown from "@/components/TeamDropdown";
 import { TeamScore } from "@prisma/client";
 
 interface Props {

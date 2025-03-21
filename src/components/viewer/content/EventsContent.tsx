@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback } from "react";
 import { CoralIntakeLocation, CoralScoringLevel, CoralScoringSide, AlgaeIntakeLocation, AlgaeScoringLocation, CoralScoringEvent, AlgaeScoringEvent } from "@prisma/client";
 import { Row, Col } from "react-bootstrap";
 import { Team, Ranking } from "@/lib/enums";
-import TeamDropdown from "@/components/admin/TeamDropdown";
+import TeamDropdown from "@/components/TeamDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import { updatePicklistsAsync } from "@/redux/viewerDataSlice";
