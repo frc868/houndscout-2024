@@ -68,7 +68,32 @@ export async function POST(
   let newPitData;
   try {
 
-    data.stats.map(async (stat: { teamNumber: number; id: number, drivetrain: DrivetrainType; wheels: WheelType; intake: IntakeType; hasAuton: boolean; comments: string; robotImage: string; canIntakeGroundCoral: boolean; canIntakeStationCoral: boolean; canIntakeGroundAlgae: boolean; canIntakeReefAlgae: boolean; canRemoveReefAlgaeWithoutIntake: boolean; canScoreReefL1: boolean; canScoreReefL2: boolean; canScoreReefL3: boolean; canScoreReefL4: boolean; canScoreNet: boolean; canScoreProcessor: boolean; canPark: boolean; canShallow: boolean; canDeep: boolean; }) => {
+    data.stats.map(async (stat: {
+      teamNumber: number;
+      id: number;
+      drivetrain: DrivetrainType;
+      wheels: WheelType;
+      intake: IntakeType;
+      hasAuton: boolean;
+      comments: string;
+      robotImage: string;
+      canIntakeGroundCoral: boolean;
+      canIntakeLollipopCoral: boolean;
+      canIntakeStationCoral: boolean;
+      canIntakeGroundAlgae: boolean;
+      canIntakeLollipopAlgae: boolean;
+      canIntakeReefAlgae: boolean;
+      canRemoveReefAlgaeWithoutIntake: boolean;
+      canScoreReefL1: boolean;
+      canScoreReefL2: boolean;
+      canScoreReefL3: boolean;
+      canScoreReefL4: boolean;
+      canScoreNet: boolean;
+      canScoreProcessor: boolean;
+      canPark: boolean;
+      canShallow: boolean;
+      canDeep: boolean;
+    }) => {
       let team=await prisma.team.findFirst({
         where: {
           number: stat.teamNumber,
@@ -88,8 +113,10 @@ export async function POST(
             comments: stat.comments,
             robotImage: stat.robotImage,
             canIntakeGroundCoral: stat.canIntakeGroundCoral,
+            canIntakeLollipopCoral: stat.canIntakeLollipopCoral,
             canIntakeStationCoral: stat.canIntakeStationCoral,
             canIntakeGroundAlgae: stat.canIntakeGroundAlgae,
+            canIntakeLollipopAlgae: stat.canIntakeLollipopAlgae,
             canIntakeReefAlgae: stat.canIntakeReefAlgae,
             canRemoveReefAlgaeWithoutIntake: stat.canRemoveReefAlgaeWithoutIntake,
             canScoreReefL1: stat.canScoreReefL1,

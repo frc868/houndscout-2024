@@ -100,8 +100,10 @@ model pitData {
   robotImage String?
 
   canIntakeGroundCoral            Boolean?
+  canIntakeLollipopCoral          Boolean?
   canIntakeStationCoral           Boolean?
   canIntakeGroundAlgae            Boolean?
+  canIntakeLollipopAlgae          Boolean?
   canIntakeReefAlgae              Boolean?
   canRemoveReefAlgaeWithoutIntake Boolean?
 

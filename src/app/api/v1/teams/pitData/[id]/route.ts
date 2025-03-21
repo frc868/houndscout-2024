@@ -22,7 +22,6 @@ export async function GET(
 }
 
 // ScoresSlice/sendPitData
-// ViewerDataSlice/updatePicklistsAsync
 // Updates info about a specified team.
 // UPDATE CYCLE: Ensure this matches the pit scouting section of the Team model.
 export async function PATCH(
@@ -30,7 +29,7 @@ export async function PATCH(
   { params }: { params: { id: number } }
 ) {
   const data = await req.json();
-
+  
   let team;
   try {
     team = await prisma.pitData.update({
@@ -47,8 +46,10 @@ export async function PATCH(
         robotImage: data.robotImage,
 
         canIntakeGroundCoral: data.canIntakeGroundCoral,
+        canIntakeLollipopCoral: data.canIntakeLollipopCoral,
         canIntakeStationCoral: data.canIntakeStationCoral,
         canIntakeGroundAlgae: data.canIntakeGroundAlgae,
+        canIntakeLollipopAlgae: data.canIntakeLollipopAlgae,
         canIntakeReefAlgae: data.canIntakeReefAlgae,
         canRemoveReefAlgaeWithoutIntake: data.canRemoveReefAlgaeWithoutIntake,
 
@@ -66,27 +67,9 @@ export async function PATCH(
         submitted: true,
       },
     });
-  } catch {
+  } catch (e) {
+    console.error(e);
     return NextResponse.json({ ok: false }, { status: 400 });
   }
   return NextResponse.json({ team, ok: true });
-}
-
-//adminDataSlice/deleteTeamAsync
-// Deletes the team with the specified number.
-export async function DELETE(
-  req: Request,
-  { params }: { params: { number: string } }
-) {
-  let team;
-  try {
-    team = await prisma.team.delete({
-      where: {
-        number: Number(params.number),
-      },
-    });
-  } catch {
-    return NextResponse.json({ ok: false }, { status: 404 });
-  }
-  return NextResponse.json({ team, ok: true }, { status: 202 });
 }

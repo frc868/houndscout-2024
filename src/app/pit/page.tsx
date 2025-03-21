@@ -47,8 +47,10 @@ export default function Pit() {
   const [comments, setComments] = useState(""); // Additional comments field
 
   const [canIntakeGroundCoral, setCanIntakeGroundCoral] = useState<boolean>(false);
+  const [canIntakeLollipopCoral, setCanIntakeLollipopCoral] = useState<boolean>(false);
   const [canIntakeStationCoral, setCanIntakeStationCoral] = useState<boolean>(false);
   const [canIntakeGroundAlgae, setCanIntakeGroundAlgae] = useState<boolean>(false);
+  const [canIntakeLollipopAlgae, setCanIntakeLollipopAlgae] = useState<boolean>(false);
   const [canIntakeReefAlgae, setCanIntakeReefAlgae] = useState<boolean>(false);
   const [canRemoveReefAlgaeWithoutIntake, setCanRemoveReefAlgaeWithoutIntake] = useState<boolean>(false);
   
@@ -202,6 +204,12 @@ export default function Pit() {
                 />
                 <Form.Check
                   type="checkbox"
+                  label="Intake Coral from Lollipop"
+                  checked={canIntakeLollipopCoral}
+                  onChange={() => setCanIntakeLollipopCoral(!canIntakeLollipopCoral)}
+                />
+                <Form.Check
+                  type="checkbox"
                   label="Intake Coral from Station"
                   checked={canIntakeStationCoral}
                   onChange={() => setCanIntakeStationCoral(!canIntakeStationCoral)}
@@ -211,6 +219,12 @@ export default function Pit() {
                   label="Intake Algae from Ground"
                   checked={canIntakeGroundAlgae}
                   onChange={() => setCanIntakeGroundAlgae(!canIntakeGroundAlgae)}
+                />
+                <Form.Check
+                  type="checkbox"
+                  label="Intake Algae from Lollipop"
+                  checked={canIntakeLollipopAlgae}
+                  onChange={() => setCanIntakeLollipopAlgae(!canIntakeLollipopAlgae)}
                 />
                 <Form.Check
                   type="checkbox"
@@ -338,8 +352,10 @@ export default function Pit() {
                         comments: comments as string,
                         robotImage: robotImage as string,
                         canIntakeGroundCoral: canIntakeGroundCoral as boolean,
+                        canIntakeLollipopCoral: canIntakeLollipopCoral as boolean,
                         canIntakeStationCoral: canIntakeStationCoral as boolean,
                         canIntakeGroundAlgae: canIntakeGroundAlgae as boolean,
+                        canIntakeLollipopAlgae: canIntakeLollipopAlgae as boolean,
                         canIntakeReefAlgae: canIntakeReefAlgae as boolean,
                         canRemoveReefAlgaeWithoutIntake: canRemoveReefAlgaeWithoutIntake as boolean,
                         canScoreReefL1: canScoreReefL1 as boolean,

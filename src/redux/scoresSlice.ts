@@ -152,8 +152,7 @@ export const sendPostMatchData = createAsyncThunk(
 );
 
 //UPDATE CYCLE: This may need to be updated if pit scouting data changes.
-//If so, ensure all arguments match the pit part of the Team model in the schema. 
-//Note to Michael: Make sure you update all of this to match the state on the pit page.
+//If so, ensure all arguments match the pit part of the Team model in the schema.
 export const sendPitData = createAsyncThunk(
   "scores/sendPitData",
   async (
@@ -167,8 +166,10 @@ export const sendPitData = createAsyncThunk(
       comments,
       robotImage,
       canIntakeGroundCoral,
+      canIntakeLollipopCoral,
       canIntakeStationCoral,
       canIntakeGroundAlgae,
+      canIntakeLollipopAlgae,
       canIntakeReefAlgae,
       canRemoveReefAlgaeWithoutIntake,
       canScoreReefL1,
@@ -190,8 +191,10 @@ export const sendPitData = createAsyncThunk(
       comments?: string;
       robotImage?: string;
       canIntakeGroundCoral?: boolean;
+      canIntakeLollipopCoral?: boolean;
       canIntakeStationCoral?: boolean;
       canIntakeGroundAlgae?: boolean;
+      canIntakeLollipopAlgae?: boolean;
       canIntakeReefAlgae?: boolean;
       canRemoveReefAlgaeWithoutIntake?: boolean;
       canScoreReefL1?: boolean;
@@ -220,8 +223,10 @@ export const sendPitData = createAsyncThunk(
         comments,
         robotImage,
         canIntakeGroundCoral,
+        canIntakeLollipopCoral,
         canIntakeStationCoral,
         canIntakeGroundAlgae,
+        canIntakeLollipopAlgae,
         canIntakeReefAlgae,
         canRemoveReefAlgaeWithoutIntake,
         canScoreReefL1,

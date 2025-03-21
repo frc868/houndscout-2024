@@ -28,8 +28,10 @@ export default function PitContent({rankings}: Props) {
     });
 
     const [groundCoralEnabled, setGroundCoralEnabled] = useState<boolean>(false);
+    const [lollipopCoralEnabled, setLollipopCoralEnabled] = useState<boolean>(false);
     const [stationCoralEnabled, setStationCoralEnabled] = useState<boolean>(false);
     const [groundAlgaeEnabled, setGroundAlgaeEnabled] = useState<boolean>(false);
+    const [lollipopAlgaeEnabled, setLollipopAlgaeEnabled] = useState<boolean>(false);
     const [reefAlgaeEnabled, setReefAlgaeEnabled] = useState<boolean>(false);
     const [reefAlgaeNoIntakeEnabled, setReefAlgaeNoIntakeEnabled] = useState<boolean>(false);
 
@@ -76,8 +78,10 @@ export default function PitContent({rankings}: Props) {
     const sortedRankings = useMemo(() => {
       let newRankings = JSON.parse(JSON.stringify(rankings as Ranking[])).filter(drivetrainFilter).filter(wheelFilter).filter(intakeFilter);
       if (groundCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakegroundcoral);
+      if (lollipopCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakelollipopcoral);
       if (stationCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakestationcoral);
       if (groundAlgaeEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakegroundalgae);
+      if (lollipopAlgaeEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakelollipopalgae);
       if (reefAlgaeEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakereefalgae);
       if (reefAlgaeNoIntakeEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canremovereefalgaewithoutintake);
       if (reefL1Enabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canscorereefl1);
@@ -90,8 +94,6 @@ export default function PitContent({rankings}: Props) {
       if (shallowEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canshallow);
       if (deepEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.candeep);
       if (autonEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.hasauton);
-      if (firstPicklistEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.firstpicklist);
-      if (secondPicklistEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.secondpicklist);
       if (!sortField) return [...newRankings].sort((a, b) => {
         if(a.firstpicklist&&!b.firstpicklist) return -1;
           else if(!a.firstpicklist&&b.firstpicklist) return 1;
@@ -125,7 +127,7 @@ export default function PitContent({rankings}: Props) {
         }
         return 0;
       });
-    }, [rankings, drivetrainFilter, wheelFilter, intakeFilter, groundCoralEnabled, stationCoralEnabled, groundAlgaeEnabled, reefAlgaeEnabled, reefAlgaeNoIntakeEnabled, reefL1Enabled, reefL2Enabled, reefL3Enabled, reefL4Enabled, netEnabled, processorEnabled, parkEnabled, shallowEnabled, deepEnabled, autonEnabled, firstPicklistEnabled, secondPicklistEnabled, sortField, sortDirection]);
+    }, [rankings, drivetrainFilter, wheelFilter, intakeFilter, groundCoralEnabled, lollipopCoralEnabled, stationCoralEnabled, groundAlgaeEnabled, lollipopAlgaeEnabled, reefAlgaeEnabled, reefAlgaeNoIntakeEnabled, reefL1Enabled, reefL2Enabled, reefL3Enabled, reefL4Enabled, netEnabled, processorEnabled, parkEnabled, shallowEnabled, deepEnabled, autonEnabled, firstPicklistEnabled, secondPicklistEnabled, sortField, sortDirection]);
   
     // Calculate max values for coloring
     const maxValues = useMemo(() => {
@@ -208,7 +210,7 @@ export default function PitContent({rankings}: Props) {
               </th>
               <th
                 style={{ cursor: "pointer" }}
-                colSpan={5}
+                colSpan={7}
               >
                 Intaking: Can...
               </th>
@@ -379,6 +381,22 @@ export default function PitContent({rankings}: Props) {
                 Intake Ground Coral
               </th>
               <th
+                key="Intake Lollipop Coral"
+                onClick={() =>
+                  handleSort(
+                    "intakelollipopcoral" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <Form.Check
+                  type="checkbox"
+                  checked={lollipopCoralEnabled}
+                  onChange={() => {setLollipopCoralEnabled(!lollipopCoralEnabled)}}
+                />
+                Intake Lollipop Coral
+              </th>
+              <th
                 key="Intake Station Coral"
                 onClick={() =>
                   handleSort(
@@ -409,6 +427,22 @@ export default function PitContent({rankings}: Props) {
                   onChange={() => {setGroundAlgaeEnabled(!groundAlgaeEnabled)}}
                 />
                 Intake Ground Algae
+              </th>
+              <th
+                key="Intake Lollipop Algae"
+                onClick={() =>
+                  handleSort(
+                    "intakelollipopalgae" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+              >
+                <Form.Check
+                  type="checkbox"
+                  checked={lollipopAlgaeEnabled}
+                  onChange={() => {setLollipopAlgaeEnabled(!lollipopAlgaeEnabled)}}
+                />
+                Intake Lollipop Algae
               </th>
               <th
                 key="Intake Reef Algae"
@@ -601,8 +635,10 @@ export default function PitContent({rankings}: Props) {
                 <td>{r.wheels}</td>
                 <td>{r.intake}</td>
                 <td>{r.canintakegroundcoral?"yes":"no"}</td>
+                <td>{r.canintakelollipopcoral?"yes":"no"}</td>
                 <td>{r.canintakestationcoral?"yes":"no"}</td>
                 <td>{r.canintakegroundalgae?"yes":"no"}</td>
+                <td>{r.canintakelollipopalgae?"yes":"no"}</td>
                 <td>{r.canintakereefalgae?"yes":"no"}</td>
                 <td>{r.canremovereefalgaewithoutintake?"yes":"no"}</td>
                 <td>{r.canscorereefl1?"yes":"no"}</td>

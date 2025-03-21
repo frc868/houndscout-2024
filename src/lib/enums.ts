@@ -44,8 +44,10 @@ export interface Ranking {
   comments?: string | null;
   robotimage?: string | null;
   canintakegroundcoral?: boolean | null;
+  canintakelollipopcoral?: boolean | null;
   canintakestationcoral?: boolean | null;
   canintakegroundalgae?: boolean | null;
+  canintakelollipopalgae?: boolean | null;
   canintakereefalgae?: boolean | null;
   canremovereefalgaewithoutintake?: boolean | null;
   canscorereefl1?: boolean | null;
