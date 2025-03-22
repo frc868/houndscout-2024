@@ -20,7 +20,7 @@ export default function AdminStatusBar({
             Logged in as: <strong>Lead Scouter</strong> | Event:{" "}
             <strong>{eventCode}</strong>
             {matchName &&
-              ` | ${matchName?.replace("qm", "Qualification Match ")}`}
+              ` | ${matchName?.replace("qm", "Qualification Match ").replace("pm", "Practice Match ")}`}
           </div>
         ) : (
           <div>Waiting for update...</div>

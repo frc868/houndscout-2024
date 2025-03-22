@@ -301,18 +301,13 @@ export default function EventsContent({rankings}: Props) {
         <tbody>
           {sortedRankings.map((r, idx) => (
             <tr key={r.teamnumber}>
-              <td 
-                key="teamnumber"
-                style={getColor(r.teamnumber as number, maxValues["teamNumber"], "teamNumber")}
-              >
-                {r.teamnumber}
-              </td>
-              <td>{r.coralpermatch}</td>
-              <td>{r.coralaccuracy}</td>
-              <td>{r.coralcycletime}</td>
-              <td>{r.algaepermatch}</td>
-              <td>{r.algaeaccuracy}</td>
-              <td>{r.algaecycletime}</td>
+              <td>{r.teamnumber}</td>
+              <td style={getColor(r.coralpermatch as number, maxValues.coralpermatch, "coralpermatch")}>{r.coralpermatch}</td>
+              <td style={getColor(r.coralaccuracy as number, maxValues.coralaccuracy, "coralaccuracy")}>{r.coralaccuracy}</td>
+              <td style={getColor(r.coralcycletime as number, maxValues.coralcycletime, "coralcycletime")}>{r.coralcycletime}</td>
+              <td style={getColor(r.algaepermatch as number, maxValues.algaepermatch, "algaepermatch")}>{r.algaepermatch}</td>
+              <td style={getColor(r.algaeaccuracy as number, maxValues.algaeaccuracy, "algaeaccuracy")}>{r.algaeaccuracy}</td>
+              <td style={getColor(r.algaecycletime as number, maxValues.algaecycletime, "algaecycletime")}>{r.algaecycletime}</td>
               <td>
                 <div
                   className={"d-flex justify-content-center align-items-center"}

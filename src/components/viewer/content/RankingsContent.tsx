@@ -151,16 +151,16 @@ export default function RankingsContent({rankings}: Props) {
               >
                 {r.teamnumber}
               </td>
-              <td>{r.totalgames}</td>
-              <td>{r.mobility}</td>
-              <td>{r.coraldropped}</td>
-              <td>{r.algaedropped}</td>
-              <td>{r.endgameparked}</td>
-              <td>{r.endgameshallow}</td>
-              <td>{r.endgamedeep}</td>
-              <td>{r.incap}</td>
-              <td>{r.defense}</td>
-              <td>{r.driverskill}</td>
+              <td style={getColor(r.totalgames as number, maxValues.totalgames, "totalgames")}>{r.totalgames}</td>
+              <td style={getColor(r.mobility as number, maxValues.mobility, "mobility")}>{r.mobility}</td>
+              <td style={getColor(r.coraldropped as number, maxValues.coraldropped, "coraldropped")}>{r.coraldropped}</td>
+              <td style={getColor(r.algaedropped as number, maxValues.algaedropped, "algaedropped")}>{r.algaedropped}</td>
+              <td style={getColor(r.endgameparked as number, maxValues.endgameparked, "endgameparked")}>{r.endgameparked}</td>
+              <td style={getColor(r.endgameshallow as number, maxValues.endgameshallow, "endgameshallow")}>{r.endgameshallow}</td>
+              <td style={getColor(r.endgamedeep as number, maxValues.endgamedeep, "endgamedeep")}>{r.endgamedeep}</td>
+              <td style={getColor(r.incap as number, maxValues.incap, "incap")}>{r.incap}</td>
+              <td style={getColor(r.defense as number, maxValues.defense, "defense")}>{r.defense}</td>
+              <td style={getColor(r.driverskill as number, maxValues.driverskill, "driverskill")}>{r.driverskill}</td>
               <td>
                 <div
                   className={"d-flex justify-content-center align-items-center"}

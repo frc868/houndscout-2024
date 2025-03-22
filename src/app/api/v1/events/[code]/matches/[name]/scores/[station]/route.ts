@@ -7,7 +7,7 @@ export async function GET(
   req: Request,
   { params }: { params: {
     code: string; //Event code (typically the active event)
-    name: string; //Match name (typically the active match, formatted qm_[number])
+    name: string; //Match name (typically the active match)
     station: string //Station (typically the one that called this route)
   } }
 ) {
@@ -48,7 +48,7 @@ export async function PATCH(
   req: Request,
   { params }: { params: {
     code: string; //Event code (typically the active event)
-    name: string; //Match name (typically the active match, formatted qm_[number])
+    name: string; //Match name (typically the active match)
     station: string //Station (typically the one that called this route)
   } }
 ) {
@@ -100,7 +100,7 @@ export async function DELETE(
   req: Request,
   { params }: { params: {
     code: string; //Event code (typically the active event)
-    name: string; //Match name (typically the active match, formatteed qm_[number])
+    name: string; //Match name (typically the active match)
     station: string //Station (typically the one that called this route)
   } }
 ) {

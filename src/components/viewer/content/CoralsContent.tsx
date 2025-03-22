@@ -279,8 +279,8 @@ export default function CoralsContent({rankings, teams}: Props) {
                   <td>{r.intakeLocation}</td>
                   <td>{r.scoringLevel}</td>
                   <td>{r.scoringSide}</td>
-                  <td>{r.dropped?"yes":"no"}</td>
-                  <td>{r.failedScoring?"yes":"no"}</td>
+                  <td style={!r.dropped?{backgroundColor: "blue"}:{}}>{r.dropped?"yes":"no"}</td>
+                  <td style={!r.failedScoring?{backgroundColor: "blue"}:{}}>{r.failedScoring?"yes":"no"}</td>
                   <td>{(Number(r.timestampScored)-Number(r.timestampPickedUp))/1000}</td>
                 </tr>
               ))

@@ -19,6 +19,7 @@ interface Props {
   handleClose: () => void;
   handleSubmit: ({
     number,
+    level,
     red1,
     red2,
     red3,
@@ -27,6 +28,7 @@ interface Props {
     blue3,
   }: {
     number: number;
+    level: string;
     red1: number;
     red2: number;
     red3: number;
@@ -52,7 +54,8 @@ export default function MatchAddModal({
   handleClose,
   handleSubmit,
 }: Props) {
-  const [match, setMatch] = useState<number | undefined>(undefined);
+  const [matchLv, setMatchLv] = useState<string | undefined>("qm");
+  const [matchNum, setMatchNum] = useState<number | undefined>(undefined);
   const [red1, setRed1] = useState<number | undefined>(undefined);
   const [red2, setRed2] = useState<number | undefined>(undefined);
   const [red3, setRed3] = useState<number | undefined>(undefined);
@@ -64,7 +67,8 @@ export default function MatchAddModal({
 
   //load function to set the initial values of the edit version of this modal
   useEffect(() => {
-    setMatch(initialMatch || undefined);
+    setMatchNum(initialMatch || undefined);
+    setMatchLv("qm")
     setRed1(initialRed1 || undefined);
     setRed2(initialRed2 || undefined);
     setRed3(initialRed3 || undefined);
@@ -75,7 +79,8 @@ export default function MatchAddModal({
 
   //clean-up function for when this modal is closed.
   function clearState(){
-    setMatch(undefined);
+    setMatchLv("qm");
+    setMatchNum(undefined);
     setRed1(undefined);
     setRed2(undefined);
     setRed3(undefined);
@@ -101,17 +106,32 @@ export default function MatchAddModal({
 
       <Modal.Body>
         <Form>
-          {showMatchNumber && (
+        <Row>
+          <Col>
             <Form.Group className="mb-3">
-            <Form.Label>Match Number</Form.Label>
-            <Form.Control
-              placeholder="e.g. 1"
-              value={match}
-              type="number"
-              onChange={(e) => setMatch(Number(e.target.value))}
-            />
-          </Form.Group>
-          )}
+              <Form.Label>Competition Level</Form.Label>
+              <Form.Control
+                as="select"
+                value={matchLv}
+                onChange={(e) => setMatchLv(String(e.target.value))} // Updates drivetrain on selection
+              >
+                <option value={"qm"}>Qualification Match</option>
+                <option value={"pm"}>Practice Match</option>
+              </Form.Control>
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group className="mb-3">
+              <Form.Label>Match Number</Form.Label>
+              <Form.Control
+                placeholder="e.g. 1"
+                value={matchNum}
+                type="number"
+                onChange={(e) => setMatchNum(Number(e.target.value))}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
           <Row>
             <Col>
               <Form.Group className="mb-3">
@@ -190,10 +210,10 @@ export default function MatchAddModal({
           variant={submitVar}
           onClick={() =>
             {
-              clearState();
               setLoading(true);
               handleSubmit({
-                number: Number(match),
+                number: Number(matchNum),
+                level: String(matchLv),
                 red1: Number(red1),
                 red2: Number(red2),
                 red3: Number(red3),
@@ -201,6 +221,7 @@ export default function MatchAddModal({
                 blue2: Number(blue2),
                 blue3: Number(blue3),
               });
+              clearState();
               setLoading(false);
             }
           }

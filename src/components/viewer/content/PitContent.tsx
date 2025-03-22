@@ -47,9 +47,6 @@ export default function PitContent({rankings}: Props) {
     const [deepEnabled, setDeepEnabled] = useState<boolean>(false);
     const [autonEnabled, setAutonEnabled] = useState<boolean>(false);
 
-    const [firstPicklistEnabled, setFirstPicklistEnabled] = useState<boolean>(false);
-    const [secondPicklistEnabled, setSecondPicklistEnabled] = useState<boolean>(false);
-
     const drivetrainFilter =  useCallback((ranking: Ranking) => {
       if (Object.values(drivetrain).some(value => value === true)){
         return ranking.drivetrain !== undefined &&
@@ -127,7 +124,7 @@ export default function PitContent({rankings}: Props) {
         }
         return 0;
       });
-    }, [rankings, drivetrainFilter, wheelFilter, intakeFilter, groundCoralEnabled, lollipopCoralEnabled, stationCoralEnabled, groundAlgaeEnabled, lollipopAlgaeEnabled, reefAlgaeEnabled, reefAlgaeNoIntakeEnabled, reefL1Enabled, reefL2Enabled, reefL3Enabled, reefL4Enabled, netEnabled, processorEnabled, parkEnabled, shallowEnabled, deepEnabled, autonEnabled, firstPicklistEnabled, secondPicklistEnabled, sortField, sortDirection]);
+    }, [rankings, drivetrainFilter, wheelFilter, intakeFilter, groundCoralEnabled, lollipopCoralEnabled, stationCoralEnabled, groundAlgaeEnabled, lollipopAlgaeEnabled, reefAlgaeEnabled, reefAlgaeNoIntakeEnabled, reefL1Enabled, reefL2Enabled, reefL3Enabled, reefL4Enabled, netEnabled, processorEnabled, parkEnabled, shallowEnabled, deepEnabled, autonEnabled, sortField, sortDirection]);
   
     // Calculate max values for coloring
     const maxValues = useMemo(() => {
@@ -182,7 +179,6 @@ export default function PitContent({rankings}: Props) {
         <h1>Pit Scouting Data</h1>
         <Table
           bordered
-          hover
           variant="dark"
           className="table-responsive"
           style={{width: "calc(225vw - 2*24px)"}}
@@ -634,23 +630,23 @@ export default function PitContent({rankings}: Props) {
                 <td>{r.drivetrain}</td>
                 <td>{r.wheels}</td>
                 <td>{r.intake}</td>
-                <td>{r.canintakegroundcoral?"yes":"no"}</td>
-                <td>{r.canintakelollipopcoral?"yes":"no"}</td>
-                <td>{r.canintakestationcoral?"yes":"no"}</td>
-                <td>{r.canintakegroundalgae?"yes":"no"}</td>
-                <td>{r.canintakelollipopalgae?"yes":"no"}</td>
-                <td>{r.canintakereefalgae?"yes":"no"}</td>
-                <td>{r.canremovereefalgaewithoutintake?"yes":"no"}</td>
-                <td>{r.canscorereefl1?"yes":"no"}</td>
-                <td>{r.canscorereefl2?"yes":"no"}</td>
-                <td>{r.canscorereefl3?"yes":"no"}</td>
-                <td>{r.canscorereefl4?"yes":"no"}</td>
-                <td>{r.canscorenet?"yes":"no"}</td>
-                <td>{r.canscoreprocessor?"yes":"no"}</td>
-                <td>{r.canpark?"yes":"no"}</td>
-                <td>{r.canshallow?"yes":"no"}</td>
-                <td>{r.candeep?"yes":"no"}</td>
-                <td>{r.hasauton?"yes":"no"}</td>
+                <td style={r.canintakegroundcoral?{backgroundColor: "blue"}:{}}>{r.canintakegroundcoral?"yes":"no"}</td>
+                <td style={r.canintakelollipopcoral?{backgroundColor: "blue"}:{}}>{r.canintakelollipopcoral?"yes":"no"}</td>
+                <td style={r.canintakestationcoral?{backgroundColor: "blue"}:{}}>{r.canintakestationcoral?"yes":"no"}</td>
+                <td style={r.canintakegroundalgae?{backgroundColor: "blue"}:{}}>{r.canintakegroundalgae?"yes":"no"}</td>
+                <td style={r.canintakelollipopalgae?{backgroundColor: "blue"}:{}}>{r.canintakelollipopalgae?"yes":"no"}</td>
+                <td style={r.canintakereefalgae?{backgroundColor: "blue"}:{}}>{r.canintakereefalgae?"yes":"no"}</td>
+                <td style={r.canremovereefalgaewithoutintake?{backgroundColor: "blue"}:{}}>{r.canremovereefalgaewithoutintake?"yes":"no"}</td>
+                <td style={r.canscorereefl1?{backgroundColor: "blue"}:{}}>{r.canscorereefl1?"yes":"no"}</td>
+                <td style={r.canscorereefl2?{backgroundColor: "blue"}:{}}>{r.canscorereefl2?"yes":"no"}</td>
+                <td style={r.canscorereefl3?{backgroundColor: "blue"}:{}}>{r.canscorereefl3?"yes":"no"}</td>
+                <td style={r.canscorereefl4?{backgroundColor: "blue"}:{}}>{r.canscorereefl4?"yes":"no"}</td>
+                <td style={r.canscorenet?{backgroundColor: "blue"}:{}}>{r.canscorenet?"yes":"no"}</td>
+                <td style={r.canscoreprocessor?{backgroundColor: "blue"}:{}}>{r.canscoreprocessor?"yes":"no"}</td>
+                <td style={r.canpark?{backgroundColor: "blue"}:{}}>{r.canpark?"yes":"no"}</td>
+                <td style={r.canshallow?{backgroundColor: "blue"}:{}}>{r.canshallow?"yes":"no"}</td>
+                <td style={r.candeep?{backgroundColor: "blue"}:{}}>{r.candeep?"yes":"no"}</td>
+                <td style={r.hasauton?{backgroundColor: "blue"}:{}}>{r.hasauton?"yes":"no"}</td>
                 <td>{Number(r.weight)}</td>
                 <td style={{fontSize: "12px"}}>{r.comments}</td>
                 <td>

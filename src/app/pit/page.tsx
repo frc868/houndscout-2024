@@ -82,10 +82,10 @@ export default function Pit() {
   //A form that's filled out after the match with supplementary info.
   //Based off of a layout provided by Michael.
   return (
-    <>
+    <div className={submitted?"bg-success-subtle":""}>
       <StatusBar isConnected={true} />
       {submitted ? (
-        <div className="d-flex justify-content-center align-items-center h-75 flex-column bg-success-subtle">
+        <div className="d-flex justify-content-center align-items-center h-75 flex-column">
           <h1 className="display-1 fw-bold">Submitted successfully!</h1>
           <h1 className="mt-3">Please reload to submit another entry.</h1>
         </div>
@@ -377,6 +377,6 @@ export default function Pit() {
           </Row>
         </>
       )}
-    </>
+    </div>
   );
 }

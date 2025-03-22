@@ -120,10 +120,11 @@ export const createMatchAsync = createAsyncThunk(
     blue1: number;
     blue2: number;
     blue3: number;
+    level: string;
   }) => {
     await axios.post(`/api/v1/events/${data.eventCode}/matches`, {
-      key: `${data.eventCode}_qm${data.number}`,
-      name: `qm${data.number}`,
+      key: `${data.eventCode}_${data.level}${data.number}`,
+      name: `${data.level}${data.number}`,
       ...data,
     });
   }
@@ -362,7 +363,7 @@ export const mainData = createSlice({
               };
             }
           );
-          state.matches?.sort((a, b) => a.number - b.number);
+          state.matches?.sort((a, b) => (a.name.startsWith("qm") && b.name.startsWith("pm"))?1:(a.name.startsWith("pm") && b.name.startsWith("qm"))?-1:(a.number - b.number));
 
           state.matchesStatus = "succeeded";
         } else {

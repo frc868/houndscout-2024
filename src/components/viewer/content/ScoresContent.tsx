@@ -5,7 +5,7 @@ import { Row, Col, Table } from "react-bootstrap";
 import { Team, Ranking, DetailedTeamScore } from "@/lib/enums";
 import { updatePicklistsAsync } from "@/redux/viewerDataSlice";
 import TeamDropdown from "@/components/TeamDropdown";
-import { TeamScore } from "@prisma/client";
+import { TeamScore, Result, EndgameType } from "@prisma/client";
 
 interface Props {
   scores: DetailedTeamScore[];
@@ -36,17 +36,17 @@ export default function ScoresContent({scores, teams}: Props) {
     // }, [scores, sortField, sortDirection]);
   
     // Calculate max values for coloring
-    // const maxValues = useMemo(() => {
-    //   const maxes: Record<string, number> = {};
-    //   [...scores].forEach((r: R) => {
-    //     Object.entries(r).forEach(([key, value]) => {
-    //       if (typeof value === "number" && key !== "team") {
-    //         maxes[key] = Math.max(maxes[key] || 0, value);
-    //       }
-    //     });
-    //   });
-    //   return maxes;
-    // }, [scores]);
+    const maxValues = useMemo(() => {
+      const maxes: Record<string, number> = {};
+      [...scores].forEach((r: R) => {
+        Object.entries(r).forEach(([key, value]) => {
+          if (typeof value === "number" && key !== "team") {
+            maxes[key] = Math.max(maxes[key] || 0, value);
+          }
+        });
+      });
+      return maxes;
+    }, [scores]);
   
     // Handler to sort by column
     const handleSort = (field: keyof Ranking) => {
@@ -197,14 +197,14 @@ export default function ScoresContent({scores, teams}: Props) {
                   <td>{r.matchName}</td>
                   <td>{r.station}</td>
                   <td>{r.scouterName}</td>
-                  <td>{r.preloaded?"yes":"no"}</td>
-                  <td>{r.leftStartingZone?"yes":"no"}</td>
-                  <td>{r.totalIncapTime}</td>
-                  <td>{r.endgameType}</td>
-                  <td>{r.endgameSuccess?"yes":"no"}</td>
-                  <td>{r.driverSkillRating}</td>
-                  <td>{r.result}</td>
-                  <td>{r.playedDefense?"yes":"no"}</td>
+                  <td style={r.preloaded?{backgroundColor: "blue"}:{}}>{r.preloaded?"yes":"no"}</td>
+                  <td style={r.leftStartingZone?{backgroundColor: "blue"}:{}}>{r.leftStartingZone?"yes":"no"}</td>
+                  <td style={getColor(r.totalIncapTime as number, maxValues.totalIncapTime, "totalIncapTime")}>{r.totalIncapTime}</td>
+                  <td style={getColor(r.endgameType==EndgameType.PARKED?2:r.endgameType==EndgameType.SHALLOW?6:r.endgameType==EndgameType.DEEP?12:0, 12, "endgameType")}>{r.endgameType}</td>
+                  <td style={r.endgameSuccess?{backgroundColor: "blue"}:{}}>{r.endgameSuccess?"yes":"no"}</td>
+                  <td style={getColor(r.driverSkillRating as number, maxValues.driverSkillRating, "driverSkillRating")}>{r.driverSkillRating}</td>
+                  <td style={getColor(r.result==Result.TIE?1:r.result==Result.WIN?3:0, 3, "result")}>{r.result}</td>
+                  <td style={r.playedDefense?{backgroundColor: "blue"}:{}}>{r.playedDefense?"yes":"no"}</td>
                   <td style={{fontSize: "12px"}}>{r.comments}</td>
                 </tr>
               ))}

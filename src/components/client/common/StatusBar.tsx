@@ -23,7 +23,7 @@ export default function StatusBar({
           <div>
             Logged in as: <strong>{scouterName}</strong> | Scouting:{" "}
             <strong>{team}</strong> |{" "}
-            {matchName?.replace("qm", "Qualification Match ")}
+            {matchName?.replace("qm", "Qualification Match ").replace("pm", "Practice Match ")}
           </div>
         ) : (
           <div>Waiting for update...</div>

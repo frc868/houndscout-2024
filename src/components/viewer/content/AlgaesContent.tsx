@@ -257,8 +257,8 @@ export default function AlgaesContent({rankings, teams}: Props) {
                 <tr key={r.id}>
                   <td>{r.intakeLocation}</td>
                   <td>{r.scoringLocation}</td>
-                  <td>{r.dropped?"yes":"no"}</td>
-                  <td>{r.failedScoring?"yes":"no"}</td>
+                  <td style={!r.dropped?{backgroundColor: "blue"}:{}}>{r.dropped?"yes":"no"}</td>
+                  <td style={!r.failedScoring?{backgroundColor: "blue"}:{}}>{r.failedScoring?"yes":"no"}</td>
                   <td>{(Number(r.timestampScored)-Number(r.timestampPickedUp))/1000}</td>
                 </tr>
               ))

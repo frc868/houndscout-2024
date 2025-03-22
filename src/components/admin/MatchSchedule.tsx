@@ -42,23 +42,6 @@ export default function MatchSchedule({
       if(!matches[i].submitted.blue2&&match.scouters.red1) handleScouterSelect(matches[i].name, "blue2", match.scouters.blue2.id);
       if(!matches[i].submitted.blue3&&match.scouters.red1) handleScouterSelect(matches[i].name, "blue3", match.scouters.blue3.id);
     }
-    // if(adminData.scouters==undefined||adminData.scouters.filter(scouter=>scouter.active).length<6){
-    //   alert("At least 6 scouters must be active to generate a scouter schedule.");
-    // } else {
-    //   let scoutersLeft=JSON.parse(JSON.stringify(adminData.scouters.filter(scouter=>scouter.active) as Scouter[]));
-    //   let r1 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
-    //   let r2 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
-    //   let r3 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
-    //   let b1 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
-    //   let b2 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
-    //   let b3 = scoutersLeft.splice(Math.floor(Math.random() * scoutersLeft.length),1);
-    //   handleScouterSelect(match.name, "red1", r1[0].id);
-    //   handleScouterSelect(match.name, "red2", r2[0].id);
-    //   handleScouterSelect(match.name, "red3", r3[0].id);
-    //   handleScouterSelect(match.name, "blue1", b1[0].id);
-    //   handleScouterSelect(match.name, "blue2", b2[0].id);
-    //   handleScouterSelect(match.name, "blue3", b3[0].id);
-    // }
   }
 
   return (
@@ -99,13 +82,6 @@ export default function MatchSchedule({
             Create New Match
           </Button>
           <Row className="mb-3">
-          {/* <Button
-            variant="secondary"
-            className="w-25 mx-auto"
-            onClick={()=>{matches.forEach(generateScouterSchedule);}}
-          >
-            Gen. Scouter Sched. (all unfilled);
-          </Button> */}
         </Row>
         </Row>
 
@@ -134,7 +110,7 @@ export default function MatchSchedule({
                     match.name === activeMatchName && "table-secondary"
                   }`}
                 >
-                  Match {match.number}
+                  {match.name.toUpperCase()}
                   <Form.Check
                     type="radio"
                     label="Active"
@@ -376,7 +352,7 @@ export default function MatchSchedule({
                     onClick={()=>generateScouterSchedule(matches.indexOf(match))}
                     
                   >
-                    Copy Scouters (WIP)
+                    Copy Scouters
                   </Button>
                   <DeleteButton
                     variant={
