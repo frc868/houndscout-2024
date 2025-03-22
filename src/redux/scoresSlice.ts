@@ -127,10 +127,10 @@ export const sendPostMatchData = createAsyncThunk(
       playedDefense,
       comments,
     }: {
-      driverSkillRating: number;
-      result: Result;
-      playedDefense: boolean;
-      comments: string;
+      driverSkillRating?: number;
+      result?: Result;
+      playedDefense?: boolean;
+      comments?: string;
     },
     { dispatch, getState }
   ) => {

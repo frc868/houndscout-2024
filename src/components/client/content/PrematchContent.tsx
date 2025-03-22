@@ -4,9 +4,10 @@ import StartingPositionSelector from "@/components/client/prematch/StartingZoneS
 import { Alliance } from "@/lib/enums";
 import { setAutoStartingZoneAsync } from "@/redux/scoresSlice";
 import { AppDispatch, ReduxState } from "@/redux/store";
+import { sendPostMatchData } from "@/redux/scoresSlice";
 import { staticGenerationAsyncStorage } from "next/dist/client/components/static-generation-async-storage.external";
 import { useEffect } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import MiniToggleBox from "../mini/MiniToggleBox";
 
@@ -21,6 +22,12 @@ export default function PrematchContent({ show, coralActiveSide, handlePreload }
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
   const mainData = useSelector((state: ReduxState) => state.mainData);
+
+  const confirmNoShow=()=>{
+    if(confirm("Are you sure the robot didn't show up? Only click OK after the match starts, as this action will submit the match.")==true){
+      dispatch(sendPostMatchData({}));
+    }
+  }
 
   return (
     <div className={`${!show && "d-none"}`}>
@@ -58,6 +65,15 @@ export default function PrematchContent({ show, coralActiveSide, handlePreload }
                 enabled={coralActiveSide=="level"}
                 handleClick={handlePreload}
               />
+            </div>
+            <div className="d-flex flex-column align-items-center">
+              <Button
+                className="submit-button fs-4 rounded-4 fw-bold"
+                variant="danger"
+                onClick={confirmNoShow}
+              >
+                No-Show
+              </Button>
             </div>
           </Row>
         </Col>
