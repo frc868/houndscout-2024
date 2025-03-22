@@ -28,6 +28,7 @@ import {
   sendCoralEvent,
   sendAlgaeEvent,
   sendIncapSegment,
+  clearEvents,
 } from "@/redux/scoresSlice";
 import { Section, Station } from "@prisma/client";
 
@@ -137,7 +138,6 @@ export default function Client({ station }: Props) {
   useEffect(() => {
     setTab(Section.PREMATCH);
   }, [mainData.activeMatchName]);
-
 
   //triggers when incap button is pressed
   const handleIncap = async () => {
@@ -342,6 +342,10 @@ export default function Client({ station }: Props) {
   const ready = mainData.scouter.name
     && mainData.activeTeamNumber &&
     mainData.activeMatchName;
+
+  useEffect(() => {
+    if (!mainData.submitted&&ready) dispatch(clearEvents({ }));
+  }, [mainData.submitted, ready, dispatch]);
 
   return (
     <>

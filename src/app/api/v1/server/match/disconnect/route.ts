@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-//???
+//Currently unimplemented, as far as I know.
+//Disconnects the current activeMatch. It's not deleted, but it's no longer the active match.
 export async function POST(req: Request) {
   let match;
   try {

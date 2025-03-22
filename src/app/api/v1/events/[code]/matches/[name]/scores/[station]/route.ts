@@ -92,3 +92,48 @@ export async function PATCH(
 
   return NextResponse.json({ ok: true, match });
 }
+
+
+//ScoresSlice/clearScoringEvents
+//Deletes all scoring events and incap segments related to a teamScore.
+export async function DELETE(
+  req: Request,
+  { params }: { params: {
+    code: string; //Event code (typically the active event)
+    name: string; //Match name (typically the active match, formatteed qm_[number])
+    station: string //Station (typically the one that called this route)
+  } }
+) {
+
+  let match;
+  try {
+    match = await prisma.match.update({
+      where: {
+        name_eventCode: { name: params.name, eventCode: params.code },
+      },
+      data: {
+        [`${params.station.toLowerCase()}TeamScore`]: {
+          update: {
+            CoralScoringEvents: {deleteMany: {}},
+            AlgaeScoringEvents: {deleteMany: {}},
+            incapSegments: {deleteMany: {}},
+          }
+        },
+      },
+      include: {
+        [`${params.station}TeamScore`]: {
+          include: {
+            CoralScoringEvents: true,
+            AlgaeScoringEvents: true,
+            incapSegments: true,
+          },
+        },
+      },
+    });
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json({ ok: false });
+  }
+
+  return NextResponse.json({ ok: true, match });
+}

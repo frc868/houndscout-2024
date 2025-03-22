@@ -314,6 +314,21 @@ export const sendAlgaeEvent = createAsyncThunk(
   }
 );
 
+export const clearEvents = createAsyncThunk(
+  "scores/clearEvents",
+  async (
+    data: {},
+    { getState }
+  ) => {
+    const state = getState() as ReduxState;
+    const mainData = state.mainData;
+    const res = await axios.delete(
+      `/api/v1/events/${mainData.activeEvent?.code}/matches/${
+        mainData.activeMatchName
+      }/scores/${mainData.station?.toLowerCase()}`);
+  }
+);
+
 export const setEndgameTypeAsync = createAsyncThunk(
   "scores/setEndgameType",
   async ({ endgameType }: { endgameType: EndgameType }, { dispatch, getState }) => {
