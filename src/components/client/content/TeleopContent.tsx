@@ -35,6 +35,7 @@ interface Props {
       failedScoring?: boolean,
     },
   ) => void;
+  handleCoralCancel: (phrase: string) => void;
   algaeActiveSide: string;
   algaeIntakeLocation?: AlgaeIntakeLocation;
   algaeScoringLocation?: AlgaeScoringLocation;
@@ -47,6 +48,7 @@ interface Props {
       failedScoring?: boolean,
     },
   ) => void;
+  handleAlgaeCancel: (phrase: string) => void;
   incapOn: boolean;
   handleIncap: () => void;
 }
@@ -59,17 +61,18 @@ export default function TeleopContent({
   coralIntakeLocation,
   coralScoringLevel,
   handleCoral,
+  handleCoralCancel,
   algaeActiveSide,
   algaeIntakeLocation,
   algaeScoringLocation,
   handleAlgae,
+  handleAlgaeCancel,
   incapOn,
   handleIncap,
 }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
   
-
   return (
     <div className={`${!show && "d-none"}`}>
       <Row className="d-flex justify-content-center">
@@ -80,6 +83,7 @@ export default function TeleopContent({
             intakeSelected={coralIntakeLocation}
             levelSelected={coralScoringLevel}
             handleSelection={handleCoral}
+            handleCancel={handleCoralCancel}
           />
         </Col>
         <Col className="d-flex justify-content-center" md={4}>
@@ -89,6 +93,7 @@ export default function TeleopContent({
             intakeSelected={algaeIntakeLocation}
             locationSelected={algaeScoringLocation}
             handleSelection={handleAlgae}
+            handleCancel={handleAlgaeCancel}
           />
         </Col>
         <Col className="d-flex justify-content-right mx-3" md={1}>
@@ -106,32 +111,32 @@ export default function TeleopContent({
         </Col>
       </Row>
       <Row className="d-flex justify-content-center">
-              <Col className="d-flex justify-content-center align-items-center" md={6}>
-                <IncapButton
-                  className="text-nowrap my-1"
-                  active={incapOn}
-                  handleClick={handleIncap}
-                />
-              </Col>
-              <Col className="d-flex justify-content-center align-items-center" md={6}>
-                <DroppedPanel
-                  coralActive={coralActiveSide=="level"}
-                  algaeActive={algaeActiveSide=="scoring"}
-                  handleCoralDropped={() => {
-                    handleCoral("level",{
-                        scoringLevel: undefined,
-                        dropped: true
-                    })
-                  }}
-                  handleAlgaeDropped={() => {
-                    handleAlgae("scoring",{
-                        scoringLocation: undefined,
-                        dropped: true
-                    })
-                  }}
-                />
-              </Col>
-            </Row>
+        <Col className="d-flex justify-content-center align-items-center" md={6}>
+          <IncapButton
+            className="text-nowrap my-1"
+            active={incapOn}
+            handleClick={handleIncap}
+          />
+        </Col>
+        <Col className="d-flex justify-content-center align-items-center" md={6}>
+          <DroppedPanel
+            coralActive={coralActiveSide=="level"}
+            algaeActive={algaeActiveSide=="scoring"}
+            handleCoralDropped={() => {
+              handleCoral("level",{
+                  scoringLevel: undefined,
+                  dropped: true
+              })
+            }}
+            handleAlgaeDropped={() => {
+              handleAlgae("scoring",{
+                  scoringLocation: undefined,
+                  dropped: true
+              })
+            }}
+          />
+        </Col>
+      </Row>
     </div>
   );
 }

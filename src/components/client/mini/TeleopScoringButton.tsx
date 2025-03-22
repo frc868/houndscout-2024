@@ -4,6 +4,7 @@ interface Props {
   active: boolean
   selected: boolean;
   handleSelection: () => void;
+  handleCancel: () => void;
   className?: string;
   text: string;
 }
@@ -13,12 +14,15 @@ export default function LocationButton({
   active,
   selected,
   handleSelection,
+  handleCancel,
   className,
   text,
 }: Props) {
   function checkForSelection(){
     if(active){
       handleSelection();
+    } else if (selected){
+      handleCancel();
     }
   }
   return (

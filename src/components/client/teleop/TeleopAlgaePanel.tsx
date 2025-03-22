@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { Alliance } from "@/lib/enums";
 import TeleopIntakeButton from "../mini/TeleopIntakeButton";
-import LocationButton from "../mini/LocationButton";
+import LocationButton from "../mini/TeleopScoringButton";
 import AutoIntakeButton from "../mini/AutoIntakeButton";
 import ScoreButton from "../mini/ScoreButton";
 import FailButton from "../mini/FailButton";
@@ -24,6 +24,7 @@ interface Props {
           failedScoring?: boolean,
         },
       ) => void;
+      handleCancel: (phrase: string) => void;
 }
 
 //Displays a map of half of the field.
@@ -35,6 +36,7 @@ export default function AutoAlgaePanel({
     intakeSelected,
     locationSelected,
     handleSelection,
+    handleCancel,
 }: Props) {
 
     return (
@@ -54,6 +56,7 @@ export default function AutoAlgaePanel({
                                     intakeSelection: AlgaeIntakeLocation.TELEOPGROUND
                                 })
                             }}
+                            handleCancel={() => handleCancel("scoring")}
                             gamePiece="algae"
                         />
                     </div>
@@ -67,6 +70,7 @@ export default function AutoAlgaePanel({
                                     intakeSelection: AlgaeIntakeLocation.TELEOPREEF
                                 })
                             }}
+                            handleCancel={() => handleCancel("scoring")}
                             gamePiece="algae"
                         />
                     </div>
@@ -83,6 +87,7 @@ export default function AutoAlgaePanel({
                                     scoringLocation: AlgaeScoringLocation.NET
                                 })
                             }}
+                            handleCancel={() => handleCancel("result")}
                             text="Net"
                         />
                         <LocationButton
@@ -94,6 +99,7 @@ export default function AutoAlgaePanel({
                                     scoringLocation: AlgaeScoringLocation.PROCESSOR
                                 })
                             }}
+                            handleCancel={() => handleCancel("result")}
                             text="Proc."
                         />
                     </div>

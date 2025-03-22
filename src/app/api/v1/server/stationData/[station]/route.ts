@@ -31,8 +31,8 @@ export async function GET(
       blueOnLeft: server?.blueOnLeft,
       event: server?.activeEvent,
       match: server?.activeMatch,
-      scouter: (server?.activeMatch as any)?.[`${params.station}TeamScore`]
-        ?.scouter,
+      scouter: (server?.activeMatch as any)?.[`${params.station}TeamScore`]?.scouter,
+      submitted: (server?.activeMatch as any)?.[`${params.station}TeamScore`]?.submitted,
     });
   } catch (e) {
     console.error(e);

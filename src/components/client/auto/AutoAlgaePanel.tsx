@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { Alliance } from "@/lib/enums";
 import TeleopIntakeButton from "../mini/TeleopIntakeButton";
-import LocationButton from "../mini/LocationButton";
+import LocationButton from "../mini/TeleopScoringButton";
 import AutoIntakeButton from "../mini/AutoIntakeButton";
 import DroppedButton from "../mini/DroppedButton";
 import ScoreButton from "../mini/ScoreButton";
@@ -27,6 +27,7 @@ interface Props {
             failedScoring?: boolean,
         },
     ) => void;
+    handleCancel: (phrase: string) => void;
 }
 
 //Displays a map of half of the field.
@@ -38,6 +39,7 @@ export default function AutoAlgaePanel({
     intakeSelected,
     locationSelected,
     handleSelection,
+    handleCancel,
 }: Props) {
     const mainData = useSelector((state: ReduxState) => state.mainData);
 
@@ -64,6 +66,7 @@ export default function AutoAlgaePanel({
                                                 intakeSelection: AlgaeIntakeLocation.AUTOGROUND1
                                             })
                                         }}
+                                        handleCancel={() => handleCancel("scoring")}
                                         gamePiece="algae"
                                         number="1"
                                     />
@@ -76,6 +79,7 @@ export default function AutoAlgaePanel({
                                                 intakeSelection: AlgaeIntakeLocation.AUTOGROUND2
                                             })
                                         }}
+                                        handleCancel={() => handleCancel("scoring")}
                                         gamePiece="algae"
                                         number="2"
                                     />
@@ -88,6 +92,7 @@ export default function AutoAlgaePanel({
                                                 intakeSelection: AlgaeIntakeLocation.AUTOGROUND3
                                             })
                                         }}
+                                        handleCancel={() => handleCancel("scoring")}
                                         gamePiece="algae"
                                         number="3"
                                     />
@@ -119,6 +124,7 @@ export default function AutoAlgaePanel({
                                             intakeSelection: AlgaeIntakeLocation.AUTOREEF1
                                         })
                                     }}
+                                    handleCancel={() => handleCancel("scoring")}
                                     gamePiece="algae"
                                     top={
                                         mainData.station?.includes("BLUE")
@@ -140,6 +146,7 @@ export default function AutoAlgaePanel({
                                             intakeSelection: AlgaeIntakeLocation.AUTOREEF2
                                         })
                                     }}
+                                    handleCancel={() => handleCancel("scoring")}
                                     gamePiece="algae"
                                     top={
                                         mainData.station?.includes("BLUE")
@@ -161,6 +168,7 @@ export default function AutoAlgaePanel({
                                             intakeSelection: AlgaeIntakeLocation.AUTOREEF3
                                         })
                                     }}
+                                    handleCancel={() => handleCancel("scoring")}
                                     gamePiece="algae"
                                     top={
                                         mainData.station?.includes("BLUE")
@@ -182,6 +190,7 @@ export default function AutoAlgaePanel({
                                             intakeSelection: AlgaeIntakeLocation.AUTOREEF4
                                         })
                                     }}
+                                    handleCancel={() => handleCancel("scoring")}
                                     gamePiece="algae"
                                     top={
                                         mainData.station?.includes("BLUE")
@@ -203,6 +212,7 @@ export default function AutoAlgaePanel({
                                             intakeSelection: AlgaeIntakeLocation.AUTOREEF5
                                         })
                                     }}
+                                    handleCancel={() => handleCancel("scoring")}
                                     gamePiece="algae"top={
                                         mainData.station?.includes("BLUE")
                                             ? mainData.blueOnLeft ? "70%" : "5%" // Blueside with BlueOnLeft/OnRight
@@ -223,6 +233,7 @@ export default function AutoAlgaePanel({
                                             intakeSelection: AlgaeIntakeLocation.AUTOREEF6
                                         })
                                     }}
+                                    handleCancel={() => handleCancel("scoring")}
                                     gamePiece="algae"
                                     top={
                                         mainData.station?.includes("BLUE")
@@ -253,6 +264,7 @@ export default function AutoAlgaePanel({
                                     dropped: false
                                 })
                             }}
+                            handleCancel={() => handleCancel("result")}
                             text="Net"
                         />
                         <LocationButton
@@ -265,6 +277,7 @@ export default function AutoAlgaePanel({
                                     dropped: false
                                 })
                             }}
+                            handleCancel={() => handleCancel("result")}
                             text="Proc."
                         />
                     </div>

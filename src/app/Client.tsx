@@ -39,7 +39,6 @@ export default function Client({ station }: Props) {
   const mainData = useSelector((state: ReduxState) => state.mainData);
   const dispatch = useDispatch<AppDispatch>();
   const [tab, setTab] = useState<Section>(Section.PREMATCH);
-  const [submitted, setSubmitted] = useState(false);
 
   const [coralIntakeLocation, setCoralIntakeLocation] = useState<
     CoralIntakeLocation | undefined
@@ -136,7 +135,6 @@ export default function Client({ station }: Props) {
   }, [dispatch, station, tab]);
 
   useEffect(() => {
-    setSubmitted(false);
     setTab(Section.PREMATCH);
   }, [mainData.activeMatchName]);
 
@@ -226,6 +224,25 @@ export default function Client({ station }: Props) {
       }
     }
   };
+  const handleCoralCancel = async (phrase: string) => {
+    if(phrase==coralActiveSide){
+      if (phrase=="level"){
+        setCoralIntakeLocation(undefined);
+        setCoralActiveSide("intaking");  
+      } else if (phrase=="side"){
+        setCoralScoringLevel(undefined);
+        setCoralActiveSide("level");  
+      } else if (phrase=="result"){
+        if(tab==Section.AUTO){
+          setCoralScoringSide(undefined);
+          setCoralActiveSide("side"); 
+        } else {
+          setCoralScoringLevel(undefined);
+          setCoralActiveSide("level"); 
+        }
+      }
+    }
+  };
 
   const handleAlgae = async (
     phrase: string,
@@ -281,6 +298,47 @@ export default function Client({ station }: Props) {
     }
   };
 
+  const handleAlgaeCancel = async (phrase: string) => {
+    if(phrase==algaeActiveSide){
+      if (phrase=="scoring"){
+        setAlgaeIntakeLocation(undefined);
+        setAlgaeActiveSide("intaking");  
+      } else if (phrase=="result"){
+        setAlgaeScoringLocation(undefined);
+        setAlgaeActiveSide("scoring"); 
+      }
+    }
+  };
+
+  const pressedKeys = useRef(new Set<string>());
+  useEffect(() => {
+    const handleKeydown = (e: KeyboardEvent) => {
+      // Add the key to the pressedKeys set
+      pressedKeys.current.add(e.key);
+      // Presses the the coral scoring side 1 button if active
+      if (e.key=='s') {
+        // Check if buttonRef.current is not null
+        handleCoralCancel(coralActiveSide);
+      }
+      if (e.key=='g') {
+        // Check if buttonRef.current is not null
+        handleAlgaeCancel(algaeActiveSide);
+      }
+    };
+      const handleKeyup = (e: KeyboardEvent) => {
+          // Remove the key from the pressedKeys set when released
+          pressedKeys.current.delete(e.key);
+      };
+      // Attach event listeners for keydown and keyup
+      document.addEventListener('keydown', handleKeydown);
+      document.addEventListener('keyup', handleKeyup);
+      // Cleanup event listeners on component unmount
+      return () => {
+        document.removeEventListener('keydown', handleKeydown);
+        document.removeEventListener('keyup', handleKeyup);
+      };
+  });
+
   const ready = mainData.scouter.name
     && mainData.activeTeamNumber &&
     mainData.activeMatchName;
@@ -308,13 +366,13 @@ export default function Client({ station }: Props) {
       </>
       )}
       <div
-        className={`${submitted && "bg-submitted"}`}
+        className={`${mainData.submitted && "bg-submitted"}`}
         style={{
           transition: "all 0.5s",
           height: "calc(100vh - 56px)",
         }}
       >
-        {submitted ? (
+        {mainData.submitted ? (
           <div className="d-flex justify-content-center align-items-center h-75 flex-column">
             <h1 className="display-1 fw-bold">Submitted successfully!</h1>
             <h1 className="mt-3">Waiting for next match...</h1>
@@ -343,10 +401,12 @@ export default function Client({ station }: Props) {
                   coralScoringLevel={coralScoringLevel}
                   coralScoringSide={coralScoringSide}
                   handleCoral={handleCoral}
+                  handleCoralCancel={handleCoralCancel}
                   algaeActiveSide={algaeActiveSide}
                   algaeIntakeLocation={algaeIntakeLocation}
                   algaeScoringLocation={algaeScoringLocation}
                   handleAlgae={handleAlgae}
+                  handleAlgaeCancel={handleAlgaeCancel}
                   incapOn={incapOn}
                   handleIncap={handleIncap}
                   mobility={mobility}
@@ -361,16 +421,17 @@ export default function Client({ station }: Props) {
                   coralScoringLevel={coralScoringLevel}
                   coralIntakeLocation={coralIntakeLocation}
                   handleCoral={handleCoral}
-                  handleAlgae={handleAlgae}
+                  handleCoralCancel={handleCoralCancel}
                   algaeActiveSide={algaeActiveSide}
                   algaeIntakeLocation={algaeIntakeLocation}
                   algaeScoringLocation={algaeScoringLocation}
+                  handleAlgae={handleAlgae}
+                  handleAlgaeCancel={handleAlgaeCancel}
                   incapOn={incapOn}
                   handleIncap={handleIncap}
                 />
                 <PostmatchContent
                   show={tab === Section.POSTMATCH}
-                  handleSubmit={() => setSubmitted(true)}
                 />
               </>
             )}

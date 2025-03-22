@@ -7,6 +7,7 @@ import { Console } from "console";
 export interface MainData {
   station?: Station;
   alliance: Alliance;
+  submitted: boolean;
   blueOnLeft: boolean;
   blueOnLeftStatus: "idle" | "waiting" | "succeeded" | "failed";
   lastHeartbeat: number;
@@ -41,6 +42,7 @@ export const getStationData = createAsyncThunk(
       event: res.data.event,
       matchName: res.data.match?.name,
       scouter: res.data.scouter,
+      submitted: res.data.submitted,
       teamNumber: res.data.match?.[`${station.toLowerCase()}Team`]?.number,
     };
   }
@@ -166,6 +168,7 @@ export const createScouterAsync = createAsyncThunk(
 const initialState: MainData = {
   station: undefined,
   alliance: Alliance.BLUE,
+  submitted: false,
   blueOnLeft: true,
   blueOnLeftStatus: "idle",
   lastHeartbeat: 0,
@@ -214,6 +217,7 @@ export const mainData = createSlice({
           state.activeEvent = action.payload.event;
           state.activeMatchName = action.payload.matchName;
           state.activeTeamNumber = action.payload.teamNumber;
+          state.submitted = action.payload.submitted;
           state.scouter.id = action.payload.scouter?.id || 0;
           state.scouter.name = action.payload.scouter?.name || "Unassigned";
           state.eventStatus = "succeeded";

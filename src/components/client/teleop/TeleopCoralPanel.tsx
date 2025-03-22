@@ -3,7 +3,7 @@ import { Alliance } from "@/lib/enums";
 import { Col, Row } from "react-bootstrap";
 import { CoralIntakeLocation, CoralScoringLevel } from "@prisma/client";
 import TeleopIntakeButton from "../mini/TeleopIntakeButton";
-import LocationButton from "../mini/LocationButton";
+import LocationButton from "../mini/TeleopScoringButton";
 import ScoreButton from "../mini/ScoreButton";
 import FailButton from "../mini/FailButton";
 import DroppedButton from "../mini/DroppedButton";
@@ -23,6 +23,7 @@ interface Props {
             failedScoring?: boolean,
         },
     ) => void;
+    handleCancel: (phrase: string) => void;
 }
 
 export default function TeleopCoralPanel({
@@ -31,6 +32,7 @@ export default function TeleopCoralPanel({
     intakeSelected,
     levelSelected,
     handleSelection,
+    handleCancel,
 }: Props) {
 
     return (
@@ -50,6 +52,7 @@ export default function TeleopCoralPanel({
                                         intakeSelection: CoralIntakeLocation.TELEOPGROUND
                                     })
                                 }}
+                                handleCancel={() => handleCancel("level")}
                                 gamePiece="coral"
                             />
                         </div>
@@ -63,6 +66,7 @@ export default function TeleopCoralPanel({
                                         intakeSelection: CoralIntakeLocation.TELEOPSTATION
                                     })
                                 }}
+                                handleCancel={() => handleCancel("level")}
                                 gamePiece="coral"
                             />
                         </div>
@@ -79,6 +83,7 @@ export default function TeleopCoralPanel({
                                         dropped: false
                                     })
                                 }}
+                                handleCancel={() => handleCancel("result")}
                                 text="L4"
                             />
                             <LocationButton
@@ -91,6 +96,7 @@ export default function TeleopCoralPanel({
                                         dropped: false
                                     })
                                 }}
+                                handleCancel={() => handleCancel("result")}
                                 text="L3"
                             />
                             <LocationButton
@@ -103,6 +109,7 @@ export default function TeleopCoralPanel({
                                         dropped: false
                                     })
                                 }}
+                                handleCancel={() => handleCancel("result")}
                                 text="L2"
                             />
                             <LocationButton
@@ -115,6 +122,7 @@ export default function TeleopCoralPanel({
                                         dropped: false
                                     })
                                 }}
+                                handleCancel={() => handleCancel("result")}
                                 text="L1"
                             />
                         </div>

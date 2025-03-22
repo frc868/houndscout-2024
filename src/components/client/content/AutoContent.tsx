@@ -37,6 +37,7 @@ interface Props {
       failedScoring?: boolean,
     },
   ) => void;
+  handleCoralCancel: (phrase: string) => void;
   algaeActiveSide: string;
   algaeIntakeLocation?: AlgaeIntakeLocation;
   algaeScoringLocation?: AlgaeScoringLocation;
@@ -49,6 +50,7 @@ interface Props {
       failedScoring?: boolean,
     },
   ) => void;
+  handleAlgaeCancel: (phrase: string) => void;
   incapOn: boolean;
   handleIncap: () => void;
   mobility: boolean;
@@ -62,10 +64,12 @@ export default function AutoContent({
   coralScoringLevel,
   coralScoringSide,
   handleCoral,
+  handleCoralCancel,
   algaeActiveSide,
   algaeIntakeLocation,
   algaeScoringLocation,
   handleAlgae,
+  handleAlgaeCancel,
   incapOn,
   handleIncap,
   mobility,
@@ -86,6 +90,7 @@ export default function AutoContent({
             levelSelected={coralScoringLevel}
             sideSelected={coralScoringSide}
             handleSelection={handleCoral}
+            handleCancel={handleCoralCancel}
           />
         </Col>
         <Col className="d-flex justify-content-center" md={6}>
@@ -95,6 +100,7 @@ export default function AutoContent({
             intakeSelected={algaeIntakeLocation}
             locationSelected={algaeScoringLocation}
             handleSelection={handleAlgae}
+            handleCancel={handleAlgaeCancel}
           />
         </Col>
       </Row>

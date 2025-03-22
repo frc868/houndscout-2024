@@ -8,6 +8,7 @@ interface Props {
   top: string;
   left: string;
   handleSelection: () => void;
+  handleCancel: () => void;
   className?: string;
   text: string;
 }
@@ -19,12 +20,15 @@ export default function ReefSideButton({
   top,
   left,
   handleSelection,
+  handleCancel,
   className,
   text,
 }: Props) {
   function checkForSelection(){
     if(active){
       handleSelection();
+    } else if (selected){
+      handleCancel();
     }
   }
 // Explicitly typing the buttonRef as pointing to an HTMLButtonElement

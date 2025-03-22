@@ -4,6 +4,7 @@ interface Props {
   active: boolean;
   selected: boolean;
   handleSelection: () => void;
+  handleCancel: () => void;
   className?: string;
   gamePiece: string;
   number?: string;
@@ -14,6 +15,7 @@ export default function IntakeButton({
   active,
   selected,
   handleSelection,
+  handleCancel,
   className,
   gamePiece,
   number,
@@ -21,6 +23,8 @@ export default function IntakeButton({
   function checkForSelection(){
     if(active){
       handleSelection();
+    } else if (selected){
+      handleCancel();
     }
   }
   return (

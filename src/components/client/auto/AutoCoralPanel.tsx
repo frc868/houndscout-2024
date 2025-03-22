@@ -4,8 +4,8 @@ import { Col, Row } from "react-bootstrap";
 import { CoralIntakeLocation, CoralScoringLevel, CoralScoringSide } from "@prisma/client";
 import AutoIntakeButton from "../mini/AutoIntakeButton";
 import TeleopIntakeButton from "../mini/TeleopIntakeButton";
-import LocationButton from "../mini/LocationButton";
-import ReefSideButton from "../mini/ReefSideButton";
+import LocationButton from "../mini/TeleopScoringButton";
+import ReefSideButton from "../mini/AutoScoringButton";
 import ScoreButton from "../mini/ScoreButton";
 import FailButton from "../mini/FailButton";
 import DroppedButton from "../mini/DroppedButton";
@@ -29,6 +29,7 @@ interface Props {
             failedScoring?: boolean,
         },
     ) => void;
+    handleCancel: (phrase: string) => void;
 }
 
 //Displays a map of half of the field.
@@ -41,6 +42,7 @@ export default function AutoCoralPanel({
     levelSelected,
     sideSelected,
     handleSelection,
+    handleCancel,
 }: Props) {
     const mainData = useSelector((state: ReduxState) => state.mainData);
 
@@ -67,6 +69,7 @@ export default function AutoCoralPanel({
                                                 intakeSelection: CoralIntakeLocation.AUTOSTATION1
                                             })
                                         }}
+                                        handleCancel={() => handleCancel("level")}
                                         gamePiece="coral"
                                         number="1"
                                     />
@@ -79,6 +82,7 @@ export default function AutoCoralPanel({
                                                 intakeSelection: CoralIntakeLocation.AUTOSTATION2
                                             })
                                         }}
+                                        handleCancel={() => handleCancel("level")}
                                         gamePiece="coral"
                                         number="2"
                                     />
@@ -98,6 +102,7 @@ export default function AutoCoralPanel({
                                                 intakeSelection: CoralIntakeLocation.AUTOGROUND1
                                             })
                                         }}
+                                        handleCancel={() => handleCancel("level")}
                                         gamePiece="coral"
                                         number="1"
                                     />
@@ -110,6 +115,7 @@ export default function AutoCoralPanel({
                                                 intakeSelection: CoralIntakeLocation.AUTOGROUND2
                                             })
                                         }}
+                                        handleCancel={() => handleCancel("level")}
                                         gamePiece="coral"
                                         number="2"
                                     />
@@ -122,6 +128,7 @@ export default function AutoCoralPanel({
                                                 intakeSelection: CoralIntakeLocation.AUTOGROUND3
                                             })
                                         }}
+                                        handleCancel={() => handleCancel("level")}
                                         gamePiece="coral"
                                         number="3"
                                     />
@@ -145,6 +152,7 @@ export default function AutoCoralPanel({
                                             dropped: false
                                         })
                                     }}
+                                    handleCancel={() => handleCancel("side")}
                                     text="L4"
                                 />
                                 <LocationButton
@@ -157,6 +165,7 @@ export default function AutoCoralPanel({
                                             dropped: false
                                         })
                                     }}
+                                    handleCancel={() => handleCancel("side")}
                                     text="L3"
                                 />
                                 <LocationButton
@@ -169,6 +178,7 @@ export default function AutoCoralPanel({
                                             dropped: false
                                         })
                                     }}
+                                    handleCancel={() => handleCancel("side")}
                                     text="L2"
                                 />
                                 <LocationButton
@@ -181,6 +191,7 @@ export default function AutoCoralPanel({
                                             dropped: false
                                         })
                                     }}
+                                    handleCancel={() => handleCancel("side")}
                                     text="L1"
                                 />
                             </div>
@@ -210,6 +221,7 @@ export default function AutoCoralPanel({
                                             scoringSide: CoralScoringSide.SIDE1
                                         })
                                     }}
+                                    handleCancel={() => {handleCancel("result")}}
                                     top={
                                         mainData.station?.includes("BLUE")
                                             ? mainData.blueOnLeft ? "5%" : "65%" // Blueside with BlueOnLeft/OnRight
@@ -230,6 +242,7 @@ export default function AutoCoralPanel({
                                             scoringSide: CoralScoringSide.SIDE2
                                         })
                                     }}
+                                    handleCancel={() => {handleCancel("result")}}
                                     top={
                                         mainData.station?.includes("BLUE")
                                             ? mainData.blueOnLeft ? "5%" : "65%" // Blueside with BlueOnLeft/OnRight
@@ -250,6 +263,7 @@ export default function AutoCoralPanel({
                                             scoringSide: CoralScoringSide.SIDE3
                                         })
                                     }}
+                                    handleCancel={() => {handleCancel("result")}}
                                     top={
                                         mainData.station?.includes("BLUE")
                                             ? mainData.blueOnLeft ? "35%" : "35%" // Blueside with BlueOnLeft/OnRight
@@ -270,6 +284,7 @@ export default function AutoCoralPanel({
                                             scoringSide: CoralScoringSide.SIDE4
                                         })
                                     }}
+                                    handleCancel={() => {handleCancel("result")}}
                                     top={
                                         mainData.station?.includes("BLUE")
                                             ? mainData.blueOnLeft ? "65%" : "9%" // Blueside with BlueOnLeft/OnRight
@@ -290,6 +305,7 @@ export default function AutoCoralPanel({
                                             scoringSide: CoralScoringSide.SIDE5
                                         })
                                     }}
+                                    handleCancel={() => {handleCancel("result")}}
                                     top={
                                         mainData.station?.includes("BLUE")
                                             ? mainData.blueOnLeft ? "65%" : "9%" // Blueside with BlueOnLeft/OnRight
@@ -310,6 +326,7 @@ export default function AutoCoralPanel({
                                             scoringSide: CoralScoringSide.SIDE6
                                         })
                                     }}
+                                    handleCancel={() => {handleCancel("result")}}
                                     top={
                                         mainData.station?.includes("BLUE")
                                             ? mainData.blueOnLeft ? "35%" : "35%" // Blueside with BlueOnLeft/OnRight

@@ -14,10 +14,9 @@ import { Result } from "@prisma/client";
 
 interface Props {
   show: boolean;
-  handleSubmit: () => void;
 }
 
-export default function PostmatchContent({ show, handleSubmit }: Props) {
+export default function PostmatchContent({ show }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const [driverSkillRating, setDriverSkillRating] = useState<number | null>(
     null
@@ -73,7 +72,6 @@ export default function PostmatchContent({ show, handleSubmit }: Props) {
                   comments,
                 })
               );
-              handleSubmit();
             }}
           />
         </Col>
