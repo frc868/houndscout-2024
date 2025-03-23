@@ -302,7 +302,7 @@ export default function MatchSchedule({
                     }}
                   />
                 </td>
-                <td className={`px-2 ${match.submitted.blue1?"table-success":"table-primary"}`}>
+                <td className={`px-2 ${match.submitted.blue3?"table-success":"table-primary"}`}>
                   <TeamDropdown
                     red={false}
                     activeTeam={Number(match.teamNumbers.blue3)}

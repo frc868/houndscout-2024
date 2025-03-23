@@ -123,6 +123,7 @@ export default function Admin() {
             <Col md={5}>
               <Activity
                 scouters={activeMatch?.scouters}
+                submitted={activeMatch?.submitted}
                 heartbeats={adminData.heartbeats}
               />
             </Col>

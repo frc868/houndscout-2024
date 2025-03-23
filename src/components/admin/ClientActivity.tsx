@@ -1,4 +1,5 @@
 /* eslint-disable react/display-name */
+import Blue2 from "@/app/client/blue2/page";
 import { Heartbeat, Scouter } from "@/lib/enums";
 import React from "react";
 import { Col, ListGroup, ListGroupItem, Row } from "react-bootstrap";
@@ -13,6 +14,14 @@ interface Props {
     blue2?: Scouter;
     blue3?: Scouter;
   };
+  submitted?: {
+    red1?: boolean;
+    red2?: boolean;
+    red3?: boolean;
+    blue1?: boolean;
+    blue2?: boolean;
+    blue3?: boolean;
+  };
   heartbeats: {
     red1: Heartbeat;
     red2: Heartbeat;
@@ -24,7 +33,7 @@ interface Props {
 }
 
 //Lists heartbeats for each station, including how long ago the device's last communication was and which phase the scouter is on.
-export default function Activity({ scouters, heartbeats }: Props) {
+export default function Activity({ scouters, submitted, heartbeats }: Props) {
   return (
     <div className="d-flex flex-column align-items-center">
       <h1 className="text-center mb-3">Activity</h1>
@@ -33,44 +42,52 @@ export default function Activity({ scouters, heartbeats }: Props) {
           {
             name: "Red 1",
             scouter: scouters?.red1 || { name: "Unassigned", active: false, id: -1 },
+            submitted: submitted?.red1,
             heartbeat: heartbeats.red1,
           },
           {
             name: "Red 2",
             scouter: scouters?.red2 || { name: "Unassigned", active: false, id: -1 },
+            submitted: submitted?.red2,
             heartbeat: heartbeats.red2,
           },
           {
             name: "Red 3",
             scouter: scouters?.red3 || { name: "Unassigned", active: false, id: -1 },
+            submitted: submitted?.red3,
             heartbeat: heartbeats.red3,
           },
           {
             name: "Blue 1",
             scouter: scouters?.blue1 || { name: "Unassigned", active: false, id: -1 },
+            submitted: submitted?.blue1,
             heartbeat: heartbeats.blue1,
           },
           {
             name: "Blue 2",
             scouter: scouters?.blue2 || { name: "Unassigned", active: false, id: -1 },
+            submitted: submitted?.blue2,
             heartbeat: heartbeats.blue2,
           },
           {
             name: "Blue 3",
             scouter: scouters?.blue3 || { name: "Unassigned", active: false, id: -1 },
+            submitted: submitted?.blue3,
             heartbeat: heartbeats.blue3,
           },
         ].map(
           ({
             name,
             scouter,
+            submitted,
             heartbeat,
           }: {
             name: string;
             scouter: Scouter;
+            submitted?: boolean;
             heartbeat: Heartbeat;
           }) => (
-            <ListGroupItem key={name}>
+            <ListGroupItem key={name} className={submitted?"bg-success-subtle":""}>
               <Row>
                 <Col md={2} className="text-start">
                   {name}
