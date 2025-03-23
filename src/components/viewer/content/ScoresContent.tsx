@@ -38,7 +38,7 @@ export default function ScoresContent({scores, teams}: Props) {
     // Calculate max values for coloring
     const maxValues = useMemo(() => {
       const maxes: Record<string, number> = {};
-      [...scores].forEach((r: R) => {
+      [...scores].forEach((r) => {
         Object.entries(r).forEach(([key, value]) => {
           if (typeof value === "number" && key !== "team") {
             maxes[key] = Math.max(maxes[key] || 0, value);
@@ -146,7 +146,6 @@ export default function ScoresContent({scores, teams}: Props) {
         {team &&(
           <Table
             bordered
-            hover
             variant="dark"
             className="table-responsive"
             style={{width: "calc(150vw - 2*24px)"}}

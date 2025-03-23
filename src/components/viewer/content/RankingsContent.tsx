@@ -105,7 +105,6 @@ export default function RankingsContent({rankings}: Props) {
       <p>This is a built-in tool that provides easy access to the collected data. Feel free to use this page to make the best possible decisions!</p>
       <Table
         bordered
-        hover
         variant="dark"
         className="table-responsive"
       >

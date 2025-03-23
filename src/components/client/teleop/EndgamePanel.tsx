@@ -1,5 +1,4 @@
 import { ListGroup, Row, Col } from "react-bootstrap";
-import ClimbButton from "../mini/ClimbButton";
 import MiniToggleBox from "../mini/MiniToggleBox";
 import { EndgameType } from "@prisma/client";
 

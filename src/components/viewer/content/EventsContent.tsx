@@ -265,7 +265,6 @@ export default function EventsContent({rankings}: Props) {
       </Row>
       <Table
         bordered
-        hover
         variant="dark"
         className="table-responsive mt-1"
       >

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Dropdown, Form, Table } from "react-bootstrap";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { CoralIntakeLocation, CoralScoringLevel, CoralScoringSide, AlgaeIntakeLocation, AlgaeScoringLocation } from "@prisma/client";
 import { Row, Col } from "react-bootstrap";
 import { Team, Ranking } from "@/lib/enums";
@@ -26,43 +26,58 @@ export default function AlgaesContent({rankings, teams}: Props) {
 
   const [team, setTeam]=useState<Ranking | undefined>();
 
-  const calculateCoralPieces=()=>{
-    if(team){
-      return team.teamScores.reduce((total, score) => {
-        const gameAmount = score.CoralScoringEvents.filter(
-          (event) =>
-            event.scoringLevel === CoralScoringLevel.LEVEL1
-        ).length;
-        return total + gameAmount;
-      }, 0) / team.teamScores.length;
-    }
-  }
-  const calculateCoralSuccesses=()=>{
-    if(team){
-      return team.teamScores.reduce((total, score) => {
-        const gameAmount = score.CoralScoringEvents.filter(
-          (event) =>
-            event.scoringLevel === CoralScoringLevel.LEVEL1 && !event.failedScoring
-        ).length;
-        return total + gameAmount;
-      }, 0) / team.teamScores.length;
-    }
-  }
-  const calculateCoralCycle=()=>{
-    if(team){
-      return team.teamScores.reduce((total, score) => {
-        const gameAmount = score.CoralScoringEvents.filter(
-          (event) =>
-            event.scoringLevel === CoralScoringLevel.LEVEL1 && !event.failedScoring
-        ).reduce(
-          (total, event) => {
-            return total + (Number(event.timestampScored) - Number(event.timestampPickedUp));
-          }, 0
-        );
-        return total + gameAmount;
-      }, 0) / team.teamScores.length;
-    }
-  }
+  const sortedEvents = useMemo(() => {
+      return team?.teamScores.filter(score=>score.submitted).flatMap((teamScore)=>(
+        teamScore.AlgaeScoringEvents.map((r, idx) => {
+          return {
+            ...r,
+            totaltime: (Number(r.timestampScored)-Number(r.timestampPickedUp))/1000
+          }
+        })
+      ));
+    }, [team?.teamScores]);
+  
+  // Calculate max values for coloring
+    const maxValues = useMemo(() => {
+      const maxes: Record<string, number> = {};
+      sortedEvents?.forEach((r) => {
+        Object.entries(r).forEach(([key, value]) => {
+          if (typeof value === "number" && key !== "team") {
+            maxes[key] = Math.max(maxes[key] || 0, value);
+          }
+        });
+      });
+      return maxes;
+    }, [sortedEvents]);
+  
+    // Calculate min values for coloring
+    const minValues = useMemo(() => {
+      const mins: Record<string, number> = {};
+      sortedEvents?.forEach((r) => {
+        Object.entries(r).forEach(([key, value]) => {
+          if (typeof value === "number" && key !== "team") {
+            mins[key] = Math.min(mins[key] || Infinity, value);
+          }
+        });
+      });
+      return mins;
+    }, [sortedEvents]);
+  
+    // Determine cell color based on value
+    const getColor = (
+      value: number,
+      maxValue: number,
+      minValue: number,
+      category: string
+    ): React.CSSProperties => {
+      if (category === "team") return {};
+  
+      const intensity = (maxValue - value) / (maxValue - minValue);
+      let color: string;
+      // Define your color logic here
+      color = `rgba(0, 0, 255, ${intensity})`; // Example color logic
+      return { backgroundColor: color };
+    };
 
   const calculateAlgaePieces=()=>{
     if(team){
@@ -222,7 +237,6 @@ export default function AlgaesContent({rankings, teams}: Props) {
       {team &&(
         <Table
           bordered
-          hover
           variant="dark"
           className="table-responsive"
         >
@@ -252,18 +266,15 @@ export default function AlgaesContent({rankings, teams}: Props) {
             </tr>
           </thead>
           <tbody>
-            {team.teamScores.filter(score=>score.submitted).flatMap((teamScore)=>(
-              teamScore.AlgaeScoringEvents.map((r, idx) => (
-                <tr key={r.id}>
-                  <td>{r.intakeLocation}</td>
-                  <td>{r.scoringLocation}</td>
-                  <td style={!r.dropped?{backgroundColor: "blue"}:{}}>{r.dropped?"yes":"no"}</td>
-                  <td style={!r.failedScoring?{backgroundColor: "blue"}:{}}>{r.failedScoring?"yes":"no"}</td>
-                  <td>{(Number(r.timestampScored)-Number(r.timestampPickedUp))/1000}</td>
-                </tr>
-              ))
-            ))
-            }
+            {sortedEvents?.map((r, idx) => (
+              <tr key={r.id}>
+                <td>{r.intakeLocation}</td>
+                <td>{r.scoringLocation}</td>
+                <td style={!r.dropped?{backgroundColor: "blue"}:{}}>{r.dropped?"yes":"no"}</td>
+                <td style={!r.failedScoring?{backgroundColor: "blue"}:{}}>{r.failedScoring?"yes":"no"}</td>
+                <td style={getColor(r.totaltime as number, maxValues.totaltime, minValues.totaltime, "totaltime")}>{r.totaltime}</td>
+              </tr>
+            ))}
           </tbody>
         </Table>
       )}
