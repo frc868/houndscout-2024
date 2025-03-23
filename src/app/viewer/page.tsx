@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import { getActiveEventAsync } from "@/redux/mainDataSlice";
 import TopBar from "@/components/viewer/TopBar";
-import { ViewerTab } from "@/components/viewer/ViewerEnums";
 import MenuBar from "@/components/viewer/MenuBar";
 import { Col, Row } from "react-bootstrap";
 import RankingsContent from "@/components/viewer/content/RankingsContent";
@@ -19,7 +18,7 @@ import AlgaesContent from "@/components/viewer/content/AlgaesContent";
 import IncapsContent from "@/components/viewer/content/IncapsContent";
 import { getDetailedTeamScoresAsync, getRankingsAsync } from "@/redux/viewerDataSlice";
 import { getEventTeamsAsync } from "@/redux/adminDataSlice";
-import { DetailedTeamScore, Ranking, Team } from "@/lib/enums";
+import { DetailedTeamScore, Ranking, Team, ViewerTab } from "@/lib/enums";
 
 export default function Viewer() {
   const mainData = useSelector((state: ReduxState) => state.mainData);
@@ -49,9 +48,7 @@ export default function Viewer() {
   return (
     <>
       <div className="vw-100 vh-100 position-relative">
-        <div className="vw-100 vh-100 bg-secondary position-fixed z-n1"></div>
-        <TopBar eventCode={mainData.activeEvent?.code as string} />
-        
+        <div className="vw-100 vh-100 bg-secondary position-fixed z-n1" />
         {!ready && (
           <Row style={{ paddingTop: "64px", color: "white" }} className="ps-0 pe-0 m-4 bg-dark rounded-3 font-monospace text-center">
             <div className="vh-30 d-flex justify-content-center mt-5">
@@ -64,20 +61,22 @@ export default function Viewer() {
         )}
         {ready && (
           <>
-          <MenuBar selectedTab={tab} handleTabSelect={setTab} />
-          <Row style={{ paddingTop: "64px" }}>
-            <Col className="ps-0 pe-0" md={2}></Col>
-            <Col className="ps-0">
-              {tab === ViewerTab.RANKINGS && <RankingsContent rankings={viewerData.rankings as Ranking[]} />}
-              {tab === ViewerTab.EVENTS && <EventsContent rankings={viewerData.rankings as Ranking[]} />}
-              {tab === ViewerTab.PIT && <PitContent rankings={viewerData.rankings as Ranking[]} />}
-              {tab === ViewerTab.SCORES && <ScoresContent scores={viewerData.scores as DetailedTeamScore[]} teams={adminData.eventTeams as Team[]} />}
-              {tab === ViewerTab.CORALS && <CoralsContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
-              {tab === ViewerTab.ALGAES && <AlgaesContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
-              {tab === ViewerTab.INCAPS && <IncapsContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
-              {tab === ViewerTab.IMPORT && <ImportContent eventCode={mainData.activeEvent?.code as string} />}
-            </Col>
-          </Row>
+            <MenuBar selectedTab={tab} handleTabSelect={setTab} />
+            <TopBar eventCode={mainData.activeEvent?.code as string} />
+            
+            <Row style={{ paddingTop: "64px" }}>
+              <Col className="ps-0 pe-0" md={2}></Col>
+              <Col className="ps-0">
+                {tab === ViewerTab.RANKINGS && <RankingsContent rankings={viewerData.rankings as Ranking[]} />}
+                {tab === ViewerTab.EVENTS && <EventsContent rankings={viewerData.rankings as Ranking[]} />}
+                {tab === ViewerTab.PIT && <PitContent rankings={viewerData.rankings as Ranking[]} />}
+                {tab === ViewerTab.SCORES && <ScoresContent scores={viewerData.scores as DetailedTeamScore[]} teams={adminData.eventTeams as Team[]} />}
+                {tab === ViewerTab.CORALS && <CoralsContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
+                {tab === ViewerTab.ALGAES && <AlgaesContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
+                {tab === ViewerTab.INCAPS && <IncapsContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
+                {tab === ViewerTab.IMPORT && <ImportContent eventCode={mainData.activeEvent?.code as string} />}
+              </Col>
+            </Row>
           </>
         )}
       </div>

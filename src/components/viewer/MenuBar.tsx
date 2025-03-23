@@ -1,5 +1,5 @@
 import { Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
-import { ViewerTab } from "./ViewerEnums";
+import { ViewerTab } from "@/lib/enums";
 
 interface Props {
   selectedTab: ViewerTab;

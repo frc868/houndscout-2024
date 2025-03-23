@@ -57,6 +57,11 @@ export async function POST(
           pitData: true,
         }
       });
+      if (newTeam.pitData==null){
+        await prisma.pitData.create({
+          data: {team: { connect: { number: team.team_number } } }
+        });
+      }
     });
 
     const matchData = (JSON.parse(data.matches) as TBAMatch[])

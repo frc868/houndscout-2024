@@ -145,3 +145,14 @@ export interface DetailedTeamScore extends TeamScore {
   algaeDropped: number;
   totalIncapTime: number;
 }
+
+export enum ViewerTab {
+  RANKINGS,
+  EVENTS,
+  SCORES,
+  CORALS,
+  ALGAES,
+  INCAPS,
+  PIT,
+  IMPORT,
+}

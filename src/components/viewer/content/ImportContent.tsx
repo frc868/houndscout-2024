@@ -3,7 +3,7 @@ import PitImportForm from "../PitImportForm";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { uploadPitDataAsync } from "@/redux/viewerDataSlice";
+import { uploadPitDataOfflineAsync, uploadPitDataOnlineAsync } from "@/redux/viewerDataSlice";
 
 interface Props {
   eventCode: string;
@@ -25,18 +25,31 @@ export default function ImportContent({eventCode}: Props) {
       {/* There's a pg dump function in admin, we just have to get it over here. */}
       <h3 className="text-center mb-3">Import:</h3>
         <Button
+          variant="primary"
+          className="edit-button w-100 mx-auto mb-3"
+          onClick={async () => {
+            await dispatch(
+              uploadPitDataOnlineAsync({
+                eventCode: eventCode,
+              })
+            );
+          }}
+        >
+          Import Pit Data Online
+        </Button>
+        <Button
           variant={showPitImport?"danger":"primary"}
           className="edit-button w-100 mx-auto mb-3"
           onClick={() => setShowPitImport(!showPitImport)}
         >
-          {showPitImport?"Cancel":"Import Pit Data"}
+          {showPitImport?"Cancel":"Import Pit Data Offline"}
         </Button>
         {showPitImport&&(
           <PitImportForm
             handleSubmit={
               async (payload) => {
                 await dispatch(
-                  uploadPitDataAsync({
+                  uploadPitDataOfflineAsync({
                     eventCode: eventCode,
                     ...payload,
                   })

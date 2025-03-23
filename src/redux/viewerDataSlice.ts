@@ -55,8 +55,8 @@ export const updatePicklistsAsync = createAsyncThunk(
   }
 );
 
-export const uploadPitDataAsync = createAsyncThunk(
-  "viewerData/uploadPitDataAsync",
+export const uploadPitDataOfflineAsync = createAsyncThunk(
+  "viewerData/uploadPitDataOfflineAsync",
   async (data: { eventCode: string; stats: string}) => {
     await axios.post(`/api/v1/events/${data.eventCode}/statistics/pit`, {
       stats: data.stats,
@@ -64,7 +64,14 @@ export const uploadPitDataAsync = createAsyncThunk(
   }
 );
 
-//This one's fairly simple. Just two thunks that get data to be sent to the viewer page, and one to update picklists.
+export const uploadPitDataOnlineAsync = createAsyncThunk(
+  "viewerData/uploadPitDataOnlineAsync",
+  async (data: { eventCode: string}) => {
+    await axios.post(`/api/v1/events/${data.eventCode}/statistics/pit/online`);
+  }
+);
+
+//This one's fairly simple. Just two thunks that get data to be sent to the viewer page, and twp to update picklists.
 const initialState: ViewerData = {
   rankings: undefined,
   rankingsStatus: "idle",
