@@ -13,6 +13,13 @@ export async function GET(
       where: {
         teamId: Number(params.id),
       },
+      include: {
+        team: {
+          select: {
+            number: true,
+          },
+        },
+      }
     });
   } catch (e) {
     return NextResponse.json({ ok: false });
@@ -32,40 +39,76 @@ export async function PATCH(
   
   let team;
   try {
-    team = await prisma.pitData.update({
+    team = await prisma.team.update({
       where: {
-        teamId: Number(params.id),
+        id: Number(params.id),
       },
       data: {
-        drivetrain: data.drivetrain,
-        wheels: data.wheels,
-        intake: data.intake,
-        weight: data.weight,
-        hasAuton: data.hasAuton,
-        comments: data.comments,
-        robotImage: data.robotImage,
+        pitData: {
+          upsert: {
+            update: {
+              drivetrain: data.drivetrain,
+              wheels: data.wheels,
+              intake: data.intake,
+              weight: data.weight,
+              hasAuton: data.hasAuton,
+              comments: data.comments,
+              robotImage: data.robotImage,
 
-        canIntakeGroundCoral: data.canIntakeGroundCoral,
-        canIntakeLollipopCoral: data.canIntakeLollipopCoral,
-        canIntakeStationCoral: data.canIntakeStationCoral,
-        canIntakeGroundAlgae: data.canIntakeGroundAlgae,
-        canIntakeLollipopAlgae: data.canIntakeLollipopAlgae,
-        canIntakeReefAlgae: data.canIntakeReefAlgae,
-        canRemoveReefAlgaeWithoutIntake: data.canRemoveReefAlgaeWithoutIntake,
+              canIntakeGroundCoral: data.canIntakeGroundCoral,
+              canIntakeLollipopCoral: data.canIntakeLollipopCoral,
+              canIntakeStationCoral: data.canIntakeStationCoral,
+              canIntakeGroundAlgae: data.canIntakeGroundAlgae,
+              canIntakeLollipopAlgae: data.canIntakeLollipopAlgae,
+              canIntakeReefAlgae: data.canIntakeReefAlgae,
+              canRemoveReefAlgaeWithoutIntake: data.canRemoveReefAlgaeWithoutIntake,
 
-        canScoreReefL1: data.canScoreReefL1,
-        canScoreReefL2: data.canScoreReefL2,
-        canScoreReefL3: data.canScoreReefL3,
-        canScoreReefL4: data.canScoreReefL4,
-        canScoreNet: data.canScoreNet,
-        canScoreProcessor: data.canScoreProcessor,
+              canScoreReefL1: data.canScoreReefL1,
+              canScoreReefL2: data.canScoreReefL2,
+              canScoreReefL3: data.canScoreReefL3,
+              canScoreReefL4: data.canScoreReefL4,
+              canScoreNet: data.canScoreNet,
+              canScoreProcessor: data.canScoreProcessor,
 
-        canPark: data.canPark,
-        canShallow: data.canShallow,
-        canDeep: data.canDeep,
+              canPark: data.canPark,
+              canShallow: data.canShallow,
+              canDeep: data.canDeep,
 
-        submitted: true,
-      },
+              submitted: true,
+            },
+            create: {
+              drivetrain: data.drivetrain,
+              wheels: data.wheels,
+              intake: data.intake,
+              weight: data.weight,
+              hasAuton: data.hasAuton,
+              comments: data.comments,
+              robotImage: data.robotImage,
+
+              canIntakeGroundCoral: data.canIntakeGroundCoral,
+              canIntakeLollipopCoral: data.canIntakeLollipopCoral,
+              canIntakeStationCoral: data.canIntakeStationCoral,
+              canIntakeGroundAlgae: data.canIntakeGroundAlgae,
+              canIntakeLollipopAlgae: data.canIntakeLollipopAlgae,
+              canIntakeReefAlgae: data.canIntakeReefAlgae,
+              canRemoveReefAlgaeWithoutIntake: data.canRemoveReefAlgaeWithoutIntake,
+
+              canScoreReefL1: data.canScoreReefL1,
+              canScoreReefL2: data.canScoreReefL2,
+              canScoreReefL3: data.canScoreReefL3,
+              canScoreReefL4: data.canScoreReefL4,
+              canScoreNet: data.canScoreNet,
+              canScoreProcessor: data.canScoreProcessor,
+
+              canPark: data.canPark,
+              canShallow: data.canShallow,
+              canDeep: data.canDeep,
+
+              submitted: true,
+            }
+          }
+        }
+      }
     });
   } catch (e) {
     console.error(e);

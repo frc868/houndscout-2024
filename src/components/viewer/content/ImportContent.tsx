@@ -24,7 +24,7 @@ export default function ImportContent({eventCode}: Props) {
       <h1>Import and Export Data (WIP)</h1>
       {/* There's a pg dump function in admin, we just have to get it over here. */}
       <h3 className="text-center mb-3">Import:</h3>
-        {/* <Button
+        <Button
           variant={showPitImport?"danger":"primary"}
           className="edit-button w-100 mx-auto mb-3"
           onClick={() => setShowPitImport(!showPitImport)}
@@ -45,7 +45,7 @@ export default function ImportContent({eventCode}: Props) {
               }
             }
           />
-        )} */}
+        )}
       <p>From pg_dump</p>
       <h3 className="text-center mb-3">Export:</h3>
       <Row className="">
@@ -86,13 +86,13 @@ export default function ImportContent({eventCode}: Props) {
           </Button>
         </Col>
       </Row>
-      {/* <Button
+      <Button
         variant="secondary"
         href={`/api/v1/events/${eventCode}/statistics/pit`}
         className="mb-2 mx-1"
       >
         Pit Scouting Data
-      </Button> */}
+      </Button>
     </div>
   );
 }
