@@ -68,14 +68,15 @@ export default function AlgaesContent({rankings, teams}: Props) {
       value: number,
       maxValue: number,
       minValue: number,
-      category: string
+      category: string,
+      reverse: boolean,
     ): React.CSSProperties => {
       if (category === "team") return {};
   
       const intensity = (maxValue - value) / (maxValue - minValue);
       let color: string;
       // Define your color logic here
-      color = `rgba(0, 0, 255, ${intensity})`; // Example color logic
+      color = reverse?`rgba(0, 0, 255, ${1-intensity})`:`rgba(0, 0, 255, ${intensity})`; // Example color logic
       return { backgroundColor: color };
     };
 
@@ -272,7 +273,7 @@ export default function AlgaesContent({rankings, teams}: Props) {
                 <td>{r.scoringLocation}</td>
                 <td style={!r.dropped?{backgroundColor: "blue"}:{}}>{r.dropped?"yes":"no"}</td>
                 <td style={!r.failedScoring?{backgroundColor: "blue"}:{}}>{r.failedScoring?"yes":"no"}</td>
-                <td style={getColor(r.totaltime as number, maxValues.totaltime, minValues.totaltime, "totaltime")}>{r.totaltime}</td>
+                <td style={getColor(r.totaltime as number, maxValues.totaltime, minValues.totaltime, "totaltime", true)}>{r.totaltime}</td>
               </tr>
             ))}
           </tbody>

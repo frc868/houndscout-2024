@@ -3,7 +3,7 @@
 import AutoCoralPanel from "@/components/client/auto/AutoCoralPanel";
 import AutoAlgaePanel from "@/components/client/auto/AutoAlgaePanel";
 import DroppedPanel from "@/components/client/common/DroppedPanel";
-import SidewaysToggleBox from "@/components/client/mini/SidewaysToggleBox";
+import MobilityToggleBox from "@/components/client/mini/MobilityToggleBox";
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -131,8 +131,7 @@ export default function AutoContent({
           />
         </Col>
         <Col className="d-flex justify-content-center align-items-center" md={4}>
-          <SidewaysToggleBox
-            name="Left Starting Area?"
+          <MobilityToggleBox
             enabled={mobility}
             handleClick={handleMobility}
           />

@@ -156,18 +156,19 @@ export default function EventsContent({rankings}: Props) {
 
   // Determine cell color based on value
   const getColor = (
-    value: number,
-    maxValue: number,
-    category: string
-  ): React.CSSProperties => {
-    if (category === "team") return {};
-
-    const intensity = value / maxValue;
-    let color: string;
-    // Define your color logic here
-    color = `rgba(0, 0, 255, ${intensity})`; // Example color logic
-    return { backgroundColor: color };
-  };
+      value: number,
+      maxValue: number,
+      category: string,
+      reverse: boolean,
+    ): React.CSSProperties => {
+      if (category === "team") return {};
+  
+      const intensity = value / maxValue;
+      let color: string;
+      // Define your color logic here
+      color = reverse?`rgba(0, 0, 255, ${1-intensity})`:`rgba(0, 0, 255, ${intensity})`; // Example color logic
+      return { backgroundColor: color };
+    };
 
   return (
     <div
@@ -301,12 +302,12 @@ export default function EventsContent({rankings}: Props) {
           {sortedRankings.map((r, idx) => (
             <tr key={r.teamnumber}>
               <td>{r.teamnumber}</td>
-              <td style={getColor(r.coralpermatch as number, maxValues.coralpermatch, "coralpermatch")}>{r.coralpermatch}</td>
-              <td style={getColor(r.coralaccuracy as number, maxValues.coralaccuracy, "coralaccuracy")}>{r.coralaccuracy}</td>
-              <td style={getColor(r.coralcycletime as number, maxValues.coralcycletime, "coralcycletime")}>{r.coralcycletime}</td>
-              <td style={getColor(r.algaepermatch as number, maxValues.algaepermatch, "algaepermatch")}>{r.algaepermatch}</td>
-              <td style={getColor(r.algaeaccuracy as number, maxValues.algaeaccuracy, "algaeaccuracy")}>{r.algaeaccuracy}</td>
-              <td style={getColor(r.algaecycletime as number, maxValues.algaecycletime, "algaecycletime")}>{r.algaecycletime}</td>
+              <td style={getColor(r.coralpermatch as number, maxValues.coralpermatch, "coralpermatch", false)}>{r.coralpermatch}</td>
+              <td style={getColor(r.coralaccuracy as number, maxValues.coralaccuracy, "coralaccuracy", false)}>{r.coralaccuracy}</td>
+              <td style={getColor(r.coralcycletime as number, maxValues.coralcycletime, "coralcycletime", true)}>{r.coralcycletime||0}</td>
+              <td style={getColor(r.algaepermatch as number, maxValues.algaepermatch, "algaepermatch", false)}>{r.algaepermatch}</td>
+              <td style={getColor(r.algaeaccuracy as number, maxValues.algaeaccuracy, "algaeaccuracy", false)}>{r.algaeaccuracy}</td>
+              <td style={getColor(r.algaecycletime as number, maxValues.algaecycletime, "algaecycletime", true)}>{r.algaecycletime||0}</td>
               <td>
                 <div
                   className={"d-flex justify-content-center align-items-center"}

@@ -78,14 +78,15 @@ export default function RankingsContent({rankings}: Props) {
   const getColor = (
     value: number,
     maxValue: number,
-    category: string
+    category: string,
+    reverse: boolean,
   ): React.CSSProperties => {
     if (category === "team") return {};
 
     const intensity = value / maxValue;
     let color: string;
     // Define your color logic here
-    color = `rgba(0, 0, 255, ${intensity})`; // Example color logic
+    color = reverse?`rgba(0, 0, 255, ${1-intensity})`:`rgba(0, 0, 255, ${intensity})`; // Example color logic
     return { backgroundColor: color };
   };
 
@@ -150,16 +151,16 @@ export default function RankingsContent({rankings}: Props) {
               >
                 {r.teamnumber}
               </td>
-              <td style={getColor(r.totalgames as number, maxValues.totalgames, "totalgames")}>{r.totalgames}</td>
-              <td style={getColor(r.mobility as number, maxValues.mobility, "mobility")}>{r.mobility}</td>
-              <td style={getColor(r.coraldropped as number, maxValues.coraldropped, "coraldropped")}>{r.coraldropped}</td>
-              <td style={getColor(r.algaedropped as number, maxValues.algaedropped, "algaedropped")}>{r.algaedropped}</td>
-              <td style={getColor(r.endgameparked as number, maxValues.endgameparked, "endgameparked")}>{r.endgameparked}</td>
-              <td style={getColor(r.endgameshallow as number, maxValues.endgameshallow, "endgameshallow")}>{r.endgameshallow}</td>
-              <td style={getColor(r.endgamedeep as number, maxValues.endgamedeep, "endgamedeep")}>{r.endgamedeep}</td>
-              <td style={getColor(r.incap as number, maxValues.incap, "incap")}>{r.incap}</td>
-              <td style={getColor(r.defense as number, maxValues.defense, "defense")}>{r.defense}</td>
-              <td style={getColor(r.driverskill as number, maxValues.driverskill, "driverskill")}>{r.driverskill}</td>
+              <td>{r.totalgames}</td>
+              <td style={getColor(r.mobility as number, maxValues.mobility, "mobility", false)}>{r.mobility}</td>
+              <td style={getColor(r.coraldropped as number, maxValues.coraldropped, "coraldropped", true)}>{r.coraldropped}</td>
+              <td style={getColor(r.algaedropped as number, maxValues.algaedropped, "algaedropped", true)}>{r.algaedropped}</td>
+              <td style={getColor(r.endgameparked as number, maxValues.endgameparked, "endgameparked", false)}>{r.endgameparked}</td>
+              <td style={getColor(r.endgameshallow as number, maxValues.endgameshallow, "endgameshallow", false)}>{r.endgameshallow}</td>
+              <td style={getColor(r.endgamedeep as number, maxValues.endgamedeep, "endgamedeep", false)}>{r.endgamedeep}</td>
+              <td style={getColor(r.incap as number, maxValues.incap, "incap", true)}>{r.incap}</td>
+              <td style={getColor(r.defense as number, maxValues.defense, "defense", false)}>{r.defense}</td>
+              <td style={getColor(r.driverskill as number, maxValues.driverskill, "driverskill", false)}>{r.driverskill}</td>
               <td>
                 <div
                   className={"d-flex justify-content-center align-items-center"}

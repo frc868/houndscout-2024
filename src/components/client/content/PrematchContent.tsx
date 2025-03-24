@@ -2,7 +2,7 @@
 
 import StartingPositionSelector from "@/components/client/prematch/StartingZoneSelector";
 import { Alliance } from "@/lib/enums";
-import { setAutoStartingZoneAsync } from "@/redux/scoresSlice";
+import { setAutoStartingZoneAsync, clearEvents } from "@/redux/scoresSlice";
 import { AppDispatch, ReduxState } from "@/redux/store";
 import { sendPostMatchData } from "@/redux/scoresSlice";
 import { staticGenerationAsyncStorage } from "next/dist/client/components/static-generation-async-storage.external";
@@ -24,8 +24,9 @@ export default function PrematchContent({ show, coralActiveSide, handlePreload }
   const mainData = useSelector((state: ReduxState) => state.mainData);
 
   const confirmNoShow=()=>{
-    if(confirm("Are you sure the robot didn't show up? Only click OK after the match starts, as this action will submit the match.")==true){
+    if(confirm("Are you sure? Only click OK if the match starts without the robot appearing or if an error leaves you unable to input match-related data, as this action will submit an empty score.")==true){
       dispatch(sendPostMatchData({}));
+      dispatch(clearEvents({ }));
     }
   }
 
@@ -72,7 +73,7 @@ export default function PrematchContent({ show, coralActiveSide, handlePreload }
                 variant="danger"
                 onClick={confirmNoShow}
               >
-                No-Show
+                No-Show/Error
               </Button>
             </div>
           </Row>

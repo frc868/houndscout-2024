@@ -106,7 +106,10 @@ useEffect(() => {
         </Button>
       </div>
       {(selected == Section.AUTO || selected == Section.TELEOP) && (
-        <h6 className="d-flex flex-row justify-content-center mt-1"><u className="mx-1">S</u>: Undo Coral input, <u className="mx-1">G</u>: Undo Algae input</h6>
+        <>
+          <h6 className="d-flex flex-row justify-content-center mt-1"><u>S</u>: Undo Coral input</h6>
+          <h6 className="d-flex flex-row justify-content-center mt-1"><u>G</u>: Undo Algae input</h6>
+        </>
       )}
     </>
   );

@@ -94,15 +94,15 @@ export default function Pit() {
           <h1 className="d-flex justify-content-center mt-1">Pit Scouting Form</h1>
           <Row className="d-flex justify-content-center">
             {ready ? (
-              <div className="d-flex justify-content-center mt-3">
-                <h3 className="mr-2">Team Number: </h3>
+              <Col className="d-flex justify-content-center mt-3">
+                <h3 className="mr-5">Team Number: </h3>
                 <TeamDropdown
                   red={false}
                   activeTeam={Number(teamNumber)}
                   teams={adminData.eventTeams as Team[]}
                   handleTeamSelect={(number) => setTeamNumber(number)}
                 />
-              </div>
+              </Col>
             ) : (
               <>
                 <div className="d-flex justify-content-center mt-5">
@@ -112,28 +112,27 @@ export default function Pit() {
             )} 
           </Row>
 
-          <Row className="d-flex justify-content-center my-2">
-            <Form.Group controlId="robotPicture">
-              <Form.Label>Upload Robot Picture</Form.Label>
-              <Form.Control
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-              />
-            </Form.Group>
-          </Row>
-          
-          {robotImage && (
-            <Row className="d-flex justify-content-center my-2">
-              <Col md={6} className="d-flex justify-content-center">
-                <img
-                  src={robotImage}
-                  alt="Robot"
-                  style={{ width: '100%', height: 'auto' }}
+          <Row className="my-2">
+            <Col className="d-flex justify-content-center" md={6}>
+              <Form.Group controlId="weight">
+                <Form.Label>Weight (lbs)</Form.Label>
+                <Form.Control
+                  type="number"
+                  value={Number(weight)}
+                  onChange={(e) => setWeight(Number(e.target.value))} // Updates weight on input change
                 />
-              </Col>
-            </Row>
-          )}
+              </Form.Group>
+            </Col>
+            <Col className="d-flex justify-content-center" md={6}>
+              <SidewaysToggleBox
+                name="Has Auto Mode?"
+                enabled={hasAuton}
+                handleClick={() =>
+                  setHasAuton((hasAuton) => !hasAuton)
+                }
+              />
+            </Col>
+          </Row>
 
           <Row className="my-5">
             <Col className="d-flex justify-content-center align-items-center" md={4}>
@@ -307,27 +306,29 @@ export default function Pit() {
               </Form.Group>
             </Col>
           </Row>
-          <Row className="my-2">
-            <Col className="d-flex justify-content-center" md={6}>
-              <Form.Group controlId="weight">
-                <Form.Label>Weight (lbs)</Form.Label>
-                <Form.Control
-                  type="number"
-                  value={Number(weight)}
-                  onChange={(e) => setWeight(Number(e.target.value))} // Updates weight on input change
-                />
-              </Form.Group>
-            </Col>
-            <Col className="d-flex justify-content-center" md={6}>
-              <SidewaysToggleBox
-                name="Has Auto Mode?"
-                enabled={hasAuton}
-                handleClick={() =>
-                  setHasAuton((hasAuton) => !hasAuton)
-                }
+
+          <Row className="d-flex justify-content-center my-2 mx-2">
+            <Form.Group controlId="robotPicture">
+              <Form.Label>Upload Robot Picture</Form.Label>
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
               />
-            </Col>
+            </Form.Group>
           </Row>
+          
+          {robotImage && (
+            <Row className="d-flex justify-content-center my-2">
+              <Col md={6} className="d-flex justify-content-center">
+                <img
+                  src={robotImage}
+                  alt="Robot"
+                  style={{ width: '100%', height: 'auto' }}
+                />
+              </Col>
+            </Row>
+          )}
           
           <Row className="d-flex justify-content-center">
             <Col md={3}>

@@ -61,14 +61,15 @@ export default function IncapsContent({rankings, teams}: Props) {
       value: number,
       maxValue: number,
       minValue: number,
-      category: string
+      category: string,
+      reverse: boolean,
     ): React.CSSProperties => {
       if (category === "team") return {};
   
       const intensity = (maxValue - value) / (maxValue - minValue);
       let color: string;
       // Define your color logic here
-      color = `rgba(0, 0, 255, ${intensity})`; // Example color logic
+      color = reverse?`rgba(0, 0, 255, ${1-intensity})`:`rgba(0, 0, 255, ${intensity})`; // Example color logic
       return { backgroundColor: color };
     };
 
@@ -174,7 +175,7 @@ export default function IncapsContent({rankings, teams}: Props) {
           <tbody>
             {sortedEvents?.map((r, idx) => (
               <tr key={r.id}>
-                <td style={getColor(r.totaltime as number, maxValues.totaltime, minValues.totaltime, "totaltime")}>{r.totaltime}</td>
+                <td style={getColor(r.totaltime as number, maxValues.totaltime, minValues.totaltime, "totaltime", true)}>{r.totaltime}</td>
                 <td style={r.full?{backgroundColor: "blue"}:{}}>{r.full?"yes":"no"}</td>
               </tr>
             ))}

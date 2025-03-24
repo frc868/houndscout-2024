@@ -119,12 +119,12 @@ export default function Client({ station }: Props) {
       }
     };
     update();
+    
     //If the bot is preloaded, sets the scoring event time to be when the tab was switched to auto and the intake location to preload.
     if(tab===Section.AUTO&&coralActiveSide=="level"&&coralStartTime==0){
-      setCoralStartTime(Date.now());
+      if (coralStartTime == 0) setCoralStartTime(Date.now());
       setCoralIntakeLocation(CoralIntakeLocation.AUTOPRELOAD);
     }
-    //If the bot is preloaded, sets the scoring event time to be when the tab was switched to auto and the intake location to preload.
     
     //Skips the side selection from Auto if moving to another tab with it on.
     if(tab!==Section.AUTO&&coralActiveSide=="side"){
@@ -172,7 +172,7 @@ export default function Client({ station }: Props) {
   ) => {
     if(phrase==coralActiveSide){
       if (phrase=="intaking"){
-        setCoralStartTime(Date.now());
+        if (coralStartTime == 0) setCoralStartTime(Date.now());
         setCoralIntakeLocation(data.intakeSelection);
         setCoralActiveSide("level");
       } else if (phrase=="level"){
@@ -192,7 +192,7 @@ export default function Client({ station }: Props) {
     
           await dispatch(sendCoralEvent(event));
         } else {
-          setCoralEndTime(Date.now());
+          if (coralEndTime == 0) setCoralEndTime(Date.now());
           setCoralScoringLevel(data.scoringLevel);
           if(tab==Section.AUTO){
             setCoralActiveSide("side"); 
@@ -255,7 +255,7 @@ export default function Client({ station }: Props) {
   ) => {
     if(phrase==algaeActiveSide){
       if (phrase=="intaking"){
-        setAlgaeStartTime(Date.now());
+        if (algaeStartTime==0) setAlgaeStartTime(Date.now());
         setAlgaeIntakeLocation(data.intakeSelection);
         setAlgaeActiveSide("scoring");  
       } else if (phrase=="scoring"){
@@ -274,7 +274,7 @@ export default function Client({ station }: Props) {
     
           await dispatch(sendAlgaeEvent(event));
         } else {
-          setAlgaeEndTime(Date.now());
+          if (algaeEndTime == 0) setAlgaeEndTime(Date.now());
           setAlgaeScoringLocation(data.scoringLocation);
           setAlgaeActiveSide("result"); 
         }

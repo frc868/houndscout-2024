@@ -151,18 +151,19 @@ export default function PitContent({rankings}: Props) {
   
     // Determine cell color based on value
     const getColor = (
-      value: number,
-      maxValue: number,
-      category: string
-    ): React.CSSProperties => {
-      if (category === "team") return {};
-  
-      const intensity = value / maxValue;
-      let color: string;
-      // Define your color logic here
-      color = `rgba(0, 0, 255, ${intensity})`; // Example color logic
-      return { backgroundColor: color };
-    };
+        value: number,
+        maxValue: number,
+        category: string,
+        reverse: boolean,
+      ): React.CSSProperties => {
+        if (category === "team") return {};
+    
+        const intensity = value / maxValue;
+        let color: string;
+        // Define your color logic here
+        color = reverse?`rgba(0, 0, 255, ${1-intensity})`:`rgba(0, 0, 255, ${intensity})`; // Example color logic
+        return { backgroundColor: color };
+      };
   
     return (
       <div

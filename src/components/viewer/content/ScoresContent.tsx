@@ -62,14 +62,15 @@ export default function ScoresContent({scores, teams}: Props) {
     const getColor = (
       value: number,
       maxValue: number,
-      category: string
+      category: string,
+      reverse: boolean,
     ): React.CSSProperties => {
       if (category === "team") return {};
   
-      const intensity = value / maxValue;
+      const intensity = maxValue / value;
       let color: string;
       // Define your color logic here
-      color = `rgba(0, 0, 255, ${intensity})`; // Example color logic
+      color = reverse?`rgba(0, 0, 255, ${1-intensity})`:`rgba(0, 0, 255, ${intensity})`; // Example color logic
       return { backgroundColor: color };
     };
   
@@ -198,11 +199,11 @@ export default function ScoresContent({scores, teams}: Props) {
                   <td>{r.scouterName}</td>
                   <td style={r.preloaded?{backgroundColor: "blue"}:{}}>{r.preloaded?"yes":"no"}</td>
                   <td style={r.leftStartingZone?{backgroundColor: "blue"}:{}}>{r.leftStartingZone?"yes":"no"}</td>
-                  <td style={getColor(r.totalIncapTime as number, maxValues.totalIncapTime, "totalIncapTime")}>{r.totalIncapTime}</td>
-                  <td style={getColor(r.endgameType==EndgameType.PARKED?2:r.endgameType==EndgameType.SHALLOW?6:r.endgameType==EndgameType.DEEP?12:0, 12, "endgameType")}>{r.endgameType}</td>
+                  <td style={getColor(r.totalIncapTime as number, maxValues.totalIncapTime, "totalIncapTime", true)}>{r.totalIncapTime}</td>
+                  <td style={getColor(r.endgameType==EndgameType.PARKED?2:r.endgameType==EndgameType.SHALLOW?6:r.endgameType==EndgameType.DEEP?12:0, 12, "endgameType", false)}>{r.endgameType}</td>
                   <td style={r.endgameSuccess?{backgroundColor: "blue"}:{}}>{r.endgameSuccess?"yes":"no"}</td>
-                  <td style={getColor(r.driverSkillRating as number, maxValues.driverSkillRating, "driverSkillRating")}>{r.driverSkillRating}</td>
-                  <td style={getColor(r.result==Result.TIE?1:r.result==Result.WIN?3:0, 3, "result")}>{r.result}</td>
+                  <td style={getColor(r.driverSkillRating as number, 5, "driverSkillRating", false)}>{r.driverSkillRating}</td>
+                  <td style={getColor(r.result==Result.TIE?1:r.result==Result.WIN?3:0, 3, "result", false)}>{r.result}</td>
                   <td style={r.playedDefense?{backgroundColor: "blue"}:{}}>{r.playedDefense?"yes":"no"}</td>
                   <td style={{fontSize: "12px"}}>{r.comments}</td>
                 </tr>

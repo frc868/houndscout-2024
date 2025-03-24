@@ -21,7 +21,7 @@ export default function DroppedPanel({
   return (
     <div className="d-flex flex-row justify-content-center align-items-center mt-2">
       <Col className="d-flex justify-content-center align-items-center">
-          <h4>Dropped</h4>
+          <h4>Dropped:</h4>
           <DroppedButton
               className="mx-1"
               active={coralActive}
