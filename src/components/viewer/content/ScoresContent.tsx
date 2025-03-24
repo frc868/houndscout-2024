@@ -149,7 +149,7 @@ export default function ScoresContent({scores, teams}: Props) {
             bordered
             variant="dark"
             className="table-responsive"
-            style={{width: "calc(150vw - 2*24px)"}}
+            style={{width: "calc(125vw - 2*24px)"}}
           >
             <thead>
               <tr>
@@ -184,7 +184,7 @@ export default function ScoresContent({scores, teams}: Props) {
                   onClick={() =>
                     handleSort("comments")
                   }
-                  style={{ cursor: "pointer", width: "1000%" }}
+                  style={{ cursor: "pointer", width: "500%" }}
                 >
                   Comments
                 </th>

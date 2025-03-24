@@ -25,7 +25,7 @@ export default function ImportContent({eventCode}: Props) {
       {/* There's a pg dump function in admin, we just have to get it over here. */}
       <h3 className="text-center mb-3">Import:</h3>
         <Button
-          variant="primary"
+          variant="success"
           className="edit-button w-100 mx-auto mb-3"
           onClick={async () => {
             await dispatch(
@@ -42,7 +42,7 @@ export default function ImportContent({eventCode}: Props) {
           className="edit-button w-100 mx-auto mb-3"
           onClick={() => setShowPitImport(!showPitImport)}
         >
-          {showPitImport?"Cancel":"Import Pit Data Offline"}
+          {showPitImport?"Cancel":"Import Pit Data (Offline)"}
         </Button>
         {showPitImport&&(
           <PitImportForm

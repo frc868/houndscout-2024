@@ -123,6 +123,7 @@ export default function RankingsContent({rankings}: Props) {
               "Endgame Parked",
               "Endgame Shallow",
               "Endgame Deep",
+              "Endgame Success",
               "Incap",
               "Defense",
               "Driver Skill",
@@ -204,6 +205,7 @@ export default function RankingsContent({rankings}: Props) {
               <td style={getColor(r.endgameparked as number, maxValues.endgameparked, "endgameparked", false)}>{r.endgameparked}</td>
               <td style={getColor(r.endgameshallow as number, maxValues.endgameshallow, "endgameshallow", false)}>{r.endgameshallow}</td>
               <td style={getColor(r.endgamedeep as number, maxValues.endgamedeep, "endgamedeep", false)}>{r.endgamedeep}</td>
+              <td style={getColor(r.endgamesuccess as number, maxValues.endgamesuccess, "endgamesuccess", false)}>{r.endgamesuccess}</td>
               <td style={getColor(r.incap as number, maxValues.incap, "incap", true)}>{r.incap}</td>
               <td style={getColor(r.defense as number, maxValues.defense, "defense", false)}>{r.defense}</td>
               <td style={getColor(r.driverskill as number, maxValues.driverskill, "driverskill", false)}>{r.driverskill}</td>

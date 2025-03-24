@@ -162,6 +162,10 @@ export async function GET(
         teamScores.filter((score) => score.endgameType === EndgameType.DEEP)
           .length / teamScores.length;
 
+      const endgamesuccess:number =
+        teamScores.filter((score) => score.endgameSuccess === true)
+          .length / teamScores.length;
+
       //Average Incap time per match in seconds
       const incap:number =
         teamScores.reduce((total, score) => {
@@ -203,6 +207,7 @@ export async function GET(
         endgameparked,
         endgameshallow,
         endgamedeep,
+        endgamesuccess,
         incap,
         defense,
         driverskill,

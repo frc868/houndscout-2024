@@ -60,40 +60,40 @@ export default function EventsContent({rankings}: Props) {
           const gameAmount = score.CoralScoringEvents.filter(coralFilter).length;
           return total + gameAmount;
         }, 0) / (r.totalgames),
-        coralaccuracy: totalgames==0?null:r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
-          const gameAmount = score.CoralScoringEvents.filter(coralFilter).filter(
-            (event) => !event.failedScoring
-          ).length;
-          return total + gameAmount;
-        }, 0) / (r.totalgames),
-        coralcycletime: totalgames==0?null:r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
-          const totalMatchTime = score.CoralScoringEvents.filter(coralFilter).reduce(
-            (sum, segment) => 
-              sum +
-              (Number(segment.timestampScored) -
-                Number(segment.timestampPickedUp)),
-            0) / score.CoralScoringEvents.length;
-          return total + totalMatchTime;
-        }, 0) / (r.teamScores.length * 1000),
+        coralaccuracy: totalgames==0?null:r.teamScores.filter(score=>score.submitted).flatMap((score)=>{
+            return score.CoralScoringEvents
+          }).filter(coralFilter).filter((event) => !event.failedScoring).length / r.teamScores.filter(score=>score.submitted).flatMap((score)=>{
+            return score.CoralScoringEvents
+          }).filter(coralFilter).length,
+        coralcycletime: totalgames==0?null:r.teamScores.filter(score=>score.submitted).flatMap((score)=>{
+          return score.CoralScoringEvents
+        }).filter(coralFilter).reduce(
+          (sum, segment) => 
+            sum +
+            (Number(segment.timestampScored) -
+              Number(segment.timestampPickedUp)),
+          0) / (1000 * r.teamScores.filter(score=>score.submitted).flatMap((score)=>{
+            return score.CoralScoringEvents
+          }).filter(coralFilter).length),
         algaepermatch: totalgames==0?null:r.teamScores.filter(score=>score.submitted).filter(score=>score.submitted).reduce((total, score) => {
           const gameAmount = score.AlgaeScoringEvents.filter(algaeFilter).length;
           return total + gameAmount;
         }, 0) / (r.totalgames),
-        algaeaccuracy: totalgames==0?null:r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
-          const gameAmount = score.AlgaeScoringEvents.filter(algaeFilter).filter(
-            (event) => !event.failedScoring
-          ).length;
-          return total + gameAmount;
-        }, 0) / (r.totalgames),
-        algaecycletime: totalgames==0?null:r.teamScores.filter(score=>score.submitted).reduce((total, score) => {
-          const totalMatchTime = score.AlgaeScoringEvents.filter(algaeFilter).reduce(
-            (sum, segment) => 
-              sum +
-              (Number(segment.timestampScored) -
-                Number(segment.timestampPickedUp)),
-            0) / score.AlgaeScoringEvents.length;
-          return total + totalMatchTime;
-        }, 0) / (r.totalgames * 1000)
+        algaeaccuracy:r.teamScores.filter(score=>score.submitted).flatMap((score)=>{
+          return score.AlgaeScoringEvents
+        }).filter(algaeFilter).filter((event) => !event.failedScoring).length / r.teamScores.filter(score=>score.submitted).flatMap((score)=>{
+          return score.AlgaeScoringEvents
+        }).filter(algaeFilter).length,
+        algaecycletime: totalgames==0?null:r.teamScores.filter(score=>score.submitted).flatMap((score)=>{
+          return score.AlgaeScoringEvents
+        }).filter(algaeFilter).reduce(
+          (sum, segment) => 
+            sum +
+            (Number(segment.timestampScored) -
+              Number(segment.timestampPickedUp)),
+          0) / (1000 * r.teamScores.filter(score=>score.submitted).flatMap((score)=>{
+            return score.AlgaeScoringEvents
+          }).filter(algaeFilter).length),
       }
     })
     if (!sortField) return [...newRankings].sort((a, b) => {

@@ -64,7 +64,7 @@ export default function MatchSchedule({
         }}
       />
       <div className="d-flex flex-column">
-        <Row className="mb-3">
+        <Row className="mb-1">
           <h1 className="text-center">Match Schedule</h1>
           <MoonLoader
             color={"black"}
@@ -74,15 +74,13 @@ export default function MatchSchedule({
             data-testid="loader"
           />
         </Row>
-        <Row className="mb-3">
+        <Row className="mb-1">
           <Button
             className="w-25 mx-auto"
             onClick={() => {setShowMatchCreate(true);}}
           >
             Create New Match
           </Button>
-          <Row className="mb-3">
-        </Row>
         </Row>
 
         <Table bordered className="border-secondary-subtle">

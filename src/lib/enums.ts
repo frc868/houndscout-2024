@@ -32,6 +32,7 @@ export interface Ranking {
   endgameparked: number;
   endgameshallow: number;
   endgamedeep: number;
+  endgamesuccess: number;
   incap: number;
   defense: number;
   driverskill: number;
