@@ -200,6 +200,32 @@ export default function PitContent({rankings}: Props) {
                 <i className={` bi ${(sortField!="teamnumber") ? "bi-chevron-bar-contract" : sortDirection=="asc" ? "bi-chevron-bar-down" : "bi-chevron-bar-up"}`} />
               </th>
               <th
+                key="firstpicklist"
+                onClick={() =>
+                  handleSort(
+                    "firstpicklist" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+                rowSpan={2}
+              >
+                First Picklist
+                <i className={` bi ${(sortField!="firstpicklist") ? "bi-chevron-bar-contract" : sortDirection=="asc" ? "bi-chevron-bar-down" : "bi-chevron-bar-up"}`} />
+              </th>
+              <th
+                key="secondpicklist"
+                onClick={() =>
+                  handleSort(
+                    "secondpicklist" as keyof Ranking
+                  )
+                }
+                style={{ cursor: "pointer" }}
+                rowSpan={2}
+              >
+                Second Picklist
+                <i className={` bi ${(sortField!="secondpicklist") ? "bi-chevron-bar-contract" : sortDirection=="asc" ? "bi-chevron-bar-down" : "bi-chevron-bar-up"}`} />
+              </th>
+              <th
                 style={{ cursor: "pointer" }}
                 colSpan={4}
               >
@@ -259,32 +285,7 @@ export default function PitContent({rankings}: Props) {
               >
                 Comments
               </th>
-              <th
-                key="firstpicklist"
-                onClick={() =>
-                  handleSort(
-                    "firstpicklist" as keyof Ranking
-                  )
-                }
-                style={{ cursor: "pointer" }}
-                rowSpan={2}
-              >
-                First Picklist
-                <i className={` bi ${(sortField!="firstpicklist") ? "bi-chevron-bar-contract" : sortDirection=="asc" ? "bi-chevron-bar-down" : "bi-chevron-bar-up"}`} />
-              </th>
-              <th
-                key="secondpicklist"
-                onClick={() =>
-                  handleSort(
-                    "secondpicklist" as keyof Ranking
-                  )
-                }
-                style={{ cursor: "pointer" }}
-                rowSpan={2}
-              >
-                Second Picklist
-                <i className={` bi ${(sortField!="secondpicklist") ? "bi-chevron-bar-contract" : sortDirection=="asc" ? "bi-chevron-bar-down" : "bi-chevron-bar-up"}`} />
-              </th>
+              
             </tr>
             <tr>
               {/* Clickable table headers for sorting */}
@@ -624,6 +625,52 @@ export default function PitContent({rankings}: Props) {
               <tr key={r.teamnumber}>
                 <td>{r.teamnumber}</td>
                 <td>
+                  <div
+                    className={"d-flex justify-content-center align-items-center"}
+                    style={{
+                      width: "auto",
+                      height: "100%",
+                      fontSize: "35pt",
+                      color: "gold",
+                      cursor: "pointer",
+                    }}
+                    onMouseDown={async () => {
+                      await dispatch(
+                        updatePicklistsAsync({
+                          teamNumber: r.teamnumber as number,
+                          firstPicklist: !r.firstpicklist,
+                          secondPicklist: r.secondpicklist
+                        })
+                      );
+                    }}
+                  >
+                    <i className={`bi ${r.firstpicklist ? "bi-star-fill" : "bi-star"}`} />
+                  </div>
+                </td>
+                <td>
+                  <div
+                    className={"d-flex justify-content-center align-items-center"}
+                    style={{
+                      width: "auto",
+                      height: "100%",
+                      fontSize: "35pt",
+                      color: "silver",
+                      cursor: "pointer",
+                    }}
+                    onMouseDown={async () => {
+                      await dispatch(
+                        updatePicklistsAsync({
+                          teamNumber: r.teamnumber as number,
+                          firstPicklist: r.firstpicklist,
+                          secondPicklist: !r.secondpicklist
+                        })
+                      );
+                    }}
+                  >
+                    <i className={`bi ${r.secondpicklist ? "bi-star-fill" : "bi-star"}`} />
+                  </div>
+                </td>
+                <td>
                   {r.robotimage &&
                     <img className="" alt="" src={r.robotimage} width={85} />
                   }
@@ -650,52 +697,6 @@ export default function PitContent({rankings}: Props) {
                 <td style={r.hasauton?{backgroundColor: "blue"}:{}}>{r.hasauton?"yes":"no"}</td>
                 <td>{Number(r.weight)}</td>
                 <td style={{fontSize: "12px"}}>{r.comments}</td>
-                <td>
-                <div
-                  className={"d-flex justify-content-center align-items-center"}
-                  style={{
-                    width: "auto",
-                    height: "100%",
-                    fontSize: "35pt",
-                    color: "gold",
-                    cursor: "pointer",
-                  }}
-                  onMouseDown={async () => {
-                    await dispatch(
-                      updatePicklistsAsync({
-                        teamNumber: r.teamnumber as number,
-                        firstPicklist: !r.firstpicklist,
-                        secondPicklist: r.secondpicklist
-                      })
-                    );
-                  }}
-                >
-                  <i className={`bi ${r.firstpicklist ? "bi-star-fill" : "bi-star"}`} />
-                </div>
-              </td>
-              <td>
-                <div
-                  className={"d-flex justify-content-center align-items-center"}
-                  style={{
-                    width: "auto",
-                    height: "100%",
-                    fontSize: "35pt",
-                    color: "silver",
-                    cursor: "pointer",
-                  }}
-                  onMouseDown={async () => {
-                    await dispatch(
-                      updatePicklistsAsync({
-                        teamNumber: r.teamnumber as number,
-                        firstPicklist: r.firstpicklist,
-                        secondPicklist: !r.secondpicklist
-                      })
-                    );
-                  }}
-                >
-                  <i className={`bi ${r.secondpicklist ? "bi-star-fill" : "bi-star"}`} />
-                </div>
-              </td>
               </tr>
             ))}
           </tbody>

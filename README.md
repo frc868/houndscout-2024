@@ -51,3 +51,4 @@ This update addresses many issues with usage of HoundScout at the last competiti
   * Added color coding logic for most table cells (the more blue a cell is, the better the recorded value is)
   * Changed the way comments are rendered to hopefully make them easier to read.
   * Added functions to import pit scouting data, both online and offline.
+  * Picklist columns are now right after the team numbers, to make them easier to access.

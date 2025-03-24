@@ -114,6 +114,8 @@ export default function RankingsContent({rankings}: Props) {
             {/* Clickable table headers for sorting */}
             {[
               "Team Number",
+              "First Picklist",
+              "Second Picklist",
               "Total Games",
               "Mobility",
               "Coral Dropped",
@@ -124,8 +126,6 @@ export default function RankingsContent({rankings}: Props) {
               "Incap",
               "Defense",
               "Driver Skill",
-              "First Picklist",
-              "Second Picklist",
             ].map((header) => (
               <th
                 key={header}
@@ -151,16 +151,6 @@ export default function RankingsContent({rankings}: Props) {
               >
                 {r.teamnumber}
               </td>
-              <td>{r.totalgames}</td>
-              <td style={getColor(r.mobility as number, maxValues.mobility, "mobility", false)}>{r.mobility}</td>
-              <td style={getColor(r.coraldropped as number, maxValues.coraldropped, "coraldropped", true)}>{r.coraldropped}</td>
-              <td style={getColor(r.algaedropped as number, maxValues.algaedropped, "algaedropped", true)}>{r.algaedropped}</td>
-              <td style={getColor(r.endgameparked as number, maxValues.endgameparked, "endgameparked", false)}>{r.endgameparked}</td>
-              <td style={getColor(r.endgameshallow as number, maxValues.endgameshallow, "endgameshallow", false)}>{r.endgameshallow}</td>
-              <td style={getColor(r.endgamedeep as number, maxValues.endgamedeep, "endgamedeep", false)}>{r.endgamedeep}</td>
-              <td style={getColor(r.incap as number, maxValues.incap, "incap", true)}>{r.incap}</td>
-              <td style={getColor(r.defense as number, maxValues.defense, "defense", false)}>{r.defense}</td>
-              <td style={getColor(r.driverskill as number, maxValues.driverskill, "driverskill", false)}>{r.driverskill}</td>
               <td>
                 <div
                   className={"d-flex justify-content-center align-items-center"}
@@ -207,6 +197,17 @@ export default function RankingsContent({rankings}: Props) {
                   <i className={`bi ${r.secondpicklist ? "bi-star-fill" : "bi-star"}`} />
                 </div>
               </td>
+              <td>{r.totalgames}</td>
+              <td style={getColor(r.mobility as number, maxValues.mobility, "mobility", false)}>{r.mobility}</td>
+              <td style={getColor(r.coraldropped as number, maxValues.coraldropped, "coraldropped", true)}>{r.coraldropped}</td>
+              <td style={getColor(r.algaedropped as number, maxValues.algaedropped, "algaedropped", true)}>{r.algaedropped}</td>
+              <td style={getColor(r.endgameparked as number, maxValues.endgameparked, "endgameparked", false)}>{r.endgameparked}</td>
+              <td style={getColor(r.endgameshallow as number, maxValues.endgameshallow, "endgameshallow", false)}>{r.endgameshallow}</td>
+              <td style={getColor(r.endgamedeep as number, maxValues.endgamedeep, "endgamedeep", false)}>{r.endgamedeep}</td>
+              <td style={getColor(r.incap as number, maxValues.incap, "incap", true)}>{r.incap}</td>
+              <td style={getColor(r.defense as number, maxValues.defense, "defense", false)}>{r.defense}</td>
+              <td style={getColor(r.driverskill as number, maxValues.driverskill, "driverskill", false)}>{r.driverskill}</td>
+              
               {/* {Object.entries(r).map(([key, value]) =>
                 key !== "team" ? (
                   <td

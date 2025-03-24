@@ -274,14 +274,14 @@ export default function EventsContent({rankings}: Props) {
             {/* Clickable table headers for sorting */}
             {[
               "Team Number",
+              "First Picklist",
+              "Second Picklist",
               "Coral Per Match",
               "Coral Accuracy",
               "Coral Cycle Time",
               "Algae Per Match",
               "Algae Accuracy",
               "Algae Cycle Time",
-              "First Picklist",
-              "Second Picklist",
             ].map((header) => (
               <th
                 key={header}
@@ -302,12 +302,6 @@ export default function EventsContent({rankings}: Props) {
           {sortedRankings.map((r, idx) => (
             <tr key={r.teamnumber}>
               <td>{r.teamnumber}</td>
-              <td style={getColor(r.coralpermatch as number, maxValues.coralpermatch, "coralpermatch", false)}>{r.coralpermatch}</td>
-              <td style={getColor(r.coralaccuracy as number, maxValues.coralaccuracy, "coralaccuracy", false)}>{r.coralaccuracy}</td>
-              <td style={getColor(r.coralcycletime as number, maxValues.coralcycletime, "coralcycletime", true)}>{r.coralcycletime||0}</td>
-              <td style={getColor(r.algaepermatch as number, maxValues.algaepermatch, "algaepermatch", false)}>{r.algaepermatch}</td>
-              <td style={getColor(r.algaeaccuracy as number, maxValues.algaeaccuracy, "algaeaccuracy", false)}>{r.algaeaccuracy}</td>
-              <td style={getColor(r.algaecycletime as number, maxValues.algaecycletime, "algaecycletime", true)}>{r.algaecycletime||0}</td>
               <td>
                 <div
                   className={"d-flex justify-content-center align-items-center"}
@@ -354,6 +348,13 @@ export default function EventsContent({rankings}: Props) {
                   <i className={`bi ${r.secondpicklist ? "bi-star-fill" : "bi-star"}`} />
                 </div>
               </td>
+              <td style={getColor(r.coralpermatch as number, maxValues.coralpermatch, "coralpermatch", false)}>{r.coralpermatch}</td>
+              <td style={getColor(r.coralaccuracy as number, maxValues.coralaccuracy, "coralaccuracy", false)}>{r.coralaccuracy}</td>
+              <td style={getColor(r.coralcycletime as number, maxValues.coralcycletime, "coralcycletime", true)}>{r.coralcycletime||0}</td>
+              <td style={getColor(r.algaepermatch as number, maxValues.algaepermatch, "algaepermatch", false)}>{r.algaepermatch}</td>
+              <td style={getColor(r.algaeaccuracy as number, maxValues.algaeaccuracy, "algaeaccuracy", false)}>{r.algaeaccuracy}</td>
+              <td style={getColor(r.algaecycletime as number, maxValues.algaecycletime, "algaecycletime", true)}>{r.algaecycletime||0}</td>
+              
               {/* {Object.entries(r).map(([key, value]) =>
                 key !== "team" ? (
                   <td

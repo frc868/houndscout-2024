@@ -35,7 +35,7 @@ export default function ImportContent({eventCode}: Props) {
             );
           }}
         >
-          Import Pit Data Online
+          Import Pit Data from houndscout.techhounds.com (This event code)
         </Button>
         <Button
           variant={showPitImport?"danger":"primary"}
