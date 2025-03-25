@@ -120,11 +120,11 @@ export default function Activity({ scouters, submitted, cancelled, heartbeats }:
                 >
                   <BounceLoader
                     color={
-                      new Date().getTime() - heartbeat.time < 5000
+                      new Date().getTime() - heartbeat.time < 15000
                         ? "#198754"
                         : "#DC3545"
                     }
-                    // Displays a red signal if the last communication was 5 seconds ago, otherwise green.
+                    // Displays a red signal if the last communication was 15 seconds ago, otherwise green.
                     size={10}
                     className="me-1"
                   />
