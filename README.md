@@ -34,13 +34,13 @@ Everyone that scouted at our last competition (quality assurance)
 ## v2025.1
 This update addresses many issues with usage of HoundScout at the last competition.
 * Lead Scouter:
-  * Added indicators in Lead Scouter page for submitted scores (sections in activity panel and match schedule turn green). The teams and scouters for submitted scores can no longer be changed via the Lead Scouter page.
-  * Revamped Scouter schedule generator. It now copies the scouters in the selected match to all future matches, aside from any submitted scores.
-  * Practice matchs can now be manually created, and are placed at the beginning of the match schedule.
+  * Added indicators in Lead Scouter page for submitted and cancelled scores (sections in activity panel and match schedule turn green and red, respectively). The teams and scouters for submitted and cancelled scores can no longer be changed via the Lead Scouter page.
+  * Revamped Scouter schedule generator. It now copies the scouters in the selected match to all future matches, aside from any submitted and cancelled scores.
+  * Practice matches can now be manually created, and are placed at the beginning of the match schedule.
 * Client:
-  * Submitted scores are now determined directly from the database, so scores that were previously submitted can not be edited any further.
+  * Submitted/cancelled scores are now determined directly from the database, so scores that were previously submitted/cancelles can not be accessed.
   * When loading an unsubmitted score in a Client page, now erases its preexisting scoring events and incap segments to prevent false data from being submitted.
-  * Added a no-show/error button to the prematch tab in case a robot's absense or an error with the system leaves a score unable to be recorded. This will submit that match while wiping any pre-existing data.
+  * Added a cancel score button to the prematch tab in case a score is unable to be recorded. This will mark that score as cancelled.
   * Dropped game pieces are now its own panel, due to hitbox issues with the rest of the scoring buttons.
   * Added keyboard shortcuts for incap, dropped, and mobility buttons.
   * It is now possible to either click on the last selected intake or scoring button for a game piece or use a game piece-specific keyboard shortcut to undo it, though this will not reset the timestamps.
