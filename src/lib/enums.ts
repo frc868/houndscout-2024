@@ -60,6 +60,7 @@ export interface Ranking {
   canpark?: boolean | null;
   canshallow?: boolean | null;
   candeep?: boolean | null;
+  pitsubmitted?: boolean | null;
   coralpermatch?: number | null;
   coralaccuracy?: number | null;
   coralcycletime?: number | null;

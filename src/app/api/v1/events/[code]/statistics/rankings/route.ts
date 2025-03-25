@@ -234,6 +234,7 @@ export async function GET(
         canpark: team.pitData?.canPark,
         canshallow: team.pitData?.canShallow,
         candeep: team.pitData?.canDeep,
+        pitsubmitted: team.pitData?.submitted,
         totalgames: teamScores.length
       };
     });

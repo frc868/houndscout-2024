@@ -52,16 +52,8 @@ export async function POST(
           name: team.nickname,
           location: `${team.city}, ${team.state_prov}, ${team.country}`,
           events: { connect: { code: params.code } },
-        },
-        include: {
-          pitData: true,
         }
       });
-      if (newTeam.pitData==null){
-        await prisma.pitData.create({
-          data: {team: { connect: { number: team.team_number } } }
-        });
-      }
     });
 
     const matchData = (JSON.parse(data.matches) as TBAMatch[])

@@ -24,7 +24,7 @@ export async function GET(
 }
 
 // adminDataSlice/addTeamToEventAsync
-//I think this adds existing teams into the specified event by number. 
+//Adds existing teams into the specified event by number. 
 export async function POST(
   req: Request,
   { params }: { params: { code: string } }

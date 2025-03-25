@@ -37,6 +37,7 @@ This update addresses many issues with usage of HoundScout at the last competiti
   * Added indicators in Lead Scouter page for submitted and cancelled scores (sections in activity panel and match schedule turn green and red, respectively). The teams and scouters for submitted and cancelled scores can no longer be changed via the Lead Scouter page.
   * Revamped Scouter schedule generator. It now copies the scouters in the selected match to all future matches, aside from any submitted and cancelled scores.
   * Practice matches can now be manually created, and are placed at the beginning of the match schedule.
+  * Can now import TBA data directly. No more using the annoying copy and paste method!
 * Client:
   * Submitted/cancelled scores are now determined directly from the database, so scores that were previously submitted/cancelles can not be accessed.
   * When loading an unsubmitted score in a Client page, now erases its preexisting scoring events and incap segments to prevent false data from being submitted.

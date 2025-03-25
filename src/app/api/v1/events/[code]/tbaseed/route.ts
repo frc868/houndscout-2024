@@ -35,6 +35,7 @@ export async function POST(
 ) {
   let teams;
   let matches;
+  
   try {
     const teamData = (
       await axios.get(
@@ -56,16 +57,8 @@ export async function POST(
           name: team.nickname,
           location: `${team.city}, ${team.state_prov}, ${team.country}`,
           events: { connect: { code: params.code } },
-        },
-        include: {
-          pitData: true,
         }
       });
-      if (newTeam.pitData==null){
-        await prisma.pitData.create({
-          data: {team: { connect: { number: team.team_number } } }
-        });
-      }
     });
 
     const matchData = (
@@ -215,6 +208,7 @@ export async function POST(
     matches = event?.matches;
   } catch (e) {
     console.error(e);
+    console.log(process.env.TBA_API_KEY)
     return NextResponse.json({ ok: false });
   }
   return NextResponse.json({ teams, matches, ok: true });

@@ -56,10 +56,9 @@ export default function TBADataModal({
         <p>Warning: This will OVERWRITE all matches in the current event.</p>
         <Button
           variant="success"
-          disabled
-          onClick={() => handleSubmit({ teams, matches })}
+          onClick={handleOnline}
         >
-          Upload Online (WIP)
+          Upload Directly from Online
         </Button>
         <Button
           variant="success"

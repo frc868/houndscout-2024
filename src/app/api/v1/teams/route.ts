@@ -28,9 +28,6 @@ export async function POST(req: Request) {
         ...data,
       }
     });
-    await prisma.pitData.create({
-      data: {team: { connect: { number: data.number } } }
-    });
   } catch (e) {
     return NextResponse.json({ ok: false });
   }
