@@ -35,12 +35,12 @@ export default function MatchSchedule({
   const generateScouterSchedule=(m:number)=>{
     let match=matches[m];
     for(var i = m + 1; i < matches.length; i++) {
-      if(!matches[i].submitted.red1&&match.scouters.red1) handleScouterSelect(matches[i].name, "red1", match.scouters.red1.id);
-      if(!matches[i].submitted.red2&&match.scouters.red1) handleScouterSelect(matches[i].name, "red2", match.scouters.red2.id);
-      if(!matches[i].submitted.red3&&match.scouters.red1) handleScouterSelect(matches[i].name, "red3", match.scouters.red3.id);
-      if(!matches[i].submitted.blue1&&match.scouters.red1) handleScouterSelect(matches[i].name, "blue1", match.scouters.blue1.id);
-      if(!matches[i].submitted.blue2&&match.scouters.red1) handleScouterSelect(matches[i].name, "blue2", match.scouters.blue2.id);
-      if(!matches[i].submitted.blue3&&match.scouters.red1) handleScouterSelect(matches[i].name, "blue3", match.scouters.blue3.id);
+      if(!matches[i].submitted.red1&&!matches[i].cancelled.red1&&match.scouters.red1) handleScouterSelect(matches[i].name, "red1", match.scouters.red1.id);
+      if(!matches[i].submitted.red2&&!matches[i].cancelled.red2&&match.scouters.red2) handleScouterSelect(matches[i].name, "red2", match.scouters.red2.id);
+      if(!matches[i].submitted.red3&&!matches[i].cancelled.red3&&match.scouters.red3) handleScouterSelect(matches[i].name, "red3", match.scouters.red3.id);
+      if(!matches[i].submitted.blue1&&!matches[i].cancelled.blue1&&match.scouters.blue1) handleScouterSelect(matches[i].name, "blue1", match.scouters.blue1.id);
+      if(!matches[i].submitted.blue2&&!matches[i].cancelled.blue2&&match.scouters.blue2) handleScouterSelect(matches[i].name, "blue2", match.scouters.blue2.id);
+      if(!matches[i].submitted.blue3&&!matches[i].cancelled.blue3&&match.scouters.blue3) handleScouterSelect(matches[i].name, "blue3", match.scouters.blue3.id);
     }
   }
 
@@ -125,13 +125,13 @@ export default function MatchSchedule({
                     }}
                   />
                 </td>
-                <td className={`px-2 ${match.submitted.red1?"table-success":"table-danger"}`}>
+                <td className={`px-2 ${match.submitted.red1?"table-success":match.cancelled.red1?"table-danger":match.name === activeMatchName?"table-secondary":""}`}>
                   <TeamDropdown
                     red={true}
                     activeTeam={Number(match.teamNumbers.red1)}
                     teams={adminData.eventTeams as Team[]}
                     handleTeamSelect={async (number) => {
-                      if(match.submitted.red1){
+                      if(match.submitted.red1||match.cancelled.red1){
                         alert("This score has already been submitted; You can no longer change its team or scouter.");
                       } else await dispatch(
                         editMatchAsync({
@@ -154,19 +154,19 @@ export default function MatchSchedule({
                     activeScouter={match.scouters.red1||undefined}
                     scouters={scouters}
                     handleScouterSelect={(id) => {
-                      if(match.submitted.red1){
+                      if(match.submitted.red1||match.cancelled.red1){
                         alert("This score has already been submitted; You can no longer change its team or scouter.");
                       } else handleScouterSelect(match.name, "red1", id)
                     }}
                   />
                 </td>
-                <td className={`px-2 ${match.submitted.red2?"table-success":"table-danger"}`}>
+                <td className={`px-2 ${match.submitted.red2?"table-success":match.cancelled.red2?"table-danger":match.name === activeMatchName?"table-secondary":""}`}>
                   <TeamDropdown
                     red={true}
                     activeTeam={Number(match.teamNumbers.red2)}
                     teams={adminData.eventTeams as Team[]}
                     handleTeamSelect={async (number) => {
-                      if(match.submitted.red2){
+                      if(match.submitted.red2||match.cancelled.red2){
                         alert("This score has already been submitted; You can no longer change its team or scouter.");
                       } else await dispatch(
                         editMatchAsync({
@@ -189,19 +189,19 @@ export default function MatchSchedule({
                     activeScouter={match.scouters.red2||undefined}
                     scouters={scouters}
                     handleScouterSelect={(id) => {
-                      if(match.submitted.red2){
+                      if(match.submitted.red2||match.cancelled.red2){
                         alert("This score has already been submitted; You can no longer change its team or scouter.");
                       } else handleScouterSelect(match.name, "red2", id)
                     }}
                   />
                 </td>
-                <td className={`px-2 ${match.submitted.red3?"table-success":"table-danger"}`}>
+                <td className={`px-2 ${match.submitted.red3?"table-success":match.cancelled.red3?"table-danger":match.name === activeMatchName?"table-secondary":""}`}>
                   <TeamDropdown
                     red={true}
                     activeTeam={Number(match.teamNumbers.red3)}
                     teams={adminData.eventTeams as Team[]}
                     handleTeamSelect={async (number) => {
-                      if(match.submitted.red3){
+                      if(match.submitted.red3||match.cancelled.red3){
                         alert("This score has already been submitted; You can no longer change its team or scouter.");
                       } else await dispatch(
                         editMatchAsync({
@@ -224,19 +224,19 @@ export default function MatchSchedule({
                     activeScouter={match.scouters.red3||undefined}
                     scouters={scouters}
                     handleScouterSelect={(id) => {
-                      if(match.submitted.red3){
+                      if(match.submitted.red3||match.cancelled.red3){
                         alert("This score has already been submitted; You can no longer change its team or scouter.");
                       } else handleScouterSelect(match.name, "red3", id)
                     }}
                   />
                 </td>
-                <td className={`px-2 ${match.submitted.blue1?"table-success":"table-primary"}`}>
+                <td className={`px-2 ${match.submitted.blue1?"table-success":match.cancelled.blue1?"table-danger":match.name === activeMatchName?"table-secondary":""}`}>
                   <TeamDropdown
                     red={false}
                     activeTeam={Number(match.teamNumbers.blue1)}
                     teams={adminData.eventTeams as Team[]}
                     handleTeamSelect={async (number) => {
-                      if(match.submitted.blue1){
+                      if(match.submitted.blue1||match.cancelled.blue1){
                         alert("This score has already been submitted; You can no longer change its team or scouter.");
                       } else await dispatch(
                         editMatchAsync({
@@ -259,19 +259,19 @@ export default function MatchSchedule({
                     activeScouter={match.scouters.blue1||undefined}
                     scouters={scouters}
                     handleScouterSelect={(id) => {
-                      if(match.submitted.blue1){
+                      if(match.submitted.blue1||match.cancelled.blue1){
                         alert("This score has already been submitted; You can no longer change its team or scouter.");
                       } else handleScouterSelect(match.name, "blue1", id)
                     }}
                   />
                 </td>
-                <td className={`px-2 ${match.submitted.blue2?"table-success":"table-primary"}`}>
+                <td className={`px-2 ${match.submitted.blue2?"table-success":match.cancelled.blue2?"table-danger":match.name === activeMatchName?"table-secondary":""}`}>
                   <TeamDropdown
                     red={false}
                     activeTeam={Number(match.teamNumbers.blue2)}
                     teams={adminData.eventTeams as Team[]}
                     handleTeamSelect={async (number) => {
-                      if(match.submitted.blue2){
+                      if(match.submitted.blue2||match.cancelled.blue2){
                         alert("This score has already been submitted; You can no longer change its team or scouter.");
                       } else await dispatch(
                         editMatchAsync({
@@ -294,19 +294,19 @@ export default function MatchSchedule({
                     activeScouter={match.scouters.blue2||undefined}
                     scouters={scouters}
                     handleScouterSelect={(id) => {
-                      if(match.submitted.blue2){
+                      if(match.submitted.blue2||match.cancelled.blue2){
                         alert("This score has already been submitted; You can no longer change its team or scouter.");
                       } else handleScouterSelect(match.name, "blue2", id)
                     }}
                   />
                 </td>
-                <td className={`px-2 ${match.submitted.blue3?"table-success":"table-primary"}`}>
+                <td className={`px-2 ${match.submitted.blue3?"table-success":match.cancelled.blue3?"table-danger":match.name === activeMatchName?"table-secondary":""}`}>
                   <TeamDropdown
                     red={false}
                     activeTeam={Number(match.teamNumbers.blue3)}
                     teams={adminData.eventTeams as Team[]}
                     handleTeamSelect={async (number) => {
-                      if(match.submitted.blue3){
+                      if(match.submitted.blue3||match.cancelled.blue3){
                         alert("This score has already been submitted; You can no longer change its team or scouter.");
                       } else await dispatch(
                         editMatchAsync({
@@ -328,7 +328,7 @@ export default function MatchSchedule({
                     activeScouter={match.scouters.blue3||undefined}
                     scouters={scouters}
                     handleScouterSelect={(id) => {
-                      if(match.submitted.blue3){
+                      if(match.submitted.blue3||match.cancelled.blue3){
                         alert("This score has already been submitted; You can no longer change its team or scouter.");
                       } else handleScouterSelect(match.name, "blue3", id)
                     }}

@@ -200,6 +200,7 @@ model TeamScore {
   comments          String?
 
   submitted Boolean @default(false)
+  cancelled Boolean @default(false)
 
   scouter   Scouter? @relation(fields: [scouterId], references: [id])
   scouterId Int?

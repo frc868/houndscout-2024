@@ -33,6 +33,7 @@ export async function GET(
       match: server?.activeMatch,
       scouter: (server?.activeMatch as any)?.[`${params.station}TeamScore`]?.scouter,
       submitted: (server?.activeMatch as any)?.[`${params.station}TeamScore`]?.submitted,
+      cancelled: (server?.activeMatch as any)?.[`${params.station}TeamScore`]?.cancelled,
     });
   } catch (e) {
     console.error(e);

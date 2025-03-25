@@ -370,7 +370,7 @@ export default function Client({ station }: Props) {
       </>
       )}
       <div
-        className={`${mainData.submitted && "bg-submitted"}`}
+        className={`${mainData.submitted ? "bg-submitted" : mainData.cancelled ? "bg-danger" : ""}`}
         style={{
           transition: "all 0.5s",
           height: "calc(100vh - 56px)",
@@ -379,6 +379,11 @@ export default function Client({ station }: Props) {
         {mainData.submitted ? (
           <div className="d-flex justify-content-center align-items-center h-75 flex-column">
             <h1 className="display-1 fw-bold">Submitted successfully!</h1>
+            <h1 className="mt-3">Waiting for next match...</h1>
+          </div>
+        ) : mainData.cancelled ? (
+          <div className="d-flex justify-content-center align-items-center h-75 flex-column">
+            <h1 className="display-1 fw-bold">Score cancelled.</h1>
             <h1 className="mt-3">Waiting for next match...</h1>
           </div>
         ) : (

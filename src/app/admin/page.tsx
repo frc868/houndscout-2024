@@ -124,6 +124,7 @@ export default function Admin() {
               <Activity
                 scouters={activeMatch?.scouters}
                 submitted={activeMatch?.submitted}
+                cancelled={activeMatch?.cancelled}
                 heartbeats={adminData.heartbeats}
               />
             </Col>

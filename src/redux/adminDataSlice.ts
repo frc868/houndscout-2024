@@ -326,12 +326,12 @@ export const mainData = createSlice({
               blue1Team: { number: number };
               blue2Team: { number: number };
               blue3Team: { number: number };
-              red1TeamScore: { scouter: Scouter, submitted: boolean };
-              red2TeamScore: { scouter: Scouter, submitted: boolean };
-              red3TeamScore: { scouter: Scouter, submitted: boolean };
-              blue1TeamScore: { scouter: Scouter, submitted: boolean };
-              blue2TeamScore: { scouter: Scouter, submitted: boolean };
-              blue3TeamScore: { scouter: Scouter, submitted: boolean };
+              red1TeamScore: { scouter: Scouter, submitted: boolean, cancelled: boolean };
+              red2TeamScore: { scouter: Scouter, submitted: boolean, cancelled: boolean };
+              red3TeamScore: { scouter: Scouter, submitted: boolean, cancelled: boolean };
+              blue1TeamScore: { scouter: Scouter, submitted: boolean, cancelled: boolean };
+              blue2TeamScore: { scouter: Scouter, submitted: boolean, cancelled: boolean };
+              blue3TeamScore: { scouter: Scouter, submitted: boolean, cancelled: boolean };
             }) => {
               return {
                 name: item.name,
@@ -359,6 +359,14 @@ export const mainData = createSlice({
                   blue1: item.blue1TeamScore.submitted,
                   blue2: item.blue2TeamScore.submitted,
                   blue3: item.blue3TeamScore.submitted,
+                },
+                cancelled: {
+                  red1: item.red1TeamScore.cancelled,
+                  red2: item.red2TeamScore.cancelled,
+                  red3: item.red3TeamScore.cancelled,
+                  blue1: item.blue1TeamScore.cancelled,
+                  blue2: item.blue2TeamScore.cancelled,
+                  blue3: item.blue3TeamScore.cancelled,
                 },
               };
             }

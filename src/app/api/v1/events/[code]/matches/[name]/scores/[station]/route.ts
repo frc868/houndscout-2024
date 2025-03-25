@@ -78,6 +78,7 @@ export async function PATCH(
             comments: data.comments,
             
             submitted: data.submitted,
+            cancelled: data.cancelled,
           },
         },
       },
