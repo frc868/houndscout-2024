@@ -46,13 +46,19 @@ export async function PATCH(
 }
 
 //adminDataSlice/deleteEventAsync
-//Deletes the speficied event.
+//Deletes the speficied event and all of its matches.
 export async function DELETE(
   req: Request,
   { params }: { params: { code: string } }
 ) {
   let event;
+  
   try {
+    await prisma.match.deleteMany({
+      where: {
+        eventCode: params.code,
+      },
+    });
     event = await prisma.event.delete({
       where: {
         code: params.code,

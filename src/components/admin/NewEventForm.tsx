@@ -101,16 +101,20 @@ export default function NewEventForm({
         <Button
           variant="success"
           className="mt-2"
-          onClick={() =>
-            handleSubmit({
-              name: String(name),
-              code: String(code),
-              week: Number(week),
-              start: String(start),
-              end: String(end),
-              address: String(address)
-            })
-          }
+          onClick={() => {
+            if (name==""||code==""||week==""||start==""||end==""||address=="") {
+              alert("Form is incomplete. Cannot submit.");
+            } else {
+              handleSubmit({
+                name: String(name),
+                code: String(code),
+                week: Number(week),
+                start: String(start),
+                end: String(end),
+                address: String(address)
+              })
+            }
+          }}
         >
           Add Event
         </Button>

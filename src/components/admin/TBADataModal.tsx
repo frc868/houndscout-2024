@@ -62,7 +62,13 @@ export default function TBADataModal({
         </Button>
         <Button
           variant="success"
-          onClick={() => handleSubmit({ teams, matches })}
+          onClick={() => {
+            if (teams==""||matches=="") {
+              alert("Form is incomplete. Cannot submit.");
+            } else {
+              handleSubmit({ teams, matches })
+            }
+          }}
         >
           Submit
         </Button>

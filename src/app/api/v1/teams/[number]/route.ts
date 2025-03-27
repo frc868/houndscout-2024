@@ -14,6 +14,7 @@ export async function GET(
         number: Number(params.number),
       },
       include: {
+        pitData: true,
         teamScores: true,
         events: true,
       },
@@ -25,7 +26,6 @@ export async function GET(
   return NextResponse.json({ ok: true, team });
 }
 
-// ScoresSlice/sendPitData
 // ViewerDataSlice/updatePicklistsAsync
 // Updates info about a specified team.
 // UPDATE CYCLE: Ensure this matches the pit scouting section of the Team model.

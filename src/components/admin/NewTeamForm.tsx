@@ -49,7 +49,7 @@ export default function NewTeamModal({
             </Col>
           </Row>
           <Form.Group className="mb-1">
-            <Form.Label>Team Home City, State, and Country</Form.Label>
+            <Form.Label>Team Home City, State, and Country (optional)</Form.Label>
             <Form.Control
               placeholder="e.g. Carmel, Indiana, USA"
               value={location}
@@ -63,13 +63,17 @@ export default function NewTeamModal({
         <Button
           variant="success"
           className="mt-2"
-          onClick={() =>
-            handleSubmit({
-              number: Number(number),
-              name: String(name),
-              location: String(location),
-            })
-          }
+          onClick={() => {
+            if (number==""||name=="") {
+              alert("Form is incomplete. Cannot submit.");
+            } else {
+              handleSubmit({
+                number: Number(number),
+                name: String(name),
+                location: String(location),
+              })
+            }
+          }}
         >
           Add Team
         </Button>

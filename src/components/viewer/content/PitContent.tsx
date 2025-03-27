@@ -73,7 +73,7 @@ export default function PitContent({rankings}: Props) {
 
     // Sorting function
     const sortedRankings = useMemo(() => {
-      let newRankings = JSON.parse(JSON.stringify(rankings as Ranking[])).filter(drivetrainFilter).filter(wheelFilter).filter(intakeFilter);
+      let newRankings = JSON.parse(JSON.stringify(rankings as Ranking[])).filter((ranking:Ranking)=>ranking.pitsubmitted==true).filter(drivetrainFilter).filter(wheelFilter).filter(intakeFilter);
       if (groundCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakegroundcoral);
       if (lollipopCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakelollipopcoral);
       if (stationCoralEnabled) newRankings=newRankings.filter((ranking:Ranking)=>ranking.canintakestationcoral);

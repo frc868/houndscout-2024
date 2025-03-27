@@ -38,6 +38,8 @@ This update addresses many issues with usage of HoundScout at the last competiti
   * Revamped Scouter schedule generator. It now copies the scouters in the selected match to all future matches, aside from any submitted and cancelled scores.
   * Practice matches can now be manually created, and are placed at the beginning of the match schedule.
   * Can now import TBA data directly. No more using the annoying copy and paste method!
+  * Now displays alerts if a form is incomplete.
+  * Fixed event deletion not working if matches were created.
 * Client:
   * Submitted/cancelled scores are now determined directly from the database, so scores that were previously submitted/cancelles can not be accessed.
   * When loading an unsubmitted score in a Client page, now erases its preexisting scoring events and incap segments to prevent false data from being submitted.

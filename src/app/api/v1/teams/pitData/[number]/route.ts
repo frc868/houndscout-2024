@@ -1,39 +1,12 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-//Currently unimplemented.
-//Gets pit data for a specified team
-export async function GET(
-  req: Request,
-  { params }: { params: { id: number } }
-) {
-  let team;
-  try {
-    team = await prisma.pitData.findUniqueOrThrow({
-      where: {
-        teamId: Number(params.id),
-      },
-      include: {
-        team: {
-          select: {
-            number: true,
-          },
-        },
-      }
-    });
-  } catch (e) {
-    return NextResponse.json({ ok: false });
-  }
-
-  return NextResponse.json({ ok: true, team });
-}
-
 // ScoresSlice/sendPitData
 // Updates info about a specified team.
 // UPDATE CYCLE: Ensure this matches the pit scouting section of the Team model.
 export async function PATCH(
   req: Request,
-  { params }: { params: { id: number } }
+  { params }: { params: { number: number } }
 ) {
   const data = await req.json();
   
@@ -41,7 +14,7 @@ export async function PATCH(
   try {
     team = await prisma.team.update({
       where: {
-        id: Number(params.id),
+        number: Number(params.number),
       },
       data: {
         pitData: {

@@ -135,16 +135,20 @@ export default function EventEditModal({
         <Button
           variant="primary"
           onClick={() => {
-            setLoading(true);
-            handleSubmit({
-              name: String(name),
-              code: String(code),
-              week: Number(week),
-              start: String(start+"T00:00:00.000Z"),
-              end: String(end+"T00:00:00.000Z"),
-              address: String(address)
-            })
-            setLoading(false);
+            if (name==""||code==""||week==""||start==""||end==""||address=="") {
+              alert("Form is incomplete. Cannot submit.");
+            } else {
+              setLoading(true);
+              handleSubmit({
+                name: String(name),
+                code: String(code),
+                week: Number(week),
+                start: String(start+"T00:00:00.000Z"),
+                end: String(end+"T00:00:00.000Z"),
+                address: String(address)
+              })
+              setLoading(false);
+            }
           }}
         >
           Save Changes

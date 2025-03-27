@@ -30,11 +30,15 @@ export default function NewScouterModal({
         <Button
           variant="success"
           className="mt-2"
-          onClick={() =>
-            handleSubmit({
-              name: String(name)
-            })
-          }
+          onClick={() => {
+            if (name=="") {
+              alert("Form is incomplete. Cannot submit.");
+            } else {
+              handleSubmit({
+                name: String(name)
+              })
+            }
+          }}
         >
           Add Scouter
         </Button>

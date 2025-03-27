@@ -344,7 +344,7 @@ export default function Pit() {
                   }else{
                     dispatch(
                       sendPitData({
-                        id: adminData.eventTeams?.filter((team)=>team.number==teamNumber)[0].id as number,
+                        teamNumber: teamNumber as number,
                         drivetrain: drivetrain as DrivetrainType,
                         wheels: wheels as WheelType,
                         intake: intake as IntakeType,

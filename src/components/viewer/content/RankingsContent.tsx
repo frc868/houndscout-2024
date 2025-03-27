@@ -144,7 +144,7 @@ export default function RankingsContent({rankings}: Props) {
           </tr>
         </thead>
         <tbody>
-          {sortedRankings.filter((r)=>r.pitsubmitted==true).map((r, idx) => (
+          {sortedRankings.map((r, idx) => (
             <tr key={r.teamnumber}>
               <td 
                 // key={r}  

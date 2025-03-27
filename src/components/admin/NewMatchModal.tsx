@@ -7,13 +7,6 @@ import { Team } from "@/lib/enums";
 interface Props {
   show: boolean;
   showMatchNumber: boolean;
-  initialMatch?: number;
-  initialRed1?: number;
-  initialRed2?: number;
-  initialRed3?: number;
-  initialBlue1?: number;
-  initialBlue2?: number;
-  initialBlue3?: number;
   submitVar: string;
   teams: Team[];
   handleClose: () => void;
@@ -42,13 +35,6 @@ interface Props {
 export default function MatchAddModal({
   teams,
   showMatchNumber,
-  initialMatch,
-  initialRed1,
-  initialRed2,
-  initialRed3,
-  initialBlue1,
-  initialBlue2,
-  initialBlue3,
   submitVar,
   show,
   handleClose,
@@ -67,15 +53,15 @@ export default function MatchAddModal({
 
   //load function to set the initial values of the edit version of this modal
   useEffect(() => {
-    setMatchNum(initialMatch || undefined);
+    setMatchNum(undefined);
     setMatchLv("qm")
-    setRed1(initialRed1 || undefined);
-    setRed2(initialRed2 || undefined);
-    setRed3(initialRed3 || undefined);
-    setBlue1(initialBlue1 || undefined);
-    setBlue2(initialBlue2 || undefined);
-    setBlue3(initialBlue3 || undefined);
-  }, [initialMatch, initialRed1, initialRed2, initialRed3, initialBlue1, initialBlue2, initialBlue3]);
+    setRed1(undefined);
+    setRed2(undefined);
+    setRed3(undefined);
+    setBlue1(undefined);
+    setBlue2(undefined);
+    setBlue3(undefined);
+  }, []);
 
   //clean-up function for when this modal is closed.
   function clearState(){
@@ -208,8 +194,10 @@ export default function MatchAddModal({
       <Modal.Footer>
         <Button
           variant={submitVar}
-          onClick={() =>
-            {
+          onClick={() =>{
+            if (matchNum==undefined||red1==undefined||red2==undefined||red3==undefined||blue1==undefined||blue2==undefined||blue3==undefined) {
+              alert("Form is incomplete. Cannot submit.");
+            } else {
               setLoading(true);
               handleSubmit({
                 number: Number(matchNum),
@@ -224,7 +212,7 @@ export default function MatchAddModal({
               clearState();
               setLoading(false);
             }
-          }
+          }}
         >
           {showMatchNumber?"Create Match":"Save changes"}
         </Button>
