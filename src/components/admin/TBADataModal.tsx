@@ -13,6 +13,7 @@ interface Props {
     matches: string;
   }) => void;
   handleOnline: () => void;
+  activeEvent: string;
 }
 
 //Blue Alliance data import.
@@ -20,12 +21,13 @@ export default function TBADataModal({
   show,
   handleClose,
   handleSubmit,
-  handleOnline
+  handleOnline,
+  activeEvent,
 }: Props) {
   const [teams, setTeams] = useState("");
   const [matches, setMatches] = useState("");
 
-  const apiKey = process.env.TBA_API_KEY;
+  const apiKey = process.env.NEXT_PUBLIC_TBA_API_KEY;
 
   return (
     <Modal centered show={show} size="lg" onHide={handleClose}>
@@ -34,11 +36,13 @@ export default function TBADataModal({
       </Modal.Header>
 
       <Modal.Body>
-        <p>Current Event Code: </p>
-        <p>API Key: {apiKey}</p>
+        <small>Current Event Code: {activeEvent}</small><br />
+        <small>API Key: {apiKey}</small><br />
+        <p>Please go <a href="https://www.thebluealliance.com/apidocs/v3">here</a> to authorize the API Key above. If importing data offline, search for and run the API routes below to get the necessary data.</p>
+        <p>Note that match schedules are typically only available shortly before the competition starts.</p>
         <Form>
           <Form.Group className="mb-3">
-            <Form.Label>Teams ({"/event/{event_key}/teams"})</Form.Label>
+            <Form.Label><strong>Teams ({"/event/{event_key}/teams"})</strong></Form.Label>
             <Form.Control
               value={teams}
               as="textarea"
@@ -46,7 +50,7 @@ export default function TBADataModal({
             />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>Matches ({"/event/{event_key}/matches/simple"})</Form.Label>
+            <Form.Label><strong>Matches ({"/event/{event_key}/matches/simple"})</strong></Form.Label>
             <Form.Control
               value={matches}
               as="textarea"

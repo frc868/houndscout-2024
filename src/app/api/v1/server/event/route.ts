@@ -36,6 +36,7 @@ export async function POST(req: Request) {
       },
       data: {
         activeEvent: { connect: { code: data.code } },
+        activeMatch: { disconnect: true },
       },
       include: {
         activeEvent: true,

@@ -42,6 +42,7 @@ export default function Controls({ scouters, allTeams, eventTeams, eventCode, bl
           await dispatch(uploadOnlineTBADataAsync({ eventCode }));
           setShowTBADataModal(false);
         }}
+        activeEvent={eventCode as string}
       />
       <EventManageModal
         show={showEventManage}
