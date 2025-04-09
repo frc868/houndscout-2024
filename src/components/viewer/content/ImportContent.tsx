@@ -62,24 +62,13 @@ export default function ImportContent({eventCode}: Props) {
       <p>From pg_dump</p>
       <h3 className="text-center mb-3">Export:</h3>
       <Row className="">
-        <Col>
-          <Button
-            variant="secondary"
-            href={`/api/v1/export`}
-            className="mb-2 mx-1"
-          >
-            pg_dump
-          </Button>
-          <Button
-            variant="secondary"
-            href={`/api/v1/events/${eventCode}/statistics/all/csv`}
-            className="mb-2 mx-1"
-          >
-            Full CSV
-          </Button>
-        </Col>
-      </Row>
-      <Row className="">
+        <Button
+          variant="secondary"
+          href={`/api/v1/export`}
+          className="mb-2 mx-1"
+        >
+          pg_dump
+        </Button>
         <Col>
           <Button
             variant="secondary"
@@ -87,25 +76,57 @@ export default function ImportContent({eventCode}: Props) {
             className="mb-2 mx-1"
             target="_blank"
           >
-            Full JSON
+            Team Scores (JSON)
           </Button>
+          <Button
+            variant="secondary"
+            href={`/api/v1/events/${eventCode}/statistics/all/csv`}
+            className="mb-2 mx-1"
+          >
+            Team Scores (CSV)
+          </Button>
+        </Col>
+      </Row>
+      <Row className="">
+        <Col>
           <Button
             variant="secondary"
             href={`/api/v1/events/${eventCode}/statistics/rankings`}
             className="mb-2 mx-1"
             target="_blank"
           >
-            Aggregate JSON
+            Aggregate (JSON)
+          </Button>
+          <Button
+            variant="secondary"
+            href={`/api/v1/events/${eventCode}/statistics/rankings/csv`}
+            className="mb-2 mx-1"
+            target="_blank"
+            disabled
+          >
+            Aggregate (CSV, WIP)
           </Button>
         </Col>
       </Row>
-      <Button
-        variant="secondary"
-        href={`/api/v1/events/${eventCode}/statistics/pit`}
-        className="mb-2 mx-1"
-      >
-        Pit Scouting Data
-      </Button>
+      <Row className="">
+        <Col>
+          <Button
+            variant="secondary"
+            href={`/api/v1/events/${eventCode}/statistics/pit`}
+            className="mb-2 mx-1"
+          >
+            Pit Data (JSON)
+          </Button>
+          <Button
+            variant="secondary"
+            href={`/api/v1/events/${eventCode}/statistics/pit/csv`}
+            className="mb-2 mx-1"
+          >
+            Pit Data (CSV)
+          </Button>
+        </Col>
+      </Row>
+      
     </div>
   );
 }
