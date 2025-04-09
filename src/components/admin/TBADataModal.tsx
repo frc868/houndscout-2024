@@ -25,6 +25,8 @@ export default function TBADataModal({
   const [teams, setTeams] = useState("");
   const [matches, setMatches] = useState("");
 
+  const apiKey = process.env.TBA_API_KEY;
+
   return (
     <Modal centered show={show} size="lg" onHide={handleClose}>
       <Modal.Header closeButton>
@@ -32,6 +34,8 @@ export default function TBADataModal({
       </Modal.Header>
 
       <Modal.Body>
+        <p>Current Event Code: </p>
+        <p>API Key: {apiKey}</p>
         <Form>
           <Form.Group className="mb-3">
             <Form.Label>Teams ({"/event/{event_key}/teams"})</Form.Label>

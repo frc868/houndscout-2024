@@ -15,20 +15,20 @@ export async function GET(
   try {
     const jsonData = (
       await axios.get(
-        `http://localhost:3012/api/v1/events/${params.code}/statistics/all`
+        `http://localhost:3012/api/v1/events/${params.code}/statistics/pit`
       )
     ).data;
 
-    if (jsonData.scores.length == 0) {
+    if (jsonData.stats.length == 0) {
       return NextResponse.json({ ok: false, message: "No match data." });
     }
 
     //The stuff below is getting this data into spreadsheet form.
 
-    const headers = Object.keys((jsonData.scores as Object[])[0]).join(
+    const headers = Object.keys((jsonData.stats as Object[])[0]).join(
       ","
     );
-    const csvRows = jsonData.scores
+    const csvRows = jsonData.stats
       .map((teamScore:any) =>
         Object.values(teamScore)
           .map(
@@ -43,7 +43,7 @@ export async function GET(
     // Setup headers for CSV download
     const responseHeaders = {
       "Content-Type": "text/csv",
-      "Content-Disposition": `attachment; filename="team_scores_${
+      "Content-Disposition": `attachment; filename="pit_data_${
         params.code
       }_${Date.now()}.csv"`,
     };
