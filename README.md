@@ -3,7 +3,7 @@
 
 This is a NextJS app that TechHOUNDS uses to gather and view information about the teams at our competitions. This data is then used to improve the quality of our decisions when building alliances for the playoffs. 
 
-For setup instructions and more information on using and maintaining HoundScout, please view [this instructions manual](https://docs.google.com/document/d/1KYUsfgq6psxzkHbBX7BCyg7PUKJSjneX/edit?usp=sharing&ouid=111020236774408805091&rtpof=true&sd=true).
+For setup instructions and more information on using and maintaining HoundScout, please view [the HountScout instructions manual](https://docs.google.com/document/d/10t5sMRk9dDix_7jffy9VbhwJsPl8JBcCU6Xcfv4lFbs/edit?usp=sharing).
 
 To start HoundScout, open a terminal and run the development server:
 
