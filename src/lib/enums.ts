@@ -1,4 +1,5 @@
 //A bunch of enums used throughout the program.
+// UPDATE CYCLE (Client): As you make adjustments to the stuff below, you may need to change the imports here.
 import {
   TeamScore,
   CoralScoringEvent,
@@ -15,10 +16,11 @@ export enum Alliance {
   BLUE,
 }
 
-//UPDATE CYCLE: Ensure this interface reflects the rankings API. Update imports as needed as well.
+
 export interface Ranking {
   teamnumber: number;
   teamname: string;
+  //UPDATE CYCLE (Client): Ensure this part reflects all scoringEvents and incapSegments.
   teamScores: (TeamScore & {
     CoralScoringEvents: CoralScoringEvent[];
     AlgaeScoringEvents: AlgaeScoringEvent[];
@@ -27,6 +29,7 @@ export interface Ranking {
   firstpicklist: boolean;
   secondpicklist: boolean;
   mobility: number;
+  //UPDATE CYCLE (Client): Ensure this part reflects updates to the statistics/rankings API route.
   coraldropped: number;
   algaedropped: number;
   endgameparked: number;
@@ -37,6 +40,7 @@ export interface Ranking {
   defense: number;
   driverskill: number;
   totalgames: number;
+  //UPDATE CYCLE (Pit): Ensure this part reflects updates to the pitData model.
   drivetrain?: DrivetrainType | null;
   wheels?: WheelType | null;
   intake?: IntakeType | null;
@@ -60,6 +64,7 @@ export interface Ranking {
   canpark?: boolean | null;
   canshallow?: boolean | null;
   candeep?: boolean | null;
+  //No need to worry about these parts.
   pitsubmitted?: boolean | null;
   coralpermatch?: number | null;
   coralaccuracy?: number | null;
@@ -119,6 +124,7 @@ export interface Team {
   name: string;
   location: string;
   events?: Event[];
+  // UPDATE CYCLE (Client): Just make sure all scoring events/incap segments are listed here
   teamScores: (TeamScore & {
     CoralScoringEvents: CoralScoringEvent[];
     AlgaeScoringEvents: AlgaeScoringEvent[];
@@ -133,7 +139,7 @@ export interface Heartbeat {
   section: string;
 }
 
-
+// UPDATE CYCLE (Client): This part should reflect and updates to the statistics/all API route.
 export interface DetailedTeamScore extends TeamScore {
   teamNumber: number;
   scouterName: string;
