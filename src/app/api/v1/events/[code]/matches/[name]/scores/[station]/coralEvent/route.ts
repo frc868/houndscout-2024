@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 
 //ScoresSlice/sendCoralEvent
 //Creates a coralScoringEvent.
+//NOTE TO PROGRAMMERS: Please do not copy this version of the code for future ScoringEvents, as I have not added updated comments to it.
 export async function POST(
   req: Request,
   { params }: { params: {
