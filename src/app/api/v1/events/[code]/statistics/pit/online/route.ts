@@ -15,7 +15,8 @@ import {
 } from "@prisma/client";
 import { Ranking } from "@/lib/enums";
 
-
+// Location comment WIP; please add.
+//Extracts pit data directly from the TechHOUNDS website.
 export async function POST(
   req: Request,
   { params }: { params: { code: string } }
@@ -44,6 +45,7 @@ export async function POST(
           location: team.teamLocation,
           events: { connect: { code: params.code } },
           pitData: {
+            // UPDATE CYCLE (Pit): Make sure everything below this matches the PitData model.
             upsert: {
               update: {
                 drivetrain: team.drivetrain,
