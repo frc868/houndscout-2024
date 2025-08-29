@@ -43,7 +43,7 @@ export async function GET(
             blue1Team: true,
             blue2Team: true,
             blue3Team: true,
-            //UPDATE CYCLE: Ensure all scoring events are listed in each of the _TeamScore objects.
+            //UPDATE CYCLE (Client): Ensure all scoring events are listed in each of the _TeamScore objects.
             red1TeamScore: {
               include: {
                 team: true,
@@ -107,7 +107,7 @@ export async function GET(
 
     const rankings: Ranking[] = event.teams.map((team) => {
       const teamScores: (TeamScore & {
-        //UPDATE CYCLE: Ensure all scoring events are listed here.
+        //UPDATE CYCLE (Client): Ensure all scoring events and incap segments are listed here.
         CoralScoringEvents: CoralScoringEvent[];
         AlgaeScoringEvents: AlgaeScoringEvent[];
         incapSegments: IncapSegment[];
@@ -134,7 +134,7 @@ export async function GET(
           teamScores.length);
       
       //Each of these functions calculates the average amount of a game piece that the robot dropped without scoring.
-      //UPDATE CYCLE: Ensure all scoring locations for all scoring events are calculated here, including dropped pieces.
+      //UPDATE CYCLE (Client): Ensure all scoring locations for all scoring events are calculated here, including dropped pieces.
       const coraldropped =
         teamScores.reduce((total, score) => {
           const gameAmount = score.CoralScoringEvents.filter(
@@ -151,7 +151,7 @@ export async function GET(
         }, 0) / teamScores.length;
 
       // Each of these functions calculates the fraction of games in which the team did a certain thing in endgame.
-      //UPDATE CYCLE: Ensure this is consistent with the Endgame section of TeamScore.
+      //UPDATE CYCLE (Client): Ensure this is consistent with the Endgame section of TeamScore.
       const endgameparked:number =
         teamScores.filter((score) => score.endgameType === EndgameType.PARKED)
           .length / teamScores.length;
@@ -161,7 +161,7 @@ export async function GET(
       const endgamedeep:number =
         teamScores.filter((score) => score.endgameType === EndgameType.DEEP)
           .length / teamScores.length;
-
+      
       const endgamesuccess:number =
         teamScores.filter((score) => score.endgameSuccess === true)
           .length / teamScores.length;
@@ -192,7 +192,7 @@ export async function GET(
         teamScores.filter((score) => score.playedDefense).length /
         teamScores.length;
 
-      //UPDATE CYCLE: Ensure everything calculated above is listed here.
+      //UPDATE CYCLE (Client): Ensure everything calculated above is listed here.
       return {
         //keep these:
         teamnumber: team.number,
