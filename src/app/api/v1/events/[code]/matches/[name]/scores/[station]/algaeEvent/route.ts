@@ -1,10 +1,9 @@
-
-
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 //ScoresSlice/sendAlgaeEvent
 //Creates an algaeScoringEvent.
+//UPDATE CYCLE (Client): This file (and its folder) is based off of a format for scoringEvent routes. Ensure there's one for each scoringEvent. See manual for details.
 export async function POST(
   req: Request,
   { params }: { params: {
@@ -24,9 +23,9 @@ export async function POST(
       data: {
         [`${params.station}TeamScore`]: {
           update: {
+            // UPDATE CYCLE (Client): Ensure this field and its subfields match the scoringEvent schema for this game piece.
             AlgaeScoringEvents: {
               create: {
-                // UPDATE CYCLE: Ensure these match the schema.
                 intakeLocation: data.intakeLocation,
                 scoringLocation: data.scoringLocation || undefined,
                 dropped: data.dropped || false,
@@ -41,6 +40,7 @@ export async function POST(
       include: {
         [`${params.station}TeamScore`]: {
           include: {
+            // UPDATE CYCLE (Client): Just use the same field from above 
             AlgaeScoringEvents: true,
           },
         },
