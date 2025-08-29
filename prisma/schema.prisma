@@ -90,7 +90,6 @@ model pitData {
   teamId Int  @unique
   team   Team @relation(fields: [teamId], references: [id])
 
-  //UPDATE CYCLE: Please review this section between years to ensure all necessary data is being tracked.
   drivetrain DrivetrainType?
   wheels     WheelType?
   intake     IntakeType?
@@ -99,6 +98,7 @@ model pitData {
   comments   String?
   robotImage String?
 
+//UPDATE CYCLE (Pit): Please review everything in this model below this comment to ensure all necessary data is being tracked for the current game.
   canIntakeGroundCoral            Boolean?
   canIntakeLollipopCoral          Boolean?
   canIntakeStationCoral           Boolean?
@@ -166,7 +166,7 @@ model Match {
 }
 
 //Represents one robot's performance in one match.
-//UPDATE CYCLE: Please review this model between years to ensure all necessary data is being tracked.
+//UPDATE CYCLE (Client): Multiple sections in this model will need to be updated between games.
 model TeamScore {
   id     Int  @id @default(autoincrement())
   teamId Int
@@ -214,7 +214,7 @@ model TeamScore {
 }
 
 //The following models are based on scoring events. There's one for each game piece.
-//UPDATE CYCLE: Please ensure these models match each type of game piece types in the current event.
+//UPDATE CYCLE (Client): Please ensure these models match each type of game piece types in the current event. See the manual for more info.
 model CoralScoringEvent {
   id                Int                 @id @default(autoincrement())
   intakeLocation    CoralIntakeLocation
@@ -262,7 +262,7 @@ enum AutoStartingZone {
 }
 
 //The potential intake locations for each game piece. The first word in each value indicates phrase.
-//UPDATE CYCLE: Please ensure these are accurate between games.
+//UPDATE CYCLE (Client): These will have to be updated to correspond to where each game piece can be found. See manual for more details.
 enum CoralIntakeLocation {
   AUTOPRELOAD
   AUTOGROUND1 //Numbers go from top to bottom
@@ -289,8 +289,7 @@ enum AlgaeIntakeLocation {
 }
 
 //The potential scoring locations for each game piece. The first word in each value indicates phrase.
-//For particularly complicated games, feel free to sort these into parts.
-//UPDATE CYCLE: Please ensure these are accurate between games.
+//UPDATE CYCLE: Needs to correspond to the scoring locations for each game. See manual for more details.
 enum CoralScoringLevel {
   LEVEL1
   LEVEL2
@@ -348,7 +347,7 @@ enum Station {
 }
 
 //The following enums are related to pit scouting.
-//OPTIONAL: Feel free to update these values to represent any trendy/popular wheels/drivetrains/intakes, but keep the OTHER value as a fallback.
+//UPDATE CYCLE (Pit): Feel free to update these values to represent any trendy/popular wheels/drivetrains/intakes, but keep the OTHER value as a fallback.
 enum DrivetrainType {
   SWERVE
   TANK
