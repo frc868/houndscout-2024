@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 
 // ScoresSlice/sendPitData
 // Updates info about a specified team.
-// UPDATE CYCLE: Ensure this matches the pit scouting section of the Team model.
+// UPDATE CYCLE (Pit): Ensure this matches the pit scouting section of the Team model.
 export async function PATCH(
   req: Request,
   { params }: { params: { number: number } }
