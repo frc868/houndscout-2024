@@ -192,7 +192,7 @@ export async function GET(
         teamScores.filter((score) => score.playedDefense).length /
         teamScores.length;
 
-      //UPDATE CYCLE (Client): Ensure everything calculated above is listed here.
+      // Please note all the object keys here should be lowercase due to how the data viewer works.
       return {
         //keep these:
         teamnumber: team.number,
@@ -200,7 +200,7 @@ export async function GET(
         teamScores: teamScores,
         firstpicklist: team.firstPicklist,
         secondpicklist: team.secondPicklist,
-        //change these between games:
+        //UPDATE CYCLE (Client): Ensure everything calculated above is listed here.
         mobility,
         coraldropped,
         algaedropped,
@@ -211,6 +211,7 @@ export async function GET(
         incap,
         defense,
         driverskill,
+        //UPDATE CYCLE (Pit): Make sure this matches the pitData model.
         drivetrain: team.pitData?.drivetrain,
         wheels: team.pitData?.wheels,
         intake: team.pitData?.intake,
