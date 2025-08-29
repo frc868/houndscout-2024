@@ -14,7 +14,7 @@ import {
 } from "@prisma/client";
 import { Ranking } from "@/lib/enums";
 
-//see the "All JSON" button in ImportContent for implementation.
+//see the _ button in ImportContent for implementation.
 //Creates a JSON object containing all collected pit scouting data.
 //UPDATE CYCLE: Most of the necessary edits also apply to the CSV button.
 export async function GET(
@@ -60,6 +60,8 @@ export async function GET(
   }
 }
 
+// Location comment WIP
+//Imports manually inputted pit data.
 export async function POST(
   req: Request,
   { params }: { params: { code: string } }
@@ -80,6 +82,7 @@ export async function POST(
           events: { connect: { code: params.code } },
           pitData: {
             upsert: {
+              // UPDATE CYCLE (Pit): Make sure everything below this matches the PitData model.
               update: {
                 drivetrain: team.drivetrain,
                 wheels: team.wheels,
