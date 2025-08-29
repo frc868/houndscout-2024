@@ -22,7 +22,7 @@ export async function GET(
       },
       include: {
         [`${params.station}TeamScore`]: {
-          // UPDATE CYCLE: Ensure all scoring events are listed here.
+          // UPDATE CYCLE (Client): Ensure all scoring events as well as incapSegments are listed here, just in case.
           include: {
             CoralScoringEvents: true,
             AlgaeScoringEvents: true,
@@ -62,7 +62,7 @@ export async function PATCH(
       },
       data: {
         [`${params.station.toLowerCase()}TeamScore`]: {
-          // UPDATE CYCLE: Please ensure this matches the updated TeamScore schema.
+          // UPDATE CYCLE (Client): Please ensure this matches the TeamScore schema.
           update: {
             preloaded: data.preloaded,
             autoStartingZone: data.autoStartingZone,
