@@ -46,6 +46,7 @@ export default function Pit() {
   const [hasAuton, setHasAuton] = useState<boolean>(false);
   const [comments, setComments] = useState(""); // Additional comments field
 
+  // UPDATE CYCLE (Pit): These variables store the values used for the checkboxes. Make sure they match the values in PitData
   const [canIntakeGroundCoral, setCanIntakeGroundCoral] = useState<boolean>(false);
   const [canIntakeLollipopCoral, setCanIntakeLollipopCoral] = useState<boolean>(false);
   const [canIntakeStationCoral, setCanIntakeStationCoral] = useState<boolean>(false);
@@ -191,6 +192,7 @@ export default function Pit() {
             </Col>
           </Row>
 
+          {/* UPDATE CYCLE (Pit): Make sure these match the variables above.*/}
           <Row className="my-2">
             <Col className="d-flex flex-column justify-content-center align-items-center" md={4}>
               <h3>Intake: Can...</h3>
@@ -239,7 +241,6 @@ export default function Pit() {
                 />
               </Form.Group>
             </Col>
-        
             <Col className="d-flex flex-column justify-content-center align-items-center" md={4}>
               <h3>Can Score In...</h3>
               <Form.Group>
@@ -281,7 +282,6 @@ export default function Pit() {
                 />
               </Form.Group>
             </Col>
-
             <Col className="d-flex flex-column justify-content-center align-items-center" md={4}>
               <h3>Endgame: Can...</h3>
               <Form.Group>
@@ -352,6 +352,7 @@ export default function Pit() {
                         hasAuton: hasAuton as boolean,
                         comments: comments as string,
                         robotImage: robotImage as string,
+                        // UPDATE CYCLE (Pit): These should also match the variables.
                         canIntakeGroundCoral: canIntakeGroundCoral as boolean,
                         canIntakeLollipopCoral: canIntakeLollipopCoral as boolean,
                         canIntakeStationCoral: canIntakeStationCoral as boolean,
