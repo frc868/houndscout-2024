@@ -41,6 +41,7 @@ export default function Client({ station }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const [tab, setTab] = useState<Section>(Section.PREMATCH);
 
+  //UPDATE CYCLE (Client): Basically we need variables to store the intake location, scoring location, active side, start time, and end time for each game piece.
   const [coralIntakeLocation, setCoralIntakeLocation] = useState<
     CoralIntakeLocation | undefined
   >(undefined);
@@ -87,6 +88,7 @@ export default function Client({ station }: Props) {
     
           await dispatch(sendIncapSegment(event));
         }
+        // UPDATE CYCLE (Client): Make sure all scoring events are covered here.
         if(coralActiveSide!="intaking"){
           const event = {
             intakeLocation: coralIntakeLocation as CoralIntakeLocation,
@@ -96,10 +98,11 @@ export default function Client({ station }: Props) {
             dropped: true,
             timestampPickedUp: coralStartTime,
             timestampScored: Date.now(),
-          }; //teleopScoringEvent creation.
+          }; //scoring event creation.
           setCoralIntakeLocation(undefined);
           setCoralStartTime(0);
           setCoralActiveSide("intaking");
+          await dispatch(sendCoralEvent(event));
         }
         if(algaeActiveSide!="intaking"){
           const event = {
@@ -113,7 +116,6 @@ export default function Client({ station }: Props) {
           setAlgaeIntakeLocation(undefined);
           setAlgaeStartTime(0);
           setAlgaeActiveSide("intaking");
-    
           await dispatch(sendAlgaeEvent(event));
         }
       }
@@ -121,12 +123,14 @@ export default function Client({ station }: Props) {
     update();
     
     //If the bot is preloaded, sets the scoring event time to be when the tab was switched to auto and the intake location to preload.
+    // UPDATE CYCLE (Client): Make sure the game piece that's preloaded is put here.
     if(tab===Section.AUTO&&coralActiveSide=="level"&&coralStartTime==0){
       if (coralStartTime == 0) setCoralStartTime(Date.now());
       setCoralIntakeLocation(CoralIntakeLocation.AUTOPRELOAD);
     }
     
     //Skips the side selection from Auto if moving to another tab with it on.
+    //This'll likely only be used if there's a variable you're not tracking in teleop. Probably comment this out.
     if(tab!==Section.AUTO&&coralActiveSide=="side"){
       setCoralActiveSide("result");
     }
@@ -157,9 +161,7 @@ export default function Client({ station }: Props) {
     }   
   };
 
-  //UPDATE CYCLE (out of date): Make sure these are accurate and cover every game piece.
-  //Also ensure the enums used are accurate; those are imported from Prisma, so update those as well.
-  
+  //UPDATE CYCLE (Client): Make sure there's a handle_ and handle_Cancel for each game piece.
   const handleCoral = async (
     phrase: string,
     data:{
@@ -297,7 +299,6 @@ export default function Client({ station }: Props) {
       }
     }
   };
-
   const handleAlgaeCancel = async (phrase: string) => {
     if(phrase==algaeActiveSide){
       if (phrase=="scoring"){
@@ -315,13 +316,12 @@ export default function Client({ station }: Props) {
     const handleKeydown = (e: KeyboardEvent) => {
       // Add the key to the pressedKeys set
       pressedKeys.current.add(e.key);
-      // Presses the the coral scoring side 1 button if active
+
+      //UPDATE CYCLE (Client): Each cancel button should be mapped to a key.
       if (e.key=='s') {
-        // Check if buttonRef.current is not null
         handleCoralCancel(coralActiveSide);
       }
       if (e.key=='g') {
-        // Check if buttonRef.current is not null
         handleAlgaeCancel(algaeActiveSide);
       }
     };
@@ -393,7 +393,8 @@ export default function Client({ station }: Props) {
             )}
             {ready && (
               <>
-              {/* ...and now you'll have to go into each tab to look at everything. */}
+              {/* You'll have to go into each tab to look at everything. */}
+              {/* UPDATE CYCLE (Client): MAny variables defined here are passed into these components; make sure those are set. */}
                 <PrematchContent
                   show={tab === Section.PREMATCH}
                   coralActiveSide={coralActiveSide}
