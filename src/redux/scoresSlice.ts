@@ -116,7 +116,7 @@ export const setLeftStartingZoneAsync = createAsyncThunk(
     );
   }
 );
-//UPDATE CYCLE: This may need to be updated if postmatch data changes.
+//This may need to be updated if postmatch data changes.
 //If so, ensure all arguments match the postmatch part of the teamScore model in the schema. 
 export const sendPostMatchData = createAsyncThunk(
   "scores/sendPostMatchData",
@@ -170,9 +170,7 @@ export const cancelScore = createAsyncThunk(
   }
 );
 
-
-//UPDATE CYCLE: This may need to be updated if pit scouting data changes.
-//If so, ensure all arguments match the pit part of the Team model in the schema.
+//UPDATE CYCLE (Pit): Ensure all of this matches the pitData model.
 export const sendPitData = createAsyncThunk(
   "scores/sendPitData",
   async (
@@ -285,7 +283,7 @@ export const sendIncapSegment = createAsyncThunk(
 );
 
 //The following thunks create scoring events.
-//UPDATE CYCLE: Please ensure all scoring event models are accounted for, matching the format of the schema in the arguments.
+//UPDATE CYCLE (Client): Please ensure all scoring event models are accounted for, matching the format of the schema in the arguments.
 export const sendCoralEvent = createAsyncThunk(
   "scores/sendCoralEvent",
   async (
