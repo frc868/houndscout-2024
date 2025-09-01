@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { Dropdown, Form, Table } from "react-bootstrap";
 import { useState, useMemo } from "react";
-import { CoralIntakeLocation, CoralScoringLevel, CoralScoringSide, AlgaeIntakeLocation, AlgaeScoringLocation } from "@prisma/client";
+import { AlgaeIntakeLocation, AlgaeScoringLocation } from "@prisma/client";
 import { Row, Col } from "react-bootstrap";
 import { Team, Ranking } from "@/lib/enums";
 import TeamDropdown from "@/components/TeamDropdown";
@@ -15,12 +15,11 @@ interface Props {
   teams: Team[]
 }
 
+// UPDATE CYCLE (Client): WIP
+// temporary note: Copy this one instead of CoralsContent.
 export default function AlgaesContent({rankings, teams}: Props) {
   const dispatch = useDispatch<AppDispatch>();
 
-  const [coralIntake, setCoralIntake] = useState("");
-  const [coralLevel, setCoralLevel] = useState("");
-  const [coralSide, setCoralSide] = useState("");
   const [algaeIntake, setAlgaeIntake] = useState("");
   const [algaeScoring, setAlgaeScoring] = useState("");
 
