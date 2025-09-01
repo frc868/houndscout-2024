@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-
+// A map of the field used as a reference for the data viewer.
+// UPDATE CYCLE (Client): Make sure this matches the new fields; reuse the images from before.
 export default function FieldMap() {
   return (
     <>
