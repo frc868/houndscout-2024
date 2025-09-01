@@ -1,6 +1,5 @@
 "use client";
-//I actually did not know this thing existed lol
-//VERY WIP, will probably replace my data thing once finished.
+//I actually did not know this thing existed at first lol
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, ReduxState } from "@/redux/store";
@@ -71,8 +70,10 @@ export default function Viewer() {
                 {tab === ViewerTab.EVENTS && <EventsContent rankings={viewerData.rankings as Ranking[]} />}
                 {tab === ViewerTab.PIT && <PitContent rankings={viewerData.rankings as Ranking[]} />}
                 {tab === ViewerTab.SCORES && <ScoresContent scores={viewerData.scores as DetailedTeamScore[]} teams={adminData.eventTeams as Team[]} />}
+{/*                 UPDATE CYCLE (Client): If you need to change the game piece pages, make sure those are handled here. */}
                 {tab === ViewerTab.CORALS && <CoralsContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
                 {tab === ViewerTab.ALGAES && <AlgaesContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
+                
                 {tab === ViewerTab.INCAPS && <IncapsContent rankings={viewerData.rankings as Ranking[]} teams={adminData.eventTeams as Team[]} />}
                 {tab === ViewerTab.IMPORT && <ImportContent eventCode={mainData.activeEvent?.code as string} />}
               </Col>
