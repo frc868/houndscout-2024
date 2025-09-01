@@ -14,6 +14,7 @@ interface Props {
   rankings: Ranking[];
 }
 
+// UPDATE CYCLE (Client): WIP
 export default function EventsContent({rankings}: Props) {
   const dispatch = useDispatch<AppDispatch>();
 
