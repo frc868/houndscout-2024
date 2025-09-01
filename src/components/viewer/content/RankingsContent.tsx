@@ -8,6 +8,8 @@ import { updatePicklistsAsync } from "@/redux/viewerDataSlice";
 interface Props {
   rankings: Ranking[];
 }
+
+// UPDATE CYCLE (Client): WIP
 export default function RankingsContent({rankings}: Props) {
   const dispatch = useDispatch<AppDispatch>();
 
