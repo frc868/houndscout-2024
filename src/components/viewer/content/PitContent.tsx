@@ -11,6 +11,7 @@ interface Props {
 }
 
 //I know there's errors, but I'm still trying to fix those.
+// UPDATE CYCLE (Pit): WIP
 export default function PitContent({rankings}: Props) {
     const dispatch = useDispatch<AppDispatch>();
 
