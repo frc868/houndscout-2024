@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+//Currently unimplemented.
+// Returns a certain teamScore, including scoring events and incap segments.
 export async function GET(
   req: Request,
-  { params }: { params: { code: string; name: string; station: string } }
+  { params }: { params: {
+    code: string; //Event code (typically the active event)
+    name: string; //Match name (typically the active match)
+    station: string //Station (typically the one that called this route)
+  } }
 ) {
   let match;
   try {
@@ -16,10 +22,10 @@ export async function GET(
       },
       include: {
         [`${params.station}TeamScore`]: {
+          // UPDATE CYCLE (Client): Ensure all scoring events as well as incapSegments are listed here, just in case.
           include: {
-            autoScoringEvents: true,
-            teleopScoringEvents: true,
-            chargeStationAttempts: true,
+            CoralScoringEvents: true,
+            AlgaeScoringEvents: true,
             incapSegments: true,
           },
         },
@@ -36,9 +42,15 @@ export async function GET(
   return NextResponse.json({ ok: true, match });
 }
 
+//scoresSlice/(most things)
+//A do-it-all function that can update update anything in the specified teamScore that needs to be updated.
 export async function PATCH(
   req: Request,
-  { params }: { params: { code: string; name: string; station: string } }
+  { params }: { params: {
+    code: string; //Event code (typically the active event)
+    name: string; //Match name (typically the active match)
+    station: string //Station (typically the one that called this route)
+  } }
 ) {
   const data = await req.json();
 
@@ -49,22 +61,79 @@ export async function PATCH(
         name_eventCode: { name: params.name, eventCode: params.code },
       },
       data: {
-        [`${params.station}TeamScore`]: {
+        [`${params.station.toLowerCase()}TeamScore`]: {
+          // UPDATE CYCLE (Client): Please ensure this matches the TeamScore schema.
           update: {
-            preloadPiece: data.preloadPiece,
-            driverSkillRating: data.driverSkillRating,
-            defensePlayedAgainst: data.defensePlayedAgainst,
+            preloaded: data.preloaded,
             autoStartingZone: data.autoStartingZone,
+
+            leftStartingZone: data.leftStartingZone,
+
+            endgameType: data.endgameType,
+            endgameSuccess: data.endgameSuccess,
+
+            driverSkillRating: data.driverSkillRating,
+            result: data.result,
+            playedDefense: data.playedDefense,
+            comments: data.comments,
+            
+            submitted: data.submitted,
+            cancelled: data.cancelled,
           },
         },
       },
       include: {
-        [`${params.station}TeamScore`]: true,
+        [`${params.station.toLowerCase()}TeamScore`]: true,
       },
     });
   } catch (e) {
     console.error(e);
     return NextResponse.json({ ok: false }, { status: 400 });
+  }
+
+  return NextResponse.json({ ok: true, match });
+}
+
+
+//ScoresSlice/clearScoringEvents
+//Deletes all scoring events and incap segments related to a teamScore.
+export async function DELETE(
+  req: Request,
+  { params }: { params: {
+    code: string; //Event code (typically the active event)
+    name: string; //Match name (typically the active match)
+    station: string //Station (typically the one that called this route)
+  } }
+) {
+
+  let match;
+  try {
+    match = await prisma.match.update({
+      where: {
+        name_eventCode: { name: params.name, eventCode: params.code },
+      },
+      data: {
+        [`${params.station.toLowerCase()}TeamScore`]: {
+          update: {
+            CoralScoringEvents: {deleteMany: {}},
+            AlgaeScoringEvents: {deleteMany: {}},
+            incapSegments: {deleteMany: {}},
+          }
+        },
+      },
+      include: {
+        [`${params.station}TeamScore`]: {
+          include: {
+            CoralScoringEvents: true,
+            AlgaeScoringEvents: true,
+            incapSegments: true,
+          },
+        },
+      },
+    });
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json({ ok: false });
   }
 
   return NextResponse.json({ ok: true, match });

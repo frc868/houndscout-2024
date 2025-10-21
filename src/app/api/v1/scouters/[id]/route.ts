@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+//Currently unimplemented
+//Gets the specified scouter.
 export async function GET(
   req: Request,
   { params }: { params: { id: string } }
@@ -19,6 +21,8 @@ export async function GET(
   return NextResponse.json({ ok: true, scouter });
 }
 
+//adminDataSlice/setScouterActive
+//Edits the name of the specified scouter.
 export async function PATCH(
   req: Request,
   { params }: { params: { id: string } }
@@ -33,6 +37,7 @@ export async function PATCH(
       },
       data: {
         name: data.name,
+        active: data.active,
       },
     });
   } catch {
@@ -41,6 +46,8 @@ export async function PATCH(
   return NextResponse.json({ scouter, ok: true });
 }
 
+//mainDataSlice/deleteScouterAsync
+//deletes the specfied scouter.
 export async function DELETE(
   req: Request,
   { params }: { params: { id: string } }

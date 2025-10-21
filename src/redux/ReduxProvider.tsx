@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import React from "react";
 
+//Don't mess with this.
 export default function ReduxProvider({
   children,
 }: {

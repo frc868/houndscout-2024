@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
+//ScoresSlice/sendIncapSegment
+//Creates an incapSegment.
+// This requires both the start and end times; make sure you get both before calling this.
 export async function POST(
   req: Request,
   { params }: { params: { code: string; name: string; station: string } }

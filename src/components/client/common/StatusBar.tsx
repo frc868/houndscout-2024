@@ -1,0 +1,50 @@
+import { Container, Nav, NavDropdown, Navbar, Button } from "react-bootstrap";
+import IncapButton from "@/components/client/mini/IncapButton";
+
+interface Props {
+  scouterName?: string;
+  team?: number;
+  matchName?: string;
+  isConnected: boolean;
+}
+
+//Displays some info about the active event and match on the server.
+//Only different from AdminStatusBar because the scouter name is determiend by what's on the schedule.
+export default function StatusBar({
+  scouterName,
+  team,
+  matchName,
+  isConnected,
+}: Props) {
+  return (
+    <Navbar bg="dark" variant="dark">
+      <Navbar.Text className="justify-content-start ms-4 w-50">
+        {scouterName && team && matchName ? (
+          <div>
+            Logged in as: <strong>{scouterName}</strong> | Scouting:{" "}
+            <strong>{team}</strong> |{" "}
+            {matchName?.replace("qm", "Qualification Match ").replace("pm", "Practice Match ")}
+          </div>
+        ) : (
+          <div>Waiting for update...</div>
+        )}
+      </Navbar.Text>
+
+      {/* UPDATE CYCLE "VERY IMPORTANT": Make sure the year is accurate. */}
+      <Navbar.Brand>HoundScout v2025.1</Navbar.Brand>
+      
+      <Navbar.Text className="justify-self-end text-end me-4 w-50">
+        {isConnected ? (
+          <>
+            <i className="bi bi-circle-fill text-success"></i> Connected
+          </>
+        ) : (
+          <>
+            <i className="bi bi-circle-fill text-danger"></i> Disconnected
+          </>
+        )}
+      </Navbar.Text>
+
+    </Navbar>
+  );
+}

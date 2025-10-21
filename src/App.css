@@ -35,7 +35,7 @@
 }
 
 .state-button {
-  width: 300px;
+  width: 15vw;
   height: auto;
   border: none;
 }
@@ -58,6 +58,10 @@
   background-color: #5271ff;
 }
 
+.state-button.endgame-button {
+  background-color: #d752ff;
+}
+
 .state-button.postmatch-button {
   background-color: #00bf63;
 }
@@ -67,8 +71,9 @@
   height: auto;
 }
 
-.charge-selector {
+.stage-selector {
   --bs-list-group-border-width: 3px;
+  --bs-list-group-border-color: #9caaaf;
 }
 
 .driver-skill-selector {
@@ -77,12 +82,21 @@
   /* --bs-list-group-border-color: rgb(206, 212, 218); */
 }
 
-.intake-cone-selected {
-  background-color: #f7e8ac;
+.intake-note-selected {
+  background-color: rgba(255, 205, 174, 0.8);
 }
 
-.intake-cube-selected {
-  background-color: #bb99ff;
+.location-area-selected {
+  background-color: rgba(145, 100, 255, 0.8);
+}
+
+.location-active {
+  background-color: rgba(205, 174, 255, 0.8);
+}
+
+.score-button {
+  border-width: 8px !important;
+  border-radius: 18px !important;
 }
 
 .grow {
@@ -96,4 +110,12 @@
 .grow:active {
   transition: all 0.1s ease-in-out;
   transform: scale(1.1);
+}
+
+.bg-submitted {
+  background-color: #a6eecc;
+}
+
+.table.no-cellpadding td {
+  padding: 0;
 }

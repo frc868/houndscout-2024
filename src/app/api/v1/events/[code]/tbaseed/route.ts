@@ -24,12 +24,18 @@ interface TBAMatch {
   key: string;
 }
 
+//adminDataSlice/uploadOnlineTBADataAsync (TBA)
+//Updates database with data sourced directly from The Blue Alliance API.
+//Please note that this function requires an event with the specified code must be created first.
+//This function will also delete any pre-existing matches in the event.
+//Ensure you have an Blue Alliance API key.
 export async function POST(
   req: Request,
   { params }: { params: { code: string } }
 ) {
   let teams;
   let matches;
+  
   try {
     const teamData = (
       await axios.get(
@@ -39,7 +45,7 @@ export async function POST(
     ).data as TBATeam[];
 
     teamData.forEach(async (team) => {
-      await prisma.team.upsert({
+      let newTeam = await prisma.team.upsert({
         where: {
           number: team.team_number,
         },
@@ -51,7 +57,7 @@ export async function POST(
           name: team.nickname,
           location: `${team.city}, ${team.state_prov}, ${team.country}`,
           events: { connect: { code: params.code } },
-        },
+        }
       });
     });
 
@@ -202,6 +208,7 @@ export async function POST(
     matches = event?.matches;
   } catch (e) {
     console.error(e);
+    console.log(process.env.TBA_API_KEY)
     return NextResponse.json({ ok: false });
   }
   return NextResponse.json({ teams, matches, ok: true });

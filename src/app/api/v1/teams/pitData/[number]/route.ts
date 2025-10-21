@@ -1,0 +1,91 @@
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
+
+// ScoresSlice/sendPitData
+// Updates info about a specified team.
+// UPDATE CYCLE (Pit): Ensure this matches the pit scouting section of the Team model.
+export async function PATCH(
+  req: Request,
+  { params }: { params: { number: number } }
+) {
+  const data = await req.json();
+  
+  let team;
+  try {
+    team = await prisma.team.update({
+      where: {
+        number: Number(params.number),
+      },
+      data: {
+        pitData: {
+          upsert: {
+            update: {
+              drivetrain: data.drivetrain,
+              wheels: data.wheels,
+              intake: data.intake,
+              weight: data.weight,
+              hasAuton: data.hasAuton,
+              comments: data.comments,
+              robotImage: data.robotImage,
+
+              canIntakeGroundCoral: data.canIntakeGroundCoral,
+              canIntakeLollipopCoral: data.canIntakeLollipopCoral,
+              canIntakeStationCoral: data.canIntakeStationCoral,
+              canIntakeGroundAlgae: data.canIntakeGroundAlgae,
+              canIntakeLollipopAlgae: data.canIntakeLollipopAlgae,
+              canIntakeReefAlgae: data.canIntakeReefAlgae,
+              canRemoveReefAlgaeWithoutIntake: data.canRemoveReefAlgaeWithoutIntake,
+
+              canScoreReefL1: data.canScoreReefL1,
+              canScoreReefL2: data.canScoreReefL2,
+              canScoreReefL3: data.canScoreReefL3,
+              canScoreReefL4: data.canScoreReefL4,
+              canScoreNet: data.canScoreNet,
+              canScoreProcessor: data.canScoreProcessor,
+
+              canPark: data.canPark,
+              canShallow: data.canShallow,
+              canDeep: data.canDeep,
+
+              submitted: true,
+            },
+            create: {
+              drivetrain: data.drivetrain,
+              wheels: data.wheels,
+              intake: data.intake,
+              weight: data.weight,
+              hasAuton: data.hasAuton,
+              comments: data.comments,
+              robotImage: data.robotImage,
+
+              canIntakeGroundCoral: data.canIntakeGroundCoral,
+              canIntakeLollipopCoral: data.canIntakeLollipopCoral,
+              canIntakeStationCoral: data.canIntakeStationCoral,
+              canIntakeGroundAlgae: data.canIntakeGroundAlgae,
+              canIntakeLollipopAlgae: data.canIntakeLollipopAlgae,
+              canIntakeReefAlgae: data.canIntakeReefAlgae,
+              canRemoveReefAlgaeWithoutIntake: data.canRemoveReefAlgaeWithoutIntake,
+
+              canScoreReefL1: data.canScoreReefL1,
+              canScoreReefL2: data.canScoreReefL2,
+              canScoreReefL3: data.canScoreReefL3,
+              canScoreReefL4: data.canScoreReefL4,
+              canScoreNet: data.canScoreNet,
+              canScoreProcessor: data.canScoreProcessor,
+
+              canPark: data.canPark,
+              canShallow: data.canShallow,
+              canDeep: data.canDeep,
+
+              submitted: true,
+            }
+          }
+        }
+      }
+    });
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json({ ok: false }, { status: 400 });
+  }
+  return NextResponse.json({ team, ok: true });
+}

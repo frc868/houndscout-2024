@@ -6,6 +6,7 @@ interface Props {
   isConnected: boolean;
 }
 
+//Displays some info about the active event and match on the server.
 export default function AdminStatusBar({
   matchName,
   eventCode,
@@ -19,14 +20,15 @@ export default function AdminStatusBar({
             Logged in as: <strong>Lead Scouter</strong> | Event:{" "}
             <strong>{eventCode}</strong>
             {matchName &&
-              ` | ${matchName?.replace("qm", "Qualification Match ")}`}
+              ` | ${matchName?.replace("qm", "Qualification Match ").replace("pm", "Practice Match ")}`}
           </div>
         ) : (
           <div>Waiting for update...</div>
         )}
       </Navbar.Text>
 
-      <Navbar.Brand>HoundScout v0.1</Navbar.Brand>
+      {/* UPDATE CYCLE "VERY IMPORTANT": Make sure the year is accurate. */}
+      <Navbar.Brand>HoundScout v2025.1</Navbar.Brand>
       <Navbar.Text className="justify-self-end text-end me-4 w-50">
         {isConnected ? (
           <>

@@ -1,14 +1,15 @@
-import { Scouter } from "@/redux/adminDataSlice";
+import { Scouter } from "@/lib/enums";
 import { useState } from "react";
 import { Dropdown, Form } from "react-bootstrap";
 
 interface Props {
   active: boolean;
-  activeScouter: string;
+  activeScouter: Scouter;
   scouters: Scouter[];
   handleScouterSelect: (id: number) => void;
 }
 
+//Dropdown used in MatchSchedule to specify the scouter in each.
 export default function ScoutersDropdown({
   active,
   activeScouter,
@@ -17,12 +18,12 @@ export default function ScoutersDropdown({
 }: Props) {
   const [value, setValue] = useState("");
   return (
-    <Dropdown className="mt-1">
+    <Dropdown className="mt-1" style={{ width: '100%' }}>
       <Dropdown.Toggle
         variant={active ? "secondary" : "outline-secondary"}
         size="sm"
       >
-        {activeScouter}
+        {activeScouter?activeScouter.name+(!activeScouter.active?" (Inactive)":""):"Unassigned"}
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
@@ -36,12 +37,13 @@ export default function ScoutersDropdown({
         <ul className="list-unstyled">
           {scouters
             .filter((scouter) => scouter.name.toLowerCase().startsWith(value))
+            .sort((a, b)=>{return (a.active === b.active) ? 0 : a.active ? -1 : 1;})
             .map((scouter) => (
               <Dropdown.Item
                 key={scouter.id}
                 onMouseDown={() => handleScouterSelect(scouter.id)}
               >
-                {scouter.name}
+                {scouter.name} {!scouter.active?"(Inactive)":""}
               </Dropdown.Item>
             ))}
         </ul>

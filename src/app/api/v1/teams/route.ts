@@ -1,15 +1,13 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { create } from "domain";
 
+//adminDataSlice/getTeamsAsync
+// Gets all teams in the database.
 export async function GET(req: Request) {
   let teams;
   try {
-    teams = await prisma.team.findMany({
-      include: {
-        teamScores: true,
-        events: true,
-      },
-    });
+    teams = await prisma.team.findMany();
   } catch (e) {
     console.error(e);
     return NextResponse.json({ ok: false });
@@ -18,6 +16,8 @@ export async function GET(req: Request) {
   return NextResponse.json({ ok: true, teams });
 }
 
+//adminDataSlice/createTeamAsync
+//creates a team.
 export async function POST(req: Request) {
   const data = await req.json();
 
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     team = await prisma.team.create({
       data: {
         ...data,
-      },
+      }
     });
   } catch (e) {
     return NextResponse.json({ ok: false });

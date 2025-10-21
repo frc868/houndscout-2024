@@ -1,28 +1,88 @@
 /* eslint-disable react/display-name */
-import { Match, Scouter } from "@/redux/adminDataSlice";
-import React from "react";
-import { Button, Table } from "react-bootstrap";
+import { createMatchAsync, deleteMatchAsync, editMatchAsync } from "@/redux/adminDataSlice";
+import { setActiveMatchAsync } from "@/redux/mainDataSlice";
+import React, { useState } from "react";
+import { Button, Table, Form, Row } from "react-bootstrap";
 import ScoutersDropdown from "./ScouterDropdown";
-
+import TeamDropdown from "../TeamDropdown";
+import DeleteButton from "./DeleteButton";
+import MatchAddModal from "./NewMatchModal";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, ReduxState } from "@/redux/store";
+import { Event } from "@prisma/client"
+import { MoonLoader } from "react-spinners";
+import { Match, Team, Scouter } from "@/lib/enums"
 interface Props {
   matches: Match[];
+  teams: Team[];
   activeMatchName: string;
-  handleMatchSelect: (name: string) => void;
   scouters: Scouter[];
   handleScouterSelect: (matchName: string, station: string, id: number) => void;
 }
 
 export default function MatchSchedule({
   matches,
+  teams,
   activeMatchName,
-  handleMatchSelect,
   scouters,
   handleScouterSelect,
 }: Props) {
+  const dispatch = useDispatch<AppDispatch>();
+  const mainData = useSelector((state: ReduxState) => state.mainData);
+  const adminData = useSelector((state: ReduxState) => state.adminData);
+  const [showMatchCreate, setShowMatchCreate] = useState(false);
+
+  const generateScouterSchedule=(m:number)=>{
+    let match=matches[m];
+    for(var i = m + 1; i < matches.length; i++) {
+      if(!matches[i].submitted.red1&&!matches[i].cancelled.red1&&match.scouters.red1) handleScouterSelect(matches[i].name, "red1", match.scouters.red1.id);
+      if(!matches[i].submitted.red2&&!matches[i].cancelled.red2&&match.scouters.red2) handleScouterSelect(matches[i].name, "red2", match.scouters.red2.id);
+      if(!matches[i].submitted.red3&&!matches[i].cancelled.red3&&match.scouters.red3) handleScouterSelect(matches[i].name, "red3", match.scouters.red3.id);
+      if(!matches[i].submitted.blue1&&!matches[i].cancelled.blue1&&match.scouters.blue1) handleScouterSelect(matches[i].name, "blue1", match.scouters.blue1.id);
+      if(!matches[i].submitted.blue2&&!matches[i].cancelled.blue2&&match.scouters.blue2) handleScouterSelect(matches[i].name, "blue2", match.scouters.blue2.id);
+      if(!matches[i].submitted.blue3&&!matches[i].cancelled.blue3&&match.scouters.blue3) handleScouterSelect(matches[i].name, "blue3", match.scouters.blue3.id);
+    }
+  }
+
   return (
     <div className="d-flex justify-content-center">
+      <MatchAddModal
+      // Create a new match
+        teams={teams as Team[]}
+        show={showMatchCreate}
+        showMatchNumber={true}
+        submitVar="success"
+        handleClose={() => setShowMatchCreate(false)}
+        handleSubmit={async (payload) => {
+          await dispatch(
+            createMatchAsync({
+              eventCode: mainData.activeEvent?.code as string,
+              ...payload,
+            })
+          );
+          setShowMatchCreate(false);
+        }}
+      />
       <div className="d-flex flex-column">
-        <h1 className="text-center mb-3">Match Schedule</h1>
+        <Row className="mb-1">
+          <h1 className="text-center">Match Schedule</h1>
+          <MoonLoader
+            color={"black"}
+            loading={!(adminData.scoutersStatus&&adminData.eventTeamsStatus&&adminData.matchesStatus)}
+            size={25}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        </Row>
+        <Row className="mb-1">
+          <Button
+            className="w-25 mx-auto"
+            onClick={() => {setShowMatchCreate(true);}}
+          >
+            Create New Match
+          </Button>
+        </Row>
+
         <Table bordered className="border-secondary-subtle">
           <thead className="align-middle text-center">
             <tr>
@@ -38,8 +98,9 @@ export default function MatchSchedule({
           </thead>
           <tbody className="align-middle text-center">
             {matches.map((match) => (
+              //For each match, the team in each position is listed.
               <tr
-                key={match.number}
+                key={match.id}
                 className={`${match.name === activeMatchName && "fw-bold"}`}
               >
                 <td
@@ -47,105 +108,270 @@ export default function MatchSchedule({
                     match.name === activeMatchName && "table-secondary"
                   }`}
                 >
-                  Match {match.number}
-                </td>
-                <td className="px-2 table-danger">
-                  {match.teamNumbers.red1}{" "}
-                  <ScoutersDropdown
-                    active={match.name === activeMatchName}
-                    activeScouter={match.scouters.red1?.name || "Not Assigned"}
-                    scouters={scouters}
-                    handleScouterSelect={(id) =>
-                      handleScouterSelect(match.name, "red1", id)
-                    }
+                  {match.name.toUpperCase()}
+                  <Form.Check
+                    type="radio"
+                    label="Active"
+                    name="active"
+                    checked={match.name === activeMatchName}
+                    onChange={async () => {
+                      //Sets the match as the active one if it isn't already.
+                      await dispatch(
+                        setActiveMatchAsync({
+                          eventCode: mainData.activeEvent?.code as string,
+                          matchName: match.name,
+                        })
+                      )
+                    }}
                   />
                 </td>
-                <td className="px-2 table-danger">
-                  {match.teamNumbers.red2}{" "}
+                <td className={`px-2 ${match.submitted.red1?"table-success":match.cancelled.red1?"table-danger":match.name === activeMatchName?"table-secondary":""}`}>
+                  <TeamDropdown
+                    red={true}
+                    activeTeam={Number(match.teamNumbers.red1)}
+                    teams={adminData.eventTeams as Team[]}
+                    handleTeamSelect={async (number) => {
+                      if(match.submitted.red1||match.cancelled.red1){
+                        alert("This score has already been submitted; You can no longer change its team or scouter.");
+                      } else await dispatch(
+                        editMatchAsync({
+                          eventCode: mainData.activeEvent?.code as string,
+                          number: match.number,
+                          name: match.name,
+                          red1: number,
+                          red2: match.teamNumbers.red2,
+                          red3: match.teamNumbers.red3,
+                          blue1: match.teamNumbers.blue1,
+                          blue2: match.teamNumbers.blue2,
+                          blue3: match.teamNumbers.blue3,
+                        })
+                      )
+                    }}
+                  />
+                  {" "}
                   <ScoutersDropdown
                     active={match.name === activeMatchName}
-                    activeScouter={match.scouters.red2?.name || "Not Assigned"}
+                    activeScouter={match.scouters.red1||undefined}
                     scouters={scouters}
-                    handleScouterSelect={(id) =>
-                      handleScouterSelect(match.name, "red2", id)
-                    }
+                    handleScouterSelect={(id) => {
+                      if(match.submitted.red1||match.cancelled.red1){
+                        alert("This score has already been submitted; You can no longer change its team or scouter.");
+                      } else handleScouterSelect(match.name, "red1", id)
+                    }}
                   />
                 </td>
-                <td className="px-2 table-danger">
-                  {match.teamNumbers.red3}{" "}
+                <td className={`px-2 ${match.submitted.red2?"table-success":match.cancelled.red2?"table-danger":match.name === activeMatchName?"table-secondary":""}`}>
+                  <TeamDropdown
+                    red={true}
+                    activeTeam={Number(match.teamNumbers.red2)}
+                    teams={adminData.eventTeams as Team[]}
+                    handleTeamSelect={async (number) => {
+                      if(match.submitted.red2||match.cancelled.red2){
+                        alert("This score has already been submitted; You can no longer change its team or scouter.");
+                      } else await dispatch(
+                        editMatchAsync({
+                          eventCode: mainData.activeEvent?.code as string,
+                          number: match.number,
+                          name: match.name,
+                          red1: match.teamNumbers.red1,
+                          red2: number,
+                          red3: match.teamNumbers.red3,
+                          blue1: match.teamNumbers.blue1,
+                          blue2: match.teamNumbers.blue2,
+                          blue3: match.teamNumbers.blue3,
+                        })
+                      )
+                    }}
+                  />
+                  {" "}
                   <ScoutersDropdown
                     active={match.name === activeMatchName}
-                    activeScouter={match.scouters.red3?.name || "Not Assigned"}
+                    activeScouter={match.scouters.red2||undefined}
                     scouters={scouters}
-                    handleScouterSelect={(id) =>
-                      handleScouterSelect(match.name, "red3", id)
-                    }
+                    handleScouterSelect={(id) => {
+                      if(match.submitted.red2||match.cancelled.red2){
+                        alert("This score has already been submitted; You can no longer change its team or scouter.");
+                      } else handleScouterSelect(match.name, "red2", id)
+                    }}
                   />
                 </td>
-                <td className="px-2 table-primary">
-                  {match.teamNumbers.blue1}{" "}
+                <td className={`px-2 ${match.submitted.red3?"table-success":match.cancelled.red3?"table-danger":match.name === activeMatchName?"table-secondary":""}`}>
+                  <TeamDropdown
+                    red={true}
+                    activeTeam={Number(match.teamNumbers.red3)}
+                    teams={adminData.eventTeams as Team[]}
+                    handleTeamSelect={async (number) => {
+                      if(match.submitted.red3||match.cancelled.red3){
+                        alert("This score has already been submitted; You can no longer change its team or scouter.");
+                      } else await dispatch(
+                        editMatchAsync({
+                          eventCode: mainData.activeEvent?.code as string,
+                          number: match.number,
+                          name: match.name,
+                          red1: match.teamNumbers.red1,
+                          red2: match.teamNumbers.red2,
+                          red3: number,
+                          blue1: match.teamNumbers.blue1,
+                          blue2: match.teamNumbers.blue2,
+                          blue3: match.teamNumbers.blue3,
+                        })
+                      )
+                    }}
+                  />
+                  {" "}
                   <ScoutersDropdown
                     active={match.name === activeMatchName}
-                    activeScouter={match.scouters.blue1?.name || "Not Assigned"}
+                    activeScouter={match.scouters.red3||undefined}
                     scouters={scouters}
-                    handleScouterSelect={(id) =>
-                      handleScouterSelect(match.name, "blue1", id)
-                    }
+                    handleScouterSelect={(id) => {
+                      if(match.submitted.red3||match.cancelled.red3){
+                        alert("This score has already been submitted; You can no longer change its team or scouter.");
+                      } else handleScouterSelect(match.name, "red3", id)
+                    }}
                   />
                 </td>
-                <td className="px-2 table-primary">
-                  {match.teamNumbers.blue2}{" "}
+                <td className={`px-2 ${match.submitted.blue1?"table-success":match.cancelled.blue1?"table-danger":match.name === activeMatchName?"table-secondary":""}`}>
+                  <TeamDropdown
+                    red={false}
+                    activeTeam={Number(match.teamNumbers.blue1)}
+                    teams={adminData.eventTeams as Team[]}
+                    handleTeamSelect={async (number) => {
+                      if(match.submitted.blue1||match.cancelled.blue1){
+                        alert("This score has already been submitted; You can no longer change its team or scouter.");
+                      } else await dispatch(
+                        editMatchAsync({
+                          eventCode: mainData.activeEvent?.code as string,
+                          number: match.number,
+                          name: match.name,
+                          red1: match.teamNumbers.red1,
+                          red2: match.teamNumbers.red2,
+                          red3: match.teamNumbers.red3,
+                          blue1: number,
+                          blue2: match.teamNumbers.blue2,
+                          blue3: match.teamNumbers.blue3,
+                        })
+                      )
+                    }}
+                  />
+                  {" "}
                   <ScoutersDropdown
                     active={match.name === activeMatchName}
-                    activeScouter={match.scouters.blue2?.name || "Not Assigned"}
+                    activeScouter={match.scouters.blue1||undefined}
                     scouters={scouters}
-                    handleScouterSelect={(id) =>
-                      handleScouterSelect(match.name, "blue2", id)
-                    }
+                    handleScouterSelect={(id) => {
+                      if(match.submitted.blue1||match.cancelled.blue1){
+                        alert("This score has already been submitted; You can no longer change its team or scouter.");
+                      } else handleScouterSelect(match.name, "blue1", id)
+                    }}
                   />
                 </td>
-                <td className="px-2 table-primary">
-                  {match.teamNumbers.blue3}{" "}
+                <td className={`px-2 ${match.submitted.blue2?"table-success":match.cancelled.blue2?"table-danger":match.name === activeMatchName?"table-secondary":""}`}>
+                  <TeamDropdown
+                    red={false}
+                    activeTeam={Number(match.teamNumbers.blue2)}
+                    teams={adminData.eventTeams as Team[]}
+                    handleTeamSelect={async (number) => {
+                      if(match.submitted.blue2||match.cancelled.blue2){
+                        alert("This score has already been submitted; You can no longer change its team or scouter.");
+                      } else await dispatch(
+                        editMatchAsync({
+                          eventCode: mainData.activeEvent?.code as string,
+                          number: match.number,
+                          name: match.name,
+                          red1: match.teamNumbers.red1,
+                          red2: match.teamNumbers.red2,
+                          red3: match.teamNumbers.red3,
+                          blue1: match.teamNumbers.blue1,
+                          blue2: number,
+                          blue3: match.teamNumbers.blue3,
+                        })
+                      )
+                    }}
+                  />
+                  {" "}
                   <ScoutersDropdown
                     active={match.name === activeMatchName}
-                    activeScouter={match.scouters.blue3?.name || "Not Assigned"}
+                    activeScouter={match.scouters.blue2||undefined}
                     scouters={scouters}
-                    handleScouterSelect={(id) =>
-                      handleScouterSelect(match.name, "blue3", id)
-                    }
+                    handleScouterSelect={(id) => {
+                      if(match.submitted.blue2||match.cancelled.blue2){
+                        alert("This score has already been submitted; You can no longer change its team or scouter.");
+                      } else handleScouterSelect(match.name, "blue2", id)
+                    }}
+                  />
+                </td>
+                <td className={`px-2 ${match.submitted.blue3?"table-success":match.cancelled.blue3?"table-danger":match.name === activeMatchName?"table-secondary":""}`}>
+                  <TeamDropdown
+                    red={false}
+                    activeTeam={Number(match.teamNumbers.blue3)}
+                    teams={adminData.eventTeams as Team[]}
+                    handleTeamSelect={async (number) => {
+                      if(match.submitted.blue3||match.cancelled.blue3){
+                        alert("This score has already been submitted; You can no longer change its team or scouter.");
+                      } else await dispatch(
+                        editMatchAsync({
+                          eventCode: mainData.activeEvent?.code as string,
+                          number: match.number,
+                          name: match.name,
+                          red1: match.teamNumbers.red1,
+                          red2: match.teamNumbers.red2,
+                          red3: match.teamNumbers.red3,
+                          blue1: match.teamNumbers.blue1,
+                          blue2: match.teamNumbers.blue2,
+                          blue3: number,
+                        })
+                      )
+                    }}
+                  />
+                  <ScoutersDropdown
+                    active={match.name === activeMatchName}
+                    activeScouter={match.scouters.blue3||undefined}
+                    scouters={scouters}
+                    handleScouterSelect={(id) => {
+                      if(match.submitted.blue3||match.cancelled.blue3){
+                        alert("This score has already been submitted; You can no longer change its team or scouter.");
+                      } else handleScouterSelect(match.name, "blue3", id)
+                    }}
                   />
                 </td>
                 <td
-                  className={`px-2 d-flex flex-column ${
+                  className={`px-2 py-4 d-flex flex-column ${
                     match.name === activeMatchName && "table-secondary"
                   }`}
                 >
-                  <Button
-                    size="sm"
+                  <Button 
                     variant={
                       match.name === activeMatchName
                         ? "primary"
                         : "outline-primary"
                     }
-                    className="mb-1"
-                    onClick={() => handleMatchSelect(match.name)}
-                  >
-                    Select
-                  </Button>
-                  <Button
+                    className={"mb-1 mx-2"}
                     size="sm"
-                    className="mt-1"
+                    onClick={()=>generateScouterSchedule(matches.indexOf(match))}
+                    
+                  >
+                    Copy Scouters
+                  </Button>
+                  <DeleteButton
                     variant={
                       match.name === activeMatchName
                         ? "danger"
                         : "outline-danger"
                     }
-                  >
-                    Delete
-                  </Button>
+                    handleDelete={async () => {
+                      //deletes the match.
+                      await dispatch(
+                        deleteMatchAsync({
+                          eventCode: mainData.activeEvent?.code as string,
+                          matchName: match.name,
+                        })
+                      )
+                    }}
+                  />
                 </td>
               </tr>
-            ))}
+            ))
+            }
           </tbody>
         </Table>
       </div>
