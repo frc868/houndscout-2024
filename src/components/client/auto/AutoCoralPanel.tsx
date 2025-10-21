@@ -9,9 +9,14 @@ import ReefSideButton from "../mini/AutoScoringButton";
 import ScoreButton from "../mini/ScoreButton";
 import FailButton from "../mini/FailButton";
 import DroppedButton from "../mini/DroppedButton";
-import { useSelector } from "react-redux";
-import { ReduxState } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, ReduxState } from "@/redux/store";
 import { useEffect, useRef } from "react";
+import {
+  handleCoral,
+  handleCoralCancel,
+} from "@/redux/scoresSlice";
+import { Section } from "@prisma/client";
 
 interface Props {
     incapActive: boolean;
@@ -19,17 +24,17 @@ interface Props {
     intakeSelected?: CoralIntakeLocation;
     levelSelected?: CoralScoringLevel;
     sideSelected?: CoralScoringSide;
-    handleSelection: (
-        phrase: string,
-        data:{
-            intakeSelection?: CoralIntakeLocation,
-            scoringLevel?: CoralScoringLevel,
-            dropped?: boolean,
-            scoringSide?: CoralScoringSide,
-            failedScoring?: boolean,
-        },
-    ) => void;
-    handleCancel: (phrase: string) => void;
+    // handleSelection: (
+    //     phrase: string,
+    //     data:{
+    //         intakeSelection?: CoralIntakeLocation,
+    //         scoringLevel?: CoralScoringLevel,
+    //         dropped?: boolean,
+    //         scoringSide?: CoralScoringSide,
+    //         failedScoring?: boolean,
+    //     },
+    // ) => void;
+    // handleCancel: (phrase: string) => void;
 }
 
 //Displays a map of half of the field.
@@ -41,13 +46,75 @@ export default function AutoCoralPanel({
     intakeSelected,
     levelSelected,
     sideSelected,
-    handleSelection,
-    handleCancel,
+    // handleSelection,
+    // handleCancel,
 }: Props) {
+    const dispatch = useDispatch<AppDispatch>();
     const mainData = useSelector((state: ReduxState) => state.mainData);
 
     const flip = (mainData.blueOnLeft && mainData.station?.includes("RED")) || (!mainData.blueOnLeft && mainData.station?.includes("BLUE"));
 
+    const handleIntaking = (intakeSelection: CoralIntakeLocation) => {
+        if(!incapActive && activeSide=="intaking"){
+            dispatch(
+                handleCoral({
+                    tab: Section.AUTO,
+                    phrase: "intaking",
+                    data: {
+                        intakeSelection: intakeSelection
+                    }
+                })
+            );
+        }
+    };
+    const handleLevel = (scoringLevel: CoralScoringLevel) => {
+        if(!incapActive && activeSide=="level"){
+            dispatch(
+                handleCoral({
+                    tab: Section.AUTO,
+                    phrase: "level",
+                    data: {
+                        scoringLevel: scoringLevel,
+                        dropped: false,
+                    }
+                })
+            );
+        }
+    }
+    const handleSide = (scoringSide: CoralScoringSide) => {
+        if(!incapActive && activeSide=="side"){
+            dispatch(
+                handleCoral({
+                    tab: Section.AUTO,
+                    phrase: "side",
+                    data: {
+                        scoringSide: scoringSide
+                    }
+                })
+            );
+        }
+    }
+    const handleResult = (failedScoring: boolean) => {
+        if(!incapActive && activeSide=="result"){
+            dispatch(
+                handleCoral({
+                    tab: Section.AUTO,
+                    phrase: "result",
+                    data: {
+                        failedScoring: failedScoring
+                    }
+                })
+            );
+        }
+    }
+    const handleCancel = (phrase: "intaking" | "level" | "side" | "result") => {
+        dispatch(
+            handleCoralCancel({
+                tab: Section.AUTO,
+                phrase: phrase,
+            })
+        );
+    }
     
     return (
         <div className="d-flex flex-column align-items-center border border-2 border-secondary px-3">
@@ -64,11 +131,7 @@ export default function AutoCoralPanel({
                                         className="my-4"
                                         active={activeSide=="intaking"&&!incapActive}
                                         selected={intakeSelected==CoralIntakeLocation.AUTOSTATION1}
-                                        handleSelection={() => {
-                                            handleSelection("intaking",{
-                                                intakeSelection: CoralIntakeLocation.AUTOSTATION1
-                                            })
-                                        }}
+                                        handleSelection={() => handleIntaking(CoralIntakeLocation.AUTOSTATION1)}
                                         handleCancel={() => handleCancel("level")}
                                         gamePiece="coral"
                                         number="1"
@@ -77,11 +140,7 @@ export default function AutoCoralPanel({
                                         className="my-4"
                                         active={activeSide=="intaking"&&!incapActive}
                                         selected={intakeSelected==CoralIntakeLocation.AUTOSTATION2}
-                                        handleSelection={() => {
-                                            handleSelection("intaking",{
-                                                intakeSelection: CoralIntakeLocation.AUTOSTATION2
-                                            })
-                                        }}
+                                        handleSelection={() => handleIntaking(CoralIntakeLocation.AUTOSTATION1)}
                                         handleCancel={() => handleCancel("level")}
                                         gamePiece="coral"
                                         number="2"
@@ -97,11 +156,7 @@ export default function AutoCoralPanel({
                                         className="mt-2"
                                         active={activeSide=="intaking"&&!incapActive}
                                         selected={intakeSelected==CoralIntakeLocation.AUTOGROUND1}
-                                        handleSelection={() => {
-                                            handleSelection("intaking",{
-                                                intakeSelection: CoralIntakeLocation.AUTOGROUND1
-                                            })
-                                        }}
+                                        handleSelection={() => handleIntaking(CoralIntakeLocation.AUTOGROUND1)}
                                         handleCancel={() => handleCancel("level")}
                                         gamePiece="coral"
                                         number="1"
@@ -110,11 +165,7 @@ export default function AutoCoralPanel({
                                         className="mt-2"
                                         active={activeSide=="intaking"&&!incapActive}
                                         selected={intakeSelected==CoralIntakeLocation.AUTOGROUND2}
-                                        handleSelection={() => {
-                                            handleSelection("intaking",{
-                                                intakeSelection: CoralIntakeLocation.AUTOGROUND2
-                                            })
-                                        }}
+                                        handleSelection={() => handleIntaking(CoralIntakeLocation.AUTOGROUND2)}
                                         handleCancel={() => handleCancel("level")}
                                         gamePiece="coral"
                                         number="2"
@@ -123,11 +174,7 @@ export default function AutoCoralPanel({
                                         className="mt-2"
                                         active={activeSide=="intaking"&&!incapActive}
                                         selected={intakeSelected==CoralIntakeLocation.AUTOGROUND3}
-                                        handleSelection={() => {
-                                            handleSelection("intaking",{
-                                                intakeSelection: CoralIntakeLocation.AUTOGROUND3
-                                            })
-                                        }}
+                                        handleSelection={() => handleIntaking(CoralIntakeLocation.AUTOGROUND3)}
                                         handleCancel={() => handleCancel("level")}
                                         gamePiece="coral"
                                         number="3"
@@ -146,12 +193,7 @@ export default function AutoCoralPanel({
                                     className="mt-2"
                                     active={activeSide=="level"&&!incapActive}
                                     selected={levelSelected==CoralScoringLevel.LEVEL4}
-                                    handleSelection={() => {
-                                        handleSelection("level",{
-                                            scoringLevel: CoralScoringLevel.LEVEL4,
-                                            dropped: false
-                                        })
-                                    }}
+                                    handleSelection={() => handleLevel(CoralScoringLevel.LEVEL4)}
                                     handleCancel={() => handleCancel("side")}
                                     text="L4"
                                 />
@@ -159,12 +201,7 @@ export default function AutoCoralPanel({
                                     className="mt-2"
                                     active={activeSide=="level"&&!incapActive}
                                     selected={levelSelected==CoralScoringLevel.LEVEL3}
-                                    handleSelection={() => {
-                                        handleSelection("level",{
-                                            scoringLevel: CoralScoringLevel.LEVEL3,
-                                            dropped: false
-                                        })
-                                    }}
+                                    handleSelection={() => handleLevel(CoralScoringLevel.LEVEL3)}
                                     handleCancel={() => handleCancel("side")}
                                     text="L3"
                                 />
@@ -172,12 +209,7 @@ export default function AutoCoralPanel({
                                     className="mt-2"
                                     active={activeSide=="level"&&!incapActive}
                                     selected={levelSelected==CoralScoringLevel.LEVEL2}
-                                    handleSelection={() => {
-                                        handleSelection("level",{
-                                            scoringLevel: CoralScoringLevel.LEVEL2,
-                                            dropped: false
-                                        })
-                                    }}
+                                    handleSelection={() => handleLevel(CoralScoringLevel.LEVEL2)}
                                     handleCancel={() => handleCancel("side")}
                                     text="L2"
                                 />
@@ -185,12 +217,7 @@ export default function AutoCoralPanel({
                                     className="mt-2"
                                     active={activeSide=="level"&&!incapActive}
                                     selected={levelSelected==CoralScoringLevel.LEVEL1}
-                                    handleSelection={() => {
-                                        handleSelection("level",{
-                                            scoringLevel: CoralScoringLevel.LEVEL1,
-                                            dropped: false
-                                        })
-                                    }}
+                                    handleSelection={() => handleLevel(CoralScoringLevel.LEVEL1)}
                                     handleCancel={() => handleCancel("side")}
                                     text="L1"
                                 />
@@ -216,12 +243,8 @@ export default function AutoCoralPanel({
                                 <ReefSideButton
                                     active={activeSide=="side"&&!incapActive}
                                     selected={sideSelected==CoralScoringSide.SIDE1}
-                                    handleSelection={() => {
-                                        handleSelection("side",{
-                                            scoringSide: CoralScoringSide.SIDE1
-                                        })
-                                    }}
-                                    handleCancel={() => {handleCancel("result")}}
+                                    handleSelection={() => handleSide(CoralScoringSide.SIDE1)}
+                                    handleCancel={() => handleCancel("result")}
                                     top={
                                         mainData.station?.includes("BLUE")
                                             ? mainData.blueOnLeft ? "5%" : "65%" // Blueside with BlueOnLeft/OnRight
@@ -237,12 +260,8 @@ export default function AutoCoralPanel({
                                 <ReefSideButton
                                     active={activeSide=="side"&&!incapActive}
                                     selected={sideSelected==CoralScoringSide.SIDE2}
-                                    handleSelection={() => {
-                                        handleSelection("side",{
-                                            scoringSide: CoralScoringSide.SIDE2
-                                        })
-                                    }}
-                                    handleCancel={() => {handleCancel("result")}}
+                                    handleSelection={() => handleSide(CoralScoringSide.SIDE2)}
+                                    handleCancel={() => handleCancel("result")}
                                     top={
                                         mainData.station?.includes("BLUE")
                                             ? mainData.blueOnLeft ? "5%" : "65%" // Blueside with BlueOnLeft/OnRight
@@ -258,12 +277,8 @@ export default function AutoCoralPanel({
                                 <ReefSideButton
                                     active={activeSide=="side"&&!incapActive}
                                     selected={sideSelected==CoralScoringSide.SIDE3}
-                                    handleSelection={() => {
-                                        handleSelection("side",{
-                                            scoringSide: CoralScoringSide.SIDE3
-                                        })
-                                    }}
-                                    handleCancel={() => {handleCancel("result")}}
+                                    handleSelection={() => handleSide(CoralScoringSide.SIDE3)}
+                                    handleCancel={() => handleCancel("result")}
                                     top={
                                         mainData.station?.includes("BLUE")
                                             ? mainData.blueOnLeft ? "35%" : "35%" // Blueside with BlueOnLeft/OnRight
@@ -279,12 +294,8 @@ export default function AutoCoralPanel({
                                 <ReefSideButton
                                     active={activeSide=="side"&&!incapActive}
                                     selected={sideSelected==CoralScoringSide.SIDE4}
-                                    handleSelection={() => {
-                                        handleSelection("side",{
-                                            scoringSide: CoralScoringSide.SIDE4
-                                        })
-                                    }}
-                                    handleCancel={() => {handleCancel("result")}}
+                                    handleSelection={() => handleSide(CoralScoringSide.SIDE4)}
+                                    handleCancel={() => handleCancel("result")}
                                     top={
                                         mainData.station?.includes("BLUE")
                                             ? mainData.blueOnLeft ? "65%" : "9%" // Blueside with BlueOnLeft/OnRight
@@ -300,12 +311,8 @@ export default function AutoCoralPanel({
                                 <ReefSideButton
                                     active={activeSide=="side"&&!incapActive}
                                     selected={sideSelected==CoralScoringSide.SIDE5}
-                                    handleSelection={() => {
-                                        handleSelection("side",{
-                                            scoringSide: CoralScoringSide.SIDE5
-                                        })
-                                    }}
-                                    handleCancel={() => {handleCancel("result")}}
+                                    handleSelection={() => handleSide(CoralScoringSide.SIDE5)}
+                                    handleCancel={() => handleCancel("result")}
                                     top={
                                         mainData.station?.includes("BLUE")
                                             ? mainData.blueOnLeft ? "65%" : "9%" // Blueside with BlueOnLeft/OnRight
@@ -321,12 +328,8 @@ export default function AutoCoralPanel({
                                 <ReefSideButton
                                     active={activeSide=="side"&&!incapActive}
                                     selected={sideSelected==CoralScoringSide.SIDE6}
-                                    handleSelection={() => {
-                                        handleSelection("side",{
-                                            scoringSide: CoralScoringSide.SIDE6
-                                        })
-                                    }}
-                                    handleCancel={() => {handleCancel("result")}}
+                                    handleSelection={() => handleSide(CoralScoringSide.SIDE6)}
+                                    handleCancel={() => handleCancel("result")}
                                     top={
                                         mainData.station?.includes("BLUE")
                                             ? mainData.blueOnLeft ? "35%" : "35%" // Blueside with BlueOnLeft/OnRight
@@ -348,21 +351,13 @@ export default function AutoCoralPanel({
                         <ScoreButton
                             className="mt-2"
                             active={activeSide=="result"&&!incapActive}
-                            handleClick={() => {
-                                handleSelection("result",{
-                                    failedScoring: false
-                                })
-                            }}
+                            handleClick={() => handleResult(false)}
                             gamePiece="coral"
                         />
                         <FailButton
                             className="mt-2"
                             active={activeSide=="result"&&!incapActive}
-                            handleClick={() => {
-                                handleSelection("result",{
-                                    failedScoring: true
-                                })
-                            }}
+                            handleClick={() => handleResult(true)}
                             gamePiece="coral"
                         />
                 </Col>

@@ -9,22 +9,29 @@ import DroppedButton from "../mini/DroppedButton";
 import { Col, Row } from "react-bootstrap";
 import { AlgaeIntakeLocation, AlgaeScoringLocation } from "@prisma/client";
 import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ReduxState, AppDispatch } from "@/redux/store";
+import { mainData } from "@/redux/adminDataSlice";
+import {
+  handleAlgae,
+  handleAlgaeCancel,
+} from "@/redux/scoresSlice";
 
 interface Props {
     incapActive: boolean;
     activeSide: string;
     intakeSelected?: AlgaeIntakeLocation;
     locationSelected?: AlgaeScoringLocation;
-    handleSelection: (
-        phrase: string,
-        data:{
-          intakeSelection?: AlgaeIntakeLocation,
-          scoringLocation?: AlgaeScoringLocation,
-          dropped?: boolean,
-          failedScoring?: boolean,
-        },
-      ) => void;
-      handleCancel: (phrase: string) => void;
+    // handleSelection: (
+    //     phrase: string,
+    //     data:{
+    //       intakeSelection?: AlgaeIntakeLocation,
+    //       scoringLocation?: AlgaeScoringLocation,
+    //       dropped?: boolean,
+    //       failedScoring?: boolean,
+    //     },
+    //   ) => void;
+    //   handleCancel: (phrase: string) => void;
 }
 
 //Displays a map of half of the field.
@@ -35,9 +42,56 @@ export default function AutoAlgaePanel({
     activeSide,
     intakeSelected,
     locationSelected,
-    handleSelection,
-    handleCancel,
+    // handleSelection,
+    // handleCancel,
 }: Props) {
+    const dispatch = useDispatch<AppDispatch>();
+    const mainData = useSelector((state: ReduxState) => state.mainData);
+
+    const handleIntaking = (intakeSelection: AlgaeIntakeLocation) => {
+        if(!incapActive && activeSide=="intaking"){
+            dispatch(
+                handleAlgae({
+                    phrase: "intaking",
+                    data: {
+                        intakeSelection: intakeSelection
+                    }
+                })
+            );
+        }
+    };
+    const handleScoring = (scoringLocation: AlgaeScoringLocation) => {
+        if(!incapActive && activeSide=="scoring"){
+            dispatch(
+                handleAlgae({
+                    phrase: "scoring",
+                    data: {
+                        scoringLocation: scoringLocation,
+                        dropped: false
+                    }
+                })
+            );
+        }
+    };
+    const handleResult = (failedScoring: boolean) => {
+        if(!incapActive && activeSide=="result"){
+            dispatch(
+                handleAlgae({
+                    phrase: "result",
+                    data: {
+                        failedScoring: failedScoring
+                    }
+                })
+            );
+        }
+    };
+    const handleCancel = (phrase: "intaking" | "scoring" | "result") => {
+        dispatch(
+            handleAlgaeCancel({
+                phrase: phrase,
+            })
+        );
+    }
 
     return (
         <div className="d-flex flex-column align-items-center border border-2 border-secondary px-3">
@@ -51,11 +105,7 @@ export default function AutoAlgaePanel({
                         <TeleopIntakeButton
                             active={activeSide=="intaking"&&!incapActive}
                             selected={intakeSelected == AlgaeIntakeLocation.TELEOPGROUND}
-                            handleSelection={() => {
-                                handleSelection("intaking",{
-                                    intakeSelection: AlgaeIntakeLocation.TELEOPGROUND
-                                })
-                            }}
+                            handleSelection={() => handleIntaking(AlgaeIntakeLocation.TELEOPGROUND)}
                             handleCancel={() => handleCancel("scoring")}
                             gamePiece="algae"
                         />
@@ -65,11 +115,7 @@ export default function AutoAlgaePanel({
                         <TeleopIntakeButton
                             active={activeSide=="intaking"&&!incapActive}
                             selected={intakeSelected == AlgaeIntakeLocation.TELEOPREEF}
-                            handleSelection={() => {
-                                handleSelection("intaking",{
-                                    intakeSelection: AlgaeIntakeLocation.TELEOPREEF
-                                })
-                            }}
+                            handleSelection={() => handleIntaking(AlgaeIntakeLocation.TELEOPREEF)}
                             handleCancel={() => handleCancel("scoring")}
                             gamePiece="algae"
                         />
@@ -82,11 +128,7 @@ export default function AutoAlgaePanel({
                             className="mt-2"
                             active={activeSide=="scoring"&&!incapActive}
                             selected={locationSelected == AlgaeScoringLocation.NET}
-                            handleSelection={() => {
-                                handleSelection("scoring",{
-                                    scoringLocation: AlgaeScoringLocation.NET
-                                })
-                            }}
+                            handleSelection={() => handleScoring(AlgaeScoringLocation.NET)}
                             handleCancel={() => handleCancel("result")}
                             text="Net"
                         />
@@ -94,11 +136,7 @@ export default function AutoAlgaePanel({
                             className="mt-2"
                             active={activeSide=="scoring"&&!incapActive}
                             selected={locationSelected == AlgaeScoringLocation.PROCESSOR}
-                            handleSelection={() => {
-                                handleSelection("scoring",{
-                                    scoringLocation: AlgaeScoringLocation.PROCESSOR
-                                })
-                            }}
+                            handleSelection={() => handleScoring(AlgaeScoringLocation.PROCESSOR)}
                             handleCancel={() => handleCancel("result")}
                             text="Proc."
                         />
@@ -109,21 +147,13 @@ export default function AutoAlgaePanel({
                     <div className="d-flex flex-column">
                         <ScoreButton
                             active={activeSide=="result"&&!incapActive}
-                            handleClick={() => {
-                                handleSelection("result",{
-                                    failedScoring: false
-                                })
-                            }}
+                            handleClick={() => handleResult(false)}
                             gamePiece="algae"
                         />
                         <FailButton
                             className="mt-2"
                             active={activeSide=="result"&&!incapActive}
-                            handleClick={() => {
-                                handleSelection("result",{
-                                    failedScoring: true
-                                })
-                            }}
+                            handleClick={() => handleResult(true)}
                             gamePiece="algae"
                         />
                     </div>

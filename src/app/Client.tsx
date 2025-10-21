@@ -3,6 +3,11 @@
 
 //The page info for every client page.
 import {
+  cleanForPostmatch,
+  handleAlgaeCancel,
+  handleCoral,
+  handleCoralCancel,
+  setCoralActiveSide,
   setLeftStartingZoneAsync,
 } from "@/redux/scoresSlice";
 import SectionSelector from "@/components/client/common/SectionSelector";
@@ -38,37 +43,38 @@ interface Props {
 
 export default function Client({ station }: Props) {
   const mainData = useSelector((state: ReduxState) => state.mainData);
+  const scores = useSelector((state: ReduxState) => state.scores);
   const dispatch = useDispatch<AppDispatch>();
   const [tab, setTab] = useState<Section>(Section.PREMATCH);
 
   //UPDATE CYCLE (Client): Basically we need variables to store the intake location, scoring location, active side, start time, and end time for each game piece.
-  const [coralIntakeLocation, setCoralIntakeLocation] = useState<
-    CoralIntakeLocation | undefined
-  >(undefined);
-  const [coralScoringLevel, setCoralScoringLevel] = useState<
-    CoralScoringLevel | undefined
-  >(undefined);
-  const [coralScoringSide, setCoralScoringSide] = useState<
-    CoralScoringSide | undefined
-  >(undefined);
-  const [coralActiveSide, setCoralActiveSide] = useState("level");//This is set between intaking, level, side, and result.
-  const [coralStartTime, setCoralStartTime] = useState(0);
-  const [coralEndTime, setCoralEndTime] = useState(0);
+  // const [coralIntakeLocation, setCoralIntakeLocation] = useState<
+  //   CoralIntakeLocation | undefined
+  // >(undefined);
+  // const [coralScoringLevel, setCoralScoringLevel] = useState<
+  //   CoralScoringLevel | undefined
+  // >(undefined);
+  // const [coralScoringSide, setCoralScoringSide] = useState<
+  //   CoralScoringSide | undefined
+  // >(undefined);
+  // const [coralActiveSide, setCoralActiveSide] = useState("level");//This is set between intaking, level, side, and result.
+  // const [coralStartTime, setCoralStartTime] = useState(0);
+  // const [coralEndTime, setCoralEndTime] = useState(0);
 
-  const [algaeIntakeLocation, setAlgaeIntakeLocation] = useState<
-    AlgaeIntakeLocation | undefined
-  >(undefined);
-  const [algaeScoringLocation, setAlgaeScoringLocation] = useState<
-    AlgaeScoringLocation | undefined
-  >(undefined);
-  const [algaeActiveSide, setAlgaeActiveSide] = useState("intaking");//This is set between intaking, scoring, and result.
-  const [algaeStartTime, setAlgaeStartTime] = useState(0);
-  const [algaeEndTime, setAlgaeEndTime] = useState(0);
+  // const [algaeIntakeLocation, setAlgaeIntakeLocation] = useState<
+  //   AlgaeIntakeLocation | undefined
+  // >(undefined);
+  // const [algaeScoringLocation, setAlgaeScoringLocation] = useState<
+  //   AlgaeScoringLocation | undefined
+  // >(undefined);
+  // const [algaeActiveSide, setAlgaeActiveSide] = useState("intaking");//This is set between intaking, scoring, and result.
+  // const [algaeStartTime, setAlgaeStartTime] = useState(0);
+  // const [algaeEndTime, setAlgaeEndTime] = useState(0);
 
-  const [incapOn, setIncapOn] = useState(false);
-  const [incapStartTime, setIncapStartTime] = useState(0);
+  // const [incapOn, setIncapOn] = useState(false);
+  // const [incapStartTime, setIncapStartTime] = useState(0);
 
-  const [mobility, setMobility] = useState(false);
+  // const [mobility, setMobility] = useState(false);
 
   useEffect(() => {
     const update = async () => {
@@ -76,63 +82,29 @@ export default function Client({ station }: Props) {
       await dispatch(getStationData({ station }));
       await dispatch(sendHeartbeatAsync({ station, section: tab }));
       if(tab===Section.POSTMATCH){
-        //Prematurely ends any in-progress scoring events and incap segments when switching to postmatch
-        if(incapOn){
-          const event = {
-            timestampStarted: incapStartTime,
-            timestampEnded: Date.now(),
-            full: false
-          }; //incapSegment creation.
-          setIncapStartTime(0);
-          setIncapOn(false);  
-    
-          await dispatch(sendIncapSegment(event));
-        }
-        // UPDATE CYCLE (Client): Make sure all scoring events are covered here.
-        if(coralActiveSide!="intaking"){
-          const event = {
-            intakeLocation: coralIntakeLocation as CoralIntakeLocation,
-            scoringLevel: undefined,
-            scoringSide: undefined,
-            failedScoring: true,
-            dropped: true,
-            timestampPickedUp: coralStartTime,
-            timestampScored: Date.now(),
-          }; //scoring event creation.
-          setCoralIntakeLocation(undefined);
-          setCoralStartTime(0);
-          setCoralActiveSide("intaking");
-          await dispatch(sendCoralEvent(event));
-        }
-        if(algaeActiveSide!="intaking"){
-          const event = {
-            intakeLocation: algaeIntakeLocation as AlgaeIntakeLocation,
-            scoringLocation: undefined,
-            failedScoring: true,
-            dropped: true,
-            timestampPickedUp: algaeStartTime,
-            timestampScored: Date.now(),
-          }; //scoring event creation.
-          setAlgaeIntakeLocation(undefined);
-          setAlgaeStartTime(0);
-          setAlgaeActiveSide("intaking");
-          await dispatch(sendAlgaeEvent(event));
-        }
+        await dispatch(cleanForPostmatch());
       }
     };
     update();
     
     //If the bot is preloaded, sets the scoring event time to be when the tab was switched to auto and the intake location to preload.
     // UPDATE CYCLE (Client): Make sure the game piece that's preloaded is put here.
-    if(tab===Section.AUTO&&coralActiveSide=="level"&&coralStartTime==0){
-      if (coralStartTime == 0) setCoralStartTime(Date.now());
-      setCoralIntakeLocation(CoralIntakeLocation.AUTOPRELOAD);
+    if(tab===Section.AUTO&&scores.coralActiveSide=="level"&&scores.coralStartTime==0){
+      dispatch(
+        handleCoral({
+          tab: Section.AUTO,
+          phrase: "intaking",
+          data: {
+              intakeSelection: CoralIntakeLocation.AUTOPRELOAD
+          }
+        })
+      );
     }
     
     //Skips the side selection from Auto if moving to another tab with it on.
     //This'll likely only be used if there's a variable you're not tracking in teleop. Probably comment this out.
-    if(tab!==Section.AUTO&&coralActiveSide=="side"){
-      setCoralActiveSide("result");
+    if(tab!==Section.AUTO&&scores.coralActiveSide=="side"){
+      // setCoralActiveSide("result");
     }
     const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
@@ -144,172 +116,172 @@ export default function Client({ station }: Props) {
   }, [mainData.activeMatchName]);
 
   //triggers when incap button is pressed
-  const handleIncap = async () => {
-    if(incapOn){
-      const event = {
-        timestampStarted: incapStartTime,
-        timestampEnded: Date.now(),
-        full: true
-      }; //incapSegment creation.
-      setIncapStartTime(0);
-      setIncapOn(false);  
+  // const handleIncap = async () => {
+  //   if(incapOn){
+  //     const event = {
+  //       timestampStarted: incapStartTime,
+  //       timestampEnded: Date.now(),
+  //       full: true
+  //     }; //incapSegment creation.
+  //     setIncapStartTime(0);
+  //     setIncapOn(false);  
 
-      await dispatch(sendIncapSegment(event));
-    } else {
-      setIncapStartTime(Date.now());
-      setIncapOn(true);   
-    }   
-  };
+  //     await dispatch(sendIncapSegment(event));
+  //   } else {
+  //     setIncapStartTime(Date.now());
+  //     setIncapOn(true);   
+  //   }   
+  // };
 
   //UPDATE CYCLE (Client): Make sure there's a handle_ and handle_Cancel for each game piece.
-  const handleCoral = async (
-    phrase: string,
-    data:{
-      intakeSelection?: CoralIntakeLocation,
-      scoringLevel?: CoralScoringLevel,
-      dropped?: boolean,
-      scoringSide?: CoralScoringSide,
-      failedScoring?: boolean,
-    },
-  ) => {
-    if(phrase==coralActiveSide){
-      if (phrase=="intaking"){
-        if (coralStartTime == 0) setCoralStartTime(Date.now());
-        setCoralIntakeLocation(data.intakeSelection);
-        setCoralActiveSide("level");
-      } else if (phrase=="level"){
-        if(data.dropped){
-          const event = {
-            intakeLocation: coralIntakeLocation as CoralIntakeLocation,
-            scoringLevel: undefined,
-            scoringSide: undefined,
-            failedScoring: true,
-            dropped: true,
-            timestampPickedUp: coralStartTime,
-            timestampScored: Date.now(),
-          }; //teleopScoringEvent creation.
-          setCoralIntakeLocation(undefined);
-          setCoralStartTime(0);
-          setCoralActiveSide("intaking");
+  // const handleCoral = async (
+  //   phrase: string,
+  //   data:{
+  //     intakeSelection?: CoralIntakeLocation,
+  //     scoringLevel?: CoralScoringLevel,
+  //     dropped?: boolean,
+  //     scoringSide?: CoralScoringSide,
+  //     failedScoring?: boolean,
+  //   },
+  // ) => {
+  //   if(phrase==coralActiveSide){
+  //     if (phrase=="intaking"){
+  //       if (coralStartTime == 0) setCoralStartTime(Date.now());
+  //       setCoralIntakeLocation(data.intakeSelection);
+  //       setCoralActiveSide("level");
+  //     } else if (phrase=="level"){
+  //       if(data.dropped){
+  //         const event = {
+  //           intakeLocation: coralIntakeLocation as CoralIntakeLocation,
+  //           scoringLevel: undefined,
+  //           scoringSide: undefined,
+  //           failedScoring: true,
+  //           dropped: true,
+  //           timestampPickedUp: coralStartTime,
+  //           timestampScored: Date.now(),
+  //         }; //teleopScoringEvent creation.
+  //         setCoralIntakeLocation(undefined);
+  //         setCoralStartTime(0);
+  //         setCoralActiveSide("intaking");
     
-          await dispatch(sendCoralEvent(event));
-        } else {
-          if (coralEndTime == 0) setCoralEndTime(Date.now());
-          setCoralScoringLevel(data.scoringLevel);
-          if(tab==Section.AUTO){
-            setCoralActiveSide("side"); 
-          } else {
-            setCoralActiveSide("result"); 
-          }
-        }
-      } else if (phrase == "side") {
-        setCoralScoringSide(data.scoringSide);
-        setCoralActiveSide("result");   
-      } else if (phrase == "result") {
-        const event = {
-          intakeLocation: coralIntakeLocation as CoralIntakeLocation,
-          scoringLevel: coralScoringLevel as CoralScoringLevel,
-          scoringSide: coralScoringSide as CoralScoringSide,
-          failedScoring: data.failedScoring,
-          dropped: false,
-          timestampPickedUp: coralStartTime,
-          timestampScored: coralEndTime,
-        }; //teleopScoringEvent creation.
-        setCoralIntakeLocation(undefined);
-        setCoralScoringLevel(undefined);
-        setCoralScoringSide(undefined);
-        setCoralStartTime(0);
-        setCoralEndTime(0);
-        setCoralActiveSide("intaking");
+  //         await dispatch(sendCoralEvent(event));
+  //       } else {
+  //         if (coralEndTime == 0) setCoralEndTime(Date.now());
+  //         setCoralScoringLevel(data.scoringLevel);
+  //         if(tab==Section.AUTO){
+  //           setCoralActiveSide("side"); 
+  //         } else {
+  //           setCoralActiveSide("result"); 
+  //         }
+  //       }
+  //     } else if (phrase == "side") {
+  //       setCoralScoringSide(data.scoringSide);
+  //       setCoralActiveSide("result");   
+  //     } else if (phrase == "result") {
+  //       const event = {
+  //         intakeLocation: coralIntakeLocation as CoralIntakeLocation,
+  //         scoringLevel: coralScoringLevel as CoralScoringLevel,
+  //         scoringSide: coralScoringSide as CoralScoringSide,
+  //         failedScoring: data.failedScoring,
+  //         dropped: false,
+  //         timestampPickedUp: coralStartTime,
+  //         timestampScored: coralEndTime,
+  //       }; //teleopScoringEvent creation.
+  //       setCoralIntakeLocation(undefined);
+  //       setCoralScoringLevel(undefined);
+  //       setCoralScoringSide(undefined);
+  //       setCoralStartTime(0);
+  //       setCoralEndTime(0);
+  //       setCoralActiveSide("intaking");
   
-        await dispatch(sendCoralEvent(event));
-      }
-    }
-  };
-  const handleCoralCancel = async (phrase: string) => {
-    if(phrase==coralActiveSide){
-      if (phrase=="level"){
-        setCoralIntakeLocation(undefined);
-        setCoralActiveSide("intaking");  
-      } else if (phrase=="side"){
-        setCoralScoringLevel(undefined);
-        setCoralActiveSide("level");  
-      } else if (phrase=="result"){
-        if(tab==Section.AUTO){
-          setCoralScoringSide(undefined);
-          setCoralActiveSide("side"); 
-        } else {
-          setCoralScoringLevel(undefined);
-          setCoralActiveSide("level"); 
-        }
-      }
-    }
-  };
+  //       await dispatch(sendCoralEvent(event));
+  //     }
+  //   }
+  // };
+  // const handleCoralCancel = async (phrase: string) => {
+  //   if(phrase==coralActiveSide){
+  //     if (phrase=="level"){
+  //       setCoralIntakeLocation(undefined);
+  //       setCoralActiveSide("intaking");  
+  //     } else if (phrase=="side"){
+  //       setCoralScoringLevel(undefined);
+  //       setCoralActiveSide("level");  
+  //     } else if (phrase=="result"){
+  //       if(tab==Section.AUTO){
+  //         setCoralScoringSide(undefined);
+  //         setCoralActiveSide("side"); 
+  //       } else {
+  //         setCoralScoringLevel(undefined);
+  //         setCoralActiveSide("level"); 
+  //       }
+  //     }
+  //   }
+  // };
 
-  const handleAlgae = async (
-    phrase: string,
-    data:{
-      intakeSelection?: AlgaeIntakeLocation,
-      scoringLocation?: AlgaeScoringLocation,
-      dropped?: boolean,
-      failedScoring?: boolean,
-    },
-  ) => {
-    if(phrase==algaeActiveSide){
-      if (phrase=="intaking"){
-        if (algaeStartTime==0) setAlgaeStartTime(Date.now());
-        setAlgaeIntakeLocation(data.intakeSelection);
-        setAlgaeActiveSide("scoring");  
-      } else if (phrase=="scoring"){
-        if(data.dropped){
-          const event = {
-            intakeLocation: algaeIntakeLocation as AlgaeIntakeLocation,
-            scoringLocation: undefined,
-            failedScoring: true,
-            dropped: true,
-            timestampPickedUp: algaeStartTime,
-            timestampScored: Date.now(),
-          }; //scoring event creation.
-          setAlgaeIntakeLocation(undefined);
-          setAlgaeStartTime(0);
-          setAlgaeActiveSide("intaking");
+  // const handleAlgae = async (
+  //   phrase: string,
+  //   data:{
+  //     intakeSelection?: AlgaeIntakeLocation,
+  //     scoringLocation?: AlgaeScoringLocation,
+  //     dropped?: boolean,
+  //     failedScoring?: boolean,
+  //   },
+  // ) => {
+  //   if(phrase==algaeActiveSide){
+  //     if (phrase=="intaking"){
+  //       if (algaeStartTime==0) setAlgaeStartTime(Date.now());
+  //       setAlgaeIntakeLocation(data.intakeSelection);
+  //       setAlgaeActiveSide("scoring");  
+  //     } else if (phrase=="scoring"){
+  //       if(data.dropped){
+  //         const event = {
+  //           intakeLocation: algaeIntakeLocation as AlgaeIntakeLocation,
+  //           scoringLocation: undefined,
+  //           failedScoring: true,
+  //           dropped: true,
+  //           timestampPickedUp: algaeStartTime,
+  //           timestampScored: Date.now(),
+  //         }; //scoring event creation.
+  //         setAlgaeIntakeLocation(undefined);
+  //         setAlgaeStartTime(0);
+  //         setAlgaeActiveSide("intaking");
     
-          await dispatch(sendAlgaeEvent(event));
-        } else {
-          if (algaeEndTime == 0) setAlgaeEndTime(Date.now());
-          setAlgaeScoringLocation(data.scoringLocation);
-          setAlgaeActiveSide("result"); 
-        }
-      } else if (phrase == "result") {
-        const event = {
-          intakeLocation: algaeIntakeLocation as AlgaeIntakeLocation,
-          scoringLocation: algaeScoringLocation as AlgaeScoringLocation,
-          failedScoring: data.failedScoring,
-          dropped: false,
-          timestampPickedUp: algaeStartTime,
-          timestampScored: algaeEndTime,
-        }; //scoring event creation.
-        setAlgaeIntakeLocation(undefined);
-        setAlgaeScoringLocation(undefined);
-        setAlgaeStartTime(0);
-        setAlgaeEndTime(0);
-        setAlgaeActiveSide("intaking");
+  //         await dispatch(sendAlgaeEvent(event));
+  //       } else {
+  //         if (algaeEndTime == 0) setAlgaeEndTime(Date.now());
+  //         setAlgaeScoringLocation(data.scoringLocation);
+  //         setAlgaeActiveSide("result"); 
+  //       }
+  //     } else if (phrase == "result") {
+  //       const event = {
+  //         intakeLocation: algaeIntakeLocation as AlgaeIntakeLocation,
+  //         scoringLocation: algaeScoringLocation as AlgaeScoringLocation,
+  //         failedScoring: data.failedScoring,
+  //         dropped: false,
+  //         timestampPickedUp: algaeStartTime,
+  //         timestampScored: algaeEndTime,
+  //       }; //scoring event creation.
+  //       setAlgaeIntakeLocation(undefined);
+  //       setAlgaeScoringLocation(undefined);
+  //       setAlgaeStartTime(0);
+  //       setAlgaeEndTime(0);
+  //       setAlgaeActiveSide("intaking");
   
-        await dispatch(sendAlgaeEvent(event));
-      }
-    }
-  };
-  const handleAlgaeCancel = async (phrase: string) => {
-    if(phrase==algaeActiveSide){
-      if (phrase=="scoring"){
-        setAlgaeIntakeLocation(undefined);
-        setAlgaeActiveSide("intaking");  
-      } else if (phrase=="result"){
-        setAlgaeScoringLocation(undefined);
-        setAlgaeActiveSide("scoring"); 
-      }
-    }
-  };
+  //       await dispatch(sendAlgaeEvent(event));
+  //     }
+  //   }
+  // };
+  // const handleAlgaeCancel = async (phrase: string) => {
+  //   if(phrase==algaeActiveSide){
+  //     if (phrase=="scoring"){
+  //       setAlgaeIntakeLocation(undefined);
+  //       setAlgaeActiveSide("intaking");  
+  //     } else if (phrase=="result"){
+  //       setAlgaeScoringLocation(undefined);
+  //       setAlgaeActiveSide("scoring"); 
+  //     }
+  //   }
+  // };
 
   const pressedKeys = useRef(new Set<string>());
   useEffect(() => {
@@ -319,10 +291,10 @@ export default function Client({ station }: Props) {
 
       //UPDATE CYCLE (Client): Each cancel button should be mapped to a key.
       if (e.key=='s') {
-        handleCoralCancel(coralActiveSide);
+        dispatch(handleCoralCancel({tab: tab, phrase: scores.coralActiveSide}));
       }
       if (e.key=='g') {
-        handleAlgaeCancel(algaeActiveSide);
+        dispatch(handleAlgaeCancel({phrase: scores.algaeActiveSide}));
       }
     };
       const handleKeyup = (e: KeyboardEvent) => {
@@ -397,48 +369,48 @@ export default function Client({ station }: Props) {
               {/* UPDATE CYCLE (Client): MAny variables defined here are passed into these components; make sure those are set. */}
                 <PrematchContent
                   show={tab === Section.PREMATCH}
-                  coralActiveSide={coralActiveSide}
+                  coralActiveSide={scores.coralActiveSide}
                   handlePreload={()=>{
-                    if(coralActiveSide=="level"){
-                      setCoralActiveSide("intaking");
-                    } else setCoralActiveSide("level");
+                    if(scores.coralActiveSide=="level"){
+                      dispatch(setCoralActiveSide({ coralActiveSide: "intaking" }));  
+                    } else dispatch(setCoralActiveSide({ coralActiveSide: "level" }));  
                   }}
                 />
                 <AutoContent
                   show={tab === Section.AUTO}
-                  coralActiveSide={coralActiveSide}
-                  coralIntakeLocation={coralIntakeLocation}
-                  coralScoringLevel={coralScoringLevel}
-                  coralScoringSide={coralScoringSide}
-                  handleCoral={handleCoral}
-                  handleCoralCancel={handleCoralCancel}
-                  algaeActiveSide={algaeActiveSide}
-                  algaeIntakeLocation={algaeIntakeLocation}
-                  algaeScoringLocation={algaeScoringLocation}
-                  handleAlgae={handleAlgae}
-                  handleAlgaeCancel={handleAlgaeCancel}
-                  incapOn={incapOn}
-                  handleIncap={handleIncap}
-                  mobility={mobility}
-                  handleMobility={async () => {
-                    setMobility(!mobility);
-                    dispatch(setLeftStartingZoneAsync({leftStartingZone: mobility}));
-                  }}
+                  coralActiveSide={scores.coralActiveSide}
+                  coralIntakeLocation={scores.coralIntakeLocation}
+                  coralScoringLevel={scores.coralScoringLevel}
+                  coralScoringSide={scores.coralScoringSide}
+                  // handleCoral={handleCoral}
+                  // handleCoralCancel={handleCoralCancel}
+                  algaeActiveSide={scores.algaeActiveSide}
+                  algaeIntakeLocation={scores.algaeIntakeLocation}
+                  algaeScoringLocation={scores.algaeScoringLocation}
+                  // handleAlgae={handleAlgae}
+                  // handleAlgaeCancel={handleAlgaeCancel}
+                  incapOn={scores.incapOn}
+                  // handleIncap={handleIncap}
+                  mobility={scores.leftStartingZone}
+                  // handleMobility={async () => {
+                  //   setMobility(!mobility);
+                  //   dispatch(setLeftStartingZoneAsync({leftStartingZone: mobility}));
+                  // }}
                 />
                 <TeleopContent
                   show={tab === Section.TELEOP}
-                  coralActiveSide={coralActiveSide}
-                  coralScoringLevel={coralScoringLevel}
-                  coralIntakeLocation={coralIntakeLocation}
-                  handleCoral={handleCoral}
-                  handleCoralCancel={handleCoralCancel}
-                  algaeActiveSide={algaeActiveSide}
-                  algaeIntakeLocation={algaeIntakeLocation}
-                  algaeScoringLocation={algaeScoringLocation}
-                  handleAlgae={handleAlgae}
-                  handleAlgaeCancel={handleAlgaeCancel}
-                  incapOn={incapOn}
-                  handleIncap={handleIncap}
+                  coralActiveSide={scores.coralActiveSide}
+                  coralScoringLevel={scores.coralScoringLevel}
+                  coralIntakeLocation={scores.coralIntakeLocation}
+                  // handleCoral={handleCoral}
+                  // handleCoralCancel={handleCoralCancel}
+                  algaeActiveSide={scores.algaeActiveSide}
+                  algaeIntakeLocation={scores.algaeIntakeLocation}
+                  algaeScoringLocation={scores.algaeScoringLocation}
+                  // handleAlgae={handleAlgae}
+                  // handleAlgaeCancel={handleAlgaeCancel}
+                  incapOn={scores.incapOn}
+                  // handleIncap={handleIncap}
                 />
                 <PostmatchContent
                   show={tab === Section.POSTMATCH}

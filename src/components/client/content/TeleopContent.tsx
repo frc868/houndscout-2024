@@ -8,7 +8,8 @@ import {
   CoralIntakeLocation, 
   AlgaeIntakeLocation,
   CoralScoringLevel,
-  AlgaeScoringLocation
+  AlgaeScoringLocation,
+  Section
 } from "@prisma/client";
 import { useState } from "react";
 import { Col, Row } from "react-bootstrap";
@@ -18,6 +19,8 @@ import EndgamePanel from "@/components/client/teleop/EndgamePanel";
 import {
   setEndgameTypeAsync,
   setEndgameSuccessAsync,
+  handleCoral,
+  handleAlgae,
 } from "@/redux/scoresSlice";
 import IncapButton from "../mini/IncapButton";
 
@@ -26,31 +29,31 @@ interface Props {
   coralActiveSide: string;
   coralIntakeLocation?: CoralIntakeLocation;
   coralScoringLevel?: CoralScoringLevel;
-  handleCoral: (
-    phrase: string,
-    data:{
-      intakeSelection?: CoralIntakeLocation,
-      scoringLevel?: CoralScoringLevel,
-      dropped?: boolean,
-      failedScoring?: boolean,
-    },
-  ) => void;
-  handleCoralCancel: (phrase: string) => void;
+  // handleCoral: (
+  //   phrase: string,
+  //   data:{
+  //     intakeSelection?: CoralIntakeLocation,
+  //     scoringLevel?: CoralScoringLevel,
+  //     dropped?: boolean,
+  //     failedScoring?: boolean,
+  //   },
+  // ) => void;
+  // handleCoralCancel: (phrase: string) => void;
   algaeActiveSide: string;
   algaeIntakeLocation?: AlgaeIntakeLocation;
   algaeScoringLocation?: AlgaeScoringLocation;
-  handleAlgae: (
-    phrase: string,
-    data:{
-      intakeSelection?: AlgaeIntakeLocation,
-      scoringLocation?: AlgaeScoringLocation,
-      dropped?: boolean,
-      failedScoring?: boolean,
-    },
-  ) => void;
-  handleAlgaeCancel: (phrase: string) => void;
+  // handleAlgae: (
+  //   phrase: string,
+  //   data:{
+  //     intakeSelection?: AlgaeIntakeLocation,
+  //     scoringLocation?: AlgaeScoringLocation,
+  //     dropped?: boolean,
+  //     failedScoring?: boolean,
+  //   },
+  // ) => void;
+  // handleAlgaeCancel: (phrase: string) => void;
   incapOn: boolean;
-  handleIncap: () => void;
+  // handleIncap: () => void;
 }
 
 //Teleop tab.
@@ -60,15 +63,15 @@ export default function TeleopContent({
   coralActiveSide,
   coralIntakeLocation,
   coralScoringLevel,
-  handleCoral,
-  handleCoralCancel,
+  // handleCoral,
+  // handleCoralCancel,
   algaeActiveSide,
   algaeIntakeLocation,
   algaeScoringLocation,
-  handleAlgae,
-  handleAlgaeCancel,
+  // handleAlgae,
+  // handleAlgaeCancel,
   incapOn,
-  handleIncap,
+  // handleIncap,
 }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
@@ -82,8 +85,8 @@ export default function TeleopContent({
             activeSide={coralActiveSide}
             intakeSelected={coralIntakeLocation}
             levelSelected={coralScoringLevel}
-            handleSelection={handleCoral}
-            handleCancel={handleCoralCancel}
+            // handleSelection={handleCoral}
+            // handleCancel={handleCoralCancel}
           />
         </Col>
         <Col className="d-flex justify-content-center" md={4}>
@@ -92,8 +95,8 @@ export default function TeleopContent({
             activeSide={algaeActiveSide}
             intakeSelected={algaeIntakeLocation}
             locationSelected={algaeScoringLocation}
-            handleSelection={handleAlgae}
-            handleCancel={handleAlgaeCancel}
+            // handleSelection={handleAlgae}
+            // handleCancel={handleAlgaeCancel}
           />
         </Col>
         <Col className="d-flex justify-content-right mx-3" md={1}>
@@ -115,25 +118,32 @@ export default function TeleopContent({
           <IncapButton
             className="text-nowrap my-1"
             active={incapOn}
-            handleClick={handleIncap}
+            // handleClick={handleIncap}
           />
         </Col>
         <Col className="d-flex justify-content-center align-items-center" md={6}>
           <DroppedPanel
             coralActive={coralActiveSide=="level"}
             algaeActive={algaeActiveSide=="scoring"}
-            handleCoralDropped={() => {
-              handleCoral("level",{
+            handleCoralDropped={() => dispatch(
+              handleCoral({
+                tab: Section.AUTO,
+                phrase: "level",
+                data: {
                   scoringLevel: undefined,
                   dropped: true
+                }
               })
-            }}
-            handleAlgaeDropped={() => {
-              handleAlgae("scoring",{
+            )}
+            handleAlgaeDropped={() => dispatch(
+              handleAlgae({
+                phrase: "scoring",
+                data: {
                   scoringLocation: undefined,
                   dropped: true
+                }
               })
-            }}
+            )}
           />
         </Col>
       </Row>

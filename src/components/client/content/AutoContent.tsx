@@ -11,15 +11,19 @@ import { AppDispatch, ReduxState } from "@/redux/store";
 
 import {
   setLeftStartingZoneAsync,
+  handleCoral,
+  handleAlgae,
 } from "@/redux/scoresSlice";
 import {
   CoralIntakeLocation, 
   AlgaeIntakeLocation,
   CoralScoringLevel,
   CoralScoringSide,
-  AlgaeScoringLocation
+  AlgaeScoringLocation,
+  Section,
 } from "@prisma/client";
 import IncapButton from "../mini/IncapButton";
+
 
 interface Props {
   show: boolean;
@@ -27,34 +31,34 @@ interface Props {
   coralIntakeLocation?: CoralIntakeLocation;
   coralScoringLevel?: CoralScoringLevel;
   coralScoringSide?: CoralScoringSide;
-  handleCoral: (
-    phrase: string,
-    data:{
-      intakeSelection?: CoralIntakeLocation,
-      scoringLevel?: CoralScoringLevel,
-      dropped?: boolean,
-      scoringSide?: CoralScoringSide,
-      failedScoring?: boolean,
-    },
-  ) => void;
-  handleCoralCancel: (phrase: string) => void;
+  // handleCoral: (
+  //   phrase: string,
+  //   data:{
+  //     intakeSelection?: CoralIntakeLocation,
+  //     scoringLevel?: CoralScoringLevel,
+  //     dropped?: boolean,
+  //     scoringSide?: CoralScoringSide,
+  //     failedScoring?: boolean,
+  //   },
+  // ) => void;
+  // handleCoralCancel: (phrase: string) => void;
   algaeActiveSide: string;
   algaeIntakeLocation?: AlgaeIntakeLocation;
   algaeScoringLocation?: AlgaeScoringLocation;
-  handleAlgae: (
-    phrase: string,
-    data:{
-      intakeSelection?: AlgaeIntakeLocation,
-      scoringLocation?: AlgaeScoringLocation,
-      dropped?: boolean,
-      failedScoring?: boolean,
-    },
-  ) => void;
-  handleAlgaeCancel: (phrase: string) => void;
+  // handleAlgae: (
+  //   phrase: string,
+  //   data:{
+  //     intakeSelection?: AlgaeIntakeLocation,
+  //     scoringLocation?: AlgaeScoringLocation,
+  //     dropped?: boolean,
+  //     failedScoring?: boolean,
+  //   },
+  // ) => void;
+  // handleAlgaeCancel: (phrase: string) => void;
   incapOn: boolean;
-  handleIncap: () => void;
+  // handleIncap: () => void;
   mobility: boolean;
-  handleMobility: () => void;
+  // handleMobility: () => void;
 }
 
 export default function AutoContent({
@@ -63,17 +67,17 @@ export default function AutoContent({
   coralIntakeLocation,
   coralScoringLevel,
   coralScoringSide,
-  handleCoral,
-  handleCoralCancel,
+  // handleCoral,
+  // handleCoralCancel,
   algaeActiveSide,
   algaeIntakeLocation,
   algaeScoringLocation,
-  handleAlgae,
-  handleAlgaeCancel,
+  // handleAlgae,
+  // handleAlgaeCancel,
   incapOn,
-  handleIncap,
+  // handleIncap,
   mobility,
-  handleMobility,
+  // handleMobility,
 }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const mainData = useSelector((state: ReduxState) => state.mainData);
@@ -89,8 +93,8 @@ export default function AutoContent({
             intakeSelected={coralIntakeLocation}
             levelSelected={coralScoringLevel}
             sideSelected={coralScoringSide}
-            handleSelection={handleCoral}
-            handleCancel={handleCoralCancel}
+            // handleSelection={handleCoral}
+            // handleCancel={handleCoralCancel}
           />
         </Col>
         <Col className="d-flex justify-content-center" md={6}>
@@ -99,8 +103,8 @@ export default function AutoContent({
             activeSide={algaeActiveSide}
             intakeSelected={algaeIntakeLocation}
             locationSelected={algaeScoringLocation}
-            handleSelection={handleAlgae}
-            handleCancel={handleAlgaeCancel}
+            // handleSelection={handleAlgae}
+            // handleCancel={handleAlgaeCancel}
           />
         </Col>
       </Row>
@@ -109,31 +113,40 @@ export default function AutoContent({
           <IncapButton
             className="text-nowrap my-1"
             active={incapOn}
-            handleClick={handleIncap}
+            // handleClick={handleIncap}
           />
         </Col>
         <Col className="d-flex justify-content-center align-items-center" md={4}>
           <DroppedPanel
             coralActive={coralActiveSide=="level"}
             algaeActive={algaeActiveSide=="scoring"}
-            handleCoralDropped={() => {
-              handleCoral("level",{
+            handleCoralDropped={() => dispatch(
+              handleCoral({
+                tab: Section.AUTO,
+                phrase: "level",
+                data: {
                   scoringLevel: undefined,
                   dropped: true
+                }
               })
-            }}
-            handleAlgaeDropped={() => {
-              handleAlgae("scoring",{
+            )}
+            handleAlgaeDropped={() => dispatch(
+              handleAlgae({
+                phrase: "scoring",
+                data: {
                   scoringLocation: undefined,
                   dropped: true
+                }
               })
-            }}
+            )}
           />
         </Col>
         <Col className="d-flex justify-content-center align-items-center" md={4}>
           <MobilityToggleBox
             enabled={mobility}
-            handleClick={handleMobility}
+            handleClick={() => dispatch(
+              setLeftStartingZoneAsync({leftStartingZone: mobility})
+            )}
           />
         </Col>
       </Row>
