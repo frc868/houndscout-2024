@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 //Currently unimplemented.
-// Returns a certain teamScore, including scoring events and incap segments.
+// Returns a certain teamScore, including tower attempts and incap segments.
 export async function GET(
   req: Request,
   { params }: { params: {
@@ -22,10 +22,9 @@ export async function GET(
       },
       include: {
         [`${params.station}TeamScore`]: {
-          // UPDATE CYCLE (Client): Ensure all scoring events as well as incapSegments are listed here, just in case.
+          // UPDATE CYCLE (Client): Ensure all scoring-related relations as well as incapSegments are listed here, just in case.
           include: {
-            CoralScoringEvents: true,
-            AlgaeScoringEvents: true,
+            towerAttempts: true,
             incapSegments: true,
           },
         },
@@ -43,7 +42,7 @@ export async function GET(
 }
 
 //scoresSlice/(most things)
-//A do-it-all function that can update update anything in the specified teamScore that needs to be updated.
+//A do-it-all function that can update anything in the specified teamScore that needs to be updated.
 export async function PATCH(
   req: Request,
   { params }: { params: {
@@ -68,15 +67,28 @@ export async function PATCH(
             autoStartingZone: data.autoStartingZone,
 
             leftStartingZone: data.leftStartingZone,
+            autoFuelScored: data.autoFuelScored,
+            autoFuelIntakeSource: data.autoFuelIntakeSource,
+            autoFuelAccuracy: data.autoFuelAccuracy,
+            wonAuto: data.wonAuto,
 
-            endgameType: data.endgameType,
-            endgameSuccess: data.endgameSuccess,
+            teleopShift1Fuel: data.teleopShift1Fuel,
+            teleopShift2Fuel: data.teleopShift2Fuel,
+            teleopShift3Fuel: data.teleopShift3Fuel,
+            teleopShift4Fuel: data.teleopShift4Fuel,
+            teleopEndgameFuel: data.teleopEndgameFuel,
+            teleopFuelSource: data.teleopFuelSource,
+            humanPlayerUsage: data.humanPlayerUsage,
+            humanPlayerValuable: data.humanPlayerValuable,
 
             driverSkillRating: data.driverSkillRating,
-            result: data.result,
+            playstyle: data.playstyle,
             playedDefense: data.playedDefense,
+            defensePlayedAgainst: data.defensePlayedAgainst,
+            robotBrokeDown: data.robotBrokeDown,
+            result: data.result,
             comments: data.comments,
-            
+
             submitted: data.submitted,
             cancelled: data.cancelled,
           },
@@ -96,7 +108,7 @@ export async function PATCH(
 
 
 //ScoresSlice/clearScoringEvents
-//Deletes all scoring events and incap segments related to a teamScore.
+//Deletes all tower attempts and incap segments related to a teamScore.
 export async function DELETE(
   req: Request,
   { params }: { params: {
@@ -115,8 +127,7 @@ export async function DELETE(
       data: {
         [`${params.station.toLowerCase()}TeamScore`]: {
           update: {
-            CoralScoringEvents: {deleteMany: {}},
-            AlgaeScoringEvents: {deleteMany: {}},
+            towerAttempts: {deleteMany: {}},
             incapSegments: {deleteMany: {}},
           }
         },
@@ -124,8 +135,7 @@ export async function DELETE(
       include: {
         [`${params.station}TeamScore`]: {
           include: {
-            CoralScoringEvents: true,
-            AlgaeScoringEvents: true,
+            towerAttempts: true,
             incapSegments: true,
           },
         },

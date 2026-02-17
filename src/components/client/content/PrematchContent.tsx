@@ -1,33 +1,40 @@
+
+Prematchcontent · TSX
 "use client";
 
-import StartingPositionSelector from "@/components/client/prematch/StartingZoneSelector";
-import { Alliance } from "@/lib/enums";
-import { setAutoStartingZoneAsync, clearEvents, cancelScore } from "@/redux/scoresSlice";
-import { AppDispatch, ReduxState } from "@/redux/store";
-import { staticGenerationAsyncStorage } from "next/dist/client/components/static-generation-async-storage.external";
-import { useEffect } from "react";
-import { Col, Row, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, ReduxState } from "@/redux/store";
+import { Row, Col, Button } from "react-bootstrap";
 import MiniToggleBox from "../mini/MiniToggleBox";
+import StartingPositionSelector from "../prematch/StartingPositionSelector";
+import {
+  setAutoStartingZoneAsync,
+  setPreloadedAsync,
+  cancelScore,
+  clearEvents,
+} from "@/redux/scoresSlice";
+import { AutoStartingZone } from "@prisma/client";
 
 interface Props {
   show: boolean;
-  coralActiveSide: string;
-  handlePreload: () => void;
 }
 
 //All the scouter really needs to do is put the approximate starting position; everything else is handled by the lead.
-export default function PrematchContent({ show, coralActiveSide, handlePreload }: Props) {
+export default function PrematchContent({ show }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   const scores = useSelector((state: ReduxState) => state.scores);
   const mainData = useSelector((state: ReduxState) => state.mainData);
 
-  const confirmNoShow=()=>{
-    if(confirm("Are you sure? Only click OK if you are unable to input match-related data for any reason, as this will cancel this score.")==true){
+  const confirmNoShow = () => {
+    if (
+      confirm(
+        "Are you sure? Only click OK if you are unable to input match-related data for any reason, as this will cancel this score."
+      ) == true
+    ) {
       dispatch(cancelScore({}));
       dispatch(clearEvents({}));
     }
-  }
+  };
 
   return (
     <div className={`${!show && "d-none"}`}>
@@ -37,7 +44,7 @@ export default function PrematchContent({ show, coralActiveSide, handlePreload }
             alliance={mainData.alliance}
             blueOnLeft={mainData.blueOnLeft}
             selected={scores.autoStartingZone}
-            handleSelection={async (zone) => {
+            handleSelection={async (zone: AutoStartingZone) => {
               dispatch(setAutoStartingZoneAsync({ zone }));
             }}
           />
@@ -54,16 +61,20 @@ export default function PrematchContent({ show, coralActiveSide, handlePreload }
                   {mainData.station?.includes("RED") ? "Red" : "Blue"}{" "}
                   {mainData.station?.[mainData.station?.length - 1]}
                 </h1>
-                <h1 className="text-center">Team {mainData.activeTeamNumber}</h1>
+                <h1 className="text-center">
+                  Team {mainData.activeTeamNumber}
+                </h1>
               </div>
               <p>Remember: Only switch tabs when the buzzers sound.</p>
             </div>
             <div className="d-flex flex-column justify-content-center align-items-center">
               <MiniToggleBox
                 className="mx-5"
-                name="Coral Preload?"
-                enabled={coralActiveSide=="level"}
-                handleClick={handlePreload}
+                name="Fuel Preloaded?"
+                enabled={scores.preloaded}
+                handleClick={() =>
+                  dispatch(setPreloadedAsync({ preloaded: !scores.preloaded }))
+                }
               />
             </div>
             <div className="d-flex flex-column align-items-center">
